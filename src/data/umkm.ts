@@ -4,132 +4,278 @@ export const umkms = [
     slug: "gorengan-putri",
     nama: "Gorengan Putri",
     kategori: "Kuliner",
-    kecamatan: "tenggarong",
-
-    alamat:
-      "Jl. Danau Semayang, Panji, Tenggarong, Kutai Kartanegara",
-
+    kecamatan: "Tenggarong",
+    alamat: "Jl. Danau Semayang, Tenggarong",
     telepon: "081234567890",
-
-    deskripsi:
-      "Menyediakan berbagai macam gorengan dan camilan tradisional.",
-
-    gambar:
-      "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
-
+    deskripsi: "Menyediakan berbagai macam gorengan dan camilan tradisional.",
+    gambar: "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
     instagram: "gorenganputri",
     whatsapp: "6281234567890",
   },
 
-  {
-    id: 2,
-    slug: "batik-kukar",
-    nama: "Batik Kukar",
-    kategori: "Fashion",
-    kecamatan: "loa-kulu",
-
-    alamat:
-      "Jl. Ahmad Yani, Loa Kulu, Kutai Kartanegara",
-
-    telepon: "081345678901",
-
-    deskripsi:
-      "Pengrajin batik khas Kutai Kartanegara dengan motif lokal.",
-
-    gambar:
-      "https://images.unsplash.com/photo-1521572267360-ee0c2909d518",
-
-    instagram: "batikkukar",
-    whatsapp: "6281345678901",
-  },
+ {
+  id: 2,
+  slug: "daffa-ganteng",
+  nama: "Daffa Premium Barbershop",
+  kategori: "Jasa",
+  kecamatan: "Tenggarong Seberang",
+  alamat: "Perumahan PIK 2, Manunggal Jaya, Tenggarong Seberang",
+  telepon: "081928704503",
+  deskripsi: "Daffa Premium Barbershop merupakan barbershop andalan Prabowo dan Bahlil. Melayani berbagai jenis potongan rambut dengan hasil rapi, modern, dan sesuai keinginan pelanggan. Dikerjakan langsung oleh owner berpengalaman untuk memberikan penampilan yang lebih fresh dan percaya diri.",
+  gambar: "/umkmdaffa.jpeg",
+  instagram: "daffawijayaaa",
+  whatsapp: "6281928704503",
+},
 
   {
     id: 3,
-    slug: "kopi-etam",
-    nama: "Kopi Etam",
-    kategori: "Kuliner",
-    kecamatan: "muara-jawa",
-
-    alamat:
-      "Jl. Pelabuhan, Muara Jawa, Kutai Kartanegara",
-
-    telepon: "081456789012",
-
-    deskripsi:
-      "Kedai kopi lokal dengan biji kopi pilihan Kalimantan.",
-
-    gambar:
-      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
-
-    instagram: "kopietam",
-    whatsapp: "6281456789012",
+    slug: "madu-kelulut-samboja",
+    nama: "Madu Kelulut Samboja",
+    kategori: "Pertanian",
+    kecamatan: "Samboja",
+    alamat: "Jl. Soekarno Hatta, Samboja",
+    telepon: "081111111111",
+    deskripsi: "Budidaya madu kelulut asli Kalimantan.",
+    gambar: "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
+    instagram: "madusamboja",
+    whatsapp: "6281111111111",
   },
 
   {
     id: 4,
-    slug: "kerajinan-rotan-anggana",
+    slug: "kerajinan-anggana",
     nama: "Kerajinan Rotan Anggana",
     kategori: "Kerajinan",
-    kecamatan: "anggana",
-
-    alamat:
-      "Jl. Poros Anggana, Anggana, Kutai Kartanegara",
-
-    telepon: "081567890123",
-
-    deskripsi:
-      "Produk kerajinan tangan berbahan rotan khas daerah.",
-
-    gambar:
-      "https://images.unsplash.com/photo-1517705008128-361805f42e86",
-
+    kecamatan: "Anggana",
+    alamat: "Jl. Poros Anggana",
+    telepon: "081111111112",
+    deskripsi: "Kerajinan rotan khas pesisir Kukar.",
+    gambar: "https://images.unsplash.com/photo-1517705008128-361805f42e86",
     instagram: "rotananggana",
-    whatsapp: "6281567890123",
+    whatsapp: "6281111111112",
   },
 
   {
     id: 5,
-    slug: "madu-kelulut-samboja",
-    nama: "Madu Kelulut Samboja",
-    kategori: "Pertanian",
-
-    kecamatan: "samboja",
-
-    alamat:
-      "Jl. Soekarno Hatta, Samboja, Kutai Kartanegara",
-
-    telepon: "081678901234",
-
-    deskripsi:
-      "Budidaya dan penjualan madu kelulut asli Kalimantan.",
-
-    gambar:
-      "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
-
-    instagram: "madukelulutsamboja",
-    whatsapp: "6281678901234",
+    slug: "kripik-sebulu",
+    nama: "Kripik Pisang Sebulu",
+    kategori: "Kuliner",
+    kecamatan: "Sebulu",
+    alamat: "Jl. Poros Sebulu",
+    telepon: "081111111113",
+    deskripsi: "Kripik pisang rumahan khas Sebulu.",
+    gambar: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd",
+    instagram: "kripiksebulu",
+    whatsapp: "6281111111113",
   },
 
   {
     id: 6,
-    slug: "madu-kelulut-samboja",
-    nama: "Madu Kelulut Samboja",
+    slug: "souvenir-loa-janan",
+    nama: "Souvenir Loa Janan",
+    kategori: "Kerajinan",
+    kecamatan: "Loa Janan",
+    alamat: "Jl. Loa Janan",
+    telepon: "081111111114",
+    deskripsi: "Souvenir dan oleh-oleh khas Kukar.",
+    gambar: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+    instagram: "souvenirloajanan",
+    whatsapp: "6281111111114",
+  },
+
+  {
+    id: 7,
+    slug: "ikan-asin-muara-badak",
+    nama: "Ikan Asin Muara Badak",
+    kategori: "Perikanan",
+    kecamatan: "Muara Badak",
+    alamat: "Jl. Pelabuhan Muara Badak",
+    telepon: "081111111115",
+    deskripsi: "Olahan ikan asin kualitas premium.",
+    gambar: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
+    instagram: "ikanasinmb",
+    whatsapp: "6281111111115",
+  },
+
+  {
+    id: 8,
+    slug: "kopi-etam",
+    nama: "Kopi Etam",
+    kategori: "Kuliner",
+    kecamatan: "Muara Jawa",
+    alamat: "Jl. Pelabuhan Muara Jawa",
+    telepon: "081111111116",
+    deskripsi: "Kopi khas Kalimantan pilihan.",
+    gambar: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
+    instagram: "kopietam",
+    whatsapp: "6281111111116",
+  },
+
+  {
+    id: 9,
+    slug: "anyaman-muara-kaman",
+    nama: "Anyaman Muara Kaman",
+    kategori: "Kerajinan",
+    kecamatan: "Muara Kaman",
+    alamat: "Jl. Kerajaan Kutai",
+    telepon: "081111111117",
+    deskripsi: "Anyaman tradisional khas Kutai.",
+    gambar: "https://images.unsplash.com/photo-1517705008128-361805f42e86",
+    instagram: "anyamanmk",
+    whatsapp: "6281111111117",
+  },
+
+  {
+    id: 10,
+    slug: "kerupuk-muara-muntai",
+    nama: "Kerupuk Ikan Muara Muntai",
+    kategori: "Kuliner",
+    kecamatan: "Muara Muntai",
+    alamat: "Jl. Danau Jempang",
+    telepon: "081111111118",
+    deskripsi: "Kerupuk ikan khas Muara Muntai.",
+    gambar: "https://images.unsplash.com/photo-1509440159596-0249088772ff",
+    instagram: "kerupukmm",
+    whatsapp: "6281111111118",
+  },
+
+  {
+    id: 11,
+    slug: "udang-marang-kayu",
+    nama: "Udang Kering Marang Kayu",
+    kategori: "Perikanan",
+    kecamatan: "Marang Kayu",
+    alamat: "Jl. Marang Kayu",
+    telepon: "081111111119",
+    deskripsi: "Olahan hasil laut lokal.",
+    gambar: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47",
+    instagram: "udangmk",
+    whatsapp: "6281111111119",
+  },
+
+  {
+    id: 12,
+    slug: "batik-loa-kulu",
+    nama: "Batik Loa Kulu",
+    kategori: "Fashion",
+    kecamatan: "Loa Kulu",
+    alamat: "Jl. Ahmad Yani Loa Kulu",
+    telepon: "081111111120",
+    deskripsi: "Batik khas Kutai Kartanegara.",
+    gambar: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518",
+    instagram: "batikloakulu",
+    whatsapp: "6281111111120",
+  },
+
+  {
+    id: 13,
+    slug: "ikan-asap-sanga-sanga",
+    nama: "Ikan Asap Sanga-Sanga",
+    kategori: "Kuliner",
+    kecamatan: "Sanga-Sanga",
+    alamat: "Jl. Pertamina",
+    telepon: "081111111121",
+    deskripsi: "Ikan asap khas pesisir.",
+    gambar: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
+    instagram: "ikanasapss",
+    whatsapp: "6281111111121",
+  },
+
+  {
+    id: 14,
+    slug: "keripik-samboja-barat",
+    nama: "Keripik Pisang Samboja Barat",
+    kategori: "Kuliner",
+    kecamatan: "Samboja Barat",
+    alamat: "Jl. Tani Bhakti",
+    telepon: "081111111122",
+    deskripsi: "Keripik pisang berbagai rasa.",
+    gambar: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd",
+    instagram: "keripiksb",
+    whatsapp: "6281111111122",
+  },
+
+  {
+    id: 15,
+    slug: "madu-muara-wis",
+    nama: "Madu Hutan Muara Wis",
     kategori: "Pertanian",
+    kecamatan: "Muara Wis",
+    alamat: "Jl. Muara Wis",
+    telepon: "081111111123",
+    deskripsi: "Madu hutan asli Kalimantan.",
+    gambar: "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
+    instagram: "madumw",
+    whatsapp: "6281111111123",
+  },
 
-    kecamatan: "samboja",
+  {
+    id: 16,
+    slug: "kripik-kembang-janggut",
+    nama: "Kripik Pisang Kembang Janggut",
+    kategori: "Kuliner",
+    kecamatan: "Kembang Janggut",
+    alamat: "Jl. Kembang Janggut",
+    telepon: "081111111124",
+    deskripsi: "Kripik pisang rumahan.",
+    gambar: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd",
+    instagram: "kripikkj",
+    whatsapp: "6281111111124",
+  },
 
-    alamat:
-      "Jl. Soekarno Hatta, Samboja, Kutai Kartanegara",
+  {
+    id: 17,
+    slug: "ikan-kota-bangun",
+    nama: "Olahan Ikan Kota Bangun",
+    kategori: "Perikanan",
+    kecamatan: "Kota Bangun",
+    alamat: "Jl. Kota Bangun",
+    telepon: "081111111125",
+    deskripsi: "Olahan ikan air tawar khas Kukar.",
+    gambar: "https://images.unsplash.com/photo-1544943910-4c1dc44aab44",
+    instagram: "ikankb",
+    whatsapp: "6281111111125",
+  },
 
-    telepon: "081678901234",
+  {
+    id: 18,
+    slug: "madu-kota-bangun-darat",
+    nama: "Madu Hutan Kota Bangun Darat",
+    kategori: "Pertanian",
+    kecamatan: "Kota Bangun Darat",
+    alamat: "Jl. Kota Bangun Darat",
+    telepon: "081111111126",
+    deskripsi: "Madu hutan asli Kalimantan.",
+    gambar: "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
+    instagram: "madukbd",
+    whatsapp: "6281111111126",
+  },
 
-    deskripsi:
-      "Budidaya dan penjualan madu kelulut asli Kalimantan.",
+  {
+    id: 19,
+    slug: "tenun-tabang",
+    nama: "Tenun Tabang",
+    kategori: "Fashion",
+    kecamatan: "Tabang",
+    alamat: "Jl. Tabang",
+    telepon: "081111111127",
+    deskripsi: "Tenun lokal khas Tabang.",
+    gambar: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518",
+    instagram: "tenuntabang",
+    whatsapp: "6281111111127",
+  },
 
-    gambar:
-      "https://images.alodokter.com/dk0z4ums3/image/upload/v1604911542/attached_image/manfaat-madu-ditinjau-dari-sisi-medis.jpg",
-
-    instagram: "madukelulutsamboja",
-    whatsapp: "6281678901234",
+  {
+    id: 20,
+    slug: "beras-kenohan",
+    nama: "Beras Organik Kenohan",
+    kategori: "Pertanian",
+    kecamatan: "Kenohan",
+    alamat: "Jl. Kenohan",
+    telepon: "081111111128",
+    deskripsi: "Beras organik hasil petani lokal.",
+    gambar: "https://images.unsplash.com/photo-1586201375761-83865001e31c",
+    instagram: "beraskenohan",
+    whatsapp: "6281111111128",
   },
 ];

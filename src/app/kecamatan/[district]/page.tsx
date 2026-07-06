@@ -14,16 +14,21 @@ export default async function KecamatanPage({ params }: Props) {
 
   const data = umkms.filter((item) => slugify(item.kecamatan) === district);
 
+  const districtName = (data[0]?.kecamatan || district)
+    .replace(/-/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+
   return (
     <>
       <Navbar />
 
-      <main className="w-full max-w-7xl mx-auto px-6 py-10 mt-15">
-        <h1 className="text-3xl font-bold">Kecamatan: {district}</h1>
+      <main className="w-full max-w-7xl mx-auto px-6 py-10 mt-20">
+        <h1 className="text-3xl font-bold">Kecamatan {districtName}</h1>
 
         <p className="mt-2 text-slate-600">Total UMKM: {data.length}</p>
 
-        {/* GRID STABIL TOTAL */}
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
           {data.map((item) => (
             <UmkmCard
@@ -31,6 +36,7 @@ export default async function KecamatanPage({ params }: Props) {
               nama={item.nama}
               kategori={item.kategori}
               gambar={item.gambar}
+              slug={item.slug}
             />
           ))}
         </div>

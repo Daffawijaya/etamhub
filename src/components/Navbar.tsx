@@ -39,7 +39,12 @@ export default function Navbar() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Link href="/">
           <h1 className={`text-2xl font-bold tracking-tight ${text}`}>
-            Etam<span className="text-violet-600">Hub</span>
+            Etam
+            <span
+              className={isHero && isHome ? "text-white" : "text-violet-600"}
+            >
+              Hub
+            </span>
           </h1>
         </Link>
 
