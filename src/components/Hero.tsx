@@ -23,7 +23,6 @@ export default function Hero() {
 
   return (
     <section className="bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)]">
-      {/* overlay biar teks kebaca */}
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pb-24 pt-40">
         <div className="max-w-4xl text-white">
