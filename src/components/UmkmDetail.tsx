@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 type Props = {
@@ -55,23 +57,21 @@ export default function UmkmDetail({
         </div>
 
         <div className="mt-8 flex gap-3">
-          <a
-            href={`https://wa.me/${whatsapp}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-3 rounded-xl bg-green-600 text-white"
+          <button
+            onClick={() => window.open(`https://wa.me/${whatsapp}`, "_blank")}
+            className="px-5 py-3 rounded-xl bg-green-600 text-white cursor-pointer"
           >
             WhatsApp
-          </a>
+          </button>
 
-          <a
-            href={`https://instagram.com/${instagram}/`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-5 py-3 rounded-xl bg-pink-600 text-white"
+          <button
+            onClick={() =>
+              window.open(`https://instagram.com/${instagram}`, "_blank")
+            }
+            className="px-5 py-3 rounded-xl bg-pink-600 text-white cursor-pointer"
           >
             Instagram
-          </a>
+          </button>
         </div>
       </div>
     </div>
