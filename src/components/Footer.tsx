@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="mt-10 bg-purple-50">
+    <footer className="bg-[linear-gradient(135deg,_rgba(24,76,175,0.15),_rgba(132,78,192,0.15),_rgba(202,55,133,0.15))]">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
           <div>
             <h3 className="text-2xl font-bold tracking-tight">
-              Etam<span className="text-violet-600">Hub</span>
+              Etam<span className="text-primary">Hub</span>
             </h3>
 
             <p className="mt-3 max-w-md text-slate-600">

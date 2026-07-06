@@ -41,7 +41,7 @@ export default function Navbar() {
           <h1 className={`text-2xl font-bold tracking-tight ${text}`}>
             Etam
             <span
-              className={isHero && isHome ? "text-white" : "text-violet-600"}
+              className={isHero && isHome ? "text-white" : "text-primary"}
             >
               Hub
             </span>
