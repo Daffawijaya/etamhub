@@ -1,15 +1,17 @@
 "use client";
 
 import Image from "next/image";
+import { useRef, useState } from "react";
 
 type Props = {
+  id: number;
   nama: string;
   pemilik: string;
   kategori: string;
   kecamatan: string;
   alamat: string;
   deskripsi: string;
-  gambar: string;
+  gambar: string[];
   instagram?: string;
   facebook?: string;
   whatsapp?: string;
@@ -31,6 +33,8 @@ export default function UmkmDetail({
   lat,
   lng,
 }: Props) {
+  const [activeImage, setActiveImage] = useState(gambar[0]);
+
   const whatsappNumber = whatsapp?.replace(/\D/g, "").replace(/^0/, "62");
 
   const displayWhatsapp = whatsappNumber
@@ -38,11 +42,24 @@ export default function UmkmDetail({
     : "";
 
   return (
-    <div className="w-full py-10 bg-white">
-      <div className="grid lg:grid-cols-[320px_1fr_280px] gap-12 max-w-7xl mx-auto px-6">
+    <div className="w-full bg-white py-10">
+      <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[320px_1fr_280px]">
         {/* FOTO */}
-        <div className="relative h-[350px] lg:h-[420px] overflow-hidden rounded-xl border border-slate-200">
-          <Image src={gambar} alt={nama} fill className="object-cover" />
+        <div>
+          {/* GAMBAR UTAMA */}
+          <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-slate-200">
+            <Image src={activeImage} alt={nama} fill className="object-cover" />
+          </div>
+
+          {/* THUMBNAIL */}
+          {gambar.length > 1 && (
+            <ThumbnailGallery
+              images={gambar}
+              activeImage={activeImage}
+              setActiveImage={setActiveImage}
+              nama={nama}
+            />
+          )}
         </div>
 
         {/* INFORMASI */}
@@ -70,7 +87,7 @@ export default function UmkmDetail({
 
         {/* SIDEBAR */}
         <div className="flex flex-col gap-4">
-          {/* CARD ALAMAT */}
+          {/* ALAMAT */}
           <div
             onClick={() =>
               window.open(
@@ -89,7 +106,7 @@ export default function UmkmDetail({
             <p className="mt-3 text-sm leading-6 text-purple-50">{alamat}</p>
           </div>
 
-          {/* CARD PEMILIK */}
+          {/* PEMILIK */}
           <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
             <h3 className="text-base font-bold text-slate-900">
               Informasi Pemilik
@@ -106,7 +123,7 @@ export default function UmkmDetail({
 
               {displayWhatsapp && (
                 <div>
-                  <p className="text-xs text-slate-500">Nomor Handphone</p>
+                  <p className="text-xs text-slate-500">WhatsApp</p>
 
                   <p className="mt-1 text-sm font-semibold text-slate-800">
                     {displayWhatsapp}
@@ -155,6 +172,95 @@ export default function UmkmDetail({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function ThumbnailGallery({
+  images,
+  activeImage,
+  setActiveImage,
+  nama,
+}: {
+  images: string[];
+  activeImage: string;
+  setActiveImage: (img: string) => void;
+  nama: string;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [showLeft, setShowLeft] = useState(false);
+  const [showRight, setShowRight] = useState(images.length > 4);
+
+  const checkScroll = () => {
+    if (!scrollRef.current) return;
+
+    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+
+    setShowLeft(scrollLeft > 0);
+    setShowRight(scrollLeft < scrollWidth - clientWidth - 5);
+  };
+
+  const scrollRight = () => {
+    scrollRef.current?.scrollBy({
+      left: 250,
+      behavior: "smooth",
+    });
+
+    setTimeout(checkScroll, 300);
+  };
+
+  const scrollLeft = () => {
+    scrollRef.current?.scrollBy({
+      left: -250,
+      behavior: "smooth",
+    });
+
+    setTimeout(checkScroll, 300);
+  };
+
+  return (
+    <div className="relative mt-2">
+      <div
+        ref={scrollRef}
+        onScroll={checkScroll}
+        className="flex gap-2 overflow-x-auto scroll-smooth scrollbar-none"
+      >
+        {images.map((img, index) => (
+          <button
+            key={index}
+            onClick={() => setActiveImage(img)}
+            className={`relative h-15 w-15 flex-shrink-0 overflow-hidden rounded-lg border-2 transition-all ${
+              activeImage === img ? "border-violet-600" : "border-slate-200"
+            }`}
+          >
+            <Image
+              src={img}
+              alt={`${nama}-${index}`}
+              fill
+              className="object-cover"
+            />
+          </button>
+        ))}
+      </div>
+
+      {showLeft && (
+        <button
+          onClick={scrollLeft}
+          className="absolute left-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-lg shadow-md transition hover:bg-slate-50"
+        >
+          ‹
+        </button>
+      )}
+
+      {showRight && (
+        <button
+          onClick={scrollRight}
+          className="absolute right-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-lg shadow-md transition hover:bg-slate-50"
+        >
+          ›
+        </button>
+      )}
     </div>
   );
 }

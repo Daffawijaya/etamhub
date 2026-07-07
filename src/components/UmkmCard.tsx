@@ -1,19 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
+import { imageUrl } from "@/lib/imageUrl";
 
 type Props = {
+  id: number;
   nama: string;
   kategori: string;
-  gambar: string;
-  slug: string;
+  gambar: string[];
 };
 
-export default function UmkmCard({
-  nama,
-  kategori,
-  gambar,
-  slug,
-}: Props) {
+export default function UmkmCard({ id, nama, kategori, gambar }: Props) {
   const categoryColor = {
     Perdagangan: "bg-blue-100 text-blue-700",
     Jasa: "bg-purple-100 text-purple-700",
@@ -25,12 +21,12 @@ export default function UmkmCard({
     "bg-slate-100 text-slate-600";
 
   return (
-    <Link href={`/umkm/${slug}`}>
-      <div className="group w-full max-w-[200px] h-max flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer">
+    <Link href={`/umkm/${id}`}>
+      <div className="group w-full max-w-[200px] flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer">
         {/* IMAGE */}
         <div className="relative h-40 w-full overflow-hidden shrink-0">
           <Image
-            src={gambar}
+            src={imageUrl(gambar[0])}
             alt={nama}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -45,7 +41,7 @@ export default function UmkmCard({
             {kategori}
           </span>
 
-          <h2 className="text-sm sm:text-base font-semibold text-slate-900 truncate">
+          <h2 className="text-sm sm:text-base font-semibold text-slate-900 line-clamp-2">
             {nama}
           </h2>
         </div>
