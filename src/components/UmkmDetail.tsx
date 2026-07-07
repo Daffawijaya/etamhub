@@ -27,7 +27,7 @@ export default function UmkmDetail({
 }: Props) {
   return (
     <div className="w-full  py-10 bg-white">
-      <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr_280px] gap-6 max-w-7xl mx-auto px-6">
+      <div className="grid grid-cols- lg:grid-cols-[320px_1fr_280px] gap-12 max-w-7xl mx-auto px-6">
         {/* FOTO */}
         <div className="relative h-[350px] lg:h-[420px] overflow-hidden rounded-xl border border-slate-200">
           <Image src={gambar} alt={nama} fill className="object-cover" />
@@ -59,7 +59,15 @@ export default function UmkmDetail({
         {/* SIDEBAR */}
         <div className="flex flex-col gap-4">
           {/* CARD ALAMAT */}
-          <div className="rounded-xl bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)] p-4 text-white">
+          <div
+            onClick={() =>
+              window.open(
+                "https://maps.google.com/?q=-0.4167,116.9833",
+                "_blank",
+              )
+            }
+            className="rounded-xl bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)] p-4 text-white cursor-pointer transition hover:scale-[1.02]"
+          >
             <p className="text-xs font-medium uppercase tracking-wider text-purple-50">
               Lokasi Usaha
             </p>

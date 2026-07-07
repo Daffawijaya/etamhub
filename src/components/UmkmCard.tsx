@@ -8,7 +8,12 @@ type Props = {
   slug: string;
 };
 
-export default function UmkmCard({ nama, kategori, gambar, slug }: Props) {
+export default function UmkmCard({
+  nama,
+  kategori,
+  gambar,
+  slug,
+}: Props) {
   const categoryColor = {
     Perdagangan: "bg-blue-100 text-blue-700",
     Jasa: "bg-purple-100 text-purple-700",
