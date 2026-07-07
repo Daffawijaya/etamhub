@@ -36,7 +36,7 @@ export default function Navbar() {
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
         isHero && isHome
           ? "bg-transparent"
-          : "bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
+          : "bg-white/50 backdrop-blur-md shadow-[0_1px_1px_rgba(0,0,0,0.08)]"
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
