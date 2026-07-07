@@ -12,6 +12,8 @@ type Props = {
   gambar: string;
   instagram: string;
   whatsapp: string;
+  lat: number;
+  lng: number;
 };
 
 export default function UmkmDetail({
@@ -24,17 +26,19 @@ export default function UmkmDetail({
   gambar,
   instagram,
   whatsapp,
+  lat,
+  lng,
 }: Props) {
   return (
-    <div className="w-full  py-10 bg-white">
-      <div className="grid grid-cols- lg:grid-cols-[320px_1fr_280px] gap-12 max-w-7xl mx-auto px-6">
+    <div className="w-full py-10 bg-white">
+      <div className="grid lg:grid-cols-[320px_1fr_280px] gap-12 max-w-7xl mx-auto px-6">
         {/* FOTO */}
         <div className="relative h-[350px] lg:h-[420px] overflow-hidden rounded-xl border border-slate-200">
           <Image src={gambar} alt={nama} fill className="object-cover" />
         </div>
 
         {/* INFORMASI */}
-        <div className="flex flex-col ">
+        <div className="flex flex-col">
           <span className="w-fit rounded-full bg-violet-100 px-3 py-1 text-xs font-medium text-violet-700">
             {kategori}
           </span>
@@ -62,7 +66,7 @@ export default function UmkmDetail({
           <div
             onClick={() =>
               window.open(
-                "https://maps.google.com/?q=-0.4167,116.9833",
+                `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
                 "_blank",
               )
             }
