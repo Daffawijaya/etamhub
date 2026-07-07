@@ -11,21 +11,25 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
     instagram: "gorenganputri",
     whatsapp: "6281234567890",
+    lat: -0.4300,
+    lng: 116.9850,
   },
 
- {
-  id: 2,
-  slug: "daffa-ganteng",
-  nama: "Daffa Premium Barbershop",
-  kategori: "Jasa",
-  kecamatan: "Tenggarong Seberang",
-  alamat: "Perumahan PIK 2, Manunggal Jaya, Tenggarong Seberang",
-  telepon: "081928704503",
-  deskripsi: "Daffa Premium Barbershop merupakan barbershop andalan Prabowo dan Bahlil. Melayani berbagai jenis potongan rambut dengan hasil rapi, modern, dan sesuai keinginan pelanggan. Dikerjakan langsung oleh owner berpengalaman untuk memberikan penampilan yang lebih fresh dan percaya diri.",
-  gambar: "/umkmdaffa.jpeg",
-  instagram: "daffawijayaaa",
-  whatsapp: "6281928704503",
-},
+  {
+    id: 2,
+    slug: "daffa-ganteng",
+    nama: "Daffa Premium Barbershop",
+    kategori: "Jasa",
+    kecamatan: "Tenggarong Seberang",
+    alamat: "Perumahan PIK 2, Manunggal Jaya, Tenggarong Seberang",
+    telepon: "081928704503",
+    deskripsi: "Daffa Premium Barbershop merupakan barbershop andalan Prabowo dan Bahlil. Melayani berbagai jenis potongan rambut dengan hasil rapi, modern, dan sesuai keinginan pelanggan. Dikerjakan langsung oleh owner berpengalaman untuk memberikan penampilan yang lebih fresh dan percaya diri.",
+    gambar: "/umkmdaffa.jpeg",
+    instagram: "daffawijayaaa",
+    whatsapp: "6281928704503",
+    lat: -0.381316,
+    lng: 117.114851,
+  },
 
   {
     id: 3,
@@ -39,6 +43,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
     instagram: "madusamboja",
     whatsapp: "6281111111111",
+    lat: -0.9850,
+    lng: 117.0900,
   },
 
   {
@@ -53,6 +59,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1517705008128-361805f42e86",
     instagram: "rotananggana",
     whatsapp: "6281111111112",
+    lat: -0.5400,
+    lng: 117.2500,
   },
 
   {
@@ -67,6 +75,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd",
     instagram: "kripiksebulu",
     whatsapp: "6281111111113",
+    lat: -0.2600,
+    lng: 116.9900,
   },
 
   {
@@ -81,6 +91,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
     instagram: "souvenirloajanan",
     whatsapp: "6281111111114",
+    lat: -0.5850,
+    lng: 117.0950,
   },
 
   {
@@ -95,6 +107,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
     instagram: "ikanasinmb",
     whatsapp: "6281111111115",
+    lat: -0.3300,
+    lng: 117.4200,
   },
 
   {
@@ -109,6 +123,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085",
     instagram: "kopietam",
     whatsapp: "6281111111116",
+    lat: -0.8200,
+    lng: 117.2400,
   },
 
   {
@@ -123,6 +139,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1517705008128-361805f42e86",
     instagram: "anyamanmk",
     whatsapp: "6281111111117",
+    lat: -0.2050,
+    lng: 116.7900,
   },
 
   {
@@ -137,6 +155,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1509440159596-0249088772ff",
     instagram: "kerupukmm",
     whatsapp: "6281111111118",
+    lat: -0.4450,
+    lng: 116.3950,
   },
 
   {
@@ -151,6 +171,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1565680018434-b513d5e5fd47",
     instagram: "udangmk",
     whatsapp: "6281111111119",
+    lat: -0.1600,
+    lng: 117.4200,
   },
 
   {
@@ -165,6 +187,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518",
     instagram: "batikloakulu",
     whatsapp: "6281111111120",
+    lat: -0.5200,
+    lng: 117.0200,
   },
 
   {
@@ -179,6 +203,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2",
     instagram: "ikanasapss",
     whatsapp: "6281111111121",
+    lat: -0.5950,
+    lng: 117.2650,
   },
 
   {
@@ -193,6 +219,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd",
     instagram: "keripiksb",
     whatsapp: "6281111111122",
+    lat: -0.9500,
+    lng: 116.9500,
   },
 
   {
@@ -207,6 +235,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
     instagram: "madumw",
     whatsapp: "6281111111123",
+    lat: -0.5150,
+    lng: 116.5450,
   },
 
   {
@@ -221,6 +251,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1576618148400-f54bed99fcfd",
     instagram: "kripikkj",
     whatsapp: "6281111111124",
+    lat: 0.1200,
+    lng: 116.3700,
   },
 
   {
@@ -235,6 +267,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1544943910-4c1dc44aab44",
     instagram: "ikankb",
     whatsapp: "6281111111125",
+    lat: -0.2250,
+    lng: 116.5900,
   },
 
   {
@@ -249,6 +283,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1587049352851-8d4e89133924",
     instagram: "madukbd",
     whatsapp: "6281111111126",
+    lat: -0.2500,
+    lng: 116.6400,
   },
 
   {
@@ -263,6 +299,8 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518",
     instagram: "tenuntabang",
     whatsapp: "6281111111127",
+    lat: 0.5850,
+    lng: 116.0350,
   },
 
   {
@@ -277,5 +315,7 @@ export const umkms = [
     gambar: "https://images.unsplash.com/photo-1586201375761-83865001e31c",
     instagram: "beraskenohan",
     whatsapp: "6281111111128",
+    lat: -0.1200,
+    lng: 116.4700,
   },
 ];
