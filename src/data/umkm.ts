@@ -9,7 +9,6 @@ export const umkms = [
     alamat: "Perumahan PIK 2, Manunggal Jaya, Tenggarong Seberang",
     lat: -0.381316,
     lng: 117.114851,
-    telepon: "081928704503",
     deskripsi: "Daffa Premium Barbershop merupakan barbershop andalan Prabowo dan Bahlil. Melayani berbagai jenis potongan rambut dengan hasil rapi, modern, dan sesuai keinginan pelanggan. Dikerjakan langsung oleh owner berpengalaman untuk memberikan penampilan yang lebih fresh dan percaya diri.",
     gambar: "/umkmdaffa.jpeg",
     instagram: "daffawijayaaa",
