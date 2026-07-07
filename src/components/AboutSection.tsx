@@ -1,4 +1,44 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 export default function AboutSection() {
+  const images = [
+    "/testing.jpeg",
+    "/umkmdaffa.jpeg",
+    "/testing.jpeg",
+  ];
+
+  const sliderImages = [...images, images[0]];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [transition, setTransition] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => prev + 1);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (currentIndex === images.length) {
+      const timeout = setTimeout(() => {
+        setTransition(false);
+        setCurrentIndex(0);
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            setTransition(true);
+          });
+        });
+      }, 700); // harus sama dengan duration slider
+
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, images.length]);
+
   return (
     <section id="about-section">
       <div className="max-w-7xl mx-auto px-6">
@@ -12,33 +52,42 @@ export default function AboutSection() {
             <p className="mt-5 text-white/90 leading-relaxed">
               EtamHub adalah platform digital yang dikembangkan oleh Tenaga Ahli
               Pendamping UMKM di bawah Dinas Koperasi dan UKM Kutai Kartanegara.
-              Platform ini dirancang untuk mendukung pendataan, pemetaan, dan
-              pengembangan UMKM agar lebih mudah diakses dan lebih terstruktur.
             </p>
 
             <p className="mt-4 text-white/90 leading-relaxed">
               Tujuannya adalah mempercepat transformasi digital UMKM daerah,
               memperluas jangkauan usaha lokal, serta memudahkan masyarakat
-              dalam menemukan produk dan layanan UMKM di Kutai Kartanegara.
+              menemukan produk dan layanan UMKM.
             </p>
-
-            <div className="mt-8 flex gap-4 flex-wrap">
-              <div className="px-4 py-2 rounded-xl bg-white/15 backdrop-blur text-white text-sm">
-                Digitalisasi UMKM
-              </div>
-
-              <div className="px-4 py-2 rounded-xl bg-white/15 backdrop-blur text-white text-sm">
-                Pemetaan Kecamatan
-              </div>
-
-              <div className="px-4 py-2 rounded-xl bg-white/15 backdrop-blur text-white text-sm">
-                Data Terintegrasi
-              </div>
-            </div>
           </div>
 
-          {/* VISUAL */}
-          <div className="relative w-full h-[320px] md:h-[400px] rounded-2xl overflow-hidden bg-[url('/testing.jpeg')] bg-cover bg-center" />
+          {/* SLIDER */}
+          <div className="relative h-[320px] md:h-[400px] rounded-2xl overflow-hidden">
+            <div
+              className={`flex h-full ${
+                transition
+                  ? "transition-transform duration-700 ease-in-out"
+                  : ""
+              }`}
+              style={{
+                width: `${sliderImages.length * 100}%`,
+                transform: `translateX(-${
+                  currentIndex * (100 / sliderImages.length)
+                }%)`,
+              }}
+            >
+              {sliderImages.map((image, index) => (
+                <div
+                  key={index}
+                  className="shrink-0 h-full bg-cover bg-center"
+                  style={{
+                    width: `${100 / sliderImages.length}%`,
+                    backgroundImage: `url(${image})`,
+                  }}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </section>

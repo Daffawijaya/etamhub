@@ -17,7 +17,8 @@ export default function Navbar() {
     }
 
     const handleScroll = () => {
-      setIsHero(window.scrollY < window.innerHeight - 80);
+      // Transparan hanya saat benar-benar di paling atas
+      setIsHero(window.scrollY === 0);
     };
 
     handleScroll();
@@ -32,37 +33,37 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 w-full z-50 transition-colors duration-300 ${
-        isHero && isHome ? "bg-transparent" : "bg-white/90 backdrop-blur-md"
+      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
+        isHero && isHome
+          ? "bg-transparent"
+          : "bg-white/90 backdrop-blur-md border-b border-slate-100 shadow-[0_1px_2px_rgba(0,0,0,0.03)]"
       }`}
     >
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         <Link href="/">
           <h1 className={`text-2xl font-bold tracking-tight ${text}`}>
             Etam
-            <span
-              className={isHero && isHome ? "text-white" : "text-primary"}
-            >
+            <span className={isHero && isHome ? "text-white" : "text-primary"}>
               Hub
             </span>
           </h1>
         </Link>
 
-        <div className="hidden md:flex items-center gap-8">
-          <Link href="/" className={`${text} ${hover} transition`}>
+        <div className="hidden items-center gap-8 md:flex">
+          <Link href="/" className={`${text} ${hover} transition-colors`}>
             Beranda
           </Link>
 
           <Link
             href="/#district-section"
-            className={`${text} ${hover} transition`}
+            className={`${text} ${hover} transition-colors`}
           >
             Kecamatan
           </Link>
 
           <Link
             href="/#about-section"
-            className={`${text} ${hover} transition`}
+            className={`${text} ${hover} transition-colors`}
           >
             Tentang
           </Link>

@@ -26,52 +26,91 @@ export default function UmkmDetail({
   whatsapp,
 }: Props) {
   return (
-    <div className="grid lg:grid-cols-2 gap-10">
-      {/* FOTO */}
-      <div className="relative w-full h-[400px] rounded-2xl overflow-hidden">
-        <Image src={gambar} alt={nama} fill className="object-cover" />
-      </div>
+    <div className="w-full  py-10 bg-white">
+      <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr_280px] gap-6 max-w-7xl mx-auto px-6">
+        {/* FOTO */}
+        <div className="relative h-[350px] lg:h-[420px] overflow-hidden rounded-xl border border-slate-200">
+          <Image src={gambar} alt={nama} fill className="object-cover" />
+        </div>
 
-      {/* DETAIL */}
-      <div>
-        <span className="inline-block px-3 py-1 rounded-full bg-slate-100 text-sm">
-          {kategori}
-        </span>
+        {/* INFORMASI */}
+        <div className="flex flex-col ">
+          <span className="w-fit rounded-full bg-violet-100 px-3 py-1 text-xs font-medium text-violet-700">
+            {kategori}
+          </span>
 
-        <h1 className="mt-4 text-4xl font-bold">{nama}</h1>
+          <h1 className="mt-4 text-3xl font-bold leading-tight text-slate-900">
+            {nama}
+          </h1>
 
-        <p className="mt-2 text-slate-500">{kecamatan}</p>
+          <p className="mt-2 text-sm text-slate-500">{kecamatan}</p>
 
-        <p className="mt-6 text-slate-700 leading-relaxed">{deskripsi}</p>
-
-        <div className="mt-8 space-y-4">
-          <div>
-            <h3 className="font-semibold">Alamat</h3>
-            <p className="text-slate-600">{alamat}</p>
-          </div>
+          <div className="my-5 h-px bg-slate-200" />
 
           <div>
-            <h3 className="font-semibold">Telepon</h3>
-            <p className="text-slate-600">{telepon}</p>
+            <h2 className="mb-3 text-base font-semibold text-slate-900">
+              Deskripsi Usaha
+            </h2>
+
+            <p className="text-sm leading-7 text-slate-600">{deskripsi}</p>
           </div>
         </div>
 
-        <div className="mt-8 flex gap-3">
-          <button
-            onClick={() => window.open(`https://wa.me/${whatsapp}`, "_blank")}
-            className="px-5 py-3 rounded-xl bg-green-600 text-white cursor-pointer"
-          >
-            WhatsApp
-          </button>
+        {/* SIDEBAR */}
+        <div className="flex flex-col gap-4">
+          {/* CARD ALAMAT */}
+          <div className="rounded-xl bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)] p-4 text-white">
+            <p className="text-xs font-medium uppercase tracking-wider text-purple-50">
+              Lokasi Usaha
+            </p>
 
-          <button
-            onClick={() =>
-              window.open(`https://instagram.com/${instagram}`, "_blank")
-            }
-            className="px-5 py-3 rounded-xl bg-pink-600 text-white cursor-pointer"
-          >
-            Instagram
-          </button>
+            <h3 className="mt-2 text-base font-bold">Alamat</h3>
+
+            <p className="mt-3 text-sm leading-6 text-purple-50">{alamat}</p>
+          </div>
+
+          {/* CARD KONTAK */}
+          <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+            <h3 className="text-base font-bold text-slate-900">Kontak UMKM</h3>
+
+            <div className="mt-5 space-y-4">
+              <div>
+                <p className="text-xs text-slate-500">Nomor Telepon</p>
+
+                <p className="mt-1 text-sm font-semibold text-slate-800">
+                  {telepon}
+                </p>
+              </div>
+
+              <div>
+                <p className="text-xs text-slate-500">Instagram</p>
+
+                <p className="mt-1 text-sm font-semibold text-slate-800">
+                  @{instagram}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 flex flex-col gap-2">
+              <button
+                onClick={() =>
+                  window.open(`https://wa.me/${whatsapp}`, "_blank")
+                }
+                className="w-full rounded-lg bg-[#25D366] px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 cursor-pointer"
+              >
+                Chat WhatsApp
+              </button>
+
+              <button
+                onClick={() =>
+                  window.open(`https://instagram.com/${instagram}`, "_blank")
+                }
+                className="w-full rounded-lg px-4 py-2.5 text-sm font-medium text-white transition hover:opacity-90 cursor-pointer bg-[linear-gradient(45deg,#F58529,#FEDA77,#DD2A7B,#8134AF,#515BD4)]"
+              >
+                Kunjungi Instagram
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
