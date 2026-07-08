@@ -1,14 +1,13 @@
-import { Poppins } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
+import { montserrat, coiny } from "@/lib/fonts";
 
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-export const metadata = {
+export const metadata: Metadata = {
   title: "EtamHub",
   description: "Katalog UMKM Kutai Kartanegara",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 export default function RootLayout({
@@ -18,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body className={`${poppins.className} min-h-full flex flex-col`}>
+      <body
+        className={`${montserrat.className} ${montserrat.variable} ${coiny.variable} min-h-full flex flex-col`}
+      >
         {children}
       </body>
     </html>

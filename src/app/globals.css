@@ -3,7 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
- 
+}
+
+.font-coiny {
+  font-family: var(--font-coiny);
 }
 
 @theme inline {
