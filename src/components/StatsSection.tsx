@@ -2,58 +2,50 @@ import { umkms } from "@/data/umkm";
 
 export default function StatsSection() {
   const totalUmkm = umkms.length;
-
   const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;
-
   const totalKategori = new Set(umkms.map((item) => item.kategori)).size;
 
   const stats = [
     {
       value: totalKecamatan,
       label: "Kecamatan",
-      color: "primary",
+      active: true,
     },
     {
       value: totalUmkm,
-      label: "UMKM Terdaftar",
-      color: "secondary",
+      label: "UMKM",
     },
     {
       value: totalKategori,
-      label: "Kategori Usaha",
-      color: "third",
+      label: "Kategori",
     },
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-24">
-      <div className="grid gap-6 md:grid-cols-3">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className={`group rounded-3xl border border-slate-200 bg-white p-8 transition-all duration-300 hover:-translate-y-1 hover:bg-slate-50 ${
-              stat.color === "primary"
-                ? "hover:border-primary"
-                : stat.color === "secondary"
-                  ? "hover:border-secondary"
-                  : "hover:border-third"
-            }`}
-          >
-            <h2
-              className={`text-5xl font-bold text-slate-900 transition-colors duration-300 ${
-                stat.color === "primary"
-                  ? "group-hover:text-primary"
-                  : stat.color === "secondary"
-                    ? "group-hover:text-secondary"
-                    : "group-hover:text-third"
+    <section className="max-w-7xl mx-auto px-6 py-20">
+      <h2 className="text-5xl font-bold text-center mb-5">Statistik UMKM</h2>
+
+      <p className="text-xl max-w-3xl mx-auto text-center text-slate-600 leading-relaxed mb-12">
+        Menampilkan sebaran UMKM yang telah bergabung, mulai dari jumlah pelaku
+        usaha, wilayah kecamatan, hingga ragam kategori usaha.
+      </p>
+
+      <div className="flex justify-center">
+        <div className="inline-flex rounded-2xl bg-slate-100 p-2">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className={`min-w-[180px] px-8 py-5 rounded-xl text-center transition-all duration-300 ${
+                stat.active
+                  ? "bg-slate-900 text-white shadow-md"
+                  : "text-slate-700 hover:bg-white"
               }`}
             >
-              {stat.value}
-            </h2>
-
-            <p className="mt-3 text-slate-500">{stat.label}</p>
-          </div>
-        ))}
+              <p className="text-3xl font-bold">{stat.value}</p>
+              <p className="text-sm mt-1">{stat.label}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );
