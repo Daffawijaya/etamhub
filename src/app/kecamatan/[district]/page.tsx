@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { umkms } from "@/data/umkm";
 import { slugify } from "@/lib/slugify";
 import UmkmCard from "@/components/UmkmCard";
@@ -26,14 +27,19 @@ export default async function KecamatanPage({ params }: Props) {
       <Navbar />
 
       <main className="w-full max-w-7xl mx-auto px-6 py-10 mt-20">
-        <h1 className="text-3xl font-bold text-slate-900">
-          {districtName}
-        </h1>
+        {/* Breadcrumb */}
+        <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mb-6">
+          <Link href="/" className="hover:text-[#9764dc] transition-colors">
+            Dashboard
+          </Link>
 
-        <p className="mt-2 text-slate-600">Total UMKM: {data.length}</p>
+          <span>›</span>
+
+          <span className="font-medium text-gray-900">{districtName}</span>
+        </nav>
 
         {data.length === 0 ? (
-          <div className="mt-10 rounded-xl bg-white p-8 text-center shadow-sm">
+          <div className="py-5 rounded-xl bg-white p-8 text-center shadow-sm">
             <p className="text-slate-500">
               Belum ada data UMKM di kecamatan ini.
             </p>

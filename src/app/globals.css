@@ -15,10 +15,11 @@
 }
 
 @theme {
-  --color-primary: #844ec0;
-  --color-secondary: #184caf;
-  --color-third: #ca3785;
+  --color-primary: #531553;
+  --color-secondary: #E4A63A;
+  --color-third: #f5ede5;
   --color-dark: #1e1e1e;
+  --color-gry: #f6f9f9;
 }
 
 * {

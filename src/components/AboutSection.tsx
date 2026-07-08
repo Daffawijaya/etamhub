@@ -36,16 +36,14 @@ export default function AboutSection() {
   }, [currentIndex, images.length]);
 
   return (
-    <section id="about-section" className="py-15 bg-dark">
+    <section id="about-section" className="py-15 bg-third">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-2 items-center">
-          
-
           {/* IMAGE */}
           <div className="relative">
             <div className="absolute -top-8 -right-8 h-40 w-40 rounded-full" />
 
-            <div className="relative overflow-hidden aspect-[5/4] w-full max-w-[450px] mx-auto">
+            <div className="relative rounded-md overflow-hidden aspect-[5/4] w-full max-w-[450px] mx-auto">
               <div
                 className={`flex h-full ${
                   transition
@@ -75,10 +73,17 @@ export default function AboutSection() {
 
           {/* TEXT */}
           <div>
-            <p className="text-2xl font-bold text-white leading-relaxed">
+            <h2 className="text-5xl font-bold mb-5">
+              Tentang EtamHub
+            </h2>
+
+            <p className="text-xl max-w-3xl mx-auto text-slate-600 leading-relaxed ">
               EtamHub merupakan platform digital yang dikembangkan untuk
               mendukung transformasi UMKM di Kutai Kartanegara melalui akses
               informasi, promosi produk, dan penguatan ekosistem usaha lokal.
+            </p>
+            <p className="text-2xl font-bold text-white leading-relaxed">
+              
             </p>
           </div>
         </div>

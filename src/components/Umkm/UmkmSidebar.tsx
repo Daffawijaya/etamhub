@@ -19,111 +19,137 @@ export default function UmkmSidebar({
   lat,
   lng,
 }: Props) {
-  const whatsappNumber = whatsapp
-    ?.replace(/\D/g, "")
-    .replace(/^0/, "62");
-
-  const displayWhatsapp = whatsappNumber
-    ? whatsappNumber.replace(/^62/, "0")
-    : "";
+  const whatsappNumber = whatsapp?.replace(/\D/g, "").replace(/^0/, "62");
 
   return (
-    <div className="flex flex-col gap-4">
-      <div
+    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+      <h3 className="text-lg font-bold text-slate-900">Informasi UMKM</h3>
+
+      <div className="mt-5 space-y-4">
+        <div>
+          <p className="text-xs uppercase tracking-wide text-slate-500">
+            Pemilik
+          </p>
+
+          <p className="mt-1 text-sm font-semibold text-slate-900 capitalize">
+            {pemilik}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-xs uppercase tracking-wide text-slate-500">
+            Alamat
+          </p>
+
+          <p className="mt-1 text-sm leading-6 text-slate-600 capitalize">
+            {alamat}
+          </p>
+        </div>
+      </div>
+
+      <button
         onClick={() =>
           window.open(
             `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
-            "_blank"
+            "_blank",
           )
         }
-        className="cursor-pointer rounded-xl bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)] p-4 text-white"
+        className="
+          mt-5
+          w-full
+          rounded-xl
+          border
+          border-slate-200
+          px-4
+          py-2.5
+          text-sm
+          font-medium
+          text-slate-700
+          transition
+          hover:bg-slate-50
+        "
       >
-        <p className="text-xs uppercase tracking-wider text-purple-50">
-          Lokasi Usaha
-        </p>
+        Lihat Lokasi
+      </button>
 
-        <h3 className="mt-2 text-base font-bold">
-          Alamat
-        </h3>
+      {(whatsappNumber || instagram?.trim() || facebook?.trim()) && (
+        <div className="mt-5 border-t border-slate-200 pt-5">
+          <h4 className="text-sm font-semibold text-slate-900">Hubungi UMKM</h4>
 
-        <p className="mt-3 text-sm leading-6 text-purple-50 capitalize">
-          {alamat}
-        </p>
-      </div>
+          <div className="mt-3 flex flex-col gap-2">
+            {whatsappNumber && (
+              <button
+                onClick={() =>
+                  window.open(`https://wa.me/${whatsappNumber}`, "_blank")
+                }
+                className="
+                  w-full
+                  rounded-xl
+                  bg-slate-900
+                  px-4
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-white
+                  transition
+                  hover:bg-slate-800
+                "
+              >
+                Chat WhatsApp
+              </button>
+            )}
 
-      <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        <h3 className="text-base font-bold">
-          Informasi Pemilik
-        </h3>
+            {instagram?.trim() && (
+              <button
+                onClick={() =>
+                  window.open(
+                    `https://instagram.com/${instagram.replace("@", "")}`,
+                    "_blank",
+                  )
+                }
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-200
+                  px-4
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-50
+                "
+              >
+                Instagram
+              </button>
+            )}
 
-        <div className="mt-5 space-y-4">
-          <div>
-            <p className="text-xs text-slate-500">
-              Nama Pemilik
-            </p>
-
-            <p className="mt-1 text-sm font-semibold capitalize">
-              {pemilik}
-            </p>
+            {facebook?.trim() && (
+              <button
+                onClick={() =>
+                  window.open(`https://facebook.com/${facebook}`, "_blank")
+                }
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-200
+                  px-4
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-50
+                "
+              >
+                Facebook
+              </button>
+            )}
           </div>
-
-          {displayWhatsapp && (
-            <div>
-              <p className="text-xs text-slate-500">
-                WhatsApp
-              </p>
-
-              <p className="mt-1 text-sm font-semibold">
-                {displayWhatsapp}
-              </p>
-            </div>
-          )}
         </div>
-
-        <div className="mt-6 flex flex-col gap-2">
-          {whatsappNumber && (
-            <button
-              onClick={() =>
-                window.open(
-                  `https://wa.me/${whatsappNumber}`,
-                  "_blank"
-                )
-              }
-              className="rounded-lg border border-[#25D366] px-4 py-2.5 text-sm font-medium text-[#25D366]"
-            >
-              Chat WhatsApp
-            </button>
-          )}
-
-          {instagram?.trim() && (
-            <button
-              onClick={() =>
-                window.open(
-                  `https://instagram.com/${instagram.replace("@", "")}`,
-                  "_blank"
-                )
-              }
-              className="rounded-lg border border-[#DD2A7B] px-4 py-2.5 text-sm font-medium text-[#DD2A7B]"
-            >
-              Kunjungi Instagram
-            </button>
-          )}
-
-          {facebook?.trim() && (
-            <button
-              onClick={() =>
-                window.open(
-                  `https://facebook.com/${facebook}`,
-                  "_blank"
-                )
-              }
-              className="rounded-lg border border-[#1877F2] px-4 py-2.5 text-sm font-medium text-[#1877F2]"
-            >
-              Kunjungi Facebook
-            </button>
-          )}
-        </div>
-      </div>
+      )}
     </div>
   );
 }

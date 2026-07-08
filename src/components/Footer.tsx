@@ -11,7 +11,7 @@ export default function Footer() {
     <footer
       className={`${
         isHome
-          ? "bg-[linear-gradient(135deg,_rgba(24,76,175,0.15),_rgba(132,78,192,0.15),_rgba(202,55,133,0.15))]"
+          ? "bg-gry"
           : "bg-white border-t border-slate-200"
       }`}
     >
