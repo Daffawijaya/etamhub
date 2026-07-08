@@ -2,9 +2,14 @@ import { umkms } from "@/data/umkm";
 
 export default function StatsSection() {
   const totalUmkm = umkms.length;
-  const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;
 
-  const totalKategori = new Set(umkms.map((item) => item.kategori)).size;
+  const totalKecamatan = new Set(
+    umkms.map((item) => item.kecamatan)
+  ).size;
+
+  const totalKategori = new Set(
+    umkms.map((item) => item.kategori)
+  ).size;
 
   const stats = [
     {
@@ -25,39 +30,47 @@ export default function StatsSection() {
   ];
 
   return (
-    <section className="py-28 bg-white">
-      <div className="max-w-6xl mx-auto px-6">
-        <h2 className="text-5xl font-bold text-center text-slate-900">
+    <section className="py-16 md:py-24 lg:py-28 bg-white">
+      <div className="max-w-6xl mx-auto px-5 md:px-6">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-slate-900">
           Statistik UMKM
         </h2>
 
-        <p className="mt-5 text-center text-slate-600 max-w-3xl mx-auto text-lg leading-relaxed">
+        <p className="mt-4 md:mt-5 text-center text-slate-600 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
           Menampilkan sebaran UMKM yang telah bergabung, mulai dari jumlah
           pelaku usaha, wilayah kecamatan, hingga ragam kategori usaha.
         </p>
 
-        <div className="mt-20 grid grid-cols-1 md:grid-cols-3">
+        <div className="mt-12 md:mt-16 lg:mt-20 grid grid-cols-1 md:grid-cols-3">
           {stats.map((stat, index) => (
             <div
               key={stat.label}
               className={`
-                text-center px-10 py-8
+                text-center px-6 md:px-8 lg:px-10 py-8
+                border-b md:border-b-0 border-slate-200
                 ${
                   index !== stats.length - 1
-                    ? "md:border-r border-slate-200"
+                    ? "md:border-r"
+                    : ""
+                }
+                ${
+                  index === stats.length - 1
+                    ? "border-b-0"
                     : ""
                 }
               `}
             >
-              <h3 className="text-6xl font-bold text-[#0F172A]">
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0F172A]">
                 {stat.value}
               </h3>
 
-              <p className="mt-4 text-lg font-semibold text-slate-800">
+              <p className="mt-3 md:mt-4 text-base md:text-lg font-semibold text-slate-800">
                 {stat.label}
               </p>
 
-              <p className="mt-2 text-sm text-slate-500">{stat.desc}</p>
+              <p className="mt-2 text-sm md:text-base text-slate-500">
+                {stat.desc}
+              </p>
             </div>
           ))}
         </div>

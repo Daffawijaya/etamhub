@@ -36,14 +36,15 @@ export default function AboutSection() {
   }, [currentIndex, images.length]);
 
   return (
-    <section id="about-section" className="py-15 bg-third">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 items-center">
+    <section
+      id="about-section"
+      className="py-16 md:py-24 lg:py-28 bg-third"
+    >
+      <div className="max-w-7xl mx-auto px-5 md:px-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* IMAGE */}
-          <div className="relative">
-            <div className="absolute -top-8 -right-8 h-40 w-40 rounded-full" />
-
-            <div className="relative rounded-md overflow-hidden aspect-[5/4] w-full max-w-[450px] mx-auto">
+          <div className="relative order-1">
+            <div className="relative rounded-md overflow-hidden aspect-[5/4] w-full max-w-[500px] mx-auto">
               <div
                 className={`flex h-full ${
                   transition
@@ -72,18 +73,15 @@ export default function AboutSection() {
           </div>
 
           {/* TEXT */}
-          <div>
-            <h2 className="text-5xl font-bold mb-5">
+          <div className="order-2 text-center md:text-left">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-5 text-slate-900">
               Tentang EtamHub
             </h2>
 
-            <p className="text-xl max-w-3xl mx-auto text-slate-600 leading-relaxed ">
+            <p className="text-base md:text-lg lg:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto md:mx-0">
               EtamHub merupakan platform digital yang dikembangkan untuk
               mendukung transformasi UMKM di Kutai Kartanegara melalui akses
               informasi, promosi produk, dan penguatan ekosistem usaha lokal.
-            </p>
-            <p className="text-2xl font-bold text-white leading-relaxed">
-              
             </p>
           </div>
         </div>
