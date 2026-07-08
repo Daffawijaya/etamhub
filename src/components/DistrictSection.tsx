@@ -37,11 +37,12 @@ export default function DistrictSection() {
   return (
     <section id="district-section" className="max-w-7xl mx-auto px-6 py-20">
       <div className="mb-12">
-        <h2 className="text-4xl font-bold text-slate-900">Pilih Kecamatan</h2>
 
-        <p className="mt-3 text-slate-600">
-          Jelajahi UMKM berdasarkan wilayah di Kutai Kartanegara.
-        </p>
+        <h2 className="text-5xl font-bold text-center mb-5">Pilih Kecamatan</h2>
+
+      <p className="text-xl max-w-3xl mx-auto text-center text-slate-600 leading-relaxed mb-12">
+        Jelajahi UMKM berdasarkan wilayah di Kutai Kartanegara.
+      </p>
       </div>
 
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">

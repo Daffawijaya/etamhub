@@ -17,8 +17,8 @@ export default function Navbar() {
     }
 
     const handleScroll = () => {
-      // Transparan hanya saat benar-benar di paling atas
-      setIsHero(window.scrollY === 0);
+      // Navbar mulai berubah setelah scroll 80px
+      setIsHero(window.scrollY < 80);
     };
 
     handleScroll();
@@ -27,43 +27,72 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
 
-  const text = isHero && isHome ? "text-white" : "text-slate-800";
-  const hover =
-    isHero && isHome ? "hover:text-violet-200" : "hover:text-violet-600";
-
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
-        isHero && isHome
-          ? "bg-transparent"
-          : "bg-white/50 backdrop-blur-md shadow-[0_1px_1px_rgba(0,0,0,0.08)]"
-      }`}
-    >
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+    <nav className="fixed inset-x-0 top-0 z-50">
+      {/* Background Gradient Hero */}
+      <div
+        className={`absolute inset-0 bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)] transition-opacity duration-500 ease-out ${
+          isHero && isHome ? "opacity-100" : "opacity-0"
+        }`}
+      />
+
+      {/* Background Scroll */}
+      <div
+        className={`absolute inset-0 bg-white/80 backdrop-blur-xl shadow-sm transition-opacity duration-500 ease-out ${
+          isHero && isHome ? "opacity-0" : "opacity-100"
+        }`}
+      />
+
+      <div className="relative mx-auto flex h-15 max-w-7xl items-center justify-between px-6">
+        {/* Logo */}
         <Link href="/">
-          <h1 className={`text-2xl font-bold tracking-tight ${text}`}>
+          <h1
+            className={`text-xl font-bold tracking-tight transition-colors duration-500 ${
+              isHero && isHome ? "text-white" : "text-slate-900"
+            }`}
+          >
             Etam
-            <span className={isHero && isHome ? "text-white" : "text-primary"}>
+            <span
+              className={`transition-colors duration-500 ${
+                isHero && isHome ? "text-white" : "text-primary"
+              }`}
+            >
               Hub
             </span>
           </h1>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
-          <Link href="/" className={`${text} ${hover} transition-colors`}>
+        {/* Desktop Menu */}
+        <div className="hidden text-sm items-center gap-8 md:flex">
+          <Link
+            href="/"
+            className={`font-medium transition-colors duration-500 ${
+              isHero && isHome
+                ? "text-white hover:text-violet-200"
+                : "text-slate-700 hover:text-violet-600"
+            }`}
+          >
             Beranda
           </Link>
 
           <Link
             href="/#district-section"
-            className={`${text} ${hover} transition-colors`}
+            className={`font-medium transition-colors duration-500 ${
+              isHero && isHome
+                ? "text-white hover:text-violet-200"
+                : "text-slate-700 hover:text-violet-600"
+            }`}
           >
             Kecamatan
           </Link>
 
           <Link
             href="/#about-section"
-            className={`${text} ${hover} transition-colors`}
+            className={`font-medium transition-colors duration-500 ${
+              isHero && isHome
+                ? "text-white hover:text-violet-200"
+                : "text-slate-700 hover:text-violet-600"
+            }`}
           >
             Tentang
           </Link>

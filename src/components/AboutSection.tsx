@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 
 export default function AboutSection() {
-  const images = [
-    "/testing.jpeg",
-    "/umkmdaffa.jpeg",
-    "/testing.jpeg",
-  ];
+  const images = ["/testing.jpeg", "/umkmdaffa.jpeg"];
 
   const sliderImages = [...images, images[0]];
 
@@ -33,60 +29,57 @@ export default function AboutSection() {
             setTransition(true);
           });
         });
-      }, 700); // harus sama dengan duration slider
+      }, 700);
 
       return () => clearTimeout(timeout);
     }
   }, [currentIndex, images.length]);
 
   return (
-    <section id="about-section">
+    <section id="about-section" className="py-15 bg-dark">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 items-center rounded-3xl bg-black p-8 md:p-12 shadow-xl">
-          {/* TEXT */}
-          <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white">
-              Tentang EtamHub
-            </h2>
+        <div className="grid md:grid-cols-2 items-center">
+          
 
-            <p className="mt-5 text-white/90 leading-relaxed">
-              EtamHub adalah platform digital yang dikembangkan oleh Tenaga Ahli
-              Pendamping UMKM di bawah Dinas Koperasi dan UKM Kutai Kartanegara.
-            </p>
+          {/* IMAGE */}
+          <div className="relative">
+            <div className="absolute -top-8 -right-8 h-40 w-40 rounded-full" />
 
-            <p className="mt-4 text-white/90 leading-relaxed">
-              Tujuannya adalah mempercepat transformasi digital UMKM daerah,
-              memperluas jangkauan usaha lokal, serta memudahkan masyarakat
-              menemukan produk dan layanan UMKM.
-            </p>
+            <div className="relative overflow-hidden aspect-[5/4] w-full max-w-[450px] mx-auto">
+              <div
+                className={`flex h-full ${
+                  transition
+                    ? "transition-transform duration-700 ease-in-out"
+                    : ""
+                }`}
+                style={{
+                  width: `${sliderImages.length * 100}%`,
+                  transform: `translateX(-${
+                    currentIndex * (100 / sliderImages.length)
+                  }%)`,
+                }}
+              >
+                {sliderImages.map((image, index) => (
+                  <div
+                    key={index}
+                    className="shrink-0 h-full bg-cover bg-center"
+                    style={{
+                      width: `${100 / sliderImages.length}%`,
+                      backgroundImage: `url(${image})`,
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* SLIDER */}
-          <div className="relative h-[320px] md:h-[400px] rounded-2xl overflow-hidden">
-            <div
-              className={`flex h-full ${
-                transition
-                  ? "transition-transform duration-700 ease-in-out"
-                  : ""
-              }`}
-              style={{
-                width: `${sliderImages.length * 100}%`,
-                transform: `translateX(-${
-                  currentIndex * (100 / sliderImages.length)
-                }%)`,
-              }}
-            >
-              {sliderImages.map((image, index) => (
-                <div
-                  key={index}
-                  className="shrink-0 h-full bg-cover bg-center"
-                  style={{
-                    width: `${100 / sliderImages.length}%`,
-                    backgroundImage: `url(${image})`,
-                  }}
-                />
-              ))}
-            </div>
+          {/* TEXT */}
+          <div>
+            <p className="text-2xl font-bold text-white leading-relaxed">
+              EtamHub merupakan platform digital yang dikembangkan untuk
+              mendukung transformasi UMKM di Kutai Kartanegara melalui akses
+              informasi, promosi produk, dan penguatan ekosistem usaha lokal.
+            </p>
           </div>
         </div>
       </div>
