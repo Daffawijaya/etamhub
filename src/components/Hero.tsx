@@ -26,6 +26,7 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 pb-24 pt-40">
         <div className="max-w-4xl text-white">
+          
           <span className="inline-flex items-center rounded-full bg-white/10 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm">
             Katalog UMKM Kutai Kartanegara
           </span>

@@ -42,7 +42,7 @@ export default function AboutSection() {
   return (
     <section id="about-section">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-12 items-center rounded-3xl bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)] p-8 md:p-12 shadow-xl">
+        <div className="grid md:grid-cols-2 gap-12 items-center rounded-3xl bg-black p-8 md:p-12 shadow-xl">
           {/* TEXT */}
           <div>
             <h2 className="text-3xl md:text-4xl font-bold text-white">
