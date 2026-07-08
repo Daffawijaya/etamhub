@@ -22,45 +22,48 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-[#4A154B] min-h-screen flex items-center overflow-hidden pt-15">
-      <div className="max-w-7xl mx-auto w-full pl-3 lg:pl-6">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+    <section className="bg-[#4A154B] min-h-screen flex items-center overflow-hidden pt-20">
+      <div className="max-w-7xl mx-auto w-full px-5 lg:px-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* LEFT */}
-          <div>
-            <h1 className="text-white font-bold leading-[1.05] text-5xl lg:text-6xl">
+          <div className="text-center lg:text-left">
+            <h1 className="text-white font-bold leading-tight text-4xl sm:text-5xl lg:text-6xl">
               Jelajahi UMKM dari seluruh
             </h1>
-            <h1 className="text-secondary font-bold leading-[1.05] text-5xl lg:text-6xl">Kecamatan Kukar</h1>
 
-            <p className="mt-8 text-lg lg:text-xl text-white/90 max-w-xl leading-relaxed">
+            <h1 className="text-secondary font-bold leading-tight text-4xl sm:text-5xl lg:text-6xl">
+              Kecamatan Kukar
+            </h1>
+
+            <p className="mt-6 lg:mt-8 text-base sm:text-lg lg:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">
               Temukan produk, layanan, dan usaha lokal unggulan dari berbagai
               kecamatan di Kutai Kartanegara dalam satu platform digital yang
               mudah dijelajahi.
             </p>
 
-            <div className="mt-10 flex flex-wrap gap-4">
+            <div className="mt-8 lg:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <button
                 onClick={scrollToDistrict}
-                className="bg-white text-[#4A154B] px-8 py-4 font-semibold rounded-md hover:scale-105 transition"
+                className="bg-white text-[#4A154B] px-6 lg:px-8 py-4 font-semibold rounded-md hover:scale-105 transition"
               >
                 PILIH KECAMATAN
               </button>
 
               <button
                 onClick={scrollToAbout}
-                className="bg-[#1264A3] text-white px-8 py-4 font-semibold rounded-md hover:scale-105 transition"
+                className="bg-[#1264A3] text-white px-6 lg:px-8 py-4 font-semibold rounded-md hover:scale-105 transition"
               >
                 TENTANG ETAMHUB
               </button>
             </div>
 
-            <p className="mt-6 text-white/80 text-lg">
+            <p className="mt-6 text-white/80 text-base lg:text-lg">
               Platform UMKM Kutai Kartanegara
             </p>
           </div>
 
-          {/* RIGHT */}
-          <div className="relative flex justify-center lg:justify-end">
+          {/* RIGHT - Hanya tampil desktop */}
+          <div className="relative hidden lg:flex justify-end">
             <div className="absolute w-[450px] h-[450px] rounded-full bg-black/10 blur-3xl" />
 
             <div className="relative w-full max-w-[600px] h-[420px]">
@@ -93,6 +96,7 @@ export default function Hero() {
 
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-purple-300" />
+
                     <div>
                       <div className="h-3 w-16 bg-gray-300 rounded mb-2" />
                       <div className="h-2 w-20 bg-gray-200 rounded" />
@@ -101,6 +105,7 @@ export default function Hero() {
 
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-10 h-10 rounded-full bg-pink-300" />
+
                     <div>
                       <div className="h-3 w-16 bg-gray-300 rounded mb-2" />
                       <div className="h-2 w-20 bg-gray-200 rounded" />

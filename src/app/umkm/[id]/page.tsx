@@ -26,13 +26,16 @@ export default async function UmkmPage({ params }: Props) {
     .replace(/\s+/g, "-");
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="mt-20 relative z-10 pt-10">
-        <div className="max-w-7xl mx-auto px-4 md:px-6">
-          <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500">
-            <Link href="/" className="hover:text-[#9764dc] transition-colors">
+      <main className="flex-1 mt-16 md:mt-20 pt-4 md:pt-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-5 md:px-6">
+          <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-gray-500 mb-4 md:mb-6">
+            <Link
+              href="/"
+              className="hover:text-[#9764dc] transition-colors"
+            >
               Dashboard
             </Link>
 
@@ -47,7 +50,9 @@ export default async function UmkmPage({ params }: Props) {
 
             <span>›</span>
 
-            <span className="font-medium text-gray-900">{umkm.nama}</span>
+            <span className="font-medium text-gray-900 truncate max-w-[180px] md:max-w-none">
+              {umkm.nama}
+            </span>
           </nav>
         </div>
 
