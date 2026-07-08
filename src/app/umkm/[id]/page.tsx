@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import UmkmDetail from "@/components/Umkm/UmkmDetail";
@@ -12,17 +13,44 @@ type Props = {
 
 export default async function UmkmPage({ params }: Props) {
   const { id } = await params;
+
   const umkm = umkms.find((item) => item.id === Number(id));
 
   if (!umkm) {
     notFound();
   }
 
+  const kecamatanSlug = umkm.kecamatan
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-");
+
   return (
     <div className="min-h-screen">
       <Navbar />
 
-      <main className="mt-20 relative z-10">
+      <main className="mt-20 relative z-10 pt-10">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
+          <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500">
+            <Link href="/" className="hover:text-[#9764dc] transition-colors">
+              Dashboard
+            </Link>
+
+            <span>›</span>
+
+            <Link
+              href={`/kecamatan/${kecamatanSlug}`}
+              className="hover:text-[#9764dc] transition-colors"
+            >
+              {umkm.kecamatan}
+            </Link>
+
+            <span>›</span>
+
+            <span className="font-medium text-gray-900">{umkm.nama}</span>
+          </nav>
+        </div>
+
         <UmkmDetail {...umkm} />
       </main>
 

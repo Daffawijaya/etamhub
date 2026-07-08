@@ -1,7 +1,7 @@
 export const umkms = [
   {
     id: 1,
-    nama: "Daffa Premium Barbershop",
+    nama: "Daffa Premium Barbershop ",
     pemilik: "Daffa Yang Paling Tampan Tiada Tandingan",
     kategori: "Jasa",
     deskripsi:

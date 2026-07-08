@@ -17,7 +17,6 @@ export default function Navbar() {
     }
 
     const handleScroll = () => {
-      // Navbar mulai berubah setelah scroll 80px
       setIsHero(window.scrollY < 80);
     };
 
@@ -28,26 +27,30 @@ export default function Navbar() {
   }, [isHome]);
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50">
+    <nav
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+        !isHome ? "border-b border-slate-200" : ""
+      }`}
+    >
       {/* Background Gradient Hero */}
       <div
-        className={`absolute inset-0 bg-[linear-gradient(135deg,_#184caf,_#844ec0,_#ca3785)] transition-opacity duration-500 ease-out ${
+        className={`absolute inset-0 transition-opacity duration-500 ease-out ${
           isHero && isHome ? "opacity-100" : "opacity-0"
         }`}
       />
 
       {/* Background Scroll */}
       <div
-        className={`absolute inset-0 bg-white/80 backdrop-blur-xl shadow-sm transition-opacity duration-500 ease-out ${
+        className={`absolute inset-0 bg-white transition-opacity duration-500 ease-out ${
           isHero && isHome ? "opacity-0" : "opacity-100"
         }`}
       />
 
-      <div className="relative mx-auto flex h-15 max-w-7xl items-center justify-between px-6">
+      <div className="relative mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
         {/* Logo */}
         <Link href="/">
           <h1
-            className={`text-xl font-bold tracking-tight transition-colors duration-500 ${
+            className={`text-2xl font-bold tracking-tight transition-colors duration-500 ${
               isHero && isHome ? "text-white" : "text-slate-900"
             }`}
           >
@@ -63,7 +66,7 @@ export default function Navbar() {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden text-sm items-center gap-8 md:flex">
+        <div className="hidden items-center gap-8 text-md md:flex">
           <Link
             href="/"
             className={`font-medium transition-colors duration-500 ${

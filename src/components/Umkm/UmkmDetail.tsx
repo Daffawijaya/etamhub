@@ -38,32 +38,43 @@ export default function UmkmDetail({
   const [activeImage, setActiveImage] = useState(gambar[0]);
 
   return (
-    <div className="w-full bg-white py-10">
-      <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[320px_1fr_280px]">
-        <UmkmGallery
-          nama={nama}
-          gambar={gambar}
-          activeImage={activeImage}
-          setActiveImage={setActiveImage}
-        />
+    <section className="bg-white">
+      <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-[420px_minmax(0,1fr)_320px]">
+          {/* Gallery */}
+          <div>
+            <UmkmGallery
+              nama={nama}
+              gambar={gambar}
+              activeImage={activeImage}
+              setActiveImage={setActiveImage}
+            />
+          </div>
 
-        <UmkmInfo
-          nama={nama}
-          kategori={kategori}
-          kecamatan={kecamatan}
-          deskripsi={deskripsi}
-        />
+          {/* Main Content */}
+          <div className="min-w-0">
+            <UmkmInfo
+              nama={nama}
+              kategori={kategori}
+              kecamatan={kecamatan}
+              deskripsi={deskripsi}
+            />
+          </div>
 
-        <UmkmSidebar
-          pemilik={pemilik}
-          alamat={alamat}
-          whatsapp={whatsapp}
-          instagram={instagram}
-          facebook={facebook}
-          lat={lat}
-          lng={lng}
-        />
+          {/* Sidebar */}
+          <div>
+            <UmkmSidebar
+              pemilik={pemilik}
+              alamat={alamat}
+              whatsapp={whatsapp}
+              instagram={instagram}
+              facebook={facebook}
+              lat={lat}
+              lng={lng}
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }

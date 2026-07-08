@@ -102,7 +102,7 @@ export default function ThumbnailGallery({
       <div
         ref={scrollRef}
         className={`flex gap-2.5 scrollbar-none ${
-          images.length <= 4
+          images.length <= 6
             ? "justify-center overflow-hidden"
             : "overflow-x-auto scroll-smooth"
         }`}

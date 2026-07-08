@@ -10,42 +10,50 @@ type Props = {
 };
 
 export default function UmkmCard({ id, nama, kategori, gambar }: Props) {
-  const categoryColor = {
-    Perdagangan: "bg-blue-100 text-blue-700",
-    Jasa: "bg-purple-100 text-purple-700",
-    Industri: "bg-emerald-100 text-emerald-700",
-  };
-
-  const badgeColor =
-    categoryColor[kategori as keyof typeof categoryColor] ||
-    "bg-slate-100 text-slate-600";
-
   return (
-    <Link href={`/umkm/${id}`}>
-      <div className="group w-full max-w-[200px] flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer">
-        {/* IMAGE */}
-        <div className="relative h-40 w-full overflow-hidden shrink-0">
-          <Image
-            src={imageUrl(gambar[0])}
-            alt={nama}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
-          />
+    <Link href={`/umkm/${id}`} className="block h-full">
+      <article className="group h-full bg-white border border-slate-200 hover:border-slate-300 hover:shadow-md transition-all duration-300 overflow-hidden">
+        {/* Image Section */}
+        <div className="p-2">
+          <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
+            <Image
+              src={imageUrl(gambar[0])}
+              alt={nama}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+          </div>
         </div>
 
-        {/* CONTENT */}
-        <div className="p-4 flex flex-col gap-2">
-          <span
-            className={`inline-block w-fit text-xs font-medium px-2 py-1 rounded-full ${badgeColor}`}
-          >
-            {kategori}
-          </span>
+        {/* Content Section */}
+        <div className="px-5 pb-5 flex flex-col">
+          <p className="text-xs text-slate-500 mb-3">{kategori}</p>
 
-          <h2 className="text-sm sm:text-base font-semibold text-slate-900 line-clamp-2">
+          <h2 className="text-lg leading-[1.15] font-bold text-slate-900 line-clamp-3 max-h-[70px]">
             {nama}
           </h2>
+
+          <div className="mt-8 flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-blue-700">
+              Lihat Detail
+            </span>
+
+            <svg
+              className="w-5 h-5 text-blue-700 transition-transform duration-300 group-hover:translate-x-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M5 12h14m-6-6 6 6-6 6"
+              />
+            </svg>
+          </div>
         </div>
-      </div>
+      </article>
     </Link>
   );
 }
