@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
   nama: string;
@@ -16,6 +16,27 @@ export default function UmkmInfo({
   deskripsi,
 }: Props) {
   const [expanded, setExpanded] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+
+  const textRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      const el = textRef.current;
+      if (!el) return;
+
+      const isOverflowing = el.scrollHeight > el.clientHeight;
+      setShowButton(isOverflowing);
+    };
+
+    checkOverflow();
+
+    window.addEventListener("resize", checkOverflow);
+
+    return () => {
+      window.removeEventListener("resize", checkOverflow);
+    };
+  }, [deskripsi]);
 
   return (
     <div
@@ -46,7 +67,6 @@ export default function UmkmInfo({
         </p>
       </div>
 
-      {/* Garis pemisah */}
       <div className="my-6 border-t border-slate-200" />
 
       <div>
@@ -56,6 +76,7 @@ export default function UmkmInfo({
 
         <div className="relative">
           <p
+            ref={textRef}
             className={`text-sm leading-7 text-slate-600 ${
               expanded ? "" : "line-clamp-9"
             }`}
@@ -63,18 +84,20 @@ export default function UmkmInfo({
             {deskripsi}
           </p>
 
-          {!expanded && (
+          {!expanded && showButton && (
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent" />
           )}
         </div>
       </div>
 
-      <button
-        onClick={() => setExpanded(!expanded)}
-        className="mt-5 w-fit text-sm font-medium text-violet-600 transition hover:text-violet-700"
-      >
-        {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}
-      </button>
+      {showButton && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="mt-5 w-fit text-sm font-medium text-violet-600 transition hover:text-violet-700"
+        >
+          {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}
+        </button>
+      )}
     </div>
   );
 }
