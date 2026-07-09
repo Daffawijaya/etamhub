@@ -77,4 +77,24 @@ export const umkms = [
   instagram: "",
   facebook: "",
 },
+{
+  id: 5,
+  nama: "Manik Fashion Putak",
+  pemilik: "Yulia Ngerung",
+  kategori: "Industri",
+  deskripsi:
+    "Fashion Manik Putak merupakan usaha yang bergerak di bidang produksi dan penjualan pakaian serta aksesori manik khas Kutai yang dibuat secara handmade dengan mengangkat kekayaan budaya lokal Kalimantan Timur. Berbagai produk yang dihasilkan meliputi busana adat, rompi manik, rok manik, selempang, tas, dan aksesori lainnya dengan motif etnik khas Kutai yang dirangkai secara teliti menggunakan manik-manik berkualitas. Setiap karya dibuat dengan memperhatikan detail, keindahan warna, dan nilai seni budaya sehingga menghasilkan produk yang unik dan bernilai tinggi. Fashion Manik Putak juga melayani pembuatan busana manik untuk kebutuhan acara adat, pertunjukan seni, festival budaya, kegiatan pemerintahan, sekolah, sanggar seni, maupun pesanan khusus sesuai kebutuhan pelanggan. Melalui produk-produknya, Fashion Manik Putak turut berperan dalam melestarikan warisan budaya Kutai sekaligus memperkenalkan keindahan kerajinan manik tradisional kepada masyarakat yang lebih luas.",
+  gambar: [
+    "https://drive.google.com/open?id=1cs27vFtaQjjTAMFJ7aDdxtt6J55RU9Pf",
+    "https://drive.google.com/open?id=1Qz0FyPE-cq0sgObmZDclGMJzrRHTlYRa",
+  ],
+  kecamatan: "Loa Janan",
+  alamat:
+    "Dusun Putak RT 18, Loa Duri Ilir, Kecamatan Loa Janan, Kabupaten Kutai Kartanegara, Kalimantan Timur",
+  lat: -0.629683,
+  lng: 117.056324,
+  whatsapp: "081253788503",
+  instagram: "",
+  facebook: "",
+},
 ];

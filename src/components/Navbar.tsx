@@ -27,39 +27,45 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isHome]);
 
+  // Navbar akan menjadi putih ketika:
+  // - bukan halaman home
+  // - sudah scroll
+  // - menu mobile sedang terbuka
+  const navbarSolid = !isHome || !isHero || mobileOpen;
+
   return (
     <nav
       className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        !isHome ? "border-b border-slate-200" : ""
+        navbarSolid ? "border-b border-slate-200" : ""
       }`}
     >
-      {/* Hero Background */}
+      {/* Transparent Hero Background */}
       <div
         className={`absolute inset-0 transition-opacity duration-500 ${
-          isHero && isHome ? "opacity-100" : "opacity-0"
+          navbarSolid ? "opacity-0" : "opacity-100"
         }`}
       />
 
-      {/* Scroll Background */}
+      {/* White Background */}
       <div
         className={`absolute inset-0 bg-white transition-opacity duration-500 ${
-          isHero && isHome ? "opacity-0" : "opacity-100"
+          navbarSolid ? "opacity-100" : "opacity-0"
         }`}
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-18 md:h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/">
+          <Link href="/" onClick={() => setMobileOpen(false)}>
             <h1
               className={`text-xl sm:text-2xl font-bold tracking-tight transition-colors duration-500 ${
-                isHero && isHome ? "text-white" : "text-slate-900"
+                navbarSolid ? "text-slate-900" : "text-white"
               }`}
             >
               Etam
               <span
                 className={`transition-colors duration-500 ${
-                  isHero && isHome ? "text-white" : "text-primary"
+                  navbarSolid ? "text-primary" : "text-white"
                 }`}
               >
                 Hub
@@ -72,9 +78,9 @@ export default function Navbar() {
             <Link
               href="/"
               className={`font-medium transition-colors duration-500 ${
-                isHero && isHome
-                  ? "text-white hover:text-violet-200"
-                  : "text-slate-700 hover:text-violet-600"
+                navbarSolid
+                  ? "text-slate-700 hover:text-violet-600"
+                  : "text-white hover:text-violet-200"
               }`}
             >
               Beranda
@@ -83,9 +89,9 @@ export default function Navbar() {
             <Link
               href="/#district-section"
               className={`font-medium transition-colors duration-500 ${
-                isHero && isHome
-                  ? "text-white hover:text-violet-200"
-                  : "text-slate-700 hover:text-violet-600"
+                navbarSolid
+                  ? "text-slate-700 hover:text-violet-600"
+                  : "text-white hover:text-violet-200"
               }`}
             >
               Kecamatan
@@ -94,9 +100,9 @@ export default function Navbar() {
             <Link
               href="/#about-section"
               className={`font-medium transition-colors duration-500 ${
-                isHero && isHome
-                  ? "text-white hover:text-violet-200"
-                  : "text-slate-700 hover:text-violet-600"
+                navbarSolid
+                  ? "text-slate-700 hover:text-violet-600"
+                  : "text-white hover:text-violet-200"
               }`}
             >
               Tentang
@@ -106,8 +112,8 @@ export default function Navbar() {
           {/* Mobile Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className={`md:hidden p-2 transition-colors ${
-              isHero && isHome ? "text-white" : "text-slate-900"
+            className={`md:hidden p-2 transition-colors duration-500 ${
+              navbarSolid ? "text-slate-900" : "text-white"
             }`}
             aria-label="Menu"
           >
@@ -149,15 +155,11 @@ export default function Navbar() {
             mobileOpen ? "max-h-60 opacity-100 pb-4" : "max-h-0 opacity-0"
           }`}
         >
-          <div className="flex flex-col gap-1 pt-2">
+          <div className="flex flex-col gap-1 pt-2 border-t border-slate-200">
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
-              className={`py-3 font-medium transition-colors ${
-                isHero && isHome
-                  ? "text-white hover:text-violet-200"
-                  : "text-slate-700 hover:text-violet-600"
-              }`}
+              className="py-3 font-medium text-slate-700 hover:text-violet-600 transition-colors"
             >
               Beranda
             </Link>
@@ -165,11 +167,7 @@ export default function Navbar() {
             <Link
               href="/#district-section"
               onClick={() => setMobileOpen(false)}
-              className={`py-3 font-medium transition-colors ${
-                isHero && isHome
-                  ? "text-white hover:text-violet-200"
-                  : "text-slate-700 hover:text-violet-600"
-              }`}
+              className="py-3 font-medium text-slate-700 hover:text-violet-600 transition-colors"
             >
               Kecamatan
             </Link>
@@ -177,11 +175,7 @@ export default function Navbar() {
             <Link
               href="/#about-section"
               onClick={() => setMobileOpen(false)}
-              className={`py-3 font-medium transition-colors ${
-                isHero && isHome
-                  ? "text-white hover:text-violet-200"
-                  : "text-slate-700 hover:text-violet-600"
-              }`}
+              className="py-3 font-medium text-slate-700 hover:text-violet-600 transition-colors"
             >
               Tentang
             </Link>
