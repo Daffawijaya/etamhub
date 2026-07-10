@@ -97,4 +97,23 @@ export const umkms = [
   instagram: "",
   facebook: "",
 },
+{
+  id: 6,
+  nama: "PDKT Cafe",
+  pemilik: "Muhammad Haydar Respati",
+  kategori: "Perdagangan",
+  deskripsi:
+    "PDKT Cafe merupakan destinasi kuliner yang menghadirkan suasana nyaman dengan konsep modern dan hangat, cocok untuk berbagai aktivitas mulai dari bersantai, bekerja, mengerjakan tugas, hingga berkumpul bersama keluarga, teman, maupun pasangan. Didukung area indoor dan outdoor yang nyaman, fasilitas lengkap, serta pelayanan yang ramah, setiap pengunjung dapat menikmati pengalaman bersantap yang menyenangkan. PDKT Cafe menyajikan beragam pilihan menu, mulai dari aneka kopi, minuman segar, camilan, hingga makanan berat dengan cita rasa yang lezat dan porsi yang memuaskan. Seluruh menu ditawarkan dengan harga yang terjangkau dan kompetitif, sehingga dapat dinikmati oleh berbagai kalangan tanpa mengurangi kualitas rasa maupun pelayanan. Dengan suasana yang nyaman, pilihan menu yang lengkap, serta harga yang bersahabat, PDKT Cafe menjadi tempat yang tepat untuk menghabiskan waktu berkualitas dan menciptakan momen berkesan bersama orang-orang terdekat.",
+  gambar: [
+    "https://drive.google.com/open?id=1WY92mBlOXxlIEux2BAAqnzpPAgeoKjeC",
+    "https://drive.google.com/open?id=1Fwu30BNAiaqwZv_NbM3hiM_cOMP1gKuW",
+  ],
+  kecamatan: "Samboja",
+  alamat: "Samboja, KM 40 Bukit Soeharto (Balikpapan-Samarinda)",
+  lat: -0.979662,
+  lng: 116.981861,
+  whatsapp: "081253339353",
+  instagram: "pdkt_cafe",
+  facebook: "",
+},
 ];
