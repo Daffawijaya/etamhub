@@ -79,9 +79,7 @@ export default function AboutSection() {
             </h2>
 
             <p className="text-base md:text-lg lg:text-xl text-slate-600 leading-relaxed max-w-2xl mx-auto md:mx-0">
-              EtamHub merupakan platform digital yang dikembangkan untuk
-              mendukung transformasi UMKM di Kutai Kartanegara melalui akses
-              informasi, promosi produk, dan penguatan ekosistem usaha lokal.
+              EtamHub merupakan platform digital yang dikembangkan oleh Tenaga Ahli Pendamping UMKM Kukar untuk mendukung transformasi UMKM di Kutai Kartanegara melalui akses informasi, promosi produk, dan penguatan ekosistem usaha lokal. Platform ini hadir untuk membantu UMKM lebih terhubung, dikenal luas, dan mampu bersaing di era digital.
             </p>
           </div>
         </div>
