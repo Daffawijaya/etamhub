@@ -26,9 +26,9 @@ export default async function KecamatanPage({ params }: Props) {
     <div className="min-h-screen">
       <Navbar />
 
-      <main className="w-full max-w-7xl mx-auto px-6 py-10 mt-20">
+      <main className="w-full max-w-7xl mx-auto px-6 py-20">
         {/* Breadcrumb */}
-        <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500 mb-6">
+        <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500 pt-8">
           <Link href="/" className="hover:text-[#9764dc] transition-colors">
             Dashboard
           </Link>
@@ -45,7 +45,7 @@ export default async function KecamatanPage({ params }: Props) {
             </p>
           </div>
         ) : (
-          <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
+          <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
             {data.map((item) => (
               <UmkmCard
                 key={item.id}

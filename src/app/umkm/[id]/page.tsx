@@ -29,9 +29,9 @@ export default async function UmkmPage({ params }: Props) {
     <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main className="flex-1 mt-16 md:mt-20 pt-4 md:pt-8 relative z-10">
-        <div className="max-w-7xl mx-auto px-5 md:px-6">
-          <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-gray-500 mb-4 md:mb-6">
+      <main className="flex-1 py-20 relative z-10">
+        <div className="max-w-7xl mx-auto px-5 pt-8 md:px-6">
+          <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-gray-500">
             <Link
               href="/"
               className="hover:text-[#9764dc] transition-colors"
