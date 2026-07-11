@@ -165,7 +165,7 @@ export const umkms = [
   kecamatan: "Tenggarong Seberang",
   alamat:
     "Jl. Pahlawan, Manunggal Jaya, Kec. Tenggarong Seberang, Kabupaten Kutai Kartanegara, Kalimantan Timur",
-  lat: -3.78738720642737,
+  lat: -0.378738720642737,
   lng: 117.113061262581,
   whatsapp: "081255647193",
   instagram: "",

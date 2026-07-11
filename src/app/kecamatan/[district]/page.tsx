@@ -1,6 +1,11 @@
 "use client";
 
-import { useMemo, useState, use } from "react";
+import {
+  useMemo,
+  useState,
+  use,
+  useEffect,
+} from "react";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -15,6 +20,37 @@ type Props = {
   }>;
 };
 
+function getDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
+  const R = 6371;
+
+  const dLat =
+    ((lat2 - lat1) * Math.PI) / 180;
+  const dLon =
+    ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(dLat / 2) *
+      Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c =
+    2 *
+    Math.atan2(
+      Math.sqrt(a),
+      Math.sqrt(1 - a)
+    );
+
+  return R * c;
+}
+
 export default function KecamatanPage({
   params,
 }: Props) {
@@ -23,18 +59,87 @@ export default function KecamatanPage({
   const [kategori, setKategori] =
     useState("Semua");
 
+  const [urutTerdekat, setUrutTerdekat] =
+    useState(false);
+
+  const [userLocation, setUserLocation] =
+    useState<{
+      lat: number;
+      lng: number;
+    } | null>(null);
+
+  useEffect(() => {
+    if (!urutTerdekat) return;
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
+      },
+      (error) => {
+        console.error(error);
+        alert(
+          "Gagal mendapatkan lokasi pengguna."
+        );
+      }
+    );
+  }, [urutTerdekat]);
+
   const data = umkms.filter(
     (item) =>
       slugify(item.kecamatan) === district
   );
 
   const filteredData = useMemo(() => {
-    if (kategori === "Semua") return data;
+    let hasil = [...data];
 
-    return data.filter(
-      (item) => item.kategori === kategori
+    if (kategori !== "Semua") {
+      hasil = hasil.filter(
+        (item) => item.kategori === kategori
+      );
+    }
+
+    const dataDenganJarak = hasil.map(
+      (item) => {
+        let distance: number | null = null;
+
+        if (
+          userLocation &&
+          item.lat &&
+          item.lng
+        ) {
+          distance = getDistance(
+            userLocation.lat,
+            userLocation.lng,
+            item.lat,
+            item.lng
+          );
+        }
+
+        return {
+          ...item,
+          distance,
+        };
+      }
     );
-  }, [data, kategori]);
+
+    if (urutTerdekat && userLocation) {
+      dataDenganJarak.sort(
+        (a, b) =>
+          (a.distance ?? 999999) -
+          (b.distance ?? 999999)
+      );
+    }
+
+    return dataDenganJarak;
+  }, [
+    data,
+    kategori,
+    urutTerdekat,
+    userLocation,
+  ]);
 
   const districtName = (
     data[0]?.kecamatan ??
@@ -114,25 +219,47 @@ export default function KecamatanPage({
                 </button>
               );
             })}
+
+            <button
+              onClick={() =>
+                setUrutTerdekat(
+                  !urutTerdekat
+                )
+              }
+              className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                urutTerdekat
+                  ? "bg-emerald-600 text-white"
+                  : "bg-white border border-slate-200 text-slate-700"
+              }`}
+            >
+              📍 Terdekat
+            </button>
           </div>
         </div>
 
-        {/* Content + Sidebar */}
+        {/* Content */}
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
-          {/* Content */}
           <div>
             <div className="flex items-center justify-between mb-5">
-              <p className="text-sm text-slate-500">
-                Menampilkan{" "}
-                <span className="font-semibold text-slate-900">
-                  {filteredData.length}
-                </span>{" "}
-                UMKM
-              </p>
+              <div className="flex items-center gap-3">
+                <p className="text-sm text-slate-500">
+                  Menampilkan{" "}
+                  <span className="font-semibold text-slate-900">
+                    {filteredData.length}
+                  </span>{" "}
+                  UMKM
+                </p>
+
+                {urutTerdekat && (
+                  <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">
+                    📍 Terdekat
+                  </span>
+                )}
+              </div>
             </div>
 
             {filteredData.length === 0 ? (
-              <div className="bg-white  py-20 flex items-center justify-center">
+              <div className="bg-white py-20 flex items-center justify-center">
                 <p className="text-slate-500 text-center">
                   Tidak ada UMKM pada kategori
                   ini.
@@ -149,6 +276,7 @@ export default function KecamatanPage({
                       item.subkategori
                     }
                     gambar={item.gambar}
+                    distance={urutTerdekat ? item.distance : null}
                   />
                 ))}
               </div>
@@ -162,6 +290,12 @@ export default function KecamatanPage({
                 kategori={kategori}
                 setKategori={setKategori}
                 total={filteredData.length}
+                urutTerdekat={
+                  urutTerdekat
+                }
+                setUrutTerdekat={
+                  setUrutTerdekat
+                }
               />
             </div>
           </aside>

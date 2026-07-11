@@ -4,12 +4,16 @@ type Props = {
   kategori: string;
   setKategori: (value: string) => void;
   total: number;
+  urutTerdekat: boolean;
+  setUrutTerdekat: (value: boolean) => void;
 };
 
 export default function KategoriFilter({
   kategori,
   setKategori,
   total,
+  urutTerdekat,
+  setUrutTerdekat,
 }: Props) {
   const categories = [
     "Semua",
@@ -42,6 +46,28 @@ export default function KategoriFilter({
             </button>
           );
         })}
+      </div>
+
+      <div className="mt-6 border-t border-slate-200 pt-4">
+        <button
+          onClick={() => setUrutTerdekat(!urutTerdekat)}
+          className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
+            urutTerdekat
+              ? "bg-primary text-white shadow-md"
+              : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+          }`}
+        >
+          <span>📍</span>
+          <span>
+            {urutTerdekat
+              ? "Lokasi Terdekat Aktif"
+              : "Urutkan Lokasi Terdekat"}
+          </span>
+        </button>
+      </div>
+
+      <div className="mt-4 text-xs text-slate-500">
+        Total {total} UMKM
       </div>
     </div>
   );
