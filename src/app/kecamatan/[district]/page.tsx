@@ -90,10 +90,20 @@ export default function KecamatanPage({ params }: Props) {
     });
 
     if (urutTerdekat && userLocation) {
+      // Urut berdasarkan jarak terdekat
       dataDenganJarak.sort(
         (a, b) => (a.distance ?? 999999) - (b.distance ?? 999999),
       );
+    } else {
+      // Urut nama A-Z
+      dataDenganJarak.sort((a, b) =>
+        a.nama.localeCompare(b.nama, "id", {
+          sensitivity: "base",
+        }),
+      );
     }
+
+    return dataDenganJarak;
 
     return dataDenganJarak;
   }, [data, kategori, urutTerdekat, userLocation]);
@@ -166,9 +176,7 @@ export default function KecamatanPage({ params }: Props) {
             }`}
           >
             📍{" "}
-            {urutTerdekat
-              ? "Lokasi Terdekat Aktif"
-              : "Urutkan Lokasi Terdekat"}
+            {urutTerdekat ? "Lokasi Terdekat Aktif" : "Urutkan Lokasi Terdekat"}
           </button>
         </div>
 

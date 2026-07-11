@@ -8,7 +8,9 @@ export default function DistrictSection() {
     return acc;
   }, {});
 
-  const districts = Object.keys(districtMap);
+  const districts = Object.keys(districtMap).sort((a, b) =>
+    a.localeCompare(b, "id", { sensitivity: "base" }),
+  );
 
   return (
     <section
@@ -56,9 +58,11 @@ export default function DistrictSection() {
 
                   <h3 className="text-xl md:text-2xl font-bold text-slate-900 break-words">
                     {district
-                      .split("-")
+                      .split(" ")
                       .map(
-                        (word) => word.charAt(0).toUpperCase() + word.slice(1),
+                        (word) =>
+                          word.charAt(0).toUpperCase() +
+                          word.slice(1).toLowerCase(),
                       )
                       .join(" ")}
                   </h3>
