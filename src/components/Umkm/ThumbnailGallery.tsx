@@ -63,22 +63,22 @@ export default function ThumbnailGallery({
   };
 
   return (
-    <div className="relative mt-2.5">
+    <div className="relative mt-2.5 w-full min-w-0">
       {/* Tombol Kiri */}
       <button
         onClick={scrollLeft}
         className={`
-    absolute left-0 top-1/2 z-20
-  flex h-6 w-6 -translate-y-1/2 items-center justify-center
-  rounded-r-md rounded-l-none
-  bg-black/50 text-white shadow-lg
-  backdrop-blur-sm
-  transition-all duration-300 ease-out
-  hover:bg-black/70
+          absolute left-0 top-1/2 z-20
+          flex h-6 w-6 -translate-y-1/2 items-center justify-center
+          rounded-r-md rounded-l-none
+          bg-black/50 text-white shadow-lg
+          backdrop-blur-sm
+          transition-all duration-300 ease-out
+          hover:bg-black/70
           ${
             showLeft
               ? "translate-x-0 opacity-100"
-              : "-translate-x-3 opacity-0 pointer-events-none"
+              : "-translate-x-3 pointer-events-none opacity-0"
           }
         `}
       >
@@ -101,18 +101,20 @@ export default function ThumbnailGallery({
       {/* Thumbnail */}
       <div
         ref={scrollRef}
-        className={`flex gap-2.5 scrollbar-none ${
+        className={`w-full min-w-0 scrollbar-none ${
           images.length <= 6
-            ? "justify-center overflow-hidden"
-            : "overflow-x-auto scroll-smooth"
+            ? "flex justify-center gap-2.5 overflow-hidden"
+            : "flex gap-2.5 overflow-x-auto scroll-smooth"
         }`}
       >
         {images.map((img, index) => (
           <button
             key={index}
             onClick={() => setActiveImage(img)}
-            className={`relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md border-1 transition-all duration-200 ${
-              activeImage === img ? "border-primary" : "border-slate-200"
+            className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-md border transition-all duration-200 ${
+              activeImage === img
+                ? "border-primary"
+                : "border-slate-200"
             }`}
           >
             <Image
@@ -129,19 +131,19 @@ export default function ThumbnailGallery({
       <button
         onClick={scrollRight}
         className={`
-  absolute right-0 top-1/2 z-20
-  flex h-6 w-6 -translate-y-1/2 items-center justify-center
-  rounded-l-md rounded-r-none
-  bg-black/50 text-white shadow-lg
-  backdrop-blur-sm
-  transition-all duration-300 ease-out
-  hover:bg-black/70
-  ${
-    showRight
-      ? "translate-x-0 opacity-100"
-      : "translate-x-2 opacity-0 pointer-events-none"
-  }
-`}
+          absolute right-0 top-1/2 z-20
+          flex h-6 w-6 -translate-y-1/2 items-center justify-center
+          rounded-l-md rounded-r-none
+          bg-black/50 text-white shadow-lg
+          backdrop-blur-sm
+          transition-all duration-300 ease-out
+          hover:bg-black/70
+          ${
+            showRight
+              ? "translate-x-0 opacity-100"
+              : "translate-x-2 pointer-events-none opacity-0"
+          }
+        `}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +153,11 @@ export default function ThumbnailGallery({
           stroke="currentColor"
           strokeWidth={2.5}
         >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9 5l7 7-7 7"
+          />
         </svg>
       </button>
     </div>

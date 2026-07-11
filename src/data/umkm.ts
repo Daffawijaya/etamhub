@@ -171,4 +171,51 @@ export const umkms = [
   instagram: "",
   tiktok: "",
 },
+{
+  id: 9,
+  nama: "Amplang Mila",
+  pemilik: "Urmila Sari",
+  kategori: "Industri",
+  subkategori: "Produk Olahan Ikan",
+  deskripsi:
+    "Mila Amplang / Kerupuk Mama Mila merupakan usaha kuliner rumahan yang berlokasi di Desa Kutai Lama dan menghadirkan berbagai produk olahan ikan khas Kalimantan yang lezat, gurih, dan berkualitas. Dengan mengutamakan bahan baku pilihan serta proses produksi yang terjaga, setiap produk dibuat untuk memberikan cita rasa autentik yang menjadi ciri khas kuliner daerah. Produk unggulan yang ditawarkan adalah amplang dan kerupuk ikan dengan tekstur renyah serta rasa gurih yang khas. Proses pengolahan dilakukan dengan memperhatikan kebersihan dan kualitas bahan sehingga menghasilkan camilan yang tidak hanya enak dinikmati sehari-hari, tetapi juga cocok dijadikan oleh-oleh khas daerah untuk keluarga, teman, maupun kerabat. Kelezatan produk Mama Mila menjadikannya pilihan favorit bagi berbagai kalangan, mulai dari anak-anak hingga orang dewasa. Sebagai pelaku UMKM lokal, Mila Amplang / Kerupuk Mama Mila turut berkontribusi dalam melestarikan kuliner tradisional sekaligus mendukung perekonomian masyarakat setempat. Dengan komitmen untuk terus menjaga kualitas rasa dan kepuasan pelanggan, usaha ini terus berkembang sebagai salah satu penyedia produk olahan ikan yang terpercaya di Kutai Lama. Setiap kemasan dibuat dengan penuh perhatian agar produk tetap terjaga kualitasnya hingga sampai ke tangan konsumen. Bagi pecinta camilan gurih khas Kalimantan, Mila Amplang / Kerupuk Mama Mila menjadi pilihan yang tepat untuk menikmati kelezatan amplang dan kerupuk ikan dengan cita rasa tradisional yang autentik, renyah, dan menggugah selera. Cocok untuk dinikmati bersama keluarga, dijadikan teman bersantai, maupun sebagai buah tangan khas yang berkesan.",
+  gambar: [
+    "https://drive.google.com/open?id=1iY6wJM7OFNEP0BtC3b1byk8UNAqD6qsy",
+    "https://drive.google.com/open?id=1hxtd4pInmGAaiM0ytF5g8lq_5HhwEcb8",
+  ],
+  kecamatan: "Anggana",
+  alamat:
+    "Jalan Sungai Cermin RT 04, Kutai Lama, Kec. Anggana, Kabupaten Kutai Kartanegara, Kalimantan Timur",
+  lat: -0.570335933036635,
+  lng: 117.320855085612,
+  whatsapp: "085248175915",
+  instagram: "mhila3634",
+  facebook: "mhila.385419",
+  tiktok: "mhila2785",
+},
+{
+  id: 10,
+  nama: "Bronsted Donny Lowry",
+  pemilik: "Donny",
+  kategori: "Industri",
+  subkategori: "Kue dan Roti",
+  deskripsi:
+    "Bronsted Donny Lowry merupakan UMKM kuliner yang berlokasi di Kecamatan Belayan dan telah melayani masyarakat sejak tahun 2016. Usaha ini bergerak di bidang produksi makanan dan bakery dengan menghadirkan berbagai pilihan produk seperti pizza, brownies, roti, kue, serta aneka camilan yang dibuat dengan cita rasa khas dan bahan berkualitas. Berawal dari keinginan untuk menghadirkan produk kuliner yang berbeda dan mudah dijangkau oleh masyarakat, Bronsted Donny Lowry terus berkembang menjadi salah satu usaha kuliner yang dikenal di wilayah Belayan dan sekitarnya. Salah satu produk unggulannya adalah Lismana Pizza, yang dikenal sebagai pizza pertama yang hadir di Belayan. Dibuat menggunakan adonan segar setiap hari, saus racikan khas rumahan, dan topping yang melimpah, Lismana Pizza menjadi pilihan favorit masyarakat untuk berbagai acara dan momen kebersamaan. Selain pizza, Bronsted Donny Lowry juga memproduksi aneka brownies, roti, dan kue dengan tekstur lembut serta cita rasa yang disukai berbagai kalangan. Selama hampir satu dekade menjalankan usaha, Bronsted Donny Lowry telah menjadi bagian dari berbagai kegiatan masyarakat, mulai dari perayaan ulang tahun, arisan, syukuran, acara sekolah, hingga kebutuhan konsumsi harian keluarga. Komitmen terhadap kualitas produk, pelayanan yang baik, serta inovasi dalam menghadirkan berbagai pilihan makanan menjadi kunci perkembangan usaha ini hingga saat ini. Dengan semangat mendukung perkembangan UMKM lokal, Bronsted Donny Lowry terus berupaya menghadirkan produk kuliner yang lezat, berkualitas, dan terjangkau. Melalui berbagai produk bakery dan makanan olahan yang ditawarkan, usaha ini tidak hanya memenuhi kebutuhan konsumen, tetapi juga turut memperkaya pilihan kuliner bagi masyarakat Belayan dan sekitarnya.",
+  gambar: [
+    "https://drive.google.com/open?id=1TNynrc5--v1njnWUL-ppnHbPGnvd8U0u",
+    "https://drive.google.com/open?id=1HfhXKVKd3IWE3XbmPPWBGZn7K3H4ly6A",
+    "https://drive.google.com/open?id=1UYwdEnKiHx-PpXghN4kRtmTibg6s8xOv",
+    "https://drive.google.com/open?id=19BQG4LllCStGsApVf-jSR38R5aq0R-3W",
+    "https://drive.google.com/open?id=1KSf7Va0fqqE51WBD_sEdIiIkEGDuK9h9",
+  ],
+  kecamatan: "Kembang Janggut",
+  alamat:
+    "Desa Belayan, Kec. Kembang Janggut, Kabupaten Kutai Kartanegara, Kalimantan Timur",
+  lat: 0.279630224953579,
+  lng: 116.165072569985,
+  whatsapp: "082254086814",
+  instagram: "bronsteddonnylowry",
+  facebook: "",
+  tiktok: "donny.pizza",
+},
 ];
