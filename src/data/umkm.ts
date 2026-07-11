@@ -150,4 +150,25 @@ export const umkms = [
   instagram: "mamamatcha.hdl",
   tiktok: "mamamatcha.hdl",
 },
+{
+  id: 8,
+  nama: "UD Arya Motor",
+  pemilik: "Komang",
+  kategori: "Jasa",
+  subkategori: "Bengkel Motor",
+  deskripsi:
+    "UD Arya Motor / Bengkel Komang merupakan bengkel sepeda motor yang melayani berbagai kebutuhan perawatan dan perbaikan kendaraan roda dua dengan pelayanan yang cepat, ramah, dan profesional. Didukung oleh tenaga mekanik yang berpengalaman, bengkel ini siap membantu pelanggan dalam menjaga performa sepeda motor agar tetap prima untuk digunakan sehari-hari. Layanan yang tersedia meliputi servis ringan dan berkala, ganti oli, tune up, perbaikan mesin, pengecekan sistem kelistrikan, perbaikan rem, penggantian suku cadang, hingga penanganan berbagai kendala teknis pada sepeda motor. Setiap pekerjaan dilakukan dengan teliti untuk memastikan kendaraan kembali dalam kondisi optimal dan aman digunakan. Selain mengutamakan kualitas pengerjaan, UD Arya Motor / Bengkel Komang juga dikenal dengan pelayanan yang responsif serta harga yang terjangkau dan kompetitif. Bengkel ini menjadi pilihan masyarakat sekitar untuk melakukan perawatan rutin maupun perbaikan kendaraan karena mengedepankan kepuasan pelanggan dan hasil kerja yang dapat diandalkan. Dengan komitmen memberikan layanan terbaik, UD Arya Motor / Bengkel Komang terus berupaya menjadi mitra terpercaya bagi para pengendara sepeda motor dalam menjaga kendaraan tetap nyaman, aman, dan memiliki performa yang maksimal di setiap perjalanan.",
+  gambar: [
+    "https://drive.google.com/open?id=1QC9DOnmTjwfBun4FokDBhcAa2sQmYS7c",
+    "https://drive.google.com/open?id=1hhxpazT_dfxfch_r2CI2QfkpWbKxSQOy",
+  ],
+  kecamatan: "Tenggarong Seberang",
+  alamat:
+    "Jl. Pahlawan, Manunggal Jaya, Kec. Tenggarong Seberang, Kabupaten Kutai Kartanegara, Kalimantan Timur",
+  lat: -3.78738720642737,
+  lng: 117.113061262581,
+  whatsapp: "081255647193",
+  instagram: "",
+  tiktok: "",
+},
 ];

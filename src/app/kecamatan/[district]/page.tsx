@@ -1,9 +1,13 @@
+"use client";
+
+import { useMemo, useState, use } from "react";
 import Link from "next/link";
-import { umkms } from "@/data/umkm";
-import { slugify } from "@/lib/slugify";
-import UmkmCard from "@/components/UmkmCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import UmkmCard from "@/components/UmkmCard";
+import KategoriFilter from "@/components/KategoriFilter";
+import { umkms } from "@/data/umkm";
+import { slugify } from "@/lib/slugify";
 
 type Props = {
   params: Promise<{
@@ -11,52 +15,157 @@ type Props = {
   }>;
 };
 
-export default async function KecamatanPage({ params }: Props) {
-  const { district } = await params;
+export default function KecamatanPage({
+  params,
+}: Props) {
+  const { district } = use(params);
 
-  const data = umkms.filter((item) => slugify(item.kecamatan) === district);
+  const [kategori, setKategori] =
+    useState("Semua");
 
-  const districtName = (data[0]?.kecamatan ?? district ?? "Tidak Diketahui")
+  const data = umkms.filter(
+    (item) =>
+      slugify(item.kecamatan) === district
+  );
+
+  const filteredData = useMemo(() => {
+    if (kategori === "Semua") return data;
+
+    return data.filter(
+      (item) => item.kategori === kategori
+    );
+  }, [data, kategori]);
+
+  const districtName = (
+    data[0]?.kecamatan ??
+    district ??
+    "Tidak Diketahui"
+  )
     .replace(/-/g, " ")
     .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .map(
+      (word) =>
+        word.charAt(0).toUpperCase() +
+        word.slice(1).toLowerCase()
+    )
     .join(" ");
 
+  const categories = [
+    "Semua",
+    "Jasa",
+    "Industri",
+    "Perdagangan",
+  ];
+
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
 
-      <main className="w-full max-w-7xl mx-auto px-6 py-20">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-6 pt-20 pb-10">
         {/* Breadcrumb */}
-        <nav className="flex flex-wrap items-center gap-2 text-sm text-gray-500 pt-8">
-          <Link href="/" className="hover:text-[#9764dc] transition-colors">
+        <nav className="flex flex-wrap items-center gap-2 text-sm text-slate-500 pt-8">
+          <Link
+            href="/"
+            className="hover:text-[#9764dc] transition-colors"
+          >
             Dashboard
           </Link>
 
           <span>›</span>
 
-          <span className="font-medium text-gray-900">{districtName}</span>
+          <span className="font-medium text-slate-900">
+            {districtName}
+          </span>
         </nav>
 
-        {data.length === 0 ? (
-          <div className="py-5 rounded-xl bg-white p-8 text-center shadow-sm">
-            <p className="text-slate-500">
-              Belum ada data UMKM di kecamatan ini.
-            </p>
+        {/* Header */}
+        <div className="mt-4">
+          <h1 className="text-3xl font-bold text-slate-900">
+            UMKM Kecamatan {districtName}
+          </h1>
+
+          <p className="mt-2 text-slate-500">
+            Menampilkan seluruh UMKM yang
+            terdaftar di Kecamatan{" "}
+            {districtName}.
+          </p>
+        </div>
+
+        {/* Mobile Filter */}
+        <div className="mt-6 lg:hidden">
+          <div className="flex gap-2 overflow-x-auto pb-2">
+            {categories.map((item) => {
+              const active =
+                kategori === item;
+
+              return (
+                <button
+                  key={item}
+                  onClick={() =>
+                    setKategori(item)
+                  }
+                  className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    active
+                      ? "bg-[#9764dc] text-white"
+                      : "bg-white border border-slate-200 text-slate-700"
+                  }`}
+                >
+                  {item}
+                </button>
+              );
+            })}
           </div>
-        ) : (
-          <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
-            {data.map((item) => (
-              <UmkmCard
-                key={item.id}
-                id={item.id}
-                nama={item.nama}
-                subkategori={item.subkategori}
-                gambar={item.gambar}
+        </div>
+
+        {/* Content + Sidebar */}
+        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
+          {/* Content */}
+          <div>
+            <div className="flex items-center justify-between mb-5">
+              <p className="text-sm text-slate-500">
+                Menampilkan{" "}
+                <span className="font-semibold text-slate-900">
+                  {filteredData.length}
+                </span>{" "}
+                UMKM
+              </p>
+            </div>
+
+            {filteredData.length === 0 ? (
+              <div className="bg-white  py-20 flex items-center justify-center">
+                <p className="text-slate-500 text-center">
+                  Tidak ada UMKM pada kategori
+                  ini.
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+                {filteredData.map((item) => (
+                  <UmkmCard
+                    key={item.id}
+                    id={item.id}
+                    nama={item.nama}
+                    subkategori={
+                      item.subkategori
+                    }
+                    gambar={item.gambar}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar */}
+          <aside className="hidden lg:block">
+            <div className="sticky top-24">
+              <KategoriFilter
+                kategori={kategori}
+                setKategori={setKategori}
+                total={filteredData.length}
               />
-            ))}
-          </div>
-        )}
+            </div>
+          </aside>
+        </div>
       </main>
 
       <Footer />
