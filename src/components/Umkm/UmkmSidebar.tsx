@@ -87,7 +87,7 @@ export default function UmkmSidebar({
                 className="
                   w-full
                   rounded-xl
-                  bg-slate-900
+                  bg-primary
                   px-4
                   py-2.5
                   text-sm

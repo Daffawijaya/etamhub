@@ -34,7 +34,7 @@ export default async function UmkmPage({ params }: Props) {
           <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-gray-500">
             <Link
               href="/"
-              className="hover:text-[#9764dc] transition-colors"
+              className="hover:text-primary transition-colors"
             >
               Dashboard
             </Link>
@@ -43,14 +43,14 @@ export default async function UmkmPage({ params }: Props) {
 
             <Link
               href={`/kecamatan/${kecamatanSlug}`}
-              className="hover:text-[#9764dc] transition-colors"
+              className="hover:text-primary transition-colors"
             >
               {umkm.kecamatan}
             </Link>
 
             <span>›</span>
 
-            <span className="font-medium text-gray-900 truncate max-w-[180px] md:max-w-none">
+            <span className="font-medium text-primary truncate max-w-[180px] md:max-w-none">
               {umkm.nama}
             </span>
           </nav>

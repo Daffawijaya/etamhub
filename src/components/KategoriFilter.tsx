@@ -38,7 +38,7 @@ export default function KategoriFilter({
               onClick={() => setKategori(item)}
               className={`w-full rounded-xl px-4 py-2.5 text-left text-sm font-medium transition ${
                 active
-                  ? "bg-slate-900 text-white"
+                  ? "bg-primary text-white"
                   : "border border-slate-200 text-slate-700 hover:bg-slate-50"
               }`}
             >
@@ -53,7 +53,7 @@ export default function KategoriFilter({
           onClick={() => setUrutTerdekat(!urutTerdekat)}
           className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
             urutTerdekat
-              ? "bg-primary text-white shadow-md"
+              ? "bg-emerald-600 text-white "
               : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
           }`}
         >

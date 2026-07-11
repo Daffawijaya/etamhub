@@ -112,7 +112,7 @@ export default function ThumbnailGallery({
             key={index}
             onClick={() => setActiveImage(img)}
             className={`relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-md border-1 transition-all duration-200 ${
-              activeImage === img ? "border-violet-600" : "border-slate-200"
+              activeImage === img ? "border-primary" : "border-slate-200"
             }`}
           >
             <Image
