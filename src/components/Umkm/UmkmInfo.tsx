@@ -100,7 +100,7 @@ export default function UmkmInfo({
       {showButton && (
         <button
           onClick={() => setExpanded(!expanded)}
-          className="mt-5 w-fit text-sm font-medium text-violet-600 transition hover:text-violet-700"
+          className="mt-5 w-fit text-sm font-medium text-primary transition hover:text-violet-700"
         >
           {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}
         </button>

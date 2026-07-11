@@ -114,7 +114,7 @@ export default function UmkmCard({
                 font-bold
                 uppercase
                 tracking-wider
-                text-blue-700
+                text-primary
               "
             >
               Lihat Detail
@@ -126,7 +126,7 @@ export default function UmkmCard({
                 h-4
                 md:w-5
                 md:h-5
-                text-blue-700
+                text-primary
                 transition-transform
                 duration-300
                 group-hover:translate-x-1
