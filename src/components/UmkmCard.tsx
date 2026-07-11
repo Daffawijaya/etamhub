@@ -7,6 +7,7 @@ type Props = {
   nama: string;
   subkategori: string;
   gambar: string[];
+  distance?: number | null;
 };
 
 export default function UmkmCard({
@@ -14,7 +15,16 @@ export default function UmkmCard({
   nama,
   subkategori,
   gambar,
+  distance,
 }: Props) {
+  const formatDistance = (value: number) => {
+    if (value < 1) {
+      return `${Math.round(value * 1000)} m`;
+    }
+
+    return `${value.toFixed(1)} km`;
+  };
+
   return (
     <Link href={`/umkm/${id}`} className="block h-full">
       <article
@@ -31,7 +41,7 @@ export default function UmkmCard({
           overflow-hidden
         "
       >
-        {/* Image */}
+        {/* IMAGE */}
         <div className="p-2">
           <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
             <Image
@@ -39,14 +49,20 @@ export default function UmkmCard({
               alt={nama}
               fill
               sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+              className="
+                object-cover
+                transition-transform
+                duration-500
+                group-hover:scale-[1.02]
+              "
             />
           </div>
         </div>
 
-        {/* Content */}
+        {/* CONTENT */}
         <div className="px-4 md:px-5 pb-4 md:pb-5 flex flex-col">
-          <p className="text-[11px] md:text-xs text-slate-500 my-2 mb-1 ">
+          
+          <p className="text-[11px] md:text-xs text-slate-500 my-2 mb-1">
             {subkategori}
           </p>
 
@@ -65,15 +81,51 @@ export default function UmkmCard({
             {nama}
           </h2>
 
+
+          {/* JARAK */}
+          {typeof distance === "number" && (
+            <div className="mt-3">
+              <span
+                className="
+                  inline-flex
+                  items-center
+                  gap-1
+                  rounded-full
+                  bg-emerald-50
+                  px-2
+                  py-1
+                  text-[11px]
+                  font-medium
+                  text-emerald-700
+                "
+              >
+                📍 {formatDistance(distance)}
+              </span>
+            </div>
+          )}
+
+
+          {/* DETAIL BUTTON */}
           <div className="mt-5 md:mt-8 flex items-center justify-between">
-            <span className="text-[11px] md:text-xs font-bold uppercase tracking-wider text-blue-700">
+            <span
+              className="
+                text-[11px]
+                md:text-xs
+                font-bold
+                uppercase
+                tracking-wider
+                text-blue-700
+              "
+            >
               Lihat Detail
             </span>
 
             <svg
               className="
-                w-4 h-4
-                md:w-5 md:h-5
+                w-4
+                h-4
+                md:w-5
+                md:h-5
                 text-blue-700
                 transition-transform
                 duration-300
@@ -91,6 +143,7 @@ export default function UmkmCard({
               />
             </svg>
           </div>
+
         </div>
       </article>
     </Link>
