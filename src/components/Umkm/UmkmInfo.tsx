@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   nama: string;
   kategori: string;
+  subkategori: string;
   kecamatan: string;
   deskripsi: string;
 };
@@ -12,6 +13,7 @@ type Props = {
 export default function UmkmInfo({
   nama,
   kategori,
+  subkategori,
   kecamatan,
   deskripsi,
 }: Props) {
@@ -57,22 +59,27 @@ export default function UmkmInfo({
 
       <div className="mt-4 space-y-2 text-sm text-slate-600">
         <p>
-          <span className="font-semibold text-slate-900">Kategori:</span>{" "}
-          {kategori}
-        </p>
-
-        <p>
-          <span className="font-semibold text-slate-900">Kecamatan:</span>{" "}
-          {kecamatan}
+          <span className="font-semibold text-slate-900"></span> {kecamatan}
         </p>
       </div>
 
       <div className="my-6 border-t border-slate-200" />
 
       <div>
-        <h2 className="mb-3 text-base font-semibold text-slate-900">
-          Deskripsi Usaha
-        </h2>
+        <div className="mb-4 space-y-2 text-sm text-slate-600">
+          <p>
+            <span>Kategori:</span>{" "}
+            <span className="font-semibold text-slate-900">
+              {kategori}
+            </span>{" "}
+          </p>
+          <p>
+            <span>Subkategori:</span>{" "}
+            <span className="font-semibold text-slate-900">
+              {subkategori}
+            </span>{" "}
+          </p>
+        </div>
 
         <div className="relative">
           <p

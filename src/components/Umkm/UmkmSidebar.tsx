@@ -5,6 +5,7 @@ type Props = {
   alamat: string;
   whatsapp?: string;
   instagram?: string;
+  tiktok?: string;
   facebook?: string;
   lat: number;
   lng: number;
@@ -15,6 +16,7 @@ export default function UmkmSidebar({
   alamat,
   whatsapp,
   instagram,
+  tiktok,
   facebook,
   lat,
   lng,
@@ -122,6 +124,32 @@ export default function UmkmSidebar({
                 "
               >
                 Instagram
+              </button>
+            )}
+
+            {tiktok?.trim() && (
+              <button
+                onClick={() =>
+                  window.open(
+                    `https://www.tiktok.com/${tiktok.startsWith("@") ? tiktok : `@${tiktok}`}`,
+                    "_blank",
+                  )
+                }
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-slate-200
+                  px-4
+                  py-2.5
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition
+                  hover:bg-slate-50
+                "
+              >
+                Tiktok
               </button>
             )}
 

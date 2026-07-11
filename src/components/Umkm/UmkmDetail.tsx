@@ -10,6 +10,7 @@ type Props = {
   nama: string;
   pemilik: string;
   kategori: string;
+  subkategori: string;
   kecamatan: string;
   alamat: string;
   deskripsi: string;
@@ -17,6 +18,7 @@ type Props = {
   instagram?: string;
   facebook?: string;
   whatsapp?: string;
+  tiktok?: string;
   lat: number;
   lng: number;
 };
@@ -25,6 +27,7 @@ export default function UmkmDetail({
   nama,
   pemilik,
   kategori,
+  subkategori,
   kecamatan,
   alamat,
   deskripsi,
@@ -32,6 +35,7 @@ export default function UmkmDetail({
   instagram,
   facebook,
   whatsapp,
+  tiktok,
   lat,
   lng,
 }: Props) {
@@ -56,6 +60,7 @@ export default function UmkmDetail({
             <UmkmInfo
               nama={nama}
               kategori={kategori}
+              subkategori={subkategori}
               kecamatan={kecamatan}
               deskripsi={deskripsi}
             />
@@ -69,6 +74,7 @@ export default function UmkmDetail({
               whatsapp={whatsapp}
               instagram={instagram}
               facebook={facebook}
+              tiktok={tiktok}
               lat={lat}
               lng={lng}
             />
