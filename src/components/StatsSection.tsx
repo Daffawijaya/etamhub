@@ -7,8 +7,8 @@ export default function StatsSection() {
     umkms.map((item) => item.kecamatan)
   ).size;
 
-  const totalKategori = new Set(
-    umkms.map((item) => item.kategori)
+  const totalSubkategori = new Set(
+    umkms.map((item) => item.subkategori)
   ).size;
 
   const stats = [
@@ -23,8 +23,8 @@ export default function StatsSection() {
       desc: "Usaha yang terdaftar",
     },
     {
-      value: totalKategori,
-      label: "Kategori",
+      value: totalSubkategori,
+      label: "Subkategori",
       desc: "Ragam bidang usaha",
     },
   ];
