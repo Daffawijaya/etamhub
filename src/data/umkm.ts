@@ -4,6 +4,7 @@ export const umkms = [
     nama: "Daffa Premium Barbershop ",
     pemilik: "Daffa Yang Paling Tampan Tiada Tandingan",
     kategori: "Jasa",
+    subkategori: "Barbershop",
     deskripsi:
       "Daffa Premium Barbershop merupakan barbershop andalan Prabowo dan Bahlil. Melayani berbagai jenis potongan rambut dengan hasil rapi, modern, dan sesuai keinginan pelanggan. Dikerjakan langsung oleh owner berpengalaman untuk memberikan penampilan yang lebih fresh dan percaya diri.",
     gambar: ["/umkmdaffa.jpeg"],
@@ -21,6 +22,7 @@ export const umkms = [
     nama: "Taichan Lagi",
     pemilik: "Agil mutiara putri",
     kategori: "Perdagangan",
+    subkategori: "Jajanan & Snack",
     deskripsi:
       "Salah satu usaha sate taichan yang berada di kec.muara jawa, dengan menyediakan berbagai jenis menu salah satu diantara seperti taichan kulit dan taichan krispi. yang disajikan dengan lontong ataupun nasi daun jeruk nya yang khas. harga mulai dari 20rb saja.",
     gambar: [
@@ -44,6 +46,7 @@ export const umkms = [
   nama: "Narasari",
   pemilik: "Lilik handayani",
   kategori: "Industri",
+  subkategori:"Keripik",
   deskripsi:
     "UMKM yang bergerak pada olahan keripik daun singkong.",
   gambar: [
@@ -64,6 +67,7 @@ export const umkms = [
   nama: "Ulinara",
   pemilik: "Emiliani",
   kategori: "Industri",
+    subkategori:"Ecoprint",
   deskripsi:
     "UMKM yang bergerak di bidang ecoprint yang kemudian menjadi bahan utama pembuatan berbagai busana dan aksesoris.",
   gambar: [
@@ -82,6 +86,7 @@ export const umkms = [
   nama: "Manik Fashion Putak",
   pemilik: "Yulia Ngerung",
   kategori: "Industri",
+  subkategori: "Fashion",
   deskripsi:
     "Fashion Manik Putak merupakan usaha yang bergerak di bidang produksi dan penjualan pakaian serta aksesori manik khas Kutai yang dibuat secara handmade dengan mengangkat kekayaan budaya lokal Kalimantan Timur. Berbagai produk yang dihasilkan meliputi busana adat, rompi manik, rok manik, selempang, tas, dan aksesori lainnya dengan motif etnik khas Kutai yang dirangkai secara teliti menggunakan manik-manik berkualitas. Setiap karya dibuat dengan memperhatikan detail, keindahan warna, dan nilai seni budaya sehingga menghasilkan produk yang unik dan bernilai tinggi. Fashion Manik Putak juga melayani pembuatan busana manik untuk kebutuhan acara adat, pertunjukan seni, festival budaya, kegiatan pemerintahan, sekolah, sanggar seni, maupun pesanan khusus sesuai kebutuhan pelanggan. Melalui produk-produknya, Fashion Manik Putak turut berperan dalam melestarikan warisan budaya Kutai sekaligus memperkenalkan keindahan kerajinan manik tradisional kepada masyarakat yang lebih luas.",
   gambar: [
@@ -102,6 +107,7 @@ export const umkms = [
   nama: "PDKT Cafe",
   pemilik: "Muhammad Haydar Respati",
   kategori: "Perdagangan",
+  subkategori:"Cafe",
   deskripsi:
     "PDKT Cafe merupakan destinasi kuliner yang menghadirkan suasana nyaman dengan konsep modern dan hangat, cocok untuk berbagai aktivitas mulai dari bersantai, bekerja, mengerjakan tugas, hingga berkumpul bersama keluarga, teman, maupun pasangan. Didukung area indoor dan outdoor yang nyaman, fasilitas lengkap, serta pelayanan yang ramah, setiap pengunjung dapat menikmati pengalaman bersantap yang menyenangkan. PDKT Cafe menyajikan beragam pilihan menu, mulai dari aneka kopi, minuman segar, camilan, hingga makanan berat dengan cita rasa yang lezat dan porsi yang memuaskan. Seluruh menu ditawarkan dengan harga yang terjangkau dan kompetitif, sehingga dapat dinikmati oleh berbagai kalangan tanpa mengurangi kualitas rasa maupun pelayanan. Dengan suasana yang nyaman, pilihan menu yang lengkap, serta harga yang bersahabat, PDKT Cafe menjadi tempat yang tepat untuk menghabiskan waktu berkualitas dan menciptakan momen berkesan bersama orang-orang terdekat.",
   gambar: [
@@ -115,5 +121,33 @@ export const umkms = [
   whatsapp: "081253339353",
   instagram: "pdkt_cafe",
   facebook: "",
+},
+{
+  id: 7,
+  nama: "Mamamatcha Drink Handil 2",
+  pemilik: "Della Safitriana",
+  kategori: "Perdagangan",
+  subkategori: "Minuman Kekinian",
+  deskripsi:
+    "Mamamatcha Drink Handil 2 merupakan usaha minuman kekinian yang menghadirkan berbagai varian matcha premium dengan cita rasa unik dan menyegarkan. Mengusung slogan 'Matcha for Your Matchalah', Mamamatcha menawarkan beragam pilihan menu favorit seperti Matcha OG, Matcha Cloud, Strawberry Cream Matcha, Choco Matcha, Honey Matcha, Orange Matcha, hingga varian spesial Red Velvet Cloud dan Taro Punch Matcha. Dengan perpaduan rasa matcha yang autentik, creamy, dan harga yang terjangkau, Mamamatcha menjadi pilihan tepat bagi pecinta matcha di Handil. Berlokasi di Jl. Moh. Hatta, Seberang Eramart Handil, Mamamatcha buka setiap hari dan juga melayani pesanan untuk berbagai acara, sehingga cocok untuk kebutuhan pribadi maupun kegiatan bersama keluarga, komunitas, dan instansi.",
+  gambar: [
+    "https://drive.google.com/open?id=1PXNlZvPeWhajTTIevBpU3_BrbkLjKsHE",
+    "https://drive.google.com/open?id=1pPXxpsprGjAfpFds1uXFgbTcSf1vckce",
+    "https://drive.google.com/open?id=1TSN8KlLbSZ-YQGw4uimz-8VgMmOlWBfv",
+    "https://drive.google.com/open?id=15hJvw0exG4uZk7xx-tC44k7RTW03o15Q",
+    "https://drive.google.com/open?id=1mbFCL8mbILKb1gnaPy3L7szo7aOlSqrV",
+    "https://drive.google.com/open?id=1sb3MUorIs8X2Wzcx2yJ2Q7weBQKWakod",
+    "https://drive.google.com/open?id=1IzsW30srKPnweod-W58VP61py7RiL55t",
+    "https://drive.google.com/open?id=15pWDLbfT-q-I16aa5u1shoVLVEVN4GvS",
+    "https://drive.google.com/open?id=1IpHxOJXLWgmRt0AkzJFN1zotvdOeFraK",
+    "https://drive.google.com/open?id=1zWpjdRGhfFjtm89esZ0ID_0VS_VXzm6N",
+  ],
+  kecamatan: "Muara Jawa",
+  alamat: "Jl. Moh. Hatta, Seberang Eramart Handil",
+  lat: -0.827089,
+  lng: 117.233941,
+  whatsapp: "082251022364",
+  instagram: "mamamatcha.hdl",
+  tiktok: "mamamatcha.hdl",
 },
 ];

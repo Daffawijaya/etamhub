@@ -5,14 +5,14 @@ import { imageUrl } from "@/lib/imageUrl";
 type Props = {
   id: number;
   nama: string;
-  kategori: string;
+  subkategori: string;
   gambar: string[];
 };
 
 export default function UmkmCard({
   id,
   nama,
-  kategori,
+  subkategori,
   gambar,
 }: Props) {
   return (
@@ -46,8 +46,8 @@ export default function UmkmCard({
 
         {/* Content */}
         <div className="px-4 md:px-5 pb-4 md:pb-5 flex flex-col">
-          <p className="text-[11px] md:text-xs text-slate-500 mb-2 md:mb-3">
-            {kategori}
+          <p className="text-[11px] md:text-xs text-slate-500 my-2 mb-1 ">
+            {subkategori}
           </p>
 
           <h2

@@ -51,7 +51,7 @@ export default async function KecamatanPage({ params }: Props) {
                 key={item.id}
                 id={item.id}
                 nama={item.nama}
-                kategori={item.kategori}
+                subkategori={item.subkategori}
                 gambar={item.gambar}
               />
             ))}
