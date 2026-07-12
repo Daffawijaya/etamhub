@@ -110,7 +110,7 @@ export default function AboutPage() {
         inline-flex
         bg-slate-100
         rounded-xl md:rounded-2xl
-        p-1
+        
         gap-1
         overflow-x-auto
         max-w-full
