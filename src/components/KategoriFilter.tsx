@@ -15,18 +15,11 @@ export default function KategoriFilter({
   urutTerdekat,
   setUrutTerdekat,
 }: Props) {
-  const categories = [
-    "Semua",
-    "Jasa",
-    "Industri",
-    "Perdagangan",
-  ];
+  const categories = ["Semua", "Jasa", "Industri", "Perdagangan"];
 
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5">
-      <h3 className="text-lg font-bold text-slate-900">
-        Pilih Kategori
-      </h3>
+      <h3 className="text-lg font-bold text-slate-900">Pilih Kategori</h3>
 
       <div className="mt-5 space-y-2">
         {categories.map((item) => {
@@ -51,24 +44,18 @@ export default function KategoriFilter({
       <div className="mt-6 border-t border-slate-200 pt-4">
         <button
           onClick={() => setUrutTerdekat(!urutTerdekat)}
-          className={`flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-medium transition-all ${
+          className={`flex w-full items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
             urutTerdekat
-              ? "bg-emerald-600 text-white "
-              : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+              ? "bg-emerald-600 border-emerald-600 text-white"
+              : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
           }`}
         >
           <span>📍</span>
-          <span>
-            {urutTerdekat
-              ? "Lokasi Terdekat Aktif"
-              : "Urutkan Lokasi Terdekat"}
-          </span>
+          <span>Lokasi Terdekat</span>
         </button>
       </div>
 
-      <div className="mt-4 text-xs text-slate-500">
-        Total {total} UMKM
-      </div>
+      <div className="mt-4 text-xs text-slate-500">Total {total} UMKM</div>
     </div>
   );
 }

@@ -31,18 +31,21 @@ export default function UmkmCard({
         className="
           group
           h-full
+          flex
+          flex-col
           bg-white
           border
           border-slate-200
+          rounded-2xl
+          overflow-hidden
           hover:border-slate-300
-          hover:shadow-md
+          hover:shadow-lg
           transition-all
           duration-300
-          overflow-hidden
         "
       >
         {/* IMAGE */}
-        <div className="p-2">
+        <div className="">
           <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
             <Image
               src={imageUrl(gambar[0])}
@@ -53,38 +56,37 @@ export default function UmkmCard({
                 object-cover
                 transition-transform
                 duration-500
-                group-hover:scale-[1.02]
+                group-hover:scale-[1.03]
               "
             />
           </div>
         </div>
 
         {/* CONTENT */}
-        <div className="px-4 md:px-5 pb-4 md:pb-5 flex flex-col">
-          
-          <p className="text-[11px] md:text-xs text-slate-500 my-2 mb-1">
+        <div className="flex flex-col flex-1 px-4 md:px-5 pb-5">
+          {/* SUBKATEGORI */}
+          <p className="text-[11px] md:text-xs text-slate-500 mt-2">
             {subkategori}
           </p>
 
+          {/* JUDUL FIX 2 BARIS */}
           <h2
             className="
               text-base
               md:text-lg
-              leading-tight
               font-bold
               text-slate-900
+              leading-6
               line-clamp-2
-              min-h-[48px]
-              md:min-h-[56px]
+              h-12
             "
           >
             {nama}
           </h2>
 
-
-          {/* JARAK */}
-          {typeof distance === "number" && (
-            <div className="mt-3">
+          {/* SLOT JARAK - SELALU ADA AGAR CARD SAMA TINGGI */}
+          <div className="h-7 flex items-center">
+            {typeof distance === "number" && (
               <span
                 className="
                   inline-flex
@@ -92,7 +94,7 @@ export default function UmkmCard({
                   gap-1
                   rounded-full
                   bg-emerald-50
-                  px-2
+                  px-2.5
                   py-1
                   text-[11px]
                   font-medium
@@ -101,12 +103,11 @@ export default function UmkmCard({
               >
                 📍 {formatDistance(distance)}
               </span>
-            </div>
-          )}
+            )}
+          </div>
 
-
-          {/* DETAIL BUTTON */}
-          <div className="mt-5 md:mt-8 flex items-center justify-between">
+          {/* BUTTON SELALU DI BAWAH */}
+          <div className="mt-auto flex items-center justify-between pt-2">
             <span
               className="
                 text-[11px]
@@ -143,7 +144,6 @@ export default function UmkmCard({
               />
             </svg>
           </div>
-
         </div>
       </article>
     </Link>

@@ -18,7 +18,7 @@ export default function UmkmGallery({
   setActiveImage,
 }: Props) {
   return (
-    <div>
+    <div className="w-full min-w-0 overflow-hidden">
       <div className="relative aspect-square w-full overflow-hidden rounded-lg border border-slate-200">
         <Image
           src={imageUrl(activeImage)}

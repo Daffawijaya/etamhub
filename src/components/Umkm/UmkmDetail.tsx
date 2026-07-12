@@ -43,10 +43,10 @@ export default function UmkmDetail({
 
   return (
     <section className="bg-white">
-      <div className="mx-auto max-w-7xl px-6 py-5 lg:px-8">
-        <div className="grid gap-10 lg:grid-cols-[420px_minmax(0,1fr)_320px]">
+      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
+        <div className="grid w-full gap-10 lg:grid-cols-[420px_minmax(0,1fr)_320px]">
           {/* Gallery */}
-          <div>
+          <div className="w-full min-w-0">
             <UmkmGallery
               nama={nama}
               gambar={gambar}
@@ -55,8 +55,8 @@ export default function UmkmDetail({
             />
           </div>
 
-          {/* Main Content */}
-          <div className="min-w-0">
+          {/* Content */}
+          <div className="w-full min-w-0">
             <UmkmInfo
               nama={nama}
               kategori={kategori}
@@ -67,7 +67,7 @@ export default function UmkmDetail({
           </div>
 
           {/* Sidebar */}
-          <div>
+          <div className="w-full min-w-0">
             <UmkmSidebar
               pemilik={pemilik}
               alamat={alamat}
