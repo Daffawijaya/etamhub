@@ -18,10 +18,10 @@ export default function TeamSection({
   grid = false,
 }: TeamSectionProps) {
   return (
-    <section className="pb-28">
+    <section className="pb-28 pt-5">
       <div className="max-w-7xl mx-auto px-5 md:px-6">
 
-        <h2 className="text-4xl font-bold text-center mb-16">
+        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center mb-16">
           {title}
         </h2>
 
