@@ -35,13 +35,13 @@ export const teamMembers: TeamMember[] = [
     desc: "Graphic Design",
   },
   {
-    gambar: "/tim/faruq.png",
+    gambar: "/tim/faruq2.png",
     nama: "Ahmad Faruq Wijaya",
     bidang: "TI dan Digitalisasi",
     desc: "Videographer",
   },
   {
-    gambar: "/tim/Riri.png",
+    gambar: "/tim/riri2.png",
     nama: "Agus Sriyani",
     bidang: "Kewirausahaan",
     desc: "Team Coordinator",
