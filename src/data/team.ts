@@ -23,22 +23,22 @@ export const teamMembers: TeamMember[] = [
   },
   {
     gambar: "/tim/daffa2.png",
-    nama: "Daffa Yan Wijaya",
+    nama: "Dafa Yan Wijaya",
     bidang: "TI dan Digitalisasi",
-    desc: "EtamHub Wesite Developer",
+    desc: "Digital Creative & Developer",
     featured: true,
   },
   {
     gambar: "/tim/kia2.png",
     nama: "Rizkia Kaamila Nizral",
     bidang: "TI dan Digitalisasi",
-    desc: "Graphic Design",
+    desc: "Packaging & Graphic Designer",
   },
   {
     gambar: "/tim/faruq2.png",
     nama: "Ahmad Faruq Wijaya",
     bidang: "TI dan Digitalisasi",
-    desc: "Videographer",
+    desc: "Videographer & Video Editor",
   },
   {
     gambar: "/tim/riri2.png",
@@ -48,13 +48,13 @@ export const teamMembers: TeamMember[] = [
   },
   {
     gambar: "/tim/ozi2.png",
-    nama: "Ahmad Fathurozi",
+    nama: "Akhmad Fahrozi",
     bidang: "Basis Data",
     desc: "Kumala Maintenance Programmer",
   },
   {
     gambar: "/tim/tita2.png",
-    nama: "Naila Tsabitza",
+    nama: "Naila Tsabitha Azzahra",
     bidang: "Kewirausahaan",
     desc: "Administration Officer",
   },
@@ -108,7 +108,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     gambar: "/tim/mase.png",
-    nama: "Indo Mase",
+    nama: "Indo Masse",
     bidang: "Pendamping Lapangan",
     desc: "Anggana & Sanga-Sanga",
   },

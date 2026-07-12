@@ -33,12 +33,13 @@ export default function TeamCard({
           alt={nama}
           fill
           className="
-      object-contain
-      object-bottom
-      transition-transform duration-500
-      group-hover:scale-105
-      [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]
-    "
+    object-contain
+    object-bottom
+    origin-bottom
+    transition-transform duration-500
+    group-hover:scale-105
+    [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]
+  "
         />
       </div>
 

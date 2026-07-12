@@ -47,7 +47,7 @@ export default function StatsSection() {
               key={stat.label}
               className={`
                 text-center px-6 md:px-8 lg:px-10 py-8 
-                border-b md:border-b-0 border-slate-200
+           
                 ${
                   index !== stats.length - 1
                     ? ""
@@ -60,7 +60,7 @@ export default function StatsSection() {
                 }
               `}
             >
-              <h3 className="text-4xl  md:text-5xl lg:text-6xl font-bold text-primary">
+              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary">
                 {stat.value}
               </h3>
 

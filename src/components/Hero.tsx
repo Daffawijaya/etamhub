@@ -22,7 +22,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-[#4A154B] min-h-screen flex items-center overflow-hidden pt-20">
+    <section className="bg-primary min-h-screen flex items-center overflow-hidden pt-20">
       <div className="max-w-7xl mx-auto w-full px-5 lg:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {/* LEFT */}

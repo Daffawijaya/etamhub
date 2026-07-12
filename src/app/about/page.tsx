@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { teamMembers } from "@/data/team";
 import { TeamSection } from "@/components/about";
 import AboutSection from "@/components/AboutSection";
+import TeamStats from "@/components/about/TeamStats";
 
 const getTeamByBidang = (bidang: string) =>
   teamMembers.filter((item) => item.bidang === bidang);
@@ -33,7 +34,6 @@ export default function AboutPage() {
 
       <main className="bg-white overflow-hidden">
         {/* HERO */}
-        {/* HERO */}
         <section className="bg-primary min-h-screen flex items-center">
           <div className="max-w-7xl mx-auto px-5 md:px-6 py-20 lg:py-28">
             <div className="flex flex-col items-center justify-center text-center">
@@ -54,50 +54,17 @@ export default function AboutPage() {
         <AboutSection />
 
         {/* STATS */}
-        {/* STATS */}
         <section className="py-16 md:py-24 text-center">
           <div className="max-w-6xl mx-auto px-5">
-            <h2 className="text-3xl md:text-5xl font-bold text-slate-900">
-              Tim Pendamping KAWAKU
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-slate-900">
+              Tim Tenaga Ahli Pendamping UMKM
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mt-12 md:mt-20">
-              <div>
-                <h3 className="text-4xl md:text-6xl font-bold text-primary">
-                  3
-                </h3>
-                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
-                  TI & Digitalisasi
-                </p>
-              </div>
+            <p className="mt-4 md:mt-5 text-center text-slate-600 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
+              Dinas Koperasi dan UKM Kutai Kartanegara
+            </p>
 
-              <div>
-                <h3 className="text-4xl md:text-6xl font-bold text-primary">
-                  2
-                </h3>
-                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
-                  Kewirausahaan
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-4xl md:text-6xl font-bold text-primary">
-                  2
-                </h3>
-                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
-                  Basis Data
-                </p>
-              </div>
-
-              <div>
-                <h3 className="text-4xl md:text-6xl font-bold text-primary">
-                  13
-                </h3>
-                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
-                  Pendamping Lapangan
-                </p>
-              </div>
-            </div>
+            <TeamStats />
           </div>
         </section>
 
@@ -109,7 +76,7 @@ export default function AboutPage() {
               className="
         inline-flex
         bg-slate-100
-        rounded-xl md:rounded-2xl
+       rounded-lg md:rounded-xl
         
         gap-1
         overflow-x-auto
