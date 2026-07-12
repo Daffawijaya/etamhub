@@ -33,21 +33,21 @@ export default function Footer() {
           <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 text-slate-600">
             <Link
               href="/"
-              className="hover:text-violet-600 transition"
+              className="hover:text-primary transition"
             >
               Beranda
             </Link>
 
             <Link
-              href="/tentang"
-              className="hover:text-violet-600 transition"
+              href="/about"
+              className="hover:text-primary transition"
             >
               Tentang
             </Link>
 
             <Link
               href="/kontak"
-              className="hover:text-violet-600 transition"
+              className="hover:primary transition"
             >
               Kontak
             </Link>

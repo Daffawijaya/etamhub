@@ -46,21 +46,21 @@ export default function StatsSection() {
             <div
               key={stat.label}
               className={`
-                text-center px-6 md:px-8 lg:px-10 py-8
+                text-center px-6 md:px-8 lg:px-10 py-8 
                 border-b md:border-b-0 border-slate-200
                 ${
                   index !== stats.length - 1
-                    ? "md:border-r"
+                    ? ""
                     : ""
                 }
                 ${
                   index === stats.length - 1
-                    ? "border-b-0"
+                    ? ""
                     : ""
                 }
               `}
             >
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#0F172A]">
+              <h3 className="text-4xl  md:text-5xl lg:text-6xl font-bold text-primary">
                 {stat.value}
               </h3>
 
@@ -68,7 +68,7 @@ export default function StatsSection() {
                 {stat.label}
               </p>
 
-              <p className="mt-2 text-sm md:text-base text-slate-500">
+              <p className=" text-sm md:text-base text-slate-500">
                 {stat.desc}
               </p>
             </div>

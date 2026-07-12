@@ -6,13 +6,14 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+
+  const isTransparentPage = pathname === "/" || pathname === "/about";
 
   const [isHero, setIsHero] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    if (!isHome) {
+    if (!isTransparentPage) {
       setIsHero(false);
       return;
     }
@@ -25,30 +26,22 @@ export default function Navbar() {
     window.addEventListener("scroll", handleScroll);
 
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isHome]);
+  }, [isTransparentPage]);
 
-  // Navbar akan menjadi putih ketika:
-  // - bukan halaman home
-  // - sudah scroll
-  // - menu mobile sedang terbuka
-  const navbarSolid = !isHome || !isHero || mobileOpen;
+  const navbarSolid = !isTransparentPage || !isHero || mobileOpen;
 
   return (
-    <nav
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
-        navbarSolid ? "border-b border-slate-200" : ""
-      }`}
-    >
-      {/* Transparent Hero Background */}
+    <nav className="fixed inset-x-0 top-0 z-50">
+      {/* Transparent State */}
       <div
-        className={`absolute inset-0 transition-opacity duration-500 ${
+        className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
           navbarSolid ? "opacity-0" : "opacity-100"
         }`}
       />
 
-      {/* White Background */}
+      {/* Solid State */}
       <div
-        className={`absolute inset-0 bg-white transition-opacity duration-500 ${
+        className={`absolute inset-0 bg-white border-b border-slate-200 transition-opacity duration-500 ease-in-out ${
           navbarSolid ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -58,13 +51,13 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" onClick={() => setMobileOpen(false)}>
             <h1
-              className={`text-xl sm:text-2xl font-bold tracking-tight transition-colors duration-500 ${
+              className={`text-xl sm:text-2xl font-bold tracking-tight transition-colors duration-500 ease-in-out ${
                 navbarSolid ? "text-slate-900" : "text-white"
               }`}
             >
               Etam
               <span
-                className={`transition-colors duration-500 ${
+                className={`transition-colors duration-500 ease-in-out ${
                   navbarSolid ? "text-primary" : "text-white"
                 }`}
               >
@@ -75,44 +68,23 @@ export default function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8 text-md">
-            <Link
-              href="/"
-              className={`font-medium transition-colors duration-500 ${
-                navbarSolid
-                  ? "text-slate-700 hover:text-violet-600"
-                  : "text-white hover:text-violet-200"
-              }`}
-            >
+            <NavLink href="/" navbarSolid={navbarSolid}>
               Beranda
-            </Link>
+            </NavLink>
 
-            <Link
-              href="/#district-section"
-              className={`font-medium transition-colors duration-500 ${
-                navbarSolid
-                  ? "text-slate-700 hover:text-violet-600"
-                  : "text-white hover:text-violet-200"
-              }`}
-            >
+            <NavLink href="/#district-section" navbarSolid={navbarSolid}>
               Kecamatan
-            </Link>
+            </NavLink>
 
-            <Link
-              href="/#about-section"
-              className={`font-medium transition-colors duration-500 ${
-                navbarSolid
-                  ? "text-slate-700 hover:text-violet-600"
-                  : "text-white hover:text-violet-200"
-              }`}
-            >
+            <NavLink href="/about" navbarSolid={navbarSolid}>
               Tentang
-            </Link>
+            </NavLink>
           </div>
 
           {/* Mobile Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className={`md:hidden p-2 transition-colors duration-500 ${
+            className={`md:hidden p-2 transition-colors duration-500 ease-in-out ${
               navbarSolid ? "text-slate-900" : "text-white"
             }`}
             aria-label="Menu"
@@ -149,7 +121,7 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Dropdown */}
+        {/* Mobile Menu */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ${
             mobileOpen ? "max-h-60 opacity-100 pb-4" : "max-h-0 opacity-0"
@@ -159,7 +131,7 @@ export default function Navbar() {
             <Link
               href="/"
               onClick={() => setMobileOpen(false)}
-              className="py-3 font-medium text-slate-700 hover:text-violet-600 transition-colors"
+              className="py-3 font-medium text-slate-700 hover:text-primary transition-colors"
             >
               Beranda
             </Link>
@@ -167,15 +139,15 @@ export default function Navbar() {
             <Link
               href="/#district-section"
               onClick={() => setMobileOpen(false)}
-              className="py-3 font-medium text-slate-700 hover:text-violet-600 transition-colors"
+              className="py-3 font-medium text-slate-700 hover:text-primary transition-colors"
             >
               Kecamatan
             </Link>
 
             <Link
-              href="/#about-section"
+              href="/about"
               onClick={() => setMobileOpen(false)}
-              className="py-3 font-medium text-slate-700 hover:text-violet-600 transition-colors"
+              className="py-3 font-medium text-slate-700 hover:text-primary transition-colors"
             >
               Tentang
             </Link>
@@ -183,5 +155,28 @@ export default function Navbar() {
         </div>
       </div>
     </nav>
+  );
+}
+
+function NavLink({
+  href,
+  children,
+  navbarSolid,
+}: {
+  href: string;
+  children: React.ReactNode;
+  navbarSolid: boolean;
+}) {
+  return (
+    <Link
+      href={href}
+      className={`font-medium transition-colors duration-500 ease-in-out ${
+        navbarSolid
+          ? "text-slate-700 hover:text-primary"
+          : "text-white hover:text-white/80"
+      }`}
+    >
+      {children}
+    </Link>
   );
 }

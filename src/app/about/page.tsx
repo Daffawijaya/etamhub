@@ -1,288 +1,182 @@
+"use client";
+
+import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { teamMembers } from "@/data/team";
+import { TeamSection } from "@/components/about";
+import AboutSection from "@/components/AboutSection";
 
-const fieldFacilitators = Array.from({ length: 13 }, (_, i) => ({
-  id: i + 1,
-  name: `Pendamping Lapangan ${i + 1}`,
-  role: "Pendamping UMKM",
-  area: `Kecamatan ${i + 1}`,
-}));
+const getTeamByBidang = (bidang: string) =>
+  teamMembers.filter((item) => item.bidang === bidang);
 
-const digitalTeam = [
-  {
-    name: "Dafa Yan Wijaya",
-    role: "Pengembang Aplikasi & Pendamping TI Digitalisasi",
-    highlight: true,
-  },
-  {
-    name: "Pendamping TI 2",
-    role: "Pendamping TI & Digitalisasi",
-  },
-  {
-    name: "Pendamping TI 3",
-    role: "Pendamping TI & Digitalisasi",
-  },
-  {
-    name: "Pendamping TI 4",
-    role: "Pendamping TI & Digitalisasi",
-  },
-  {
-    name: "Pendamping TI 5",
-    role: "Pendamping TI & Digitalisasi",
-  },
+const pimpinan = getTeamByBidang("Pimpinan");
+const pendampingTI = getTeamByBidang("TI dan Digitalisasi");
+const basisData = getTeamByBidang("Basis Data");
+const kewirausahaan = getTeamByBidang("Kewirausahaan");
+const lapangan = getTeamByBidang("Pendamping Lapangan");
+
+const tabs = [
+  "Pimpinan",
+  "TI & Digitalisasi",
+  "Kewirausahaan",
+  "Basis Data",
+  "Lapangan",
 ];
 
 export default function AboutPage() {
+  const [activeTab, setActiveTab] = useState("TI & Digitalisasi");
+
   return (
     <>
       <Navbar />
 
-      <main className="relative overflow-hidden bg-white">
-        {/* Background Blobs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-0 left-0 h-[500px] w-[500px] rounded-full bg-violet-400/20 blur-3xl" />
-          <div className="absolute right-0 top-[300px] h-[600px] w-[600px] rounded-full bg-blue-400/20 blur-3xl" />
-          <div className="absolute bottom-0 left-1/3 h-[500px] w-[500px] rounded-full bg-pink-400/10 blur-3xl" />
-        </div>
-
-        <div className="relative z-10">
-          {/* HERO */}
-          <section className="mx-auto max-w-7xl px-6 py-24">
-            <div className="mx-auto max-w-4xl text-center">
-              <span className="rounded-full bg-violet-100 px-4 py-2 text-sm font-medium text-violet-700">
-                Tentang KAWAKU
-              </span>
-
-              <h1 className="mt-6 text-4xl font-bold text-gray-900 md:text-6xl">
-                Karya Wirausaha dan Ekonomi Kreatif
-                <span className="block text-violet-600">
-                  Kutai Kartanegara
-                </span>
+      <main className="bg-white overflow-hidden">
+        {/* HERO */}
+        {/* HERO */}
+        <section className="bg-primary min-h-screen flex items-center">
+          <div className="max-w-7xl mx-auto px-5 md:px-6 py-20 lg:py-28">
+            <div className="flex flex-col items-center justify-center text-center">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight max-w-5xl">
+                Mendukung Transformasi Digital UMKM Kutai Kartanegara
               </h1>
 
-              <p className="mt-6 text-lg leading-relaxed text-gray-600">
-                KAWAKU merupakan platform digital yang mendukung promosi,
-                pendataan, dan digitalisasi UMKM Kabupaten Kutai Kartanegara.
-                Platform ini menjadi sarana informasi, kolaborasi, dan
-                pengembangan UMKM yang didukung oleh tenaga ahli serta
-                pendamping di berbagai bidang.
+              <p className="mt-6 md:mt-8 text-base md:text-lg text-white/80 leading-relaxed max-w-3xl">
+                Platform digital yang dikembangkan oleh Tenaga Ahli Pendamping
+                UMKM Kukar untuk memperkuat promosi, informasi, dan pengembangan
+                usaha mikro di Kutai Kartanegara.
               </p>
             </div>
-          </section>
+          </div>
+        </section>
 
-          {/* PIMPINAN */}
-          <section className="mx-auto max-w-7xl px-6 pb-20">
-            <div className="mb-10 text-center">
-              <h2 className="text-3xl font-bold text-gray-900">
-                Pimpinan
-              </h2>
-              <p className="mt-3 text-gray-600">
-                Dinas Koperasi dan UKM Kabupaten Kutai Kartanegara
-              </p>
-            </div>
+        {/* ETAMHUB */}
+        <AboutSection />
 
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-                <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-violet-100 text-3xl font-bold text-violet-700">
-                  MR
-                </div>
-
-                <h3 className="text-center text-xl font-bold">
-                  Muhammad Reza, S.T.
-                </h3>
-
-                <p className="mt-2 text-center text-gray-600">
-                  Plt. Kepala Dinas Koperasi dan UKM Kabupaten Kutai
-                  Kartanegara
-                </p>
-              </div>
-
-              <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-                <div className="mx-auto mb-5 flex h-24 w-24 items-center justify-center rounded-full bg-violet-100 text-3xl font-bold text-violet-700">
-                  SE
-                </div>
-
-                <h3 className="text-center text-xl font-bold">
-                  Santi Effensi, S.E.
-                </h3>
-
-                <p className="mt-2 text-center text-gray-600">
-                  Kepala Bidang Pemberdayaan Usaha Mikro
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* STATISTIK */}
-          <section className="mx-auto max-w-7xl px-6 pb-20">
-            <div className="grid gap-6 md:grid-cols-4">
-              <StatCard value="13" label="Pendamping Lapangan" />
-              <StatCard value="5" label="TI & Digitalisasi" />
-              <StatCard value="1" label="Kewirausahaan" />
-              <StatCard value="1" label="Database" />
-            </div>
-          </section>
-
-          {/* DEVELOPER */}
-          <section className="mx-auto max-w-7xl px-6 pb-24">
-            <div className="overflow-hidden rounded-[32px] bg-gradient-to-r from-violet-600 to-blue-600 p-10 text-white">
-              <div className="max-w-4xl">
-                <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
-                  Pengembang Utama
-                </span>
-
-                <h2 className="mt-5 text-4xl font-bold">
-                  Dafa Yan Wijaya
-                </h2>
-
-                <p className="mt-3 text-lg text-white/90">
-                  Tenaga Ahli TI & Digitalisasi
-                </p>
-
-                <p className="mt-6 leading-relaxed text-white/90">
-                  Pengembang dan perancang utama aplikasi KAWAKU. Bertanggung
-                  jawab dalam pengembangan sistem, desain antarmuka,
-                  digitalisasi layanan UMKM, pengelolaan data, serta
-                  pengembangan fitur yang mendukung promosi dan pemberdayaan
-                  UMKM Kabupaten Kutai Kartanegara.
-                </p>
-
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
-                    Full Stack Developer
-                  </span>
-
-                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
-                    UI/UX Designer
-                  </span>
-
-                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
-                    Digitalisasi UMKM
-                  </span>
-
-                  <span className="rounded-full bg-white/20 px-4 py-2 text-sm">
-                    System Developer
-                  </span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* TI DIGITALISASI */}
-          <section className="mx-auto max-w-7xl px-6 pb-24">
-            <h2 className="mb-10 text-center text-3xl font-bold">
-              Tim TI & Digitalisasi
+        {/* STATS */}
+        {/* STATS */}
+        <section className="py-16 md:py-24 text-center">
+          <div className="max-w-6xl mx-auto px-5">
+            <h2 className="text-3xl md:text-5xl font-bold text-slate-900">
+              Tim Pendamping KAWAKU
             </h2>
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {digitalTeam.map((member) => (
-                <div
-                  key={member.name}
-                  className={`rounded-3xl border p-6 transition-all hover:-translate-y-1 hover:shadow-lg ${
-                    member.highlight
-                      ? "border-violet-300 bg-violet-50"
-                      : "border-gray-100 bg-white"
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mt-12 md:mt-20">
+              <div>
+                <h3 className="text-4xl md:text-6xl font-bold text-primary">
+                  3
+                </h3>
+                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
+                  TI & Digitalisasi
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-4xl md:text-6xl font-bold text-primary">
+                  2
+                </h3>
+                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
+                  Kewirausahaan
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-4xl md:text-6xl font-bold text-primary">
+                  2
+                </h3>
+                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
+                  Basis Data
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-4xl md:text-6xl font-bold text-primary">
+                  13
+                </h3>
+                <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
+                  Pendamping Lapangan
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* TEAM TAB */}
+        <div className="max-w-7xl mx-auto px-5 md:px-6">
+          {/* TAB MENU */}
+          <div className="flex justify-center mb-10 md:mb-16">
+            <div
+              className="
+        inline-flex
+        bg-slate-100
+        rounded-xl md:rounded-2xl
+        p-1
+        gap-1
+        overflow-x-auto
+        max-w-full
+        scrollbar-hide
+      "
+            >
+              {tabs.map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-3 py-2 md:px-6 md:py-3 rounded-lg md:rounded-xl text-xs md:text-base font-medium whitespace-nowrap transition-all duration-300 ${
+                    activeTab === tab
+                      ? "bg-primary text-white shadow-lg"
+                      : "text-slate-700 hover:bg-white"
                   }`}
                 >
-                  <div className="mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-violet-100 text-2xl font-bold text-violet-700">
-                    {member.name
-                      .split(" ")
-                      .map((word) => word[0])
-                      .slice(0, 2)
-                      .join("")}
-                  </div>
-
-                  <h3 className="text-xl font-bold">{member.name}</h3>
-
-                  <p className="mt-2 text-gray-600">{member.role}</p>
-                </div>
+                  {tab}
+                </button>
               ))}
             </div>
-          </section>
+          </div>
 
-          {/* PENDAMPING LAPANGAN */}
-          <section className="mx-auto max-w-7xl px-6 pb-24">
-            <h2 className="mb-10 text-center text-3xl font-bold">
-              Pendamping Lapangan UMKM
-            </h2>
+          {/* CONTENT */}
+          {activeTab === "Pimpinan" && (
+            <TeamSection title="Pimpinan" members={pimpinan} />
+          )}
 
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-              {fieldFacilitators.map((member) => (
-                <div
-                  key={member.id}
-                  className="rounded-3xl border border-gray-100 bg-white p-6 transition-all hover:-translate-y-1 hover:shadow-lg"
-                >
-                  <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-violet-100 text-xl font-bold text-violet-700">
-                    {member.id}
-                  </div>
+          {activeTab === "TI & Digitalisasi" && (
+            <TeamSection
+              title="Pendamping TI & Digitalisasi"
+              members={pendampingTI}
+            />
+          )}
 
-                  <h3 className="font-bold text-gray-900">
-                    {member.name}
-                  </h3>
+          {activeTab === "Kewirausahaan" && (
+            <TeamSection
+              title="Pendamping Kewirausahaan"
+              members={kewirausahaan}
+            />
+          )}
 
-                  <p className="mt-2 text-sm text-gray-600">
-                    {member.role}
-                  </p>
+          {activeTab === "Basis Data" && (
+            <TeamSection title="Pendamping Basis Data" members={basisData} />
+          )}
 
-                  <span className="mt-4 inline-block rounded-full bg-violet-100 px-3 py-1 text-xs font-medium text-violet-700">
-                    {member.area}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* BIDANG LAIN */}
-          <section className="mx-auto max-w-7xl px-6 pb-24">
-            <h2 className="mb-10 text-center text-3xl font-bold">
-              Bidang Pendukung
-            </h2>
-
-            <div className="grid gap-6 md:grid-cols-2">
-              <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-                <h3 className="text-xl font-bold">
-                  Pendamping Kewirausahaan
-                </h3>
-
-                <p className="mt-3 text-gray-600">
-                  Mendukung pengembangan kapasitas usaha, peningkatan
-                  kompetensi pelaku UMKM, serta mendorong lahirnya
-                  wirausaha baru.
-                </p>
-              </div>
-
-              <div className="rounded-3xl border border-gray-100 bg-white p-8 shadow-sm">
-                <h3 className="text-xl font-bold">
-                  Pendamping Database
-                </h3>
-
-                <p className="mt-3 text-gray-600">
-                  Bertanggung jawab terhadap pengelolaan data UMKM,
-                  validasi data, pelaporan, dan pengembangan sistem
-                  informasi pendukung program pemberdayaan UMKM.
-                </p>
-              </div>
-            </div>
-          </section>
+          {activeTab === "Lapangan" && (
+            <TeamSection title="Pendamping Lapangan" members={lapangan} />
+          )}
         </div>
+
+        {/* CTA */}
+        <section className="bg-primary py-20 md:py-28">
+          <div className="max-w-5xl mx-auto text-center px-5">
+            <h2 className="text-3xl md:text-5xl font-bold text-white">
+              Bersama Mendukung UMKM Kutai Kartanegara
+            </h2>
+
+            <p className="mt-5 md:mt-6 text-base md:text-xl text-white/80">
+              Membangun ekosistem UMKM yang lebih kuat, inovatif, dan terhubung
+              melalui transformasi digital.
+            </p>
+          </div>
+        </section>
       </main>
 
       <Footer />
     </>
-  );
-}
-
-function StatCard({
-  value,
-  label,
-}: {
-  value: string;
-  label: string;
-}) {
-  return (
-    <div className="rounded-3xl border border-gray-100 bg-white p-8 text-center shadow-sm">
-      <div className="text-4xl font-bold text-violet-600">{value}</div>
-      <p className="mt-2 text-gray-600">{label}</p>
-    </div>
   );
 }

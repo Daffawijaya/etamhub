@@ -15,7 +15,7 @@ export default function DistrictSection() {
   return (
     <section
       id="district-section"
-      className="max-w-7xl mx-auto px-5 md:px-6 py-16 md:py-24 lg:py-28"
+      className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6 py-12 md:py-20 lg:py-28"
     >
       <div className="mb-10 md:mb-14 lg:mb-16 text-center">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 md:mb-5">
@@ -28,7 +28,7 @@ export default function DistrictSection() {
         </p>
       </div>
 
-      <div className="grid gap-4 md:gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {districts.map((district) => {
           const totalUmkm = districtMap[district];
           const slug = slugify(district);
@@ -50,13 +50,22 @@ export default function DistrictSection() {
                 duration-300
               "
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="min-w-0">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
                   <p className="text-sm text-slate-500 mb-2 md:mb-3">
                     Kecamatan
                   </p>
 
-                  <h3 className="text-xl md:text-2xl font-bold text-slate-900 break-words">
+                  <h3
+                    className="
+                      text-lg
+                      md:text-2xl
+                      font-bold
+                      text-slate-900
+                      truncate
+                    "
+                    title={district}
+                  >
                     {district
                       .split(" ")
                       .map(
