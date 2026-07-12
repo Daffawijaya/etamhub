@@ -28,11 +28,7 @@ export default function Hero() {
           {/* LEFT */}
           <div className="text-center lg:text-left">
             <h1 className="text-white font-bold leading-tight text-4xl sm:text-5xl lg:text-6xl">
-              Jelajahi UMKM dari seluruh
-            </h1>
-
-            <h1 className="text-secondary font-bold leading-tight text-4xl sm:text-5xl lg:text-6xl">
-              Kecamatan Kukar
+              Jelajahi UMKM dari seluruh Kecamatan Kukar
             </h1>
 
             <p className="mt-6 lg:mt-8 text-base sm:text-lg lg:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">
