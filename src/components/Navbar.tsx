@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -49,25 +50,44 @@ export default function Navbar() {
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex h-18 md:h-20 items-center justify-between">
           {/* Logo */}
-          <Link href="/" onClick={() => setMobileOpen(false)}>
+          <Link
+            href="/"
+            onClick={() => setMobileOpen(false)}
+            className="flex items-center gap-1"
+          >
+            <div className="relative h-7 w-7">
+              <Image
+                src="/iconsw.png"
+                alt="EtamHub Logo White"
+                fill
+                className={`object-contain transition-opacity duration-500 ${
+                  navbarSolid ? "opacity-0" : "opacity-100"
+                }`}
+                priority
+              />
+
+              <Image
+                src="/iconz.png"
+                alt="EtamHub Logo Color"
+                fill
+                className={`object-contain transition-opacity duration-500 ${
+                  navbarSolid ? "opacity-100" : "opacity-0"
+                }`}
+                priority
+              />
+            </div>
+
             <h1
-              className={`text-xl sm:text-2xl font-bold tracking-tight transition-colors duration-500 ease-in-out ${
+              className={`text-md sm:text-xl font-bold tracking-tight transition-colors duration-500 ease-in-out ${
                 navbarSolid ? "text-slate-900" : "text-white"
               }`}
             >
-              Etam
-              <span
-                className={`transition-colors duration-500 ease-in-out ${
-                  navbarSolid ? "text-primary" : "text-white"
-                }`}
-              >
-                Hub
-              </span>
+              EtamHub
             </h1>
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8 text-md">
+          <div className="hidden md:flex items-center gap-8 text-sm">
             <NavLink href="/" navbarSolid={navbarSolid}>
               Beranda
             </NavLink>

@@ -107,20 +107,20 @@ export default function AboutPage() {
 
           {activeTab === "TI & Digitalisasi" && (
             <TeamSection
-              title="Pendamping TI & Digitalisasi"
+              title="TI & Digitalisasi"
               members={pendampingTI}
             />
           )}
 
           {activeTab === "Kewirausahaan" && (
             <TeamSection
-              title="Pendamping Kewirausahaan"
+              title="Kewirausahaan"
               members={kewirausahaan}
             />
           )}
 
           {activeTab === "Basis Data" && (
-            <TeamSection title="Pendamping Basis Data" members={basisData} />
+            <TeamSection title="Basis Data" members={basisData} />
           )}
 
           {activeTab === "Lapangan" && (
