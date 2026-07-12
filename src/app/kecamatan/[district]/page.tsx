@@ -8,6 +8,7 @@ import UmkmCard from "@/components/UmkmCard";
 import KategoriFilter from "@/components/KategoriFilter";
 import { umkms } from "@/data/umkm";
 import { slugify } from "@/lib/slugify";
+import Breadcrumb from "@/components/Breadcrumb";
 
 type Props = {
   params: Promise<{
@@ -104,8 +105,6 @@ export default function KecamatanPage({ params }: Props) {
     }
 
     return dataDenganJarak;
-
-    return dataDenganJarak;
   }, [data, kategori, urutTerdekat, userLocation]);
 
   const districtName = (data[0]?.kecamatan ?? district ?? "Tidak Diketahui")
@@ -122,15 +121,17 @@ export default function KecamatanPage({ params }: Props) {
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 pt-20 pb-10">
         {/* Breadcrumb */}
-        <nav className="flex flex-wrap items-center gap-2 text-sm text-slate-500 pt-8">
-          <Link href="/" className="hover:text-primary transition-colors">
-            Dashboard
-          </Link>
-
-          <span>›</span>
-
-          <span className="font-medium text-primary">{districtName}</span>
-        </nav>
+        <Breadcrumb
+          items={[
+            {
+              label: "Dashboard",
+              href: "/",
+            },
+            {
+              label: districtName,
+            },
+          ]}
+        />
 
         {/* Header */}
         <div className="mt-4">
@@ -169,14 +170,13 @@ export default function KecamatanPage({ params }: Props) {
           {/* Tombol Terdekat */}
           <button
             onClick={() => setUrutTerdekat(!urutTerdekat)}
-            className={`w-full rounded-xl px-4 py-3 text-sm font-medium transition-all ${
+            className={`w-full rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
               urutTerdekat
-                ? "bg-emerald-600 text-white"
-                : "bg-white border border-slate-200 text-slate-700"
+                ? "bg-emerald-600 border-emerald-600 text-white"
+                : "bg-white border-slate-200 text-slate-700"
             }`}
           >
-            📍{" "}
-            {urutTerdekat ? "Lokasi Terdekat Aktif" : "Urutkan Lokasi Terdekat"}
+            📍 Lokasi Terdekat
           </button>
         </div>
 
@@ -193,11 +193,15 @@ export default function KecamatanPage({ params }: Props) {
                   UMKM
                 </p>
 
-                {urutTerdekat && (
-                  <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">
+                <div className="w-24">
+                  <span
+                    className={`inline-flex rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 transition-opacity duration-200 ${
+                      urutTerdekat ? "opacity-100" : "opacity-0"
+                    }`}
+                  >
                     📍 Terdekat
                   </span>
-                )}
+                </div>
               </div>
             </div>
 

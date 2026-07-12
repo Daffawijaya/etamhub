@@ -1,9 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import UmkmDetail from "@/components/Umkm/UmkmDetail";
 import { umkms } from "@/data/umkm";
 import Footer from "@/components/Footer";
+import Breadcrumb from "@/components/Breadcrumb";
 
 type Props = {
   params: Promise<{
@@ -30,30 +30,22 @@ export default async function UmkmPage({ params }: Props) {
       <Navbar />
 
       <main className="flex-1 py-20 relative z-10">
-        <div className="max-w-7xl mx-auto px-5 pt-8 md:px-6">
-          <nav className="flex flex-wrap items-center gap-2 text-xs md:text-sm text-gray-500">
-            <Link
-              href="/"
-              className="hover:text-primary transition-colors"
-            >
-              Dashboard
-            </Link>
-
-            <span>›</span>
-
-            <Link
-              href={`/kecamatan/${kecamatanSlug}`}
-              className="hover:text-primary transition-colors"
-            >
-              {umkm.kecamatan}
-            </Link>
-
-            <span>›</span>
-
-            <span className="font-medium text-primary truncate max-w-[180px] md:max-w-none">
-              {umkm.nama}
-            </span>
-          </nav>
+        <div className="max-w-7xl mx-auto px-5 md:px-6">
+          <Breadcrumb
+            items={[
+              {
+                label: "Dashboard",
+                href: "/",
+              },
+              {
+                label: umkm.kecamatan,
+                href: `/kecamatan/${kecamatanSlug}`,
+              },
+              {
+                label: umkm.nama,
+              },
+            ]}
+          />
         </div>
 
         <UmkmDetail {...umkm} />
