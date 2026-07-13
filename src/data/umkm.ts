@@ -321,4 +321,28 @@ export const umkms = [
   facebook: "",
   tiktok: "",
 },
+{
+  id: 15,
+  nama: "Yuni Riadi Rental & Carter",
+  pemilik: "Memet Riadi",
+  kategori: "Jasa",
+  subkategori: "Rental",
+  deskripsi:
+    "Yuni Riadi Rental & Carter merupakan usaha jasa penyewaan kendaraan yang melayani berbagai kebutuhan transportasi masyarakat, baik untuk keperluan pribadi, keluarga, perjalanan dinas, wisata, maupun kegiatan lainnya. Menyediakan beberapa pilihan armada yang nyaman dan terawat, di antaranya Daihatsu Xenia, Daihatsu Sigra, dan Toyota Kijang Innova yang siap digunakan untuk perjalanan dalam maupun luar daerah. Setiap kendaraan mendapatkan perawatan secara berkala untuk memastikan keamanan, kenyamanan, dan performa yang optimal selama digunakan oleh pelanggan. Dengan mengutamakan pelayanan yang ramah, proses pemesanan yang mudah, serta komitmen terhadap kepuasan pelanggan, usaha ini hadir sebagai solusi transportasi yang praktis, aman, dan terpercaya. Melalui kualitas armada yang terjaga dan pelayanan yang profesional, Yuni Riadi Rental & Carter terus berupaya memberikan pengalaman perjalanan yang nyaman dan menyenangkan bagi setiap pelanggan.",
+  gambar: [
+    "https://drive.google.com/open?id=1EO67eGzBsx6i3p_wg0QbzDA7NItw-CBl",
+    "https://drive.google.com/open?id=1lGorz2NW-qqn8XpPfu37rTuWwBRNPo-C",
+    "https://drive.google.com/open?id=1VfEOwsuD8cmQqzMVDiD6Rcy1UUiGAFbw",
+    "https://drive.google.com/open?id=1BYtecqjNPSLsx-N4zupMNGpURQTYr6hJ",
+    "https://drive.google.com/open?id=15EBfPYQZP-h0__eFNhQGpjc3urOMEcvD",
+  ],
+  kecamatan: "Tenggarong Seberang",
+  alamat: "Jalan Poros L3, Blok B, Seberang Gang Pecahan",
+  lat: -0.367577202574198,
+  lng: 117.116851771562,
+  whatsapp: "081254701200",
+  instagram: "yuni_riady",
+  facebook: "",
+  tiktok: "",
+},
 ];
