@@ -345,4 +345,24 @@ export const umkms = [
   facebook: "",
   tiktok: "",
 },
+{
+  id: 16,
+  nama: "Kedai Zia",
+  pemilik: "Rizki",
+  kategori: "Perdagangan",
+  subkategori: "Jajanan & Snack",
+  deskripsi:
+    "Kedai Zia merupakan usaha kuliner yang menyediakan berbagai pilihan jajanan dan minuman dengan harga yang terjangkau untuk semua kalangan. Menu yang ditawarkan antara lain burger, kebab mini, kentang goreng, serta beragam minuman segar yang cocok dinikmati kapan saja. Dengan harga mulai dari Rp6.000, Kedai Zia berkomitmen menghadirkan makanan dan minuman yang lezat, praktis, dan ramah di kantong. Mengutamakan kualitas bahan, cita rasa yang konsisten, serta pelayanan yang baik, Kedai Zia hadir sebagai pilihan kuliner bagi masyarakat yang mencari camilan dan minuman dengan harga terjangkau namun tetap berkualitas.",
+  gambar: [
+    "https://drive.google.com/open?id=1lrlk-4DMDomT05-kG-9TgpfN2WnrQOUi",
+  ],
+  kecamatan: "Samboja",
+  alamat: "Jl. Sei Tanggi RT 2, Kelurahan Handil Baru, Kecamatan Samboja",
+  lat: -0.930796843041854,
+  lng: 117.19458649708,
+  whatsapp: "0895336813534",
+  instagram: "rizkiamelia151",
+  facebook: "",
+  tiktok: "",
+},
 ];
