@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import DaftarModal from "./DaftarModal";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -12,6 +13,8 @@ export default function Navbar() {
 
   const [isHero, setIsHero] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
   useEffect(() => {
     if (!isTransparentPage) {
@@ -48,7 +51,7 @@ export default function Navbar() {
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="flex h-18 md:h-20 items-center justify-between">
+        <div className="grid h-18 md:h-20 grid-cols-[auto_1fr_auto] items-center">
           {/* Logo */}
           <Link
             href="/"
@@ -86,8 +89,8 @@ export default function Navbar() {
             </h1>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-8 text-sm">
+          {/* Desktop Menu Center */}
+          <div className="hidden md:flex items-center justify-center gap-10 text-sm">
             <NavLink href="/" navbarSolid={navbarSolid}>
               Beranda
             </NavLink>
@@ -101,50 +104,66 @@ export default function Navbar() {
             </NavLink>
           </div>
 
+          {/* Right Side */}
+          <div className="hidden md:flex items-center">
+            <button
+              onClick={() => setOpenDaftarModal(true)}
+              className={`px-6 py-2.5 rounded-full font-semibold shadow-lg transition-all duration-300 hover:-translate-y-0.5 ${
+                navbarSolid
+                  ? "bg-primary text-white hover:opacity-90"
+                  : "bg-white text-primary hover:bg-white/90"
+              }`}
+            >
+              Daftar UMKM
+            </button>
+          </div>
+
           {/* Mobile Button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className={`md:hidden p-2 transition-colors duration-500 ease-in-out ${
-              navbarSolid ? "text-slate-900" : "text-white"
-            }`}
-            aria-label="Menu"
-          >
-            {mobileOpen ? (
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            ) : (
-              <svg
-                className="w-7 h-7"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            )}
-          </button>
+          <div className="flex justify-end md:hidden">
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className={`p-2 transition-colors duration-500 ease-in-out ${
+                navbarSolid ? "text-slate-900" : "text-white"
+              }`}
+              aria-label="Menu"
+            >
+              {mobileOpen ? (
+                <svg
+                  className="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  className="w-7 h-7"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-300 ${
-            mobileOpen ? "max-h-60 opacity-100 pb-4" : "max-h-0 opacity-0"
+            mobileOpen ? "max-h-80 opacity-100 pb-4" : "max-h-0 opacity-0"
           }`}
         >
           <div className="flex flex-col gap-1 pt-2 border-t border-slate-200">
@@ -171,9 +190,23 @@ export default function Navbar() {
             >
               Tentang
             </Link>
+
+            <button
+              onClick={() => {
+                setMobileOpen(false);
+                setOpenDaftarModal(true);
+              }}
+              className="mt-2 bg-primary text-white text-center py-3 rounded-xl font-semibold"
+            >
+              Daftar UMKM
+            </button>
           </div>
         </div>
       </div>
+      <DaftarModal
+        open={openDaftarModal}
+        onClose={() => setOpenDaftarModal(false)}
+      />
     </nav>
   );
 }
