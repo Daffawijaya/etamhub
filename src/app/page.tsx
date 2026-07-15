@@ -16,7 +16,6 @@ export default function Home() {
         <Hero />
 
         <div className="relative">
-
           {/* Content */}
           <div className="relative z-10">
             <StatsSection />
@@ -26,7 +25,15 @@ export default function Home() {
         </div>
       </main>
 
-      <Footer />
+      <Footer
+        title={
+          <>
+            Temukan UMKM Lokal
+            <br />
+            Kutai Kartanegara
+          </>
+        }
+      />
       <FooterBrand />
     </>
   );
