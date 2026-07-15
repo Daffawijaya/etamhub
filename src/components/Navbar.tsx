@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import DaftarModal from "./DaftarModal";
@@ -9,225 +8,178 @@ import DaftarModal from "./DaftarModal";
 export default function Navbar() {
   const pathname = usePathname();
 
-  const isTransparentPage = pathname === "/" || pathname === "/about";
-
-  const [isHero, setIsHero] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
-
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
+  const [showNavbar, setShowNavbar] = useState(
+    pathname !== "/" && pathname !== "/about",
+  );
+
   useEffect(() => {
-    if (!isTransparentPage) {
-      setIsHero(false);
+    const isHeroPage = pathname === "/" || pathname === "/about";
+
+    if (!isHeroPage) {
+      setShowNavbar(true);
       return;
     }
 
     const handleScroll = () => {
-      setIsHero(window.scrollY < 80);
+      setShowNavbar(window.scrollY > 200);
     };
 
     handleScroll();
+
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isTransparentPage]);
-
-  const navbarSolid = !isTransparentPage || !isHero || mobileOpen;
+  }, [pathname]);
 
   return (
-    <nav className="fixed inset-x-0 top-0 z-50">
-      {/* Transparent State */}
-      <div
-        className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-          navbarSolid ? "opacity-0" : "opacity-100"
+    <>
+      <nav
+        className={`fixed top-4 left-1/2 -translate-x-1/2 z-50 w-auto transition-all duration-500 ease-out ${
+          showNavbar
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-10 pointer-events-none"
         }`}
-      />
+      >
+        <div className="rounded-lg border border-zinc-700/60 bg-[#111111]/75 backdrop-blur-xl">
+          {/* Desktop Navbar */}
+          <div className="hidden md:flex items-center gap-8 pl-[15px] pr-[7px] h-[50px]">
+            {/* Brand */}
+            <Link href="/">
+              <span className="text-white text-2xl font-semibold tracking-tight inline-block -translate-y-[2.4px]">
+                e.
+              </span>
+            </Link>
 
-      {/* Solid State */}
-      <div
-        className={`absolute inset-0 bg-white border-b border-slate-200 transition-opacity duration-500 ease-in-out ${
-          navbarSolid ? "opacity-100" : "opacity-0"
-        }`}
-      />
+            {/* Menu */}
+            <div className="flex items-center gap-6">
+              <NavLink href="/">Beranda</NavLink>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid h-18 md:h-20 grid-cols-[auto_1fr_auto] items-center">
-          {/* Logo */}
-          <Link
-            href="/"
-            onClick={() => setMobileOpen(false)}
-            className="flex items-center gap-1"
-          >
-            <div className="relative h-7 w-7">
-              <Image
-                src="/iconsw.png"
-                alt="EtamHub Logo White"
-                fill
-                className={`object-contain transition-opacity duration-500 ${
-                  navbarSolid ? "opacity-0" : "opacity-100"
-                }`}
-                priority
-              />
+              <NavLink href="/#district-section">Kecamatan</NavLink>
 
-              <Image
-                src="/iconz.png"
-                alt="EtamHub Logo Color"
-                fill
-                className={`object-contain transition-opacity duration-500 ${
-                  navbarSolid ? "opacity-100" : "opacity-0"
-                }`}
-                priority
-              />
+              <NavLink href="/about">Tentang</NavLink>
             </div>
 
-            <h1
-              className={`text-md sm:text-xl font-bold tracking-tight transition-colors duration-500 ease-in-out ${
-                navbarSolid ? "text-slate-900" : "text-white"
-              }`}
-            >
-              EtamHub
-            </h1>
-          </Link>
-
-          {/* Desktop Menu Center */}
-          <div className="hidden md:flex items-center justify-center gap-10 text-sm">
-            <NavLink href="/" navbarSolid={navbarSolid}>
-              Beranda
-            </NavLink>
-
-            <NavLink href="/#district-section" navbarSolid={navbarSolid}>
-              Kecamatan
-            </NavLink>
-
-            <NavLink href="/about" navbarSolid={navbarSolid}>
-              Tentang
-            </NavLink>
-          </div>
-
-          {/* Right Side */}
-          <div className="hidden md:flex items-center">
+            {/* Button */}
             <button
               onClick={() => setOpenDaftarModal(true)}
-              className={`px-5 py-2 text-sm rounded-full font-semibold shadow-lg transition-all duration-300 hover:-translate-y-0.5 ${
-                navbarSolid
-                  ? "bg-primary text-white hover:opacity-90"
-                  : "bg-white text-primary hover:bg-white/90"
-              }`}
+              className="bg-white text-black px-3 py-2 rounded-sm text-xs font-medium hover:bg-zinc-200 transition-colors"
             >
               Daftar UMKM
             </button>
           </div>
 
-          {/* Mobile Button */}
-          <div className="flex justify-end md:hidden">
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className={`p-2 transition-colors duration-500 ease-in-out ${
-                navbarSolid ? "text-slate-900" : "text-white"
+          {/* Mobile Navbar */}
+          <div className="md:hidden">
+            <div className="flex items-center justify-between px-4 h-14 min-w-[320px]">
+              <Link href="/">
+                <span className="text-white text-base font-semibold tracking-tight">
+                  EtamHub
+                </span>
+              </Link>
+
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="text-white"
+                aria-label="Menu"
+              >
+                {mobileOpen ? (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
+
+            <div
+              className={`overflow-hidden transition-all duration-300 ${
+                mobileOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
               }`}
-              aria-label="Menu"
             >
-              {mobileOpen ? (
-                <svg
-                  className="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
+              <div className="border-t border-zinc-700/60 px-4 py-4 flex flex-col gap-4">
+                <Link
+                  href="/"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-sm text-zinc-300 hover:text-white transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  className="w-7 h-7"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  viewBox="0 0 24 24"
+                  Beranda
+                </Link>
+
+                <Link
+                  href="/#district-section"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-sm text-zinc-300 hover:text-white transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              )}
-            </button>
+                  Kecamatan
+                </Link>
+
+                <Link
+                  href="/about"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-sm text-zinc-300 hover:text-white transition-colors"
+                >
+                  Tentang
+                </Link>
+
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    setOpenDaftarModal(true);
+                  }}
+                  className="bg-white text-black py-2.5 rounded-lg text-sm font-medium"
+                >
+                  Daftar UMKM
+                </button>
+              </div>
+            </div>
           </div>
         </div>
+      </nav>
 
-        {/* Mobile Menu */}
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
-            mobileOpen ? "max-h-80 opacity-100 pb-4" : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="flex flex-col gap-1 pt-2 border-t border-slate-200">
-            <Link
-              href="/"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 font-medium text-slate-700 hover:text-primary transition-colors"
-            >
-              Beranda
-            </Link>
-
-            <Link
-              href="/#district-section"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 font-medium text-slate-700 hover:text-primary transition-colors"
-            >
-              Kecamatan
-            </Link>
-
-            <Link
-              href="/about"
-              onClick={() => setMobileOpen(false)}
-              className="py-3 font-medium text-slate-700 hover:text-primary transition-colors"
-            >
-              Tentang
-            </Link>
-
-            <button
-              onClick={() => {
-                setMobileOpen(false);
-                setOpenDaftarModal(true);
-              }}
-              className="mt-2 bg-primary text-white text-center py-3 rounded-xl font-semibold"
-            >
-              Daftar UMKM
-            </button>
-          </div>
-        </div>
-      </div>
       <DaftarModal
         open={openDaftarModal}
         onClose={() => setOpenDaftarModal(false)}
       />
-    </nav>
+    </>
   );
 }
 
 function NavLink({
   href,
   children,
-  navbarSolid,
 }: {
   href: string;
   children: React.ReactNode;
-  navbarSolid: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={`font-medium transition-colors duration-500 ease-in-out ${
-        navbarSolid
-          ? "text-slate-700 hover:text-primary"
-          : "text-white hover:text-white/80"
-      }`}
+      className="text-xs font-medium text-zinc-300 hover:text-white transition-colors duration-200"
     >
       {children}
     </Link>
