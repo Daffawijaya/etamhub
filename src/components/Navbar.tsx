@@ -42,7 +42,7 @@ export default function Navbar() {
             : "opacity-0 -translate-y-10 pointer-events-none"
         }`}
       >
-        <div className="rounded-lg border border-zinc-700/60 bg-[#111111]/75 backdrop-blur-xl">
+        <div className="rounded-lg border border-zinc-700/60 bg-[#111111]/40 backdrop-blur-xl">
           {/* Desktop Navbar */}
           <div className="hidden md:flex items-center gap-8 pl-[15px] pr-[7px] h-[50px]">
             {/* Brand */}

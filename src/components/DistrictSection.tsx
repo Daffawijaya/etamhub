@@ -13,96 +13,198 @@ export default function DistrictSection() {
   );
 
   return (
-    <section
-      id="district-section"
-      className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6 py-12 md:py-20 lg:py-28"
-    >
-      <div className="mb-10 md:mb-14 lg:mb-16 text-center">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 mb-4 md:mb-5">
-          Pilih Kecamatan
-        </h2>
-
-        <p className="text-base md:text-lg max-w-2xl mx-auto text-slate-600 leading-relaxed">
-          Jelajahi UMKM berdasarkan wilayah di Kutai Kartanegara dan temukan
-          berbagai produk serta usaha lokal unggulan.
-        </p>
+    <section className="relative overflow-hidden bg-dark py-24 md:py-32">
+      {/* Background Glow */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-purple-700/10 blur-[180px]" />
+        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-violet-500/5 blur-[200px]" />
       </div>
 
-      <div className="grid gap-4 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {districts.map((district) => {
-          const totalUmkm = districtMap[district];
-          const slug = slugify(district);
+      {/* Bottom Left Grey Glow */}
+      <div
+        className="
+    absolute
+    -bottom-[420px]
+    -left-[420px]
+    w-[1100px]
+    h-[900px]
+    rounded-full
+    pointer-events-none
+  "
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(95,105,110,0.35) 0%, rgba(70,75,80,0.22) 35%, rgba(40,40,40,0.12) 55%, transparent 75%)",
+          filter: "blur(60px)",
+        }}
+      />
 
-          return (
-            <Link
-              key={district}
-              href={`/kecamatan/${slug}`}
-              className="
-                group
-                bg-white
-                border
-                border-slate-200
-                rounded-2xl
-                p-5 md:p-6 lg:p-7
-                hover:border-slate-300
-                hover:shadow-lg
-                transition-all
-                duration-300
-              "
-            >
-              <div className="flex items-start justify-between gap-3">
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm text-slate-500 mb-2 md:mb-3">
-                    Kecamatan
-                  </p>
+      {/* Subtle Right Bottom Glow */}
+      <div
+        className="
+    absolute
+    -bottom-[300px]
+    right-[-300px]
+    w-[900px]
+    h-[700px]
+    rounded-full
+    pointer-events-none
+  "
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(90,90,90,0.12) 0%, rgba(50,50,50,0.08) 40%, transparent 75%)",
+          filter: "blur(70px)",
+        }}
+      />
 
-                  <h3
-                    className="
-                      text-lg
-                      md:text-2xl
-                      font-bold
-                      text-slate-900
-                      truncate
-                    "
-                    title={district}
-                  >
-                    {district
-                      .split(" ")
-                      .map(
-                        (word) =>
-                          word.charAt(0).toUpperCase() +
-                          word.slice(1).toLowerCase(),
-                      )
-                      .join(" ")}
-                  </h3>
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-16 md:mb-20">
+          <h2
+            style={{
+              background:
+                "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+            }}
+            className="
+    text-center
+    text-xl
+    md:text-3xl
+    lg:text-5xl
+    font-semibold
+    tracking-tight
+  "
+          >
+            Pilih Kecamatan
+          </h2>
 
-                  <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
-                    {totalUmkm} UMKM terdaftar
-                  </p>
-                </div>
+          <p
+            className="
+              mt-6 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed
+            "
+          >
+            Telusuri data UMKM Kutai Kartanegara berdasarkan kecamatan dan
+            temukan berbagai usaha lokal yang telah terdaftar dalam sistem.
+          </p>
+        </div>
 
+        {/* Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {districts.map((district) => {
+            const totalUmkm = districtMap[district];
+            const slug = slugify(district);
+
+            return (
+              <Link
+                key={district}
+                href={`/kecamatan/${slug}`}
+                className="
+                  group
+                  relative
+                  overflow-hidden
+                  rounded-3xl
+                  border
+                  border-white/10
+                  bg-[#161616]
+                  p-6
+                  md:p-7
+                  transition-all
+                  duration-300
+                  hover:border-white/20
+                  hover:bg-[#1a1a1a]
+                  hover:-translate-y-1
+                "
+              >
+                {/* Hover Glow */}
                 <div
                   className="
-                    flex
-                    items-center
-                    justify-center
-                    w-9 h-9
-                    md:w-10 md:h-10
-                    rounded-full
-                    bg-slate-100
-                    text-slate-600
-                    shrink-0
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
+                    absolute
+                    inset-0
+                    opacity-0
+                    group-hover:opacity-100
+                    transition-opacity
+                    duration-500
+                    bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.12),transparent_50%)]
                   "
-                >
-                  →
+                />
+
+                <div className="relative z-10 flex items-start justify-between gap-4">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-zinc-500 mb-3">Kecamatan</p>
+
+                    <h3
+                      className="
+                        text-xl
+                        md:text-2xl
+                        font-medium
+                        text-white
+                        truncate
+                      "
+                      title={district}
+                    >
+                      {district
+                        .split(" ")
+                        .map(
+                          (word) =>
+                            word.charAt(0).toUpperCase() +
+                            word.slice(1).toLowerCase(),
+                        )
+                        .join(" ")}
+                    </h3>
+
+                    <div className="mt-5 flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-violet-400" />
+
+                      <p className="text-zinc-400 text-sm md:text-base">
+                        {totalUmkm} UMKM Terdaftar
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    className="
+                      flex
+                      items-center
+                      justify-center
+                      w-11
+                      h-11
+                      rounded-xl
+                      border
+                      border-white/10
+                      bg-white/[0.03]
+                      text-zinc-300
+                      shrink-0
+                      transition-all
+                      duration-300
+                      group-hover:text-white
+                      group-hover:translate-x-1
+                    "
+                  >
+                    →
+                  </div>
                 </div>
-              </div>
-            </Link>
-          );
-        })}
+
+                {/* Bottom Accent Line */}
+                <div
+                  className="
+                    absolute
+                    bottom-0
+                    left-0
+                    h-px
+                    w-0
+                    bg-gradient-to-r
+                    from-violet-500
+                    via-fuchsia-400
+                    to-transparent
+                    transition-all
+                    duration-500
+                    group-hover:w-full
+                  "
+                />
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
