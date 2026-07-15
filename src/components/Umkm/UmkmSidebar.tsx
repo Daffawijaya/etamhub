@@ -23,6 +23,26 @@ export default function UmkmSidebar({
 }: Props) {
   const whatsappNumber = whatsapp?.replace(/\D/g, "").replace(/^0/, "62");
 
+  const getFacebookUrl = (facebook?: string) => {
+    if (!facebook) return "#";
+
+    const value = facebook.trim();
+
+    if (value.startsWith("http://") || value.startsWith("https://")) {
+      return value;
+    }
+
+    if (
+      value.startsWith("facebook.com") ||
+      value.startsWith("www.facebook.com") ||
+      value.startsWith("web.facebook.com")
+    ) {
+      return `https://${value}`;
+    }
+
+    return `https://facebook.com/${value}`;
+  };
+
   return (
     <div className="rounded-2xl border border-slate-200 bg-white p-5">
       <h3 className="text-lg font-bold text-slate-900">Informasi UMKM</h3>
@@ -155,22 +175,20 @@ export default function UmkmSidebar({
 
             {facebook?.trim() && (
               <button
-                onClick={() =>
-                  window.open(`https://facebook.com/${facebook}`, "_blank")
-                }
+                onClick={() => window.open(getFacebookUrl(facebook), "_blank")}
                 className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-slate-200
-                  px-4
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-slate-700
-                  transition
-                  hover:bg-slate-50
-                "
+      w-full
+      rounded-xl
+      border
+      border-slate-200
+      px-4
+      py-2.5
+      text-sm
+      font-medium
+      text-slate-700
+      transition
+      hover:bg-slate-50
+    "
               >
                 Facebook
               </button>

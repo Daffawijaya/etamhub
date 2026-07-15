@@ -108,7 +108,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center">
             <button
               onClick={() => setOpenDaftarModal(true)}
-              className={`px-6 py-2.5 rounded-full font-semibold shadow-lg transition-all duration-300 hover:-translate-y-0.5 ${
+              className={`px-5 py-2 text-sm rounded-full font-semibold shadow-lg transition-all duration-300 hover:-translate-y-0.5 ${
                 navbarSolid
                   ? "bg-primary text-white hover:opacity-90"
                   : "bg-white text-primary hover:bg-white/90"
