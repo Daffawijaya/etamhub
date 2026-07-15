@@ -398,7 +398,7 @@ export const umkms = [
   ],
   kecamatan: "Muara Wis",
   alamat: "Jln. Biawan RT.07, Desa Muara Wis",
-  lat: 0.317462,
+  lat: -0.317462,
   lng: 116.488575,
   whatsapp: "085157735279",
   instagram: "heilo",

@@ -3,11 +3,12 @@
 import { useMemo, useState, use, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import UmkmCard from "@/components/UmkmCard";
+import UmkmCard from "@/components/district/UmkmCard";
 import KategoriFilter from "@/components/KategoriFilter";
 import { umkms } from "@/data/umkm";
 import { slugify } from "@/lib/slugify";
 import Breadcrumb from "@/components/Breadcrumb";
+import Pagination from "@/components/district/Pagination";
 
 type Props = {
   params: Promise<{
@@ -250,46 +251,11 @@ export default function KecamatanPage({ params }: Props) {
                   ))}
                 </div>
 
-                {totalPages > 1 && (
-                  <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
-                    <button
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.max(prev - 1, 1))
-                      }
-                      disabled={currentPage === 1}
-                      className="px-4 py-2 rounded-lg border border-slate-200 disabled:opacity-50"
-                    >
-                      ←
-                    </button>
-
-                    {Array.from(
-                      { length: totalPages },
-                      (_, index) => index + 1,
-                    ).map((page) => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`w-10 h-10 rounded-lg text-sm font-medium transition ${
-                          currentPage === page
-                            ? "bg-primary text-white"
-                            : "border border-slate-200 hover:bg-slate-50"
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
-
-                    <button
-                      onClick={() =>
-                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-                      }
-                      disabled={currentPage === totalPages}
-                      className="px-4 py-2 rounded-lg border border-slate-200 disabled:opacity-50"
-                    >
-                      →
-                    </button>
-                  </div>
-                )}
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                />
               </>
             )}
           </div>
