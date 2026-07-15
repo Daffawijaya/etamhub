@@ -1,119 +1,71 @@
 "use client";
 
+import Image from "next/image";
+import HeroNavbar from "./HeroNavbar";
+
 export default function Hero() {
-  const scrollToDistrict = () => {
-    const el = document.getElementById("district-section");
-    if (!el) return;
-
-    window.scrollTo({
-      top: el.getBoundingClientRect().top + window.scrollY - 80,
-      behavior: "smooth",
-    });
-  };
-
-  const scrollToAbout = () => {
-    const el = document.getElementById("about-section");
-    if (!el) return;
-
-    window.scrollTo({
-      top: el.getBoundingClientRect().top + window.scrollY - 80,
-      behavior: "smooth",
-    });
-  };
-
   return (
-    <section className="bg-primary min-h-screen flex items-center overflow-hidden pt-20">
-      <div className="max-w-7xl mx-auto w-full px-5 lg:px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* LEFT */}
-          <div className="text-center lg:text-left">
-            <h1 className="text-white font-bold leading-tight text-4xl sm:text-5xl lg:text-6xl">
-              Jelajahi UMKM dari seluruh Kecamatan Kukar
-            </h1>
+    <section
+      className="min-h-[111vh] relative overflow-hidden"
+      style={{
+        background: `
+          linear-gradient(
+            to top,
+            #121313 0%,
+            #4b4038 20%,
+            #605247 40%,
+            #686665 60%,
+            #6a6c6e 70%,
+            #515b65 85%,
+            #434d58 100%
+          )
+        `,
+      }}
+    >
+      <HeroNavbar />
+      <div
+        className="absolute inset-0 pointer-events-none opacity-18 mix-blend-overlay"
+        style={{
+          backgroundImage: "url('/grian.png')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "500px",
+        }}
+      />
 
-            <p className="mt-6 lg:mt-8 text-base sm:text-lg lg:text-xl text-white/90 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-              Temukan produk, layanan, dan usaha lokal unggulan dari berbagai
-              kecamatan di Kutai Kartanegara dalam satu platform digital yang
-              mudah dijelajahi.
-            </p>
+      {/* Text Tengah */}
+      <div className="absolute inset-0 flex items-center justify-center z-10 -translate-y-22">
+        <h1 className="text-white text-4xl md:text-6xl text-center px-4 leading-tight">
+          Jelajahi Seluruh UMKM
+          <br />
+          Kutai Kartanegara
+        </h1>
+      </div>
 
-            <div className="mt-8 lg:mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <button
-                onClick={scrollToDistrict}
-                className="bg-white text-[#4A154B] px-6 lg:px-8 py-4 font-semibold rounded-md hover:scale-105 transition"
-              >
-                PILIH KECAMATAN
-              </button>
+      <div className="absolute bottom-0 left-0 w-full">
+        <Image
+          src="/bgw.png"
+          alt="Background"
+          width={1920}
+          height={400}
+          priority
+          className="w-full h-auto"
+        />
 
-              <button
-                onClick={scrollToAbout}
-                className="bg-[#1264A3] text-white px-6 lg:px-8 py-4 font-semibold rounded-md hover:scale-105 transition"
-              >
-                TENTANG ETAMHUB
-              </button>
-            </div>
-
-            <p className="mt-6 text-white/80 text-base lg:text-lg">
-              Platform UMKM Kutai Kartanegara
-            </p>
-          </div>
-
-          {/* RIGHT - Hanya tampil desktop */}
-          <div className="relative hidden lg:flex justify-end">
-            <div className="absolute w-[450px] h-[450px] rounded-full bg-black/10 blur-3xl" />
-
-            <div className="relative w-full max-w-[600px] h-[420px]">
-              {/* Browser Window */}
-              <div className="absolute right-0 top-0 w-[500px] h-[330px] bg-white rounded-lg shadow-2xl overflow-hidden">
-                <div className="h-12 bg-[#3b103b] flex items-center px-4 gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-400" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <div className="w-3 h-3 rounded-full bg-green-400" />
-                </div>
-
-                <div className="p-6">
-                  <div className="h-5 w-40 bg-gray-200 rounded mb-6" />
-
-                  <div className="bg-gray-100 rounded-lg p-4">
-                    <div className="h-4 w-52 bg-gray-300 rounded mb-3" />
-                    <div className="h-4 w-64 bg-gray-200 rounded mb-6" />
-
-                    <div className="aspect-video rounded-lg bg-gradient-to-br from-purple-300 to-pink-300" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Phone */}
-              <div className="absolute left-0 bottom-0 w-[170px] h-[330px] bg-white rounded-[2rem] shadow-2xl border-[8px] border-[#2c0d2d] overflow-hidden">
-                <div className="h-6 w-24 bg-[#2c0d2d] rounded-b-xl mx-auto" />
-
-                <div className="p-4">
-                  <div className="h-4 w-24 bg-gray-300 rounded mb-6" />
-
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-purple-300" />
-
-                    <div>
-                      <div className="h-3 w-16 bg-gray-300 rounded mb-2" />
-                      <div className="h-2 w-20 bg-gray-200 rounded" />
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="w-10 h-10 rounded-full bg-pink-300" />
-
-                    <div>
-                      <div className="h-3 w-16 bg-gray-300 rounded mb-2" />
-                      <div className="h-2 w-20 bg-gray-200 rounded" />
-                    </div>
-                  </div>
-
-                  <div className="mt-8 h-20 bg-gray-100 rounded-xl" />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, #121313 30%, rgba(18,19,19,0.9) 50%, rgba(18,19,19,0.4) 85%, transparent 100%)",
+            maskImage: "url('/bgw.png')",
+            maskSize: "100% auto",
+            maskRepeat: "no-repeat",
+            maskPosition: "bottom",
+            WebkitMaskImage: "url('/bgw.png')",
+            WebkitMaskSize: "100% auto",
+            WebkitMaskRepeat: "no-repeat",
+            WebkitMaskPosition: "bottom",
+          }}
+        />
       </div>
     </section>
   );

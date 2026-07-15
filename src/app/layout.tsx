@@ -1,6 +1,10 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { montserrat, coiny } from "@/lib/fonts";
+import { Outfit } from "next/font/google";
+
+const outfit = Outfit({
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
   title: "EtamHub",
@@ -17,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
-      <body
-        className={`${montserrat.className} ${montserrat.variable} ${coiny.variable} min-h-full flex flex-col`}
-      >
+      <body className={`${outfit.className} min-h-full flex flex-col`}>
         {children}
       </body>
     </html>

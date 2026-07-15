@@ -3,13 +3,9 @@ import { umkms } from "@/data/umkm";
 export default function StatsSection() {
   const totalUmkm = umkms.length;
 
-  const totalKecamatan = new Set(
-    umkms.map((item) => item.kecamatan)
-  ).size;
+  const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;
 
-  const totalSubkategori = new Set(
-    umkms.map((item) => item.subkategori)
-  ).size;
+  const totalSubkategori = new Set(umkms.map((item) => item.subkategori)).size;
 
   const stats = [
     {
@@ -30,45 +26,59 @@ export default function StatsSection() {
   ];
 
   return (
-    <section className="py-16 md:py-24 lg:py-28 bg-white">
-      <div className="max-w-6xl mx-auto px-5 md:px-6">
-        <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-slate-900">
+    <section className="bg-dark py-24 md:py-32">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
+        <h2
+          style={{
+            background:
+              "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+          className="
+    text-center
+    text-xl
+    md:text-3xl
+    lg:text-5xl
+    font-semibold
+    tracking-tight
+  "
+        >
           Statistik UMKM
         </h2>
 
-        <p className="mt-4 md:mt-5 text-center text-slate-600 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
+        <p className="mt-6 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
           Menampilkan sebaran UMKM yang telah bergabung, mulai dari jumlah
           pelaku usaha, wilayah kecamatan, hingga ragam kategori usaha.
         </p>
 
-        <div className="mt-12 md:mt-16 lg:mt-20 grid grid-cols-1 md:grid-cols-3">
-          {stats.map((stat, index) => (
+        <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+          {stats.map((stat) => (
             <div
               key={stat.label}
-              className={`
-                text-center px-6 md:px-8 lg:px-10 py-8 
-           
-                ${
-                  index !== stats.length - 1
-                    ? ""
-                    : ""
-                }
-                ${
-                  index === stats.length - 1
-                    ? ""
-                    : ""
-                }
-              `}
+              className="
+                bg-[#1b1b1b]
+                border
+                border-zinc-800
+                hover:border-zinc-700
+                transition-all
+                duration-300
+                p-10
+                min-h-[260px]
+                flex
+                flex-col
+                justify-center
+              "
             >
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary">
+              <h3 className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tight text-white">
                 {stat.value}
               </h3>
 
-              <p className="mt-3 md:mt-4 text-base md:text-lg font-semibold text-slate-800">
+              <p className="mt-6 text-xl md:text-2xl font-medium text-white">
                 {stat.label}
               </p>
 
-              <p className=" text-sm md:text-base text-slate-500">
+              <p className="mt-3 text-sm md:text-base text-zinc-400 leading-relaxed">
                 {stat.desc}
               </p>
             </div>
