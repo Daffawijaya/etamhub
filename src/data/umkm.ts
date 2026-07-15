@@ -603,7 +603,7 @@ export const umkms = [
   lng: 117.315722207069,
   whatsapp: "081258108260",
   instagram: "indrianirhyu",
-  facebook: "",
-  tiktok: "iinindriani.vlog",
+  facebook: "iinindriani.vlog",
+  tiktok: "",
 },
 ];
