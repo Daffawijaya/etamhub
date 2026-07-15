@@ -1,4 +1,5 @@
 import { umkms } from "@/data/umkm";
+import SectionHeader from "./textBlock/SectionHeader";
 
 export default function StatsSection() {
   const totalUmkm = umkms.length;
@@ -28,29 +29,10 @@ export default function StatsSection() {
   return (
     <section className="bg-dark pb-24 py-12 md:pb-32 md:pb-16">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <h2
-          style={{
-            background:
-              "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-          className="
-    text-center
-    text-xl
-    md:text-3xl
-    lg:text-5xl
-    font-semibold
-    tracking-tight
-  "
-        >
-          Statistik UMKM
-        </h2>
-
-        <p className="mt-6 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
-          Menampilkan sebaran UMKM yang telah bergabung, mulai dari jumlah
-          pelaku usaha, wilayah kecamatan, hingga ragam kategori usaha.
-        </p>
+        <SectionHeader
+          title="Statistik UMKM"
+          description="Menampilkan sebaran UMKM yang telah bergabung, mulai dari jumlah pelaku usaha, wilayah kecamatan, hingga ragam kategori usaha."
+        />
 
         <div className="mt-16 md:mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
           {stats.map((stat) => (

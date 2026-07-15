@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { umkms } from "@/data/umkm";
 import { slugify } from "@/lib/slugify";
+import SectionHeader from "./textBlock/SectionHeader";
+import BottomGlow from "./decoration/BottomGlow";
 
 export default function DistrictSection() {
   const districtMap = umkms.reduce<Record<string, number>>((acc, item) => {
@@ -20,72 +22,16 @@ export default function DistrictSection() {
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-violet-500/5 blur-[200px]" />
       </div>
 
-      {/* Bottom Left Grey Glow */}
-      <div
-        className="
-    absolute
-    -bottom-[420px]
-    -left-[420px]
-    w-[1100px]
-    h-[900px]
-    rounded-full
-    pointer-events-none
-  "
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(95,105,110,0.35) 0%, rgba(70,75,80,0.22) 35%, rgba(40,40,40,0.12) 55%, transparent 75%)",
-          filter: "blur(60px)",
-        }}
-      />
-
-      {/* Subtle Right Bottom Glow */}
-      <div
-        className="
-    absolute
-    -bottom-[300px]
-    right-[-300px]
-    w-[900px]
-    h-[700px]
-    rounded-full
-    pointer-events-none
-  "
-        style={{
-          background:
-            "radial-gradient(ellipse at center, rgba(90,90,90,0.12) 0%, rgba(50,50,50,0.08) 40%, transparent 75%)",
-          filter: "blur(70px)",
-        }}
-      />
+      <BottomGlow />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-16 md:mb-20">
-          <h2
-            style={{
-              background:
-                "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-            className="
-    text-center
-    text-xl
-    md:text-3xl
-    lg:text-5xl
-    font-semibold
-    tracking-tight
-  "
-          >
-            Pilih Kecamatan
-          </h2>
-
-          <p
-            className="
-              mt-6 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed
-            "
-          >
-            Telusuri data UMKM Kutai Kartanegara berdasarkan kecamatan dan
-            temukan berbagai usaha lokal yang telah terdaftar dalam sistem.
-          </p>
+          <SectionHeader
+            title="Pilih Kecamatan"
+            description="Telusuri data UMKM Kutai Kartanegara berdasarkan kecamatan dan
+            temukan berbagai usaha lokal yang telah terdaftar dalam sistem."
+          />
         </div>
 
         {/* Grid */}
