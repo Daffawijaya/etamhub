@@ -26,7 +26,7 @@ export default function StatsSection() {
   ];
 
   return (
-    <section className="bg-dark py-24 md:py-32">
+    <section className="bg-dark pb-24 py-12 md:pb-32 md:pb-16">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <h2
           style={{
