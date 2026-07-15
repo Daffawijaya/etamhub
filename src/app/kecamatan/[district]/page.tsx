@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState, use, useEffect } from "react";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import UmkmCard from "@/components/UmkmCard";
@@ -38,13 +37,39 @@ export default function KecamatanPage({ params }: Props) {
   const { district } = use(params);
 
   const [kategori, setKategori] = useState("Semua");
-
   const [urutTerdekat, setUrutTerdekat] = useState(false);
 
   const [userLocation, setUserLocation] = useState<{
     lat: number;
     lng: number;
   } | null>(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setItemsPerPage(8);
+      } else if (window.innerWidth >= 768) {
+        setItemsPerPage(6);
+      } else {
+        setItemsPerPage(6);
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [kategori, urutTerdekat]);
 
   useEffect(() => {
     if (!urutTerdekat) return;
@@ -91,12 +116,10 @@ export default function KecamatanPage({ params }: Props) {
     });
 
     if (urutTerdekat && userLocation) {
-      // Urut berdasarkan jarak terdekat
       dataDenganJarak.sort(
         (a, b) => (a.distance ?? 999999) - (b.distance ?? 999999),
       );
     } else {
-      // Urut nama A-Z
       dataDenganJarak.sort((a, b) =>
         a.nama.localeCompare(b.nama, "id", {
           sensitivity: "base",
@@ -106,6 +129,13 @@ export default function KecamatanPage({ params }: Props) {
 
     return dataDenganJarak;
   }, [data, kategori, urutTerdekat, userLocation]);
+
+  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+  const paginatedData = filteredData.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage,
+  );
 
   const districtName = (data[0]?.kecamatan ?? district ?? "Tidak Diketahui")
     .replace(/-/g, " ")
@@ -120,7 +150,6 @@ export default function KecamatanPage({ params }: Props) {
       <Navbar />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 pt-20 pb-10">
-        {/* Breadcrumb */}
         <Breadcrumb
           items={[
             {
@@ -133,7 +162,6 @@ export default function KecamatanPage({ params }: Props) {
           ]}
         />
 
-        {/* Header */}
         <div className="mt-4">
           <h1 className="text-3xl font-bold text-slate-900">
             UMKM Kecamatan {districtName}
@@ -144,9 +172,7 @@ export default function KecamatanPage({ params }: Props) {
           </p>
         </div>
 
-        {/* Mobile Filter */}
         <div className="mt-6 lg:hidden space-y-3">
-          {/* Filter Kategori */}
           <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {categories.map((item) => {
               const active = kategori === item;
@@ -167,7 +193,6 @@ export default function KecamatanPage({ params }: Props) {
             })}
           </div>
 
-          {/* Tombol Terdekat */}
           <button
             onClick={() => setUrutTerdekat(!urutTerdekat)}
             className={`w-full rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
@@ -180,7 +205,6 @@ export default function KecamatanPage({ params }: Props) {
           </button>
         </div>
 
-        {/* Content */}
         <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
           <div>
             <div className="flex items-center justify-between mb-5">
@@ -212,22 +236,64 @@ export default function KecamatanPage({ params }: Props) {
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-                {filteredData.map((item) => (
-                  <UmkmCard
-                    key={item.id}
-                    id={item.id}
-                    nama={item.nama}
-                    subkategori={item.subkategori}
-                    gambar={item.gambar}
-                    distance={urutTerdekat ? item.distance : null}
-                  />
-                ))}
-              </div>
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+                  {paginatedData.map((item) => (
+                    <UmkmCard
+                      key={item.id}
+                      id={item.id}
+                      nama={item.nama}
+                      subkategori={item.subkategori}
+                      gambar={item.gambar}
+                      distance={urutTerdekat ? item.distance : null}
+                    />
+                  ))}
+                </div>
+
+                {totalPages > 1 && (
+                  <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.max(prev - 1, 1))
+                      }
+                      disabled={currentPage === 1}
+                      className="px-4 py-2 rounded-lg border border-slate-200 disabled:opacity-50"
+                    >
+                      ←
+                    </button>
+
+                    {Array.from(
+                      { length: totalPages },
+                      (_, index) => index + 1,
+                    ).map((page) => (
+                      <button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={`w-10 h-10 rounded-lg text-sm font-medium transition ${
+                          currentPage === page
+                            ? "bg-primary text-white"
+                            : "border border-slate-200 hover:bg-slate-50"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    ))}
+
+                    <button
+                      onClick={() =>
+                        setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                      }
+                      disabled={currentPage === totalPages}
+                      className="px-4 py-2 rounded-lg border border-slate-200 disabled:opacity-50"
+                    >
+                      →
+                    </button>
+                  </div>
+                )}
+              </>
             )}
           </div>
 
-          {/* Sidebar */}
           <aside className="hidden lg:block">
             <div className="sticky top-24">
               <KategoriFilter
