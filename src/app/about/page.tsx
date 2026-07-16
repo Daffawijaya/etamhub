@@ -116,7 +116,7 @@ export default function AboutPage() {
       
       <Footer
         title={
-          <>Bersama EtamHub, dukung UMKM lokal untuk tumbuh dan berkembang</>
+          <>Bersama etamhub, dukung UMKM lokal untuk tumbuh dan berkembang</>
         }
       />
       <FooterBrand />

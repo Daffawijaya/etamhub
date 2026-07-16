@@ -18,6 +18,7 @@ export default function TeamCard({
       className="
         group
         relative
+        h-full
         overflow-hidden
         rounded-3xl
         p-[1px]
@@ -28,15 +29,14 @@ export default function TeamCard({
     >
       {/* Animated Border */}
       <div
-        className="
+        className={`
           absolute
           inset-0
           rounded-3xl
-          opacity-0
           transition-opacity
           duration-500
-          group-hover:opacity-100
-        "
+          ${featured ? "opacity-100" : "opacity-0 group-hover:opacity-100"}
+        `}
       >
         <div
           className="
@@ -55,22 +55,33 @@ export default function TeamCard({
 
       {/* Card */}
       <div
-        className={`relative z-10 rounded-[23px] p-6 backdrop-blur-xl ${
-          featured
-            ? `
-              bg-gradient-to-b
-              from-[#844ec0]/20
-              via-[#6f3fb1]/10
-              to-[#ca3785]/10
-              border
-              border-[#844ec0]/30
-            `
-            : `
-              bg-[#161616]
-              border
-              border-white/10
-            `
-        }`}
+        className={`
+          relative
+          z-10
+          flex
+          h-full
+          flex-col
+          rounded-[23px]
+          p-6
+          backdrop-blur-xl
+          transition-all
+          duration-500
+          ${
+            featured
+              ? `
+                border border-[#844ec0]/30
+                bg-[#161616]
+                group-hover:bg-gradient-to-b
+                group-hover:from-[#844ec0]/20
+                group-hover:via-[#6f3fb1]/10
+                group-hover:to-[#ca3785]/10
+              `
+              : `
+                border border-white/10
+                bg-[#161616]
+              `
+          }
+        `}
       >
         {featured && (
           <>
@@ -79,6 +90,10 @@ export default function TeamCard({
                 absolute
                 inset-0
                 rounded-[23px]
+                opacity-0
+                transition-opacity
+                duration-500
+                group-hover:opacity-100
                 bg-gradient-to-br
                 from-[#844ec0]/15
                 via-transparent
@@ -125,8 +140,9 @@ export default function TeamCard({
           "
         />
 
-        <div className="relative z-10">
-          <div className="relative h-65 flex items-end overflow-hidden">
+        <div className="relative z-10 flex h-full flex-col">
+          {/* Foto */}
+          <div className="relative h-64 w-full flex-shrink-0 overflow-hidden">
             <Image
               src={foto}
               alt={nama}
@@ -143,32 +159,31 @@ export default function TeamCard({
             />
           </div>
 
-          <h3
-            className="
-              pt-4
-              text-xl
-              font-bold
-            "
-            style={{
-              background: featured
-                ? "linear-gradient(180deg,#ffffff 0%,#d8c5ff 35%,#b88cff 70%,#844ec0 100%)"
-                : "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            {nama}
-          </h3>
+          {/* Text */}
+          <div className="mt-1 h-20 flex flex-col items-center justify-center text-center">
+            <h3
+              className="text-xl font-bold leading-tight"
+              style={{
+                background: featured
+                  ? "linear-gradient(180deg,#ffffff 0%,#d8c5ff 35%,#b88cff 70%,#844ec0 100%)"
+                  : "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              {nama}
+            </h3>
 
-          <p
-            className={`mt-2 transition-colors duration-300 ${
-              featured
-                ? "text-[#d7c2ff] group-hover:text-white"
-                : "text-white/60 group-hover:text-white/80"
-            }`}
-          >
-            {jabatan}
-          </p>
+            <p
+              className={`mt-1 leading-snug transition-colors duration-300 ${
+                featured
+                  ? "text-[#d7c2ff] group-hover:text-white"
+                  : "text-white/60 group-hover:text-white/80"
+              }`}
+            >
+              {jabatan}
+            </p>
+          </div>
         </div>
       </div>
     </div>
