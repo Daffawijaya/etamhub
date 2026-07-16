@@ -25,7 +25,7 @@ export default function HeroNavbar() {
             </Link>
 
             <Link
-              href="/about"
+              href="/tentang"
               className="text-white/90 hover:text-white transition text-sm"
             >
               Tentang

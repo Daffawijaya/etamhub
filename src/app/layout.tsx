@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "EtamHub",
   description: "Katalog UMKM Kutai Kartanegara",
   icons: {
-    icon: "/icon.png",
+    icon: "/eicon2.png",
   },
 };
 
