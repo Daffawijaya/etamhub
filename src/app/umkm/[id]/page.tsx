@@ -4,6 +4,7 @@ import UmkmDetail from "@/components/Umkm/UmkmDetail";
 import { umkms } from "@/data/umkm";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
+import DetailNavbar from "@/components/navbar/DetailNavbar";
 
 type Props = {
   params: Promise<{
@@ -26,11 +27,20 @@ export default async function UmkmPage({ params }: Props) {
     .replace(/\s+/g, "-");
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-dark">
+      <DetailNavbar />
 
-      <main className="flex-1 py-20 relative z-10">
-        <div className="max-w-7xl mx-auto px-5 md:px-6">
+      <main
+        className="
+          relative
+          flex-1
+          overflow-hidden
+          bg-dark
+          py-20
+        "
+      >
+
+        <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-6">
           <Breadcrumb
             items={[
               {
@@ -48,7 +58,9 @@ export default async function UmkmPage({ params }: Props) {
           />
         </div>
 
-        <UmkmDetail {...umkm} />
+        <div className="relative z-10">
+          <UmkmDetail {...umkm} />
+        </div>
       </main>
 
       <Footer />
