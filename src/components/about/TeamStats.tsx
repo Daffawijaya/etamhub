@@ -24,17 +24,57 @@ export default function TeamStats() {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-12 md:mt-20">
+    <div
+      className="
+        grid
+        grid-cols-2
+        md:grid-cols-4
+        gap-3
+        sm:gap-4
+        md:gap-8
+        mt-8
+        sm:mt-12
+        md:mt-20
+      "
+    >
       {stats.map((item) => (
         <div
           key={item.label}
-          className="border border-white/10 bg-white/[0.03] backdrop-blur-sm p-6"
+          className="
+            border
+            border-white/10
+            bg-white/[0.03]
+            backdrop-blur-sm
+            p-3
+            sm:p-4
+            md:p-6
+          "
         >
-          <h3 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
+          <h3
+            className="
+              text-3xl
+              sm:text-4xl
+              md:text-6xl
+              font-bold
+              text-white
+              tracking-tight
+            "
+          >
             {item.count}
           </h3>
 
-          <p className="mt-3 text-sm md:text-base text-white/60">
+          <p
+            className="
+              mt-1
+              sm:mt-2
+              md:mt-3
+              text-xs
+              sm:text-sm
+              md:text-base
+              text-white/60
+              leading-snug
+            "
+          >
             {item.label}
           </p>
         </div>

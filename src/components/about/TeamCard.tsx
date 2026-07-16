@@ -19,6 +19,9 @@ export default function TeamCard({
         group
         relative
         h-full
+        w-full
+        max-w-[260px]
+        sm:max-w-none
         overflow-hidden
         rounded-3xl
         p-[1px]
@@ -62,10 +65,16 @@ export default function TeamCard({
           h-full
           flex-col
           rounded-[23px]
-          p-6
           backdrop-blur-xl
           transition-all
           duration-500
+
+          ${
+            featured
+              ? "pt-12 px-3 pb-3 sm:pt-12 sm:px-4 md:p-6"
+              : "p-3 sm:p-4 md:p-6"
+          }
+
           ${
             featured
               ? `
@@ -85,6 +94,7 @@ export default function TeamCard({
       >
         {featured && (
           <>
+            {/* Inner Glow */}
             <div
               className="
                 absolute
@@ -102,17 +112,20 @@ export default function TeamCard({
               "
             />
 
+            {/* Badge */}
             <span
               className="
                 absolute
-                top-4
+                top-3
+                md:top-4
                 left-1/2
                 -translate-x-1/2
                 z-20
                 px-3
                 py-1
                 rounded-full
-                text-xs
+                text-[10px]
+                sm:text-xs
                 font-semibold
                 whitespace-nowrap
                 bg-gradient-to-r
@@ -126,7 +139,7 @@ export default function TeamCard({
           </>
         )}
 
-        {/* Hover Glow Dalam */}
+        {/* Hover Glow */}
         <div
           className="
             absolute
@@ -142,7 +155,16 @@ export default function TeamCard({
 
         <div className="relative z-10 flex h-full flex-col">
           {/* Foto */}
-          <div className="relative h-64 w-full flex-shrink-0 overflow-hidden">
+          <div
+            className={`
+              relative
+              w-full
+              flex-shrink-0
+              overflow-hidden
+
+              ${featured ? "h-40 sm:h-48 md:h-64" : "h-44 sm:h-52 md:h-64"}
+            `}
+          >
             <Image
               src={foto}
               alt={nama}
@@ -160,9 +182,27 @@ export default function TeamCard({
           </div>
 
           {/* Text */}
-          <div className="mt-1 h-20 flex flex-col items-center justify-center text-center">
+          <div
+            className="
+              mt-1
+              h-16
+              sm:h-18
+              md:h-20
+              flex
+              flex-col
+              items-center
+              justify-center
+              text-center
+            "
+          >
             <h3
-              className="text-xl font-bold leading-tight"
+              className="
+                text-base
+                sm:text-lg
+                md:text-xl
+                font-bold
+                leading-tight
+              "
               style={{
                 background: featured
                   ? "linear-gradient(180deg,#ffffff 0%,#d8c5ff 35%,#b88cff 70%,#844ec0 100%)"
@@ -175,11 +215,21 @@ export default function TeamCard({
             </h3>
 
             <p
-              className={`mt-1 leading-snug transition-colors duration-300 ${
-                featured
-                  ? "text-[#d7c2ff] group-hover:text-white"
-                  : "text-white/60 group-hover:text-white/80"
-              }`}
+              className={`
+                mt-1
+                text-xs
+                sm:text-sm
+                md:text-base
+                leading-snug
+                transition-colors
+                duration-300
+
+                ${
+                  featured
+                    ? "text-[#d7c2ff] group-hover:text-white"
+                    : "text-white/60 group-hover:text-white/80"
+                }
+              `}
             >
               {jabatan}
             </p>

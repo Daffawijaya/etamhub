@@ -6,16 +6,18 @@ export default function HeroBackground() {
     <section className="relative overflow-hidden bg-dark">
       {/* Background atas */}
       <div
-        className=" absolute
-  top-0
-  left-1/2
-  -translate-x-1/2
-  w-[300%]
-  sm:w-[250%]
-  md:w-[200%]
-  lg:w-[150%]
-  xl:w-full
-  pointer-events-none"
+        className="
+          absolute
+          top-0
+          left-1/2
+          -translate-x-1/2
+          w-[350%]
+          sm:w-[280%]
+          md:w-[200%]
+          lg:w-[150%]
+          xl:w-full
+          pointer-events-none
+        "
         style={{
           WebkitMaskImage: `
             linear-gradient(
@@ -64,7 +66,14 @@ export default function HeroBackground() {
 
       {/* Noise */}
       <div
-        className="absolute inset-0 z-20 pointer-events-none opacity-20 mix-blend-overlay"
+        className="
+          absolute 
+          inset-0 
+          z-20 
+          pointer-events-none 
+          opacity-20 
+          mix-blend-overlay
+        "
         style={{
           backgroundImage: "url('/grian.png')",
           backgroundRepeat: "repeat",
@@ -78,10 +87,49 @@ export default function HeroBackground() {
       </div>
 
       {/* Content */}
-      <div className="relative z-30 flex flex-col items-center justify-center mt-10 py-50">
-        <h1 className="text-5xl text-white text-center">tentang etamhub.</h1>
+      <div
+        className="
+          relative
+          z-30
+          flex
+          flex-col
+          items-center
+          justify-center
+          mt-6
+          py-24
+          sm:py-32
+          md:mt-10
+          md:py-50
+          px-5
+          sm:px-6
+        "
+      >
+        <h1
+          className="
+            text-3xl
+            sm:text-4xl
+            md:text-5xl
+            text-white
+            text-center
+          "
+        >
+          tentang etamhub.
+        </h1>
 
-        <p className="mt-6 text-center text-zinc-400 max-w-3xl text-lg md:text-xl leading-relaxed">
+        <p
+          className="
+            mt-4
+            sm:mt-5
+            md:mt-6
+            text-center
+            text-zinc-400
+            max-w-3xl
+            text-sm
+            sm:text-base
+            md:text-xl
+            leading-relaxed
+          "
+        >
           Menghubungkan UMKM Kutai Kartanegara dengan masyarakat melalui satu
           platform yang memudahkan penemuan, promosi, dan pertumbuhan usaha
           lokal.

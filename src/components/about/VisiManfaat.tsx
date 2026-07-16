@@ -21,8 +21,8 @@ export default function VisiManfaat() {
   ];
 
   return (
-    <section className="relative overflow-hidden py-12 bg-dark">
-      <div className="relative overflow-hidden p-[14px]">
+    <section className="relative overflow-hidden py-8 sm:py-10 md:py-12 bg-dark">
+      <div className="relative overflow-hidden p-[5px] sm:p-[8px] md:p-[14px]">
         {/* FRAME */}
         <div
           className="absolute inset-0"
@@ -42,7 +42,7 @@ export default function VisiManfaat() {
         />
 
         {/* PANEL */}
-        <div className="relative overflow-hidden bg-dark rounded-xl">
+        <div className="relative overflow-hidden bg-dark rounded-sm sm:rounded-lg md:rounded-xl">
           {/* Noise */}
           <div
             className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20"
@@ -54,42 +54,108 @@ export default function VisiManfaat() {
           />
 
           {/* Content */}
-          <div className="relative z-10 py-16 md:py-20">
-            <div className="mx-auto max-w-7xl px-8 md:px-8">
-              <div className="grid gap-14 lg:grid-cols-[2fr_3fr]">
+          <div
+            className="
+              relative
+              z-10
+              py-10
+              sm:py-12
+              md:py-20
+            "
+          >
+            <div className="mx-auto max-w-7xl px-4 sm:px-5 md:px-8">
+              <div
+                className="
+                  grid
+                  gap-8
+                  sm:gap-10
+                  lg:gap-14
+                  lg:grid-cols-[2fr_3fr]
+                "
+              >
                 {/* LEFT */}
-                <div className="flex flex-col justify-center">
+                <div
+                  className="
+    flex
+    flex-col
+    justify-center
+    items-center
+    lg:items-start
+  "
+                >
                   <h2
                     className="
-                      text-left
-                      text-2xl
-                      md:text-4xl
-                      lg:text-5xl
-                      text-white
-                      max-w-lg
-                      leading-tight
-                    "
+      text-center
+      lg:text-left
+      text-2xl
+      sm:text-3xl
+      md:text-4xl
+      lg:text-5xl
+      text-white
+      max-w-lg
+      leading-tight
+    "
                   >
                     Manfaat Platform EtamHub
                   </h2>
                 </div>
 
                 {/* RIGHT */}
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   {benefits.map((item) => (
                     <div
                       key={item.number}
-                      className="group border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/[0.05]"
+                      className="
+                        group
+                        border
+                        border-white/10
+                        bg-white/[0.03]
+                        p-3
+                        sm:p-4
+                        md:p-6
+                        backdrop-blur-sm
+                        transition-all
+                        duration-300
+                        hover:border-white/20
+                        hover:bg-white/[0.05]
+                      "
                     >
-                      <div className="flex gap-6">
-                        <span className="text-4xl font-light text-white/20">
+                      <div className="flex gap-3 sm:gap-5 md:gap-6">
+                        <span
+                          className="
+                            text-2xl
+                            sm:text-3xl
+                            md:text-4xl
+                            font-light
+                            text-white/20
+                          "
+                        >
                           {item.number}
                         </span>
 
                         <div>
-                          <h3 className="text-lg text-white">{item.title}</h3>
+                          <h3
+                            className="
+                              text-sm
+                              sm:text-base
+                              md:text-lg
+                              text-white
+                            "
+                          >
+                            {item.title}
+                          </h3>
 
-                          <p className="mt-2 leading-relaxed text-white/60">
+                          <p
+                            className="
+                              mt-1
+                              sm:mt-2
+                              text-xs
+                              sm:text-sm
+                              md:text-base
+                              leading-relaxed
+                              text-white/60
+                            "
+                          >
                             {item.description}
                           </p>
                         </div>

@@ -24,8 +24,8 @@ export default function AboutPlatformSection() {
 
   return (
     <section className="bg-dark pb-12 md:pb-24">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {items.map((item) => (
             <div
               key={item.title}
@@ -36,18 +36,42 @@ export default function AboutPlatformSection() {
                 hover:border-zinc-700
                 transition-all
                 duration-300
-                p-10
-                min-h-[280px]
+                p-5
+                sm:p-6
+                md:p-10
+                min-h-[180px]
+                sm:min-h-[220px]
+                md:min-h-[280px]
                 flex
                 flex-col
                 justify-center
               "
             >
-              <h3 className="text-3xl md:text-4xl font-semibold tracking-tight text-white">
+              <h3
+                className="
+                  text-xl
+                  sm:text-2xl
+                  md:text-4xl
+                  font-semibold
+                  tracking-tight
+                  text-white
+                "
+              >
                 {item.title}
               </h3>
 
-              <p className="mt-6 text-base md:text-lg text-zinc-400 leading-relaxed">
+              <p
+                className="
+                  mt-3
+                  sm:mt-4
+                  md:mt-6
+                  text-sm
+                  sm:text-base
+                  md:text-lg
+                  text-zinc-400
+                  leading-relaxed
+                "
+              >
                 {item.description}
               </p>
             </div>
