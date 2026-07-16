@@ -56,7 +56,7 @@ export default function Navbar() {
             <div className="flex items-center gap-6">
               <NavLink href="/">Beranda</NavLink>
 
-              <NavLink href="/#district-section">Kecamatan</NavLink>
+              <NavLink href="/#kecamatan">Kecamatan</NavLink>
 
               <NavLink href="/about">Tentang</NavLink>
             </div>
