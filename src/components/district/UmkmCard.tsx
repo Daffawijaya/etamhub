@@ -6,6 +6,7 @@ type Props = {
   id: number;
   nama: string;
   subkategori: string;
+  deskripsi: string;
   gambar: string[];
   distance?: number | null;
 };
@@ -14,6 +15,7 @@ export default function UmkmCard({
   id,
   nama,
   subkategori,
+  deskripsi,
   gambar,
   distance,
 }: Props) {
@@ -26,126 +28,150 @@ export default function UmkmCard({
   };
 
   return (
-    <Link href={`/umkm/${id}`} className="block h-full">
-      <article
+    <Link
+      href={`/umkm/${id}`}
+      className="
+        group
+        flex
+        flex-col
+        h-full
+        overflow-hidden
+        bg-[#1b1b1b]
+        border
+        border-zinc-800
+        hover:border-zinc-700
+        transition-all
+        duration-300
+      "
+    >
+      {/* Image */}
+      <div
         className="
-          group
-          h-full
-          flex
-          flex-col
-          bg-white
-          border
-          border-slate-200
-          rounded-2xl
+          relative
+          aspect-[4/3]
           overflow-hidden
-          hover:border-slate-300
-          hover:shadow-lg
-          transition-all
-          duration-300
+          bg-zinc-900
         "
       >
-        {/* IMAGE */}
-        <div className="">
-          <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
-            <Image
-              src={imageUrl(gambar[0])}
-              alt={nama}
-              fill
-              sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
-              className="
-                object-cover
-                transition-transform
-                duration-500
-                group-hover:scale-[1.03]
-              "
-            />
-          </div>
+        <Image
+          src={imageUrl(gambar?.[0])}
+          alt={nama}
+          fill
+          sizes="
+            (max-width:768px) 100vw,
+            (max-width:1200px) 50vw,
+            33vw
+          "
+          className="
+            object-cover
+            transition-transform
+            duration-500
+            group-hover:scale-105
+          "
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+      </div>
+
+      {/* Content */}
+      <div
+        className="
+          flex
+          flex-col
+          flex-1
+          p-3
+          sm:p-5
+          md:p-6
+        "
+      >
+        {/* Subkategori */}
+        <div
+          className="
+            text-[9px]
+            sm:text-xs
+            capitalize
+            tracking-wider
+            text-zinc-500
+          "
+        >
+          {subkategori}
         </div>
 
-        {/* CONTENT */}
-        <div className="flex flex-col flex-1 px-4 md:px-5 pb-4">
-          {/* SUBKATEGORI */}
-          <p className="text-[11px] md:text-xs text-slate-500 mt-4">
-            {subkategori}
-          </p>
+        {/* Nama */}
+        <h3
+          className="
+            mt-2
+            sm:mt-3
+            text-sm
+            sm:text-lg
+            md:text-xl
+            font-semibold
+            leading-tight
+            text-white
+            line-clamp-3
+          "
+        >
+          {nama}
+        </h3>
 
-          {/* JUDUL FIX 2 BARIS */}
-          <h2
+        {/* Deskripsi */}
+        <p
+          className="
+            mt-3
+            sm:mt-4
+            text-[11px]
+            sm:text-sm
+            leading-relaxed
+            text-zinc-500
+            line-clamp-2
+          "
+        >
+          {deskripsi}
+        </p>
+
+        {/* Bottom Section */}
+        <div className="mt-auto pt-2">
+          {/* Fixed Distance Slot */}
+          <div
             className="
-              text-base
-              md:text-lg
-              font-bold
-              text-slate-900
-              leading-6
-              line-clamp-2
-              h-12
+              h-5
+              sm:h-6
+              flex
+              items-center
+              text-[11px]
+              sm:text-sm
+              text-zinc-400
             "
           >
-            {nama}
-          </h2>
-
-          {/* SLOT JARAK - SELALU ADA AGAR CARD SAMA TINGGI */}
-          <div className="h-7 flex items-center">
             {typeof distance === "number" && (
-              <span
-                className="
-                  inline-flex
-                  items-center
-                  gap-1
-                  rounded-full
-                  bg-emerald-50
-                  px-2.5
-                  py-1
-                  text-[11px]
-                  font-medium
-                  text-emerald-700
-                "
-              >
+              <span className="inline-flex items-center gap-1.5">
                 📍 {formatDistance(distance)}
               </span>
             )}
           </div>
 
-          {/* BUTTON SELALU DI BAWAH */}
-          <div className="mt-auto flex items-center justify-between pt-2">
+          {/* Button */}
+          <div className="pt-2">
             <span
               className="
+                inline-flex
+                items-center
+                gap-1
+                sm:gap-2
                 text-[11px]
-                md:text-xs
-                font-bold
-                uppercase
-                tracking-wider
-                text-primary
-              "
-            >
-              Lihat Detail
-            </span>
-
-            <svg
-              className="
-                w-4
-                h-4
-                md:w-5
-                md:h-5
-                text-primary
-                transition-transform
+                sm:text-sm
+                text-white
+                transition-all
                 duration-300
                 group-hover:translate-x-1
               "
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5 12h14m-6-6 6 6-6 6"
-              />
-            </svg>
+              Lihat Detail
+              <span>→</span>
+            </span>
           </div>
         </div>
-      </article>
+      </div>
     </Link>
   );
 }
