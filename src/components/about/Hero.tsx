@@ -65,7 +65,7 @@ export default function HeroBackground() {
 
       {/* Content */}
       <HeroNavbar />
-      <div className="relative z-30 flex flex-col items-center justify-center mt-20 py-32">
+      <div className="relative z-30 flex flex-col items-center justify-center mt-10 py-50">
         <h1 className="text-5xl text-white text-center">tentang etamhub.</h1>
 
         <p className="mt-6 text-center text-zinc-400 max-w-3xl text-lg md:text-xl leading-relaxed">

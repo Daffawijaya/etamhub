@@ -8,6 +8,9 @@ import { TeamSection } from "@/components/about";
 import AboutSection from "@/components/AboutSection";
 import TeamStats from "@/components/about/TeamStats";
 import Hero from "@/components/about/Hero";
+import AboutPlatformSection from "@/components/about/AboutPlatformSection";
+import UmkmTerbaruSection from "@/components/about/UmkmTerbaru";
+import VisiManfaat from "@/components/about/VisiManfaat";
 
 const getTeamByBidang = (bidang: string) =>
   teamMembers.filter((item) => item.bidang === bidang);
@@ -33,6 +36,9 @@ export default function AboutPage() {
     <>
       <Navbar />
       <Hero />
+      <AboutPlatformSection />
+      <UmkmTerbaruSection />
+      <VisiManfaat />
       <Footer />
     </>
   );
