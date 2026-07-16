@@ -18,7 +18,7 @@ export default function SectionHeader({
         }}
         className="
     text-center
-    text-xl
+    text-2xl
     md:text-3xl
     lg:text-5xl
     font-semibold
@@ -31,7 +31,7 @@ export default function SectionHeader({
       </h2>
 
       {description && (
-        <p className="mt-3 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
+        <p className="mt-2 md:mt-3 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
           {description}
         </p>
       )}

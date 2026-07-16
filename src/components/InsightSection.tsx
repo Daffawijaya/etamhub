@@ -3,7 +3,7 @@ export default function InsightSection() {
     <section className="relative overflow-hidden">
       <div className="">
         {/* FRAME */}
-        <div className="relative overflow-hidden p-[14px]">
+        <div className="relative overflow-hidden p-[10px] sm:p-[14px]">
           {/* Gradient Frame */}
           <div
             className="absolute inset-0"
@@ -23,7 +23,7 @@ export default function InsightSection() {
           />
 
           {/* PANEL */}
-          <div className="relative h-[250px] overflow-hidden">
+          <div className="relative min-h-[220px] sm:h-[250px] overflow-hidden">
             {/* Base */}
             <div
               className="absolute inset-0"
@@ -44,7 +44,17 @@ export default function InsightSection() {
 
             {/* Gold glow */}
             <div
-              className="absolute -top-10 left-1/2 h-32 w-[700px] -translate-x-1/2"
+              className="
+                absolute
+                -top-10
+                left-1/2
+                h-24
+                w-[300px]
+                sm:h-32
+                sm:w-[500px]
+                md:w-[700px]
+                -translate-x-1/2
+              "
               style={{
                 background:
                   "linear-gradient(90deg, transparent, #b98d58, #a56c44, #6a3747, #56316d, transparent)",
@@ -55,7 +65,17 @@ export default function InsightSection() {
 
             {/* Purple glow */}
             <div
-              className="absolute right-[18%] top-2 h-56 w-56 rounded-full"
+              className="
+                absolute
+                right-[5%]
+                sm:right-[18%]
+                top-2
+                h-40
+                w-40
+                sm:h-56
+                sm:w-56
+                rounded-full
+              "
               style={{
                 background: "#59387a",
                 filter: "blur(90px)",
@@ -65,7 +85,17 @@ export default function InsightSection() {
 
             {/* Orange glow */}
             <div
-              className="absolute left-[35%] top-4 h-56 w-56 rounded-full"
+              className="
+                absolute
+                left-[15%]
+                sm:left-[35%]
+                top-4
+                h-40
+                w-40
+                sm:h-56
+                sm:w-56
+                rounded-full
+              "
               style={{
                 background: "#b5824c",
                 filter: "blur(90px)",
@@ -75,7 +105,18 @@ export default function InsightSection() {
 
             {/* Dark blur bottom */}
             <div
-              className="absolute bottom-[-80px] left-1/2 h-40 w-[850px] -translate-x-1/2 rounded-full"
+              className="
+                absolute
+                bottom-[-60px]
+                left-1/2
+                h-32
+                w-[400px]
+                sm:h-40
+                sm:w-[600px]
+                md:w-[850px]
+                -translate-x-1/2
+                rounded-full
+              "
               style={{
                 background: "#101012",
                 filter: "blur(90px)",
@@ -85,7 +126,13 @@ export default function InsightSection() {
 
             {/* Noise */}
             <div
-              className="absolute inset-0 pointer-events-none opacity-18 mix-blend-overlay"
+              className="
+                absolute 
+                inset-0 
+                pointer-events-none 
+                opacity-20 
+                mix-blend-overlay
+              "
               style={{
                 backgroundImage: "url('/grian.png')",
                 backgroundRepeat: "repeat",
@@ -94,9 +141,31 @@ export default function InsightSection() {
             />
 
             {/* Content */}
-            <div className="relative z-10 flex h-full items-center justify-center px-6">
+            <div
+              className="
+                relative 
+                z-10 
+                flex 
+                min-h-[220px]
+                sm:h-full
+                items-center 
+                justify-center 
+                px-5
+                sm:px-8
+              "
+            >
               <div className="max-w-3xl text-center">
-                <h2 className="text-4xl leading-[1.3] text-white md:text-4xl">
+                <h2
+                  className="
+                    text-xl
+                    leading-snug
+                    sm:text-2xl
+                    md:text-3xl
+                    lg:text-4xl
+                    font
+                    text-white
+                  "
+                >
                   Ribuan peluang usaha dimulai dari pelaku lokal yang terus
                   tumbuh dan berkembang
                 </h2>

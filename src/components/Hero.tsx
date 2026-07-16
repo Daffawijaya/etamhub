@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import HeroNavbar from "./HeroNavbar";
+import HeroNavbar from "./navbar/HeroNavbar";
 
 export default function Hero() {
   return (
@@ -34,14 +34,14 @@ export default function Hero() {
 
       {/* Text Tengah */}
       <div className="absolute inset-0 flex items-center justify-center z-10 -translate-y-22">
-        <h1 className="text-white text-4xl md:text-6xl text-center px-4 leading-tight">
+        <h1 className="text-white text-3xl md:text-6xl text-center px-4 leading-tight">
           Jelajahi Seluruh UMKM
           <br />
           Kutai Kartanegara
         </h1>
       </div>
 
-      <div className="absolute bottom-0 left-0 w-full">
+      <div className="absolute bottom-0 left-0 w-[300%] sm:w-[250%] md:w-[200%] lg:w-[150%] xl:w-full">
         <Image
           src="/bgw.png"
           alt="Background"

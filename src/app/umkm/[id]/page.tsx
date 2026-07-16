@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 import UmkmDetail from "@/components/Umkm/UmkmDetail";
 import { umkms } from "@/data/umkm";
 import Footer from "@/components/Footer";
