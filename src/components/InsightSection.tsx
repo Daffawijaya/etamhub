@@ -3,7 +3,7 @@ export default function InsightSection() {
     <section className="relative overflow-hidden">
       <div className="">
         {/* FRAME */}
-        <div className="relative overflow-hidden p-[10px] sm:p-[14px]">
+        <div className="relative overflow-hidden p-[5px] sm:p-[8px] md:p-[14px]">
           {/* Gradient Frame */}
           <div
             className="absolute inset-0"

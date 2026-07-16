@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 
 interface MobileNavbarProps {
@@ -12,10 +13,17 @@ export default function MobileNavbar({ onDaftarClick }: MobileNavbarProps) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
+  const pathname = usePathname();
+
+  const transparentPage =
+    pathname === "/" || pathname === "/about";
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10);
     };
+
+    handleScroll();
 
     window.addEventListener("scroll", handleScroll);
 
@@ -29,15 +37,15 @@ export default function MobileNavbar({ onDaftarClick }: MobileNavbarProps) {
       {/* Navbar */}
       <nav
         className={`
-          lg:hidden fixed top-0 left-0 z-50 
+          lg:hidden fixed top-0 left-0 z-50
           w-screen h-12
           flex items-center justify-between px-5
           border-b border-white/10
           transition-all duration-300
           ${
-            scrolled
-              ? "bg-[#121313]/40 backdrop-blur-xl"
-              : "bg-transparent backdrop-blur-0"
+            transparentPage && !scrolled
+              ? "bg-transparent backdrop-blur-0"
+              : "bg-dark/9=40 backdrop-blur-xl"
           }
         `}
       >
@@ -45,7 +53,10 @@ export default function MobileNavbar({ onDaftarClick }: MobileNavbarProps) {
           etamhub.
         </Link>
 
-        <button onClick={() => setOpen(true)} className="text-white text-xl">
+        <button
+          onClick={() => setOpen(true)}
+          className="text-white text-xl"
+        >
           <FiMenu />
         </button>
       </nav>
@@ -60,7 +71,6 @@ export default function MobileNavbar({ onDaftarClick }: MobileNavbarProps) {
           ${open ? "translate-y-0" : "-translate-y-full"}
         `}
       >
-        {/* Header */}
         <div className="h-16 flex items-center justify-end px-5">
           <button
             onClick={() => setOpen(false)}
@@ -70,7 +80,6 @@ export default function MobileNavbar({ onDaftarClick }: MobileNavbarProps) {
           </button>
         </div>
 
-        {/* Menu */}
         <div className="flex flex-col px-6 pt-8 gap-8">
           <Link
             href="/"
@@ -97,7 +106,6 @@ export default function MobileNavbar({ onDaftarClick }: MobileNavbarProps) {
           </Link>
         </div>
 
-        {/* Button */}
         <div className="absolute bottom-6 left-0 w-screen px-6">
           <button
             onClick={() => {
