@@ -1,9 +1,8 @@
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 import StatsSection from "@/components/StatsSection";
 import DistrictSection from "@/components/DistrictSection";
 import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
-import AboutSection from "@/components/AboutSection";
 import InsightSection from "@/components/InsightSection";
 import FooterBrand from "@/components/FooterBrand";
 
@@ -12,7 +11,7 @@ export default function Home() {
     <>
       <Navbar />
 
-      <main className="relative overflow-hidden bg-white">
+      <main className="relative overflow-hidden bg-dark">
         <Hero />
 
         <div className="relative">

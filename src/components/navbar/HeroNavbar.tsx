@@ -3,13 +3,13 @@
 import { useState } from "react";
 import Link from "next/link";
 import { VscChevronRight } from "react-icons/vsc";
-import DaftarModal from "./DaftarModal";
+import DaftarModal from "../DaftarModal";
 
 export default function HeroNavbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   return (
-    <header className="absolute top-0 left-0 w-full z-30">
+    <header className="hidden lg:block absolute top-0 left-0 w-full z-30">
       <div className="px-8 py-8">
         <div className="grid grid-cols-3 items-start">
           {/* Left Menu */}

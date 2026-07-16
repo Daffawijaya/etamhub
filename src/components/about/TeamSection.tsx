@@ -1,3 +1,4 @@
+import BottomGlow from "../decoration/BottomGlow";
 import TeamCard from "./TeamCard";
 
 interface TeamSectionProps {
@@ -18,7 +19,8 @@ export default function TeamSection({
   grid = false,
 }: TeamSectionProps) {
   return (
-    <section className="pt-5 pb-28">
+    <section className="pt-5 pb-28 ">
+    
       <div className="max-w-7xl mx-auto px-5 md:px-6">
         <h2
           style={{

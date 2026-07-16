@@ -17,28 +17,96 @@ export default function DistrictSection() {
   return (
     <section
       id="kecamatan"
-      className="relative overflow-hidden bg-dark py-24 md:py-32"
+      className="
+        relative 
+        overflow-hidden 
+        bg-dark 
+        py-16 
+        sm:py-20 
+        md:py-32
+      "
     >
       {/* Background Glow */}
       <div className="absolute inset-0">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-purple-700/10 blur-[180px]" />
-        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-violet-500/5 blur-[200px]" />
+        <div
+          className="
+            absolute 
+            top-0 
+            left-1/2 
+            -translate-x-1/2 
+            w-[500px]
+            sm:w-[700px]
+            md:w-[900px]
+            h-[250px]
+            sm:h-[300px]
+            md:h-[350px]
+            bg-purple-700/10 
+            blur-[120px]
+            md:blur-[180px]
+          "
+        />
+
+        <div
+          className="
+            absolute 
+            bottom-0 
+            right-0 
+            w-[300px]
+            sm:w-[400px]
+            md:w-[500px]
+            h-[300px]
+            sm:h-[400px]
+            md:h-[500px]
+            bg-violet-500/5 
+            blur-[150px]
+            md:blur-[200px]
+          "
+        />
       </div>
 
       <BottomGlow />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+      <div
+        className="
+          relative 
+          z-10 
+          max-w-7xl 
+          mx-auto 
+          px-5
+          sm:px-6
+          lg:px-8
+        "
+      >
         {/* Header */}
-        <div className="text-center mb-16 md:mb-20">
+        <div
+          className="
+            text-center 
+            mb-10
+            sm:mb-14
+            md:mb-20
+          "
+        >
           <SectionHeader
             title="Pilih Kecamatan"
-            description="Telusuri data UMKM Kutai Kartanegara berdasarkan kecamatan dan
-            temukan berbagai usaha lokal yang telah terdaftar dalam sistem."
+            description="
+              Telusuri data UMKM Kutai Kartanegara berdasarkan kecamatan dan
+              temukan berbagai usaha lokal yang telah terdaftar dalam sistem.
+            "
           />
         </div>
 
         {/* Grid */}
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div
+          className="
+            grid 
+            gap-4
+            sm:gap-5
+            md:gap-6
+            grid-cols-1
+            md:grid-cols-2
+            lg:grid-cols-3
+          "
+        >
           {districts.map((district) => {
             const totalUmkm = districtMap[district];
             const slug = slugify(district);
@@ -51,11 +119,13 @@ export default function DistrictSection() {
                   group
                   relative
                   overflow-hidden
-                  rounded-3xl
+                  rounded-2xl
+                  md:rounded-3xl
                   border
                   border-white/10
                   bg-[#161616]
-                  p-6
+                  p-5
+                  sm:p-6
                   md:p-7
                   transition-all
                   duration-300
@@ -77,13 +147,26 @@ export default function DistrictSection() {
                   "
                 />
 
-                <div className="relative z-10 flex items-start justify-between gap-4">
+                <div
+                  className="
+                    relative
+                    z-10
+                    flex
+                    items-start
+                    justify-between
+                    gap-3
+                    sm:gap-4
+                  "
+                >
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm text-zinc-500 mb-3">Kecamatan</p>
+                    <p className="text-xs sm:text-sm text-zinc-500 mb-2 sm:mb-3">
+                      Kecamatan
+                    </p>
 
                     <h3
                       className="
-                        text-xl
+                        text-lg
+                        sm:text-xl
                         md:text-2xl
                         font-medium
                         text-white
@@ -101,7 +184,7 @@ export default function DistrictSection() {
                         .join(" ")}
                     </h3>
 
-                    <div className="mt-5 flex items-center gap-2">
+                    <div className="mt-4 sm:mt-5 flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-violet-400" />
 
                       <p className="text-zinc-400 text-sm md:text-base">
@@ -115,8 +198,10 @@ export default function DistrictSection() {
                       flex
                       items-center
                       justify-center
-                      w-11
-                      h-11
+                      w-9
+                      h-9
+                      sm:w-11
+                      sm:h-11
                       rounded-xl
                       border
                       border-white/10

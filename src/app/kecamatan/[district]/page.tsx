@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, use, useEffect } from "react";
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";
 import UmkmCard from "@/components/district/UmkmCard";
 import KategoriFilter from "@/components/KategoriFilter";

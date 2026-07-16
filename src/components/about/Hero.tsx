@@ -1,12 +1,21 @@
 import Image from "next/image";
-import HeroNavbar from "../HeroNavbar";
+import HeroNavbar from "../navbar/HeroNavbar";
 
 export default function HeroBackground() {
   return (
     <section className="relative overflow-hidden bg-dark">
       {/* Background atas */}
       <div
-        className="absolute top-0 left-0 w-full pointer-events-none"
+        className=" absolute
+  top-0
+  left-1/2
+  -translate-x-1/2
+  w-[300%]
+  sm:w-[250%]
+  md:w-[200%]
+  lg:w-[150%]
+  xl:w-full
+  pointer-events-none"
         style={{
           WebkitMaskImage: `
             linear-gradient(
