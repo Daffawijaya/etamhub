@@ -25,6 +25,7 @@ export default function UmkmInfo({
   useEffect(() => {
     const checkOverflow = () => {
       const el = textRef.current;
+
       if (!el) return;
 
       const isOverflowing = el.scrollHeight > el.clientHeight;
@@ -42,69 +43,162 @@ export default function UmkmInfo({
 
   return (
     <div
-      className={`flex flex-col ${
-        expanded
-          ? `
-            max-h-[65vh]
-            overflow-y-auto
-            pr-2
-            [scrollbar-width:none]
-            [-ms-overflow-style:none]
-            [&::-webkit-scrollbar]:hidden
-          `
-          : ""
-      }`}
+      className={`
+        group
+        relative
+        overflow-hidden
+        rounded-3xl
+        border
+        border-white/10
+        bg-[#161616]
+        p-6
+        md:p-8
+        ${
+          expanded
+            ? `
+              max-h-[70vh]
+              overflow-y-auto
+              [scrollbar-width:none]
+              [-ms-overflow-style:none]
+              [&::-webkit-scrollbar]:hidden
+            `
+            : ""
+        }
+      `}
     >
-      <h1 className="text-3xl font-bold text-slate-900">{nama}</h1>
+      {/* Glow */}
+      <div
+        className="
+          absolute
+          inset-0
+          bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_45%)]
+          pointer-events-none
+        "
+      />
 
-      <div className="mt-4 space-y-2 text-sm text-slate-600">
-        <p>
-          <span className="font-semibold text-slate-900"></span> {kecamatan}
-        </p>
-      </div>
+      <div className="relative z-10">
+        {/* Header */}
 
-      <div className="my-6 border-t border-slate-200" />
+        <h1 className="text-3xl font-semibold leading-tight text-white md:text-4xl">
+          {nama}
+        </h1>
 
-      <div>
-        <div className="mb-4 space-y-2 text-sm text-slate-600">
-          <p>
-            <span>Kategori:</span>{" "}
-            <span className="font-semibold text-slate-900">
-              {kategori}
-            </span>{" "}
-          </p>
-          <p>
-            <span>Subkategori:</span>{" "}
-            <span className="font-semibold text-slate-900">
-              {subkategori}
-            </span>{" "}
-          </p>
-        </div>
-
-        <div className="relative">
-          <p
-            ref={textRef}
-            className={`text-sm leading-7 text-slate-600 ${
-              expanded ? "" : "line-clamp-9"
-            }`}
+        <div className="mt-5 flex flex-wrap gap-2">
+          <span
+            className="
+              rounded-full
+              border
+              border-violet-500/20
+              bg-violet-500/10
+              px-3
+              py-1
+              text-xs
+              font-medium
+              text-violet-300
+            "
           >
-            {deskripsi}
+            {kategori}
+          </span>
+
+          <span
+            className="
+              rounded-full
+              border
+              border-white/10
+              bg-white/[0.03]
+              px-3
+              py-1
+              text-xs
+              font-medium
+              text-zinc-300
+            "
+          >
+            {subkategori}
+          </span>
+        </div>
+
+        {/* Kecamatan */}
+        <div
+          className="
+            mt-6
+            rounded-2xl
+            border
+            border-white/10
+            bg-white/[0.03]
+            px-4
+            py-3
+          "
+        >
+          <p className="text-xs uppercase tracking-wider text-zinc-500">
+            Kecamatan
           </p>
 
-          {!expanded && showButton && (
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-white to-transparent" />
-          )}
+          <p className="mt-1 text-sm font-medium text-white">{kecamatan}</p>
         </div>
-      </div>
 
-      {showButton && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="mt-5 w-fit text-sm font-medium text-primary transition hover:text-violet-700"
-        >
-          {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}
-        </button>
-      )}
+        {/* Divider */}
+        <div className="my-4" />
+
+        {/* Description */}
+        <div>
+ 
+
+          <div className="relative">
+            <p
+              ref={textRef}
+              className={`
+                text-sm
+                leading-8
+                text-zinc-400
+                ${expanded ? "" : "line-clamp-5"}
+              `}
+            >
+              {deskripsi}
+            </p>
+
+            {!expanded && showButton && (
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-x-0
+                  bottom-0
+                  h-10
+                  bg-gradient-to-t
+                  from-[#161616]
+                  via-[#161616]/80
+                  to-transparent
+                "
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Read More */}
+        {showButton && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="
+              mt-6
+              rounded-xl
+              border
+              border-violet-500/20
+              bg-violet-500/10
+              px-4
+              py-2
+              text-sm
+              font-medium
+              text-violet-300
+              transition-all
+              duration-300
+              hover:bg-violet-500/15
+              hover:text-white
+            "
+          >
+            {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}
+          </button>
+        )}
+      </div>
     </div>
   );
 }

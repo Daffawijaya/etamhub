@@ -42,9 +42,43 @@ export default function UmkmDetail({
   const [activeImage, setActiveImage] = useState(gambar[0]);
 
   return (
-    <section className="bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-        <div className="grid w-full gap-10 lg:grid-cols-[420px_minmax(0,1fr)_320px]">
+    <section className="relative overflow-hidden bg-dark">
+      {/* Background Glow */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="
+            absolute
+            top-0
+            left-0
+            h-[300px]
+            w-[300px]
+            bg-violet-500/5
+            blur-[120px]
+          "
+        />
+
+        <div
+          className="
+            absolute
+            bottom-0
+            right-0
+            h-[400px]
+            w-[400px]
+            bg-fuchsia-500/5
+            blur-[180px]
+          "
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-6">
+        <div
+          className="
+            grid
+            gap-4
+            lg:grid-cols-[420px_minmax(0,1fr)_320px]
+            xl:gap-6
+          "
+        >
           {/* Gallery */}
           <div className="w-full min-w-0">
             <UmkmGallery

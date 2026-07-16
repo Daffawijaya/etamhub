@@ -55,14 +55,14 @@ export default function ThumbnailGallery({
     };
   }, [images, needScroll]);
 
-  const scrollLeft = () => {
+  const scrollLeftHandler = () => {
     scrollRef.current?.scrollBy({
       left: -250,
       behavior: "smooth",
     });
   };
 
-  const scrollRight = () => {
+  const scrollRightHandler = () => {
     scrollRef.current?.scrollBy({
       left: 250,
       behavior: "smooth",
@@ -70,14 +70,35 @@ export default function ThumbnailGallery({
   };
 
   return (
-    <div className="relative mt-3 w-full min-w-0">
-      {/* Tombol Kiri */}
+    <div className="relative mt-4 w-full min-w-0">
+      {/* Left Button */}
       {needScroll && (
         <button
-          onClick={scrollLeft}
-          className={`absolute left-0 top-1/2 z-20 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-r-md bg-black/60 text-white shadow backdrop-blur-sm transition-all duration-200 hover:bg-black/80 ${
-            showLeft ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
+          onClick={scrollLeftHandler}
+          className={`
+            absolute
+            left-0
+            top-1/2
+            z-20
+            flex
+            h-8
+            w-8
+            -translate-y-1/2
+            items-center
+            justify-center
+            rounded-r-xl
+            border
+            border-white/10
+            bg-[#161616]/95
+            text-zinc-300
+            backdrop-blur-xl
+            transition-all
+            duration-300
+            hover:border-violet-500/20
+            hover:bg-violet-500/10
+            hover:text-white
+            ${showLeft ? "opacity-100" : "pointer-events-none opacity-0"}
+          `}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -96,7 +117,7 @@ export default function ThumbnailGallery({
         </button>
       )}
 
-      {/* Thumbnail */}
+      {/* Thumbnails */}
       <div
         ref={scrollRef}
         className={
@@ -109,11 +130,30 @@ export default function ThumbnailGallery({
           <button
             key={index}
             onClick={() => setActiveImage(img)}
-            className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-md border transition-all duration-200 ${
-              activeImage === img
-                ? "border-primary ring-2 ring-primary/20"
-                : "border-slate-200"
-            }`}
+            className={`
+              relative
+              h-16
+              w-16
+              shrink-0
+              overflow-hidden
+              rounded-xl
+              border
+              transition-all
+              duration-300
+              ${
+                activeImage === img
+                  ? `
+                    border-violet-500/20
+                    bg-violet-500/10
+                    ring-2
+                    ring-violet-500/20
+                  `
+                  : `
+                    border-white/10
+                    hover:border-violet-500/20
+                  `
+              }
+            `}
           >
             <Image
               src={imageUrl(img)}
@@ -125,13 +165,34 @@ export default function ThumbnailGallery({
         ))}
       </div>
 
-      {/* Tombol Kanan */}
+      {/* Right Button */}
       {needScroll && (
         <button
-          onClick={scrollRight}
-          className={`absolute right-0 top-1/2 z-20 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-l-md bg-black/60 text-white shadow backdrop-blur-sm transition-all duration-200 hover:bg-black/80 ${
-            showRight ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
+          onClick={scrollRightHandler}
+          className={`
+            absolute
+            right-0
+            top-1/2
+            z-20
+            flex
+            h-8
+            w-8
+            -translate-y-1/2
+            items-center
+            justify-center
+            rounded-l-xl
+            border
+            border-white/10
+            bg-[#161616]/95
+            text-zinc-300
+            backdrop-blur-xl
+            transition-all
+            duration-300
+            hover:border-violet-500/20
+            hover:bg-violet-500/10
+            hover:text-white
+            ${showRight ? "opacity-100" : "pointer-events-none opacity-0"}
+          `}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
