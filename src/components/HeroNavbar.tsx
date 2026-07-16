@@ -18,14 +18,14 @@ export default function HeroNavbar() {
             </Link>
 
             <Link
-              href="#kecamatan"
+              href="/#kecamatan"
               className="text-white/90 hover:text-white transition text-sm"
             >
               Kecamatan
             </Link>
 
             <Link
-              href="/tentang"
+              href="/about"
               className="text-white/90 hover:text-white transition text-sm"
             >
               Tentang
