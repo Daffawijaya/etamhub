@@ -1,14 +1,16 @@
 "use client";
 
 import { useMemo, useState, use, useEffect } from "react";
-import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";
 import UmkmCard from "@/components/district/UmkmCard";
-import KategoriFilter from "@/components/KategoriFilter";
+import KategoriFilter from "@/components/district/KategoriFilter";
 import { umkms } from "@/data/umkm";
 import { slugify } from "@/lib/slugify";
 import Breadcrumb from "@/components/Breadcrumb";
 import Pagination from "@/components/district/Pagination";
+import DetailNavbar from "@/components/navbar/DetailNavbar";
+import HeroNavbar from "@/components/navbar/HeroNavbar";
+import DistrictHero from "@/components/district/DistrictHero";
 
 type Props = {
   params: Promise<{
@@ -147,8 +149,8 @@ export default function KecamatanPage({ params }: Props) {
   const categories = ["Semua", "Jasa", "Industri", "Perdagangan"];
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-dark text-white">
+      <DetailNavbar />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 pt-20 pb-10">
         <Breadcrumb
@@ -163,115 +165,122 @@ export default function KecamatanPage({ params }: Props) {
           ]}
         />
 
-        <div className="mt-4">
-          <h1 className="text-3xl font-bold text-slate-900">
-            UMKM Kecamatan {districtName}
-          </h1>
+        <DistrictHero
+          districtName={districtName}
+          totalUmkm={data.length}
+          urutTerdekat={urutTerdekat}
+        />
 
-          <p className="mt-2 text-slate-500">
-            Menampilkan seluruh UMKM yang terdaftar di Kecamatan {districtName}.
+        {/* Filter */}
+        <div className="sticky top-16 z-20 mt-6">
+          <KategoriFilter
+            kategori={kategori}
+            setKategori={setKategori}
+            total={filteredData.length}
+            urutTerdekat={urutTerdekat}
+            setUrutTerdekat={setUrutTerdekat}
+          />
+        </div>
+
+        {/* Info */}
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-zinc-400">
+            Menampilkan{" "}
+            <span className="font-semibold text-white">
+              {filteredData.length}
+            </span>{" "}
+            UMKM
           </p>
         </div>
 
-        <div className="mt-6 lg:hidden space-y-3">
-          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
-            {categories.map((item) => {
-              const active = kategori === item;
-
-              return (
-                <button
-                  key={item}
-                  onClick={() => setKategori(item)}
-                  className={`shrink-0 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
-                    active
-                      ? "bg-primary text-white"
-                      : "bg-white border border-slate-200 text-slate-700"
-                  }`}
-                >
-                  {item}
-                </button>
-              );
-            })}
-          </div>
-
-          <button
-            onClick={() => setUrutTerdekat(!urutTerdekat)}
-            className={`w-full rounded-xl border px-4 py-3 text-sm font-medium transition-colors ${
-              urutTerdekat
-                ? "bg-emerald-600 border-emerald-600 text-white"
-                : "bg-white border-slate-200 text-slate-700"
-            }`}
+        {/* Empty State */}
+        {filteredData.length === 0 ? (
+          <div
+            className="
+      relative
+      mt-8
+      overflow-hidden
+      rounded-3xl
+      border
+      border-white/10
+      bg-[#161616]
+      py-20
+    "
           >
-            📍 Lokasi Terdekat
-          </button>
-        </div>
+            <div
+              className="
+        absolute
+        inset-0
+        bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_45%)]
+      "
+            />
 
-        <div className="mt-8 grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
-          <div>
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-3">
-                <p className="text-sm text-slate-500">
-                  Menampilkan{" "}
-                  <span className="font-semibold text-slate-900">
-                    {filteredData.length}
-                  </span>{" "}
-                  UMKM
-                </p>
-
-                <div className="w-24">
-                  <span
-                    className={`inline-flex rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 transition-opacity duration-200 ${
-                      urutTerdekat ? "opacity-100" : "opacity-0"
-                    }`}
-                  >
-                    📍 Terdekat
-                  </span>
-                </div>
+            <div className="relative z-10 flex flex-col items-center justify-center">
+              <div
+                className="
+          mb-4
+          flex
+          h-14
+          w-14
+          items-center
+          justify-center
+          rounded-2xl
+          border
+          border-white/10
+          bg-white/[0.03]
+          text-2xl
+        "
+              >
+                🔍
               </div>
+
+              <p className="text-center text-zinc-300">
+                Tidak ada UMKM pada kategori ini
+              </p>
+
+              <p className="mt-2 text-center text-sm text-zinc-500">
+                Coba pilih kategori lain untuk melihat data UMKM.
+              </p>
             </div>
 
-            {filteredData.length === 0 ? (
-              <div className="bg-white py-20 flex items-center justify-center">
-                <p className="text-slate-500 text-center">
-                  Tidak ada UMKM pada kategori ini.
-                </p>
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-                  {paginatedData.map((item) => (
-                    <UmkmCard
-                      key={item.id}
-                      id={item.id}
-                      nama={item.nama}
-                      subkategori={item.subkategori}
-                      gambar={item.gambar}
-                      distance={urutTerdekat ? item.distance : null}
-                    />
-                  ))}
-                </div>
-
-                <Pagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                />
-              </>
-            )}
+            <div
+              className="
+        absolute
+        bottom-0
+        left-0
+        h-px
+        w-full
+        bg-gradient-to-r
+        from-violet-500
+        via-fuchsia-400
+        to-transparent
+      "
+            />
           </div>
-
-          <aside className="hidden lg:block">
-            <div className="sticky top-24">
-              <KategoriFilter
-                kategori={kategori}
-                setKategori={setKategori}
-                total={filteredData.length}
-                urutTerdekat={urutTerdekat}
-                setUrutTerdekat={setUrutTerdekat}
-              />
+        ) : (
+          <>
+            {/* Grid UMKM */}
+            <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-6">
+              {paginatedData.map((item) => (
+                <UmkmCard
+                  key={item.id}
+                  id={item.id}
+                  nama={item.nama}
+                  subkategori={item.subkategori}
+                  deskripsi={item.deskripsi}
+                  gambar={item.gambar}
+                  distance={urutTerdekat ? item.distance : null}
+                />
+              ))}
             </div>
-          </aside>
-        </div>
+
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          </>
+        )}
       </main>
 
       <Footer />

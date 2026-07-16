@@ -72,7 +72,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      <MobileNavbar onDaftarClick={() => setOpenDaftarModal(true)} />
+      <MobileNavbar />
 
       <DaftarModal
         open={openDaftarModal}

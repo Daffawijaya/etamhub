@@ -11,35 +11,56 @@ type Props = {
 
 export default function Breadcrumb({ items }: Props) {
   return (
-    <nav className="flex flex-wrap items-center gap-2 text-sm text-slate-500 pt-8">
-      {items.map((item, index) => {
-        const isLast = index === items.length - 1;
+    <nav className="pb-4">
+      <div>
 
-        return (
-          <div key={index} className="flex items-center gap-2">
-            {item.href && !isLast ? (
-              <Link
-                href={item.href}
-                className="hover:text-primary transition-colors"
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <span
-                className={
-                  isLast
-                    ? "font-medium text-primary"
-                    : "text-slate-500"
-                }
-              >
-                {item.label}
-              </span>
-            )}
 
-            {!isLast && <span>›</span>}
-          </div>
-        );
-      })}
+        <div className="relative z-10 flex items-center gap-2 whitespace-nowrap">
+          {items.map((item, index) => {
+            const isLast = index === items.length - 1;
+
+            return (
+              <div key={index} className="flex items-center gap-2">
+                {item.href && !isLast ? (
+                  <Link
+                    href={item.href}
+                    className="
+                      text-zinc-400
+                      transition-all
+                      duration-300
+                      hover:text-violet-300
+                    "
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <span
+                    className={
+                      isLast
+                        ? `
+                          font-medium
+                          bg-gradient-to-r
+                          from-violet-400
+                          to-fuchsia-400
+                          bg-clip-text
+                          text-transparent
+                        `
+                        : "text-zinc-400"
+                    }
+                  >
+                    {item.label}
+                  </span>
+                )}
+
+                {!isLast && (
+                  <span className="text-zinc-600 select-none">/</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
     </nav>
   );
 }
