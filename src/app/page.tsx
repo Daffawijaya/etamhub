@@ -28,9 +28,9 @@ export default function Home() {
       <Footer
         title={
           <>
-            Temukan UMKM Lokal
-            <br />
-            Kutai Kartanegara
+            Potensi lokal dari setiap kecamatan 
+           
+            tersaji dalam satu ekosistem digital
           </>
         }
       />

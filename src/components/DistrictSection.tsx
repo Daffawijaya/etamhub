@@ -15,7 +15,10 @@ export default function DistrictSection() {
   );
 
   return (
-    <section className="relative overflow-hidden bg-dark py-24 md:py-32">
+    <section
+      id="kecamatan"
+      className="relative overflow-hidden bg-dark py-24 md:py-32"
+    >
       {/* Background Glow */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-purple-700/10 blur-[180px]" />
