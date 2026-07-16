@@ -6,30 +6,30 @@ export default function HeroBackground() {
     <section className="relative overflow-hidden bg-dark">
       {/* Background atas */}
       <div
-        className="absolute top-0 left-0 w-full"
+        className="absolute top-0 left-0 w-full pointer-events-none"
         style={{
           WebkitMaskImage: `
-      linear-gradient(
-        to bottom,
-        #000 0%,
-        rgba(0,0,0,.85) 10%,
-        rgba(0,0,0,.55) 20%,
-        rgba(0,0,0,.25) 30%,
-        transparent 50%,
-        transparent 100%
-      )
-    `,
+            linear-gradient(
+              to bottom,
+              #000 0%,
+              rgba(0,0,0,.85) 10%,
+              rgba(0,0,0,.55) 20%,
+              rgba(0,0,0,.25) 30%,
+              transparent 50%,
+              transparent 100%
+            )
+          `,
           maskImage: `
-      linear-gradient(
-        to bottom,
-        #000 0%,
-        rgba(0,0,0,.85) 10%,
-        rgba(0,0,0,.55) 20%,
-        rgba(0,0,0,.25) 30%,
-        transparent 50%,
-        transparent 100%
-      )
-    `,
+            linear-gradient(
+              to bottom,
+              #000 0%,
+              rgba(0,0,0,.85) 10%,
+              rgba(0,0,0,.55) 20%,
+              rgba(0,0,0,.25) 30%,
+              transparent 50%,
+              transparent 100%
+            )
+          `,
         }}
       >
         <Image
@@ -63,13 +63,19 @@ export default function HeroBackground() {
         }}
       />
 
+      {/* Navbar */}
+      <div className="relative z-[100] pointer-events-auto">
+        <HeroNavbar />
+      </div>
+
       {/* Content */}
-      <HeroNavbar />
       <div className="relative z-30 flex flex-col items-center justify-center mt-10 py-50">
         <h1 className="text-5xl text-white text-center">tentang etamhub.</h1>
 
         <p className="mt-6 text-center text-zinc-400 max-w-3xl text-lg md:text-xl leading-relaxed">
-          Menghubungkan UMKM Kutai Kartanegara dengan masyarakat melalui satu platform yang memudahkan penemuan, promosi, dan pertumbuhan usaha lokal.
+          Menghubungkan UMKM Kutai Kartanegara dengan masyarakat melalui satu
+          platform yang memudahkan penemuan, promosi, dan pertumbuhan usaha
+          lokal.
         </p>
       </div>
     </section>
