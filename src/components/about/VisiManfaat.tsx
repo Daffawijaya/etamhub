@@ -42,7 +42,7 @@ export default function VisiManfaat() {
         />
 
         {/* PANEL */}
-        <div className="relative overflow-hidden bg-dark">
+        <div className="relative overflow-hidden bg-dark rounded-xl">
           {/* Noise */}
           <div
             className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20"

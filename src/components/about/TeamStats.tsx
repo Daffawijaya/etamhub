@@ -28,7 +28,7 @@ export default function TeamStats() {
       {stats.map((item) => (
         <div
           key={item.label}
-          className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-6"
+          className="border border-white/10 bg-white/[0.03] backdrop-blur-sm p-6"
         >
           <h3 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
             {item.count}

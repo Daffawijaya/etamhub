@@ -118,7 +118,7 @@ export default function Footer({ title }: { title?: ReactNode }) {
         {/* Bottom */}
         <div className="py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-white/40">
-            © {new Date().getFullYear()} EtamHub
+            © {new Date().getFullYear()} etamhub
           </p>
 
           <div className="flex items-center gap-6">
