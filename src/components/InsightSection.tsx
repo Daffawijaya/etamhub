@@ -23,7 +23,7 @@ export default function InsightSection() {
           />
 
           {/* PANEL */}
-          <div className="relative h-[300px] overflow-hidden">
+          <div className="relative h-[250px] overflow-hidden">
             {/* Base */}
             <div
               className="absolute inset-0"
@@ -75,7 +75,7 @@ export default function InsightSection() {
 
             {/* Dark blur bottom */}
             <div
-              className="absolute bottom-[-80px] left-1/2 h-72 w-[850px] -translate-x-1/2 rounded-full"
+              className="absolute bottom-[-80px] left-1/2 h-40 w-[850px] -translate-x-1/2 rounded-full"
               style={{
                 background: "#101012",
                 filter: "blur(90px)",
@@ -97,8 +97,8 @@ export default function InsightSection() {
             <div className="relative z-10 flex h-full items-center justify-center px-6">
               <div className="max-w-3xl text-center">
                 <h2 className="text-4xl leading-[1.3] text-white md:text-4xl">
-                  Eksplorasi produk, layanan, dan potensi usaha lokal dalam satu
-                  ekosistem digital yang terintegrasi
+                  Ribuan peluang usaha dimulai dari pelaku lokal yang terus
+                  tumbuh dan berkembang
                 </h2>
               </div>
             </div>

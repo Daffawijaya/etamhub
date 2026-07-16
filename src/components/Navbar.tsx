@@ -44,7 +44,7 @@ export default function Navbar() {
       >
         <div className="rounded-lg border border-zinc-700/60 bg-[#111111]/40 backdrop-blur-xl">
           {/* Desktop Navbar */}
-          <div className="hidden md:flex items-center gap-8 pl-[15px] pr-[7px] h-[50px]">
+          <div className="hidden md:flex items-center gap-8 pl-[15px] pr-[8px] h-[50px]">
             {/* Brand */}
             <Link href="/">
               <span className="text-white text-2xl font-semibold tracking-tight inline-block -translate-y-[2.4px]">
@@ -64,7 +64,7 @@ export default function Navbar() {
             {/* Button */}
             <button
               onClick={() => setOpenDaftarModal(true)}
-              className="bg-white text-black px-3 py-2 rounded-sm text-xs font-medium hover:bg-zinc-200 transition-colors"
+              className="bg-white text-black px-3 py-2 rounded-md text-xs font-medium hover:bg-zinc-200 transition-colors"
             >
               Daftar UMKM
             </button>
