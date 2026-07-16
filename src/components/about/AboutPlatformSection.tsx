@@ -47,7 +47,7 @@ export default function AboutPlatformSection() {
                 justify-center
               "
             >
-              <h3 className="text-3xl font-semibold tracking-tight text-white text-center">
+              <h3 className="text-3xl font-semibold tracking-tight text-white">
                 Tujuan
               </h3>
 
