@@ -17,19 +17,21 @@ export default function SectionHeader({
           WebkitTextFillColor: "transparent",
         }}
         className="
-          text-center
-          text-xl
-          md:text-3xl
-          lg:text-5xl
-          font-semibold
-          tracking-tight
-        "
+    text-center
+    text-xl
+    md:text-3xl
+    lg:text-5xl
+    font-semibold
+    tracking-tight
+    leading-[1.15]
+    pb-2
+  "
       >
         {title}
       </h2>
 
       {description && (
-        <p className="mt-6 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
+        <p className="mt-3 text-center text-zinc-400 max-w-3xl mx-auto text-base md:text-lg leading-relaxed">
           {description}
         </p>
       )}

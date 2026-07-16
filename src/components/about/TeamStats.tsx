@@ -24,14 +24,17 @@ export default function TeamStats() {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-10 mt-12 md:mt-20">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 mt-12 md:mt-20">
       {stats.map((item) => (
-        <div key={item.label}>
-          <h3 className="text-4xl md:text-6xl font-bold text-primary">
+        <div
+          key={item.label}
+          className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-sm p-6"
+        >
+          <h3 className="text-4xl md:text-6xl font-bold text-white tracking-tight">
             {item.count}
           </h3>
 
-          <p className="mt-3 md:mt-4 text-sm md:text-base text-slate-600">
+          <p className="mt-3 text-sm md:text-base text-white/60">
             {item.label}
           </p>
         </div>

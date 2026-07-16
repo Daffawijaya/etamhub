@@ -16,7 +16,7 @@ export default function Footer({ title }: { title?: ReactNode }) {
         {title && (
           <>
             <div className="py-12 md:py-16 text-center justify-center items-center flex ">
-              <h2 className="text-4xl md:text-4xl lg:text-5xl font-semibold tracking-tight leading-[1.3] max-w-3xl">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-semibold  leading-relaxed max-w-3xl">
                 {title}
               </h2>
             </div>
