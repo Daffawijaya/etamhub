@@ -113,7 +113,7 @@ function NavLink({
   return (
     <Link
       href={href}
-      className="text-xs font-medium text-black hover:text-zinc-700 dark:text-zinc-300 hover:text-white transition-colors duration-200"
+      className="text-xs font-medium text-black hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-white transition-colors duration-200"
     >
       {children}
     </Link>

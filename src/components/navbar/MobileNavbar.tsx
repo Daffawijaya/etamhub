@@ -12,7 +12,11 @@ export default function MobileNavbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   const { resolvedTheme, setTheme } = useTheme();
 
   const toggleTheme = () => {
@@ -45,20 +49,26 @@ export default function MobileNavbar() {
           lg:hidden fixed top-0 left-0 z-50
           w-screen h-12
           flex items-center justify-between px-5
-          border-b border-white/10
+          
           transition-all duration-300
           ${
             transparentPage && !scrolled
-              ? "bg-transparent backdrop-blur-0"
-              : "bg-dark/40 backdrop-blur-xl"
+              ? "bg-transparent backdrop-blur-0 border-b border-black/10 dark:border-white/10"
+              : "bg-light dark:bg-dark/40 backdrop-blur-xl border-b border-white dark:border-white/10"
           }
         `}
       >
-        <Link href="/" className="text-xl font-bold tracking-wide text-white">
+        <Link
+          href="/"
+          className="text-xl font-bold tracking-wide text-black dark:text-white"
+        >
           etamhub.
         </Link>
 
-        <button onClick={() => setOpen(true)} className="text-white text-xl">
+        <button
+          onClick={() => setOpen(true)}
+          className="text-black dark:text-white text-xl"
+        >
           <FiMenu />
         </button>
       </nav>
@@ -86,17 +96,14 @@ export default function MobileNavbar() {
             <button
               onClick={toggleTheme}
               className="
-      w-10 h-10
-      flex items-center justify-center
-      text-black dark:text-white
-      text-xl
-    "
+    w-10 h-10
+    flex items-center justify-center
+    text-black dark:text-white
+    text-xl
+  "
             >
-              {resolvedTheme === "dark" ? (
-                <IoIosSunny />
-              ) : (
-                <IoIosMoon className="text-black" />
-              )}
+              {mounted &&
+                (resolvedTheme === "dark" ? <IoIosSunny /> : <IoIosMoon />)}
             </button>
 
             <button
