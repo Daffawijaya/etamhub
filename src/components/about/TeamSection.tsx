@@ -19,16 +19,9 @@ export default function TeamSection({
   grid = false,
 }: TeamSectionProps) {
   return (
-    <section className="pt-3 sm:pt-5 pb-16 sm:pb-20 lg:pb-28">
-      
+    <section className="bg-light-bg dark:bg-dark pt-3 sm:pt-5 pb-16 sm:pb-20 lg:pb-28 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6">
         <h2
-          style={{
-            background:
-              "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
           className="
             mb-8
             sm:mb-10
@@ -43,6 +36,9 @@ export default function TeamSection({
             leading-[1.15]
             pb-1
             lg:pb-2
+
+            text-zinc-900
+            dark:text-white
           "
         >
           {title}

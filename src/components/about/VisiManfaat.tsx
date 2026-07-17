@@ -21,7 +21,7 @@ export default function VisiManfaat() {
   ];
 
   return (
-    <section className="relative overflow-hidden py-8 sm:py-10 md:py-12 bg-dark">
+    <section className="relative overflow-hidden py-8 sm:py-10 md:py-12 bg-light-bg dark:bg-dark transition-colors">
       <div className="relative overflow-hidden p-[5px] sm:p-[8px] md:p-[14px]">
         {/* FRAME */}
         <div
@@ -42,7 +42,7 @@ export default function VisiManfaat() {
         />
 
         {/* PANEL */}
-        <div className="relative overflow-hidden bg-dark rounded-sm sm:rounded-lg md:rounded-xl">
+        <div className="relative overflow-hidden bg-light-bg dark:bg-dark rounded-sm sm:rounded-lg md:rounded-xl">
           {/* Noise */}
           <div
             className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-20"
@@ -76,27 +76,28 @@ export default function VisiManfaat() {
                 {/* LEFT */}
                 <div
                   className="
-    flex
-    flex-col
-    justify-center
-    items-center
-    lg:items-start
-  "
+                    flex
+                    flex-col
+                    justify-center
+                    items-center
+                    lg:items-start
+                  "
                 >
                   <h2
                     className="
-      text-center
-      lg:text-left
-      text-2xl
-      sm:text-3xl
-      md:text-4xl
-      lg:text-5xl
-      text-white
-      max-w-lg
-      leading-tight
-    "
+                      text-center
+                      lg:text-left
+                      text-2xl
+                      sm:text-3xl
+                      md:text-4xl
+                      lg:text-5xl
+                      text-zinc-900
+                      dark:text-white
+                      max-w-lg
+                      leading-tight
+                    "
                   >
-                    Manfaat Platform EtamHub
+                    Manfaat Platform etamhub
                   </h2>
                 </div>
 
@@ -108,16 +109,21 @@ export default function VisiManfaat() {
                       className="
                         group
                         border
-                        border-white/10
-                        bg-white/[0.03]
+                        border-white
+                        dark:border-white/10
+                        bg-light
+                        dark:bg-white/[0.03]
+                        rounded-2xl
                         p-3
                         sm:p-4
                         md:p-6
                         backdrop-blur-sm
                         transition-all
                         duration-300
-                        hover:border-white/20
-                        hover:bg-white/[0.05]
+                        hover:border-white
+                        dark:hover:border-white/20
+                        hover:bg-zinc-50
+                        dark:hover:bg-white/[0.05]
                       "
                     >
                       <div className="flex gap-3 sm:gap-5 md:gap-6">
@@ -127,7 +133,8 @@ export default function VisiManfaat() {
                             sm:text-3xl
                             md:text-4xl
                             font-light
-                            text-white/20
+                            text-zinc-400
+                            dark:text-white/20
                           "
                         >
                           {item.number}
@@ -139,7 +146,8 @@ export default function VisiManfaat() {
                               text-sm
                               sm:text-base
                               md:text-lg
-                              text-white
+                              text-zinc-900
+                              dark:text-white
                             "
                           >
                             {item.title}
@@ -153,7 +161,8 @@ export default function VisiManfaat() {
                               sm:text-sm
                               md:text-base
                               leading-relaxed
-                              text-white/60
+                              text-zinc-600
+                              dark:text-white/60
                             "
                           >
                             {item.description}

@@ -37,14 +37,14 @@ export default function AboutPage() {
     <>
       <Navbar />
 
-      <main className="bg-dark overflow-hidden">
+      <main className="bg-light-bg dark:bg-dark overflow-hidden transition-colors">
         <Hero />
         <AboutPlatformSection />
         <UmkmTerbaruSection />
         <VisiManfaat />
 
         {/* STATS */}
-        <section className="py-10 sm:py-14 md:py-24 text-center bg-dark">
+        <section className="py-10 sm:py-14 md:py-24 text-center bg-light-bg dark:bg-dark transition-colors">
           <div className="max-w-6xl mx-auto px-4 sm:px-5">
             <SectionHeader
               title="Tim Tenaga Ahli Pendamping UMKM"
@@ -57,10 +57,8 @@ export default function AboutPage() {
           </div>
         </section>
 
-
         {/* TEAM TAB */}
-        <div className="bg-dark pb-10 sm:pb-16 md:pb-24">
-
+        <div className="bg-light-bg dark:bg-dark pb-10 sm:pb-16 md:pb-24 transition-colors">
           {/* TAB MENU */}
           <div
             className="
@@ -76,8 +74,10 @@ export default function AboutPage() {
               className="
                 inline-flex
                 bg-white/[0.04]
+                dark:bg-white/[0.04]
                 border
-                border-white/10
+                border-white
+                dark:border-white/10
                 backdrop-blur-xl
                 rounded-lg sm:rounded-xl
                 p-1
@@ -109,8 +109,8 @@ export default function AboutPage() {
 
                     ${
                       activeTab === tab
-                        ? "bg-white text-[#121313] shadow-lg"
-                        : "text-white/60 hover:text-white hover:bg-white/5"
+                        ? "bg-[#121313] dark:bg-white text-white dark:text-[#121313] shadow-lg"
+                        : "text-black/60 dark:text-white/60 hover:text-black dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5"
                     }
                   `}
                 >
@@ -119,7 +119,6 @@ export default function AboutPage() {
               ))}
             </div>
           </div>
-
 
           {/* CONTENT */}
           {activeTab === "Pimpinan" && (
@@ -143,12 +142,9 @@ export default function AboutPage() {
           )}
         </div>
 
-
         <Footer
           title={
-            <>
-              Bersama etamhub, dukung UMKM lokal untuk tumbuh dan berkembang
-            </>
+            <>Bersama etamhub, dukung UMKM lokal untuk tumbuh dan berkembang</>
           }
         />
 

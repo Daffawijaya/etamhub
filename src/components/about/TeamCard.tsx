@@ -79,15 +79,18 @@ export default function TeamCard({
             featured
               ? `
                 border border-[#844ec0]/30
-                bg-[#161616]
+                bg-light
+                dark:bg-[#161616]
                 group-hover:bg-gradient-to-b
                 group-hover:from-[#844ec0]/20
                 group-hover:via-[#6f3fb1]/10
                 group-hover:to-[#ca3785]/10
               `
               : `
-                border border-white/10
-                bg-[#161616]
+                border border-white
+                dark:border-white/10
+                bg-light
+                dark:bg-[#161616]
               `
           }
         `}
@@ -197,19 +200,14 @@ export default function TeamCard({
           >
             <h3
               className="
-                text-base
-                sm:text-lg
-                md:text-xl
-                font-bold
-                leading-tight
-              "
-              style={{
-                background: featured
-                  ? "linear-gradient(180deg,#ffffff 0%,#d8c5ff 35%,#b88cff 70%,#844ec0 100%)"
-                  : "linear-gradient(180deg,#ffffff 0%,#e4e4e7 35%,#b4b4b8 75%,#71717a 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
+    text-base
+    sm:text-lg
+    md:text-xl
+    font-bold
+    leading-tight
+    text-zinc-900
+    dark:text-white
+  "
             >
               {nama}
             </h3>
@@ -226,8 +224,8 @@ export default function TeamCard({
 
                 ${
                   featured
-                    ? "text-[#d7c2ff] group-hover:text-white"
-                    : "text-white/60 group-hover:text-white/80"
+                    ? "text-[#6d5a96] dark:text-[#d7c2ff] group-hover:text-black dark:group-hover:text-white"
+                    : "text-zinc-600 dark:text-white/60 group-hover:text-black/80 dark:group-hover:text-white/80"
                 }
               `}
             >

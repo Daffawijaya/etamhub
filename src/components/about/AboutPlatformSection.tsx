@@ -23,17 +23,20 @@ export default function AboutPlatformSection() {
   ];
 
   return (
-    <section className="bg-dark pb-12 md:pb-24">
+    <section className="bg-light-bg dark:bg-dark pb-12 md:pb-24 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {items.map((item) => (
             <div
               key={item.title}
               className="
-                bg-[#1b1b1b]
+                bg-light
+                dark:bg-[#1b1b1b]
                 border
-                border-zinc-800
-                hover:border-zinc-700
+                border-white
+                dark:border-zinc-800
+                dark:hover:border-zinc-700
+                rounded-2xl
                 transition-all
                 duration-300
                 p-5
@@ -54,7 +57,8 @@ export default function AboutPlatformSection() {
                   md:text-4xl
                   font-semibold
                   tracking-tight
-                  text-white
+                  text-zinc-900
+                  dark:text-white
                 "
               >
                 {item.title}
@@ -68,7 +72,8 @@ export default function AboutPlatformSection() {
                   text-sm
                   sm:text-base
                   md:text-lg
-                  text-zinc-400
+                  text-zinc-600
+                  dark:text-zinc-400
                   leading-relaxed
                 "
               >

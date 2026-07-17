@@ -52,7 +52,7 @@ export default function StatsSection() {
               className="
               bg-light
               dark:bg-[#1b1b1b]
-              rounded-2xl dark:rounded-none
+              rounded-2xl
               border
               border-white
               dark:border-zinc-800

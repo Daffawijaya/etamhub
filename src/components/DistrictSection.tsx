@@ -117,8 +117,7 @@ export default function DistrictSection() {
                   group
                   relative
                   overflow-hidden
-                  rounded-2xl
-                  dark:rounded-none
+                  rounded-2xl                 
                   border
                   border-white
                   dark:border-white/10
