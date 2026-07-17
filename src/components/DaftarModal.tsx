@@ -123,7 +123,7 @@ export default function DaftarModal({ open, onClose }: DaftarModalProps) {
 
             <p className="mt-4 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
               Scan QR Code atau klik tombol di bawah untuk mengakses formulir
-              pendaftaran UMKM EtamHub.
+              pendaftaran UMKM etamhub.
             </p>
           </div>
 
