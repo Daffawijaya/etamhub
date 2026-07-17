@@ -60,14 +60,12 @@ export default function DetailNavbar() {
           </div>
 
           {/* Desktop Button */}
-          {/* Desktop Button */}
           <div className="hidden lg:flex items-center gap-3">
             <button
               onClick={toggleTheme}
               className="
-      w-10 h-10 rounded-md
+      w-10 h-10 
       flex items-center justify-center
-      border border-black/10 dark:border-white/10
       text-black dark:text-white
       transition
     "
@@ -102,7 +100,6 @@ export default function DetailNavbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       {/* Fullscreen Menu */}
       <div
         className={`
