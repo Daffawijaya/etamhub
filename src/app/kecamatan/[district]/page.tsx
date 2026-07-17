@@ -9,7 +9,6 @@ import { slugify } from "@/lib/slugify";
 import Breadcrumb from "@/components/Breadcrumb";
 import Pagination from "@/components/district/Pagination";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
-import HeroNavbar from "@/components/navbar/HeroNavbar";
 import DistrictHero from "@/components/district/DistrictHero";
 
 type Props = {
@@ -93,6 +92,8 @@ export default function KecamatanPage({ params }: Props) {
 
   const data = umkms.filter((item) => slugify(item.kecamatan) === district);
 
+  const totalSubkategori = new Set(data.map((item) => item.subkategori)).size;
+
   const filteredData = useMemo(() => {
     let hasil = [...data];
 
@@ -152,7 +153,7 @@ export default function KecamatanPage({ params }: Props) {
     <div className="min-h-screen flex flex-col bg-dark text-white">
       <DetailNavbar />
 
-      <main className="flex-1 w-full max-w-7xl mx-auto px-6 pt-20 pb-10">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-5 md:px-6 pt-20 pb-10">
         <Breadcrumb
           items={[
             {
@@ -168,6 +169,7 @@ export default function KecamatanPage({ params }: Props) {
         <DistrictHero
           districtName={districtName}
           totalUmkm={data.length}
+          totalSubkategori={totalSubkategori}
           urutTerdekat={urutTerdekat}
         />
 

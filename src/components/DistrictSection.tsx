@@ -64,7 +64,7 @@ export default function DistrictSection() {
         />
       </div>
 
-      <BottomGlow />
+      {/* <BottomGlow /> */}
 
       <div
         className="
@@ -219,7 +219,7 @@ export default function DistrictSection() {
                 </div>
 
                 {/* Bottom Accent Line */}
-                <div
+                {/* <div
                   className="
                     absolute
                     bottom-0
@@ -234,7 +234,7 @@ export default function DistrictSection() {
                     duration-500
                     group-hover:w-full
                   "
-                />
+                /> */}
               </Link>
             );
           })}
