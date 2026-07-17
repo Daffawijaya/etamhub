@@ -42,8 +42,10 @@ export default function DaftarModal({ open, onClose }: DaftarModalProps) {
           overflow-hidden
           rounded-3xl
           border
-          border-white/10
-          bg-[#161616]
+          border-white
+          bg-light-bg
+          dark:border-white/10
+          dark:bg-[#161616]
           transition-all
           duration-300
           ${
@@ -78,14 +80,20 @@ export default function DaftarModal({ open, onClose }: DaftarModalProps) {
             justify-center
             rounded-xl
             border
-            border-white/10
-            bg-white/[0.03]
-            text-zinc-400
+            border-white
+            bg-white/40
+            text-zinc-700
             transition-all
             duration-300
-            hover:border-violet-500/20
-            hover:bg-violet-500/10
-            hover:text-white
+            hover:border-white
+            hover:bg-white/60
+            hover:text-black
+            dark:border-white/10
+            dark:bg-white/[0.03]
+            dark:text-zinc-400
+            dark:hover:border-violet-500/20
+            dark:hover:bg-violet-500/10
+            dark:hover:text-white
           "
         >
           <svg
@@ -105,15 +113,15 @@ export default function DaftarModal({ open, onClose }: DaftarModalProps) {
 
         <div className="relative z-10 p-8">
           <div className="text-center">
-            <p className="mb-3 text-xs tracking-[0.25em] text-zinc-500">
+            <p className="mb-3 text-xs tracking-[0.25em] text-zinc-600 dark:text-zinc-500">
               etamhub.
             </p>
 
-            <h2 className="text-3xl font-semibold text-white">
+            <h2 className="text-3xl font-semibold text-black dark:text-white">
               Pendaftaran UMKM
             </h2>
 
-            <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+            <p className="mt-4 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
               Scan QR Code atau klik tombol di bawah untuk mengakses formulir
               pendaftaran UMKM EtamHub.
             </p>
@@ -124,9 +132,10 @@ export default function DaftarModal({ open, onClose }: DaftarModalProps) {
               className="
                 rounded-3xl
                 border
-                border-white/10
+                border-white
                 bg-white
                 p-5
+                dark:border-white/10
               "
             >
               <QRCode value={formLink} size={220} />
@@ -144,22 +153,27 @@ export default function DaftarModal({ open, onClose }: DaftarModalProps) {
               justify-center
               rounded-xl
               border
-              border-violet-500/20
-              bg-violet-500/10
+              border-white
+              bg-white/50
               px-5
               py-3
               font-medium
-              text-violet-300
+              text-black
               transition-all
               duration-300
-              hover:bg-violet-500/15
-              hover:text-white
+              hover:border-white
+              hover:bg-white/70
+              dark:border-violet-500/20
+              dark:bg-violet-500/10
+              dark:text-violet-300
+              dark:hover:bg-violet-500/15
+              dark:hover:text-white
             "
           >
             Isi Formulir Sekarang
           </a>
 
-          <p className="mt-5 text-center text-xs text-zinc-500">
+          <p className="mt-5 text-center text-xs text-zinc-600 dark:text-zinc-500">
             Direktori UMKM Kutai Kartanegara
           </p>
         </div>
