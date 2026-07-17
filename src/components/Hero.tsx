@@ -34,7 +34,7 @@ export default function Hero() {
 
       {/* Text Tengah */}
       <div className="absolute inset-0 flex items-center justify-center z-10 -translate-y-22">
-        <h1 className="text-black dark:text-white text-3xl md:text-6xl text-center px-4 leading-tight">
+        <h1 className="text-black dark:text-white text-3xl font-semibold dark:font-normal md:text-6xl text-center px-4 leading-tight">
           Jelajahi Seluruh UMKM
           <br />
           Kutai Kartanegara
