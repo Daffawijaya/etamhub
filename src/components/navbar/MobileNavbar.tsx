@@ -13,10 +13,10 @@ export default function MobileNavbar() {
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   const pathname = usePathname();
@@ -92,7 +92,7 @@ export default function MobileNavbar() {
       text-xl
     "
             >
-              {theme === "dark" ? (
+              {resolvedTheme === "dark" ? (
                 <IoIosSunny />
               ) : (
                 <IoIosMoon className="text-black" />
