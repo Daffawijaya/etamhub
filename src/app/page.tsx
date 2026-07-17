@@ -11,7 +11,7 @@ export default function Home() {
     <>
       <Navbar />
 
-      <main className="relative overflow-hidden bg-dark">
+      <main className="relative overflow-hidden bg-dark transition-colors">
         <Hero />
 
         <div className="relative">

@@ -71,13 +71,15 @@ export default function Navbar() {
             {/* Toggle Theme */}
             {mounted && (
               <button
-                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-                className="text-white text-lg"
+                onClick={() =>
+                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                }
+                className="text-lg cursor-pointer"
               >
                 {resolvedTheme === "dark" ? (
-                  <IoIosSunny />
+                  <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
                 ) : (
-                  <IoIosMoon className="text-black" />
+                  <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
                 )}
               </button>
             )}

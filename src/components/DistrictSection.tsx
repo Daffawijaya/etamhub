@@ -24,6 +24,7 @@ export default function DistrictSection() {
         py-16 
         sm:py-20 
         md:py-32
+        transition-colors
       "
     >
       {/* Background Glow */}

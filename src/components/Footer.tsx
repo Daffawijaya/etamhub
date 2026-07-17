@@ -6,7 +6,7 @@ import { ReactNode } from "react";
 export default function Footer({ title }: { title?: ReactNode }) {
   return (
     <footer className="relative overflow-hidden bg-light dark:bg-dark text-black dark:text-white transition-colors">
-      <div className="h-px bg-black/5 dark:bg-white/5" />
+      <div className="dark:h-px dark:bg-white/5" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-10 z-20">
         {title && (
@@ -18,11 +18,18 @@ export default function Footer({ title }: { title?: ReactNode }) {
             </div>
 
             <div
-              className="w-full"
+              className="w-full h-px hidden dark:block"
               style={{
-                height: "1px",
                 background:
-                  "linear-gradient(90deg, transparent 0%, rgba(0,0,0,0.08) 20%, rgba(0,0,0,0.18) 50%, rgba(0,0,0,0.08) 80%, transparent 100%)",
+                  "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(0,0,0,0.12) 50%, transparent 58%, transparent 100%)",
+              }}
+            />
+
+            <div
+              className="w-full h-px dark:hidden"
+              style={{
+                background:
+                  "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(255,255,255,0.20) 50%, transparent 58%, transparent 100%)",
               }}
             />
           </>
