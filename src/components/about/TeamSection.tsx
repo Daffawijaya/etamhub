@@ -20,6 +20,7 @@ export default function TeamSection({
 }: TeamSectionProps) {
   return (
     <section className="pt-3 sm:pt-5 pb-16 sm:pb-20 lg:pb-28">
+      
       <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6">
         <h2
           style={{

@@ -1,11 +1,13 @@
 type Props = {
   districtName: string;
+  totalSubkategori: number;
   totalUmkm: number;
   urutTerdekat: boolean;
 };
 
 export default function DistrictHero({
   districtName,
+  totalSubkategori,
   totalUmkm,
   urutTerdekat,
 }: Props) {
@@ -72,9 +74,9 @@ export default function DistrictHero({
             </div>
 
             <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-              <span className="text-sm text-zinc-400">Kategori</span>
+              <span className="text-sm text-zinc-400">Subkategori</span>
 
-              <span className="text-xl font-semibold text-white">3</span>
+              <span className="text-xl font-semibold text-white">{totalSubkategori}</span>
             </div>
 
             <div

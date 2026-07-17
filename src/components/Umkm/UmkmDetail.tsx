@@ -44,31 +44,6 @@ export default function UmkmDetail({
   return (
     <section className="relative overflow-hidden bg-dark">
       {/* Background Glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="
-            absolute
-            top-0
-            left-0
-            h-[300px]
-            w-[300px]
-            bg-violet-500/5
-            blur-[120px]
-          "
-        />
-
-        <div
-          className="
-            absolute
-            bottom-0
-            right-0
-            h-[400px]
-            w-[400px]
-            bg-fuchsia-500/5
-            blur-[180px]
-          "
-        />
-      </div>
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-6">
         <div

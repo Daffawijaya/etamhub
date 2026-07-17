@@ -40,7 +40,7 @@ export default function KategoriFilter({
         "
       />
 
-      <div className="relative z-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="relative z-10 flex flex-col gap-4 items-center sm:flex-row sm:items-center sm:justify-between">
         {/* LEFT */}
         <div
           className="

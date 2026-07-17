@@ -7,7 +7,7 @@ import FooterGlow from "./decoration/FooterGlow";
 export default function Footer({ title }: { title?: ReactNode }) {
   return (
     <footer className="relative overflow-hidden bg-dark text-white">
-      <FooterGlow />
+      {/* <FooterGlow /> */}
 
       <div className="h-px bg-white/5" />
 
@@ -161,7 +161,7 @@ export default function Footer({ title }: { title?: ReactNode }) {
       </div>
 
       {/* Glow bawah */}
-      <div
+      {/* <div
         className="
           absolute
           inset-x-0
@@ -174,7 +174,7 @@ export default function Footer({ title }: { title?: ReactNode }) {
           background:
             "linear-gradient(to top, #121313 0%, rgba(18,19,19,0.9) 20%, rgba(18,19,19,0.5) 50%, rgba(18,19,19,0) 100%)",
         }}
-      />
+      /> */}
     </footer>
   );
 }

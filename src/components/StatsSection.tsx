@@ -4,13 +4,9 @@ import SectionHeader from "./textBlock/SectionHeader";
 export default function StatsSection() {
   const totalUmkm = umkms.length;
 
-  const totalKecamatan = new Set(
-    umkms.map((item) => item.kecamatan)
-  ).size;
+  const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;
 
-  const totalSubkategori = new Set(
-    umkms.map((item) => item.subkategori)
-  ).size;
+  const totalSubkategori = new Set(umkms.map((item) => item.subkategori)).size;
 
   const stats = [
     {
@@ -33,7 +29,6 @@ export default function StatsSection() {
   return (
     <section className="bg-dark py-12 sm:py-16 md:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
         <SectionHeader
           title="Statistik UMKM"
           description="Menampilkan sebaran UMKM yang telah bergabung, mulai dari jumlah pelaku usaha, wilayah kecamatan, hingga ragam kategori usaha."
@@ -46,7 +41,6 @@ export default function StatsSection() {
             md:mt-20
             grid
             grid-cols-1
-            sm:grid-cols-2
             lg:grid-cols-3
             gap-4
             sm:gap-6
@@ -62,15 +56,12 @@ export default function StatsSection() {
                 hover:border-zinc-700
                 transition-all
                 duration-300
-
                 p-6
                 sm:p-8
                 md:p-10
-
                 min-h-[180px]
                 sm:min-h-[220px]
                 md:min-h-[260px]
-
                 flex
                 flex-col
                 justify-center
@@ -120,7 +111,6 @@ export default function StatsSection() {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );
