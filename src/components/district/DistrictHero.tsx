@@ -12,7 +12,7 @@ export default function DistrictHero({
   urutTerdekat,
 }: Props) {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow:hidden">
       <div
         className="
           group
@@ -20,14 +20,18 @@ export default function DistrictHero({
           overflow-hidden
           rounded-3xl
           border
-          border-white/10
-          bg-[#161616]
+          border-white
+          bg-light-bg
+          dark:border-white/10
+          dark:bg-[#161616]
           p-6
           md:p-8
           transition-all
           duration-300
-          hover:border-white/20
-          hover:bg-[#1a1a1a]
+          hover:border-white
+          dark:hover:border-white/20
+          hover:bg-light
+          dark:hover:bg-[#1a1a1a]
         "
       >
         {/* Hover Glow */}
@@ -50,13 +54,15 @@ export default function DistrictHero({
               Kecamatan
             </p>
 
-            <h1 className="text-3xl font-semibold leading-tight text-white md:text-5xl">
+            <h1 className="text-3xl font-semibold leading-tight text-zinc-900 dark:text-white md:text-5xl">
               {districtName}
             </h1>
 
-            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-400 md:text-base">
+            <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 md:text-base">
               Telusuri berbagai UMKM yang terdaftar di Kecamatan{" "}
-              <span className="text-white">{districtName}</span>
+              <span className="text-zinc-900 dark:text-white">
+                {districtName}
+              </span>
               <br />
               Temukan produk maupun layanan lokal unggulan yang siap berkembang
               bersama ekosistem UMKM Kutai Kartanegara.
@@ -65,18 +71,24 @@ export default function DistrictHero({
 
           {/* Right */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-              <span className="text-sm text-zinc-400">Total UMKM</span>
+            <div className="flex items-center justify-between rounded-xl border border-white bg-light px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]">
+              <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                Total UMKM
+              </span>
 
-              <span className="text-xl font-semibold text-white">
+              <span className="text-xl font-semibold text-zinc-900 dark:text-white">
                 {totalUmkm}
               </span>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3">
-              <span className="text-sm text-zinc-400">Subkategori</span>
+            <div className="flex items-center justify-between rounded-xl border border-white bg-light px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]">
+              <span className="text-sm text-zinc-500 dark:text-zinc-400">
+                Subkategori
+              </span>
 
-              <span className="text-xl font-semibold text-white">{totalSubkategori}</span>
+              <span className="text-xl font-semibold text-zinc-900 dark:text-white">
+                {totalSubkategori}
+              </span>
             </div>
 
             <div
@@ -93,19 +105,21 @@ export default function DistrictHero({
                 ${
                   urutTerdekat
                     ? "border-violet-500/20 bg-violet-500/10"
-                    : "border-white/10 bg-white/[0.03]"
+                    : "border-white bg-light dark:border-white/10 dark:bg-white/[0.03]"
                 }
               `}
             >
               <span
                 className={`text-sm ${
-                  urutTerdekat ? "text-violet-300" : "text-zinc-400"
+                  urutTerdekat
+                    ? "text-violet-300"
+                    : "text-zinc-500 dark:text-zinc-400"
                 }`}
               >
                 Mode
               </span>
 
-              <span className="font-medium text-white">
+              <span className="font-medium text-zinc-900 dark:text-white">
                 {urutTerdekat ? "📍 Terdekat" : "A - Z"}
               </span>
             </div>

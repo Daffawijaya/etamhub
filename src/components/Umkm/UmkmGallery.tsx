@@ -26,8 +26,10 @@ export default function UmkmGallery({
           overflow-hidden
           rounded-3xl
           border
-          border-white/10
-          bg-[#161616]
+          border-white
+          bg-light
+          dark:border-white/10
+          dark:bg-[#161616]
         "
       >
         {/* Glow */}

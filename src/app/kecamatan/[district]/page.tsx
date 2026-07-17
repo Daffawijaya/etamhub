@@ -147,10 +147,8 @@ export default function KecamatanPage({ params }: Props) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 
-  const categories = ["Semua", "Jasa", "Industri", "Perdagangan"];
-
   return (
-    <div className="min-h-screen flex flex-col bg-dark text-white">
+    <div className="min-h-screen flex flex-col bg-light-bg dark:bg-dark text-zinc-900 dark:text-white transition-colors">
       <DetailNavbar />
 
       <main className="flex-1 w-full max-w-7xl mx-auto px-5 md:px-6 pt-20 pb-10">
@@ -173,7 +171,6 @@ export default function KecamatanPage({ params }: Props) {
           urutTerdekat={urutTerdekat}
         />
 
-        {/* Filter */}
         <div className="sticky top-16 z-20 mt-6">
           <KategoriFilter
             kategori={kategori}
@@ -184,59 +181,61 @@ export default function KecamatanPage({ params }: Props) {
           />
         </div>
 
-        {/* Info */}
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-sm text-zinc-400">
+          <p className="text-sm text-zinc-500 dark:text-zinc-400">
             Menampilkan{" "}
-            <span className="font-semibold text-white">
+            <span className="font-semibold text-zinc-900 dark:text-white">
               {filteredData.length}
             </span>{" "}
             UMKM
           </p>
         </div>
 
-        {/* Empty State */}
         {filteredData.length === 0 ? (
           <div
             className="
-      relative
-      mt-8
-      overflow-hidden
-      rounded-3xl
-      border
-      border-white/10
-      bg-[#161616]
-      py-20
-    "
+              relative
+              mt-8
+              overflow-hidden
+              rounded-3xl
+              border
+              border-white
+              bg-light
+              dark:border-white/10
+              dark:bg-[#161616]
+              py-20
+            "
           >
             <div
               className="
-        absolute
-        inset-0
-        bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_45%)]
-      "
+                absolute
+                inset-0
+                bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_45%)]
+              "
             />
 
             <div className="relative z-10 flex flex-col items-center justify-center">
               <div
                 className="
-          mb-4
-          flex
-          h-14
-          w-14
-          items-center
-          justify-center
-          rounded-2xl
-          border
-          border-white/10
-          bg-white/[0.03]
-          text-2xl
-        "
+                  mb-4
+                  flex
+                  h-14
+                  w-14
+                  items-center
+                  justify-center
+                  rounded-2xl
+                  border
+                  border-white
+                  bg-white/30
+                  dark:border-white/10
+                  dark:bg-white/[0.03]
+                  text-2xl
+                "
               >
                 🔍
               </div>
 
-              <p className="text-center text-zinc-300">
+              <p className="text-center text-zinc-700 dark:text-zinc-300">
                 Tidak ada UMKM pada kategori ini
               </p>
 
@@ -247,21 +246,20 @@ export default function KecamatanPage({ params }: Props) {
 
             <div
               className="
-        absolute
-        bottom-0
-        left-0
-        h-px
-        w-full
-        bg-gradient-to-r
-        from-violet-500
-        via-fuchsia-400
-        to-transparent
-      "
+                absolute
+                bottom-0
+                left-0
+                h-px
+                w-full
+                bg-gradient-to-r
+                from-violet-500
+                via-fuchsia-400
+                to-transparent
+              "
             />
           </div>
         ) : (
           <>
-            {/* Grid UMKM */}
             <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-6">
               {paginatedData.map((item) => (
                 <UmkmCard

@@ -24,8 +24,10 @@ export default function KategoriFilter({
         overflow-hidden
         rounded-3xl
         border
-        border-white/10
-        bg-[#161616]
+        border-white
+        bg-light-bg
+        dark:border-white/10
+        dark:bg-[#161616]
         p-4
         md:p-5
       "
@@ -45,9 +47,9 @@ export default function KategoriFilter({
         <div
           className="
             inline-flex
-            bg-white/[0.04]
+            bg-light
             border
-            border-white/10
+            border-white
             backdrop-blur-xl
             rounded-xl
             p-1
@@ -55,6 +57,8 @@ export default function KategoriFilter({
             overflow-x-auto
             scrollbar-hide
             max-w-full
+            dark:bg-white/[0.04]
+            dark:border-white/10
           "
         >
           {categories.map((item) => {
@@ -76,13 +80,18 @@ export default function KategoriFilter({
                   ${
                     active
                       ? `
-                        bg-white
-                        text-black
+                      bg-black
+                      text-white
+                        dark:bg-white
+                        dark:text-black
                       `
                       : `
-                        text-white/60
-                        hover:text-white
-                        hover:bg-white/5
+                        text-zinc-600
+                        hover:text-zinc-900
+                        hover:bg-white
+                        dark:text-white/60
+                        dark:hover:text-white
+                        dark:hover:bg-white/5
                       `
                   }
                 `}
@@ -103,15 +112,19 @@ export default function KategoriFilter({
               gap-2
               rounded-xl
               border
-              border-white/10
-              bg-white/[0.04]
+              border-white
+              bg-light
               px-4
               py-2
+              dark:border-white/10
+              dark:bg-white/[0.04]
             "
           >
             <div className="h-2 w-2 rounded-full bg-violet-400" />
 
-            <span className="text-sm text-zinc-300">{total} UMKM</span>
+            <span className="text-sm text-zinc-600 dark:text-zinc-300">
+              {total} UMKM
+            </span>
           </div>
 
           <button
@@ -138,12 +151,16 @@ export default function KategoriFilter({
                     shadow-violet-500/20
                   `
                   : `
-                    border-white/10
-                    bg-white/[0.04]
-                    text-zinc-300
+                    border-white
+                    bg-light
+                    text-zinc-700
                     hover:border-violet-500/30
                     hover:bg-violet-500/10
-                    hover:text-white
+                    hover:text-zinc-900
+                    dark:border-white/10
+                    dark:bg-white/[0.04]
+                    dark:text-zinc-300
+                    dark:hover:text-white
                   `
               }
             `}

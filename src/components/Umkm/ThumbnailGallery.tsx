@@ -88,15 +88,19 @@ export default function ThumbnailGallery({
             justify-center
             rounded-r-xl
             border
-            border-white/10
-            bg-[#161616]/95
-            text-zinc-300
+            border-white
+            bg-light-bg/95
+            text-zinc-600
             backdrop-blur-xl
             transition-all
             duration-300
             hover:border-violet-500/20
             hover:bg-violet-500/10
-            hover:text-white
+            hover:text-zinc-900
+            dark:border-white/10
+            dark:bg-[#161616]/95
+            dark:text-zinc-300
+            dark:hover:text-white
             ${showLeft ? "opacity-100" : "pointer-events-none opacity-0"}
           `}
         >
@@ -149,8 +153,10 @@ export default function ThumbnailGallery({
                     ring-violet-500/20
                   `
                   : `
-                    border-white/10
-                    hover:border-violet-500/20
+                    border-white
+                    hover:border-white
+                    dark:border-white/10
+                    dark:hover:border-violet-500/20
                   `
               }
             `}
@@ -182,15 +188,19 @@ export default function ThumbnailGallery({
             justify-center
             rounded-l-xl
             border
-            border-white/10
-            bg-[#161616]/95
-            text-zinc-300
+            border-white
+            bg-light-bg/95
+            text-zinc-600
             backdrop-blur-xl
             transition-all
             duration-300
             hover:border-violet-500/20
             hover:bg-violet-500/10
-            hover:text-white
+            hover:text-zinc-900
+            dark:border-white/10
+            dark:bg-[#161616]/95
+            dark:text-zinc-300
+            dark:hover:text-white
             ${showRight ? "opacity-100" : "pointer-events-none opacity-0"}
           `}
         >

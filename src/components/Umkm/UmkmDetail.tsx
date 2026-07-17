@@ -42,7 +42,7 @@ export default function UmkmDetail({
   const [activeImage, setActiveImage] = useState(gambar[0]);
 
   return (
-    <section className="relative overflow-hidden bg-dark">
+    <section className="relative overflow-hidden bg-light-bg dark:bg-dark">
       {/* Background Glow */}
 
       <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-6">
