@@ -3,17 +3,25 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { useTheme } from "next-themes";
 import DaftarModal from "../DaftarModal";
 import MobileNavbar from "./MobileNavbar";
+import { IoIosMoon, IoIosSunny } from "react-icons/io";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const { theme, setTheme } = useTheme();
 
+  const [mounted, setMounted] = useState(false);
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
   const [showNavbar, setShowNavbar] = useState(
     pathname !== "/" && pathname !== "/about",
   );
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const isHeroPage = pathname === "/" || pathname === "/about";
@@ -42,12 +50,11 @@ export default function Navbar() {
             : "opacity-0 -translate-y-10 pointer-events-none"
         }`}
       >
-        <div className="rounded-lg border border-zinc-700 bg-dark/40 backdrop-blur-xl">
-          {/* Desktop Navbar */}
+        <div className="rounded-lg border border-white bg-light dark:border-zinc-700 dark:bg-dark/40 backdrop-blur-xl">
           <div className="md:flex items-center gap-8 pl-[15px] pr-[8px] h-[50px]">
             {/* Brand */}
             <Link href="/">
-              <span className="text-white text-2xl font-semibold tracking-tight inline-block -translate-y-[2.4px]">
+              <span className="text-black dark:text-white text-2xl font-semibold tracking-tight inline-block -translate-y-[2.4px]">
                 e.
               </span>
             </Link>
@@ -60,6 +67,20 @@ export default function Navbar() {
 
               <NavLink href="/about">Tentang</NavLink>
             </div>
+
+            {/* Toggle Theme */}
+            {mounted && (
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="text-white text-lg"
+              >
+                {theme === "dark" ? (
+                  <IoIosSunny />
+                ) : (
+                  <IoIosMoon className="text-black" />
+                )}
+              </button>
+            )}
 
             {/* Button */}
             <button
@@ -92,7 +113,7 @@ function NavLink({
   return (
     <Link
       href={href}
-      className="text-xs font-medium text-zinc-300 hover:text-white transition-colors duration-200"
+      className="text-xs font-medium text-black hover:text-zinc-700 dark:text-zinc-300 hover:text-white transition-colors duration-200"
     >
       {children}
     </Link>
