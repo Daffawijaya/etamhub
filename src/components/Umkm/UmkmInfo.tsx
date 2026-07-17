@@ -71,7 +71,7 @@ export default function UmkmInfo({
         className="
           absolute
           inset-0
-          bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_45%)]
+          bg-[#161616]
           pointer-events-none
         "
       />
