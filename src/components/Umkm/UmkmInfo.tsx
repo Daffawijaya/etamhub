@@ -49,8 +49,10 @@ export default function UmkmInfo({
         overflow-hidden
         rounded-3xl
         border
-        border-white/10
-        bg-[#161616]
+        border-white
+        bg-light
+        dark:border-white/10
+        dark:bg-[#161616]
         p-6
         md:p-8
         ${
@@ -71,7 +73,8 @@ export default function UmkmInfo({
         className="
           absolute
           inset-0
-          bg-[#161616]
+          bg-light
+          dark:bg-[#161616]
           pointer-events-none
         "
       />
@@ -79,7 +82,7 @@ export default function UmkmInfo({
       <div className="relative z-10">
         {/* Header */}
 
-        <h1 className="text-3xl font-semibold leading-tight text-white md:text-4xl">
+        <h1 className="text-3xl font-semibold leading-tight text-zinc-900 dark:text-white md:text-4xl">
           {nama}
         </h1>
 
@@ -94,7 +97,8 @@ export default function UmkmInfo({
               py-1
               text-xs
               font-medium
-              text-violet-300
+              text-violet-600
+              dark:text-violet-300
             "
           >
             {kategori}
@@ -104,13 +108,16 @@ export default function UmkmInfo({
             className="
               rounded-full
               border
-              border-white/10
-              bg-white/[0.03]
+              border-white
+              bg-light-bg
               px-3
               py-1
               text-xs
               font-medium
-              text-zinc-300
+              text-zinc-600
+              dark:border-white/10
+              dark:bg-white/[0.03]
+              dark:text-zinc-300
             "
           >
             {subkategori}
@@ -123,17 +130,21 @@ export default function UmkmInfo({
             mt-6
             rounded-2xl
             border
-            border-white/10
-            bg-white/[0.03]
+            border-white
+            bg-light-bg
             px-4
             py-3
+            dark:border-white/10
+            dark:bg-white/[0.03]
           "
         >
           <p className="text-xs uppercase tracking-wider text-zinc-500">
             Kecamatan
           </p>
 
-          <p className="mt-1 text-sm font-medium text-white">{kecamatan}</p>
+          <p className="mt-1 text-sm font-medium text-zinc-900 dark:text-white">
+            {kecamatan}
+          </p>
         </div>
 
         {/* Divider */}
@@ -141,15 +152,14 @@ export default function UmkmInfo({
 
         {/* Description */}
         <div>
- 
-
           <div className="relative">
             <p
               ref={textRef}
               className={`
                 text-sm
                 leading-8
-                text-zinc-400
+                text-zinc-500
+                dark:text-zinc-400
                 ${expanded ? "" : "line-clamp-5"}
               `}
             >
@@ -165,9 +175,12 @@ export default function UmkmInfo({
                   bottom-0
                   h-10
                   bg-gradient-to-t
-                  from-[#161616]
-                  via-[#161616]/80
+                  from-light
+                  via-light/80
                   to-transparent
+                  dark:from-[#161616]
+                  dark:via-[#161616]/80
+                  dark:to-transparent
                 "
               />
             )}
@@ -188,11 +201,13 @@ export default function UmkmInfo({
               py-2
               text-sm
               font-medium
-              text-violet-300
+              text-violet-600
               transition-all
               duration-300
               hover:bg-violet-500/15
-              hover:text-white
+              hover:text-zinc-900
+              dark:text-violet-300
+              dark:hover:text-white
             "
           >
             {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}

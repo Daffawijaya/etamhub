@@ -51,9 +51,11 @@ export default function UmkmSidebar({
         overflow-hidden
         rounded-3xl
         border
-        border-white/10
-        bg-[#161616]
+        border-white
+        bg-light
         p-5
+        dark:border-white/10
+        dark:bg-[#161616]
       "
     >
       {/* Glow */}
@@ -71,7 +73,9 @@ export default function UmkmSidebar({
           Detail
         </p>
 
-        <h3 className="text-xl font-semibold text-white">Informasi UMKM</h3>
+        <h3 className="text-xl font-semibold text-zinc-900 dark:text-white">
+          Informasi UMKM
+        </h3>
 
         <div className="mt-6 space-y-5">
           {/* Owner */}
@@ -80,7 +84,7 @@ export default function UmkmSidebar({
               Pemilik
             </p>
 
-            <p className="mt-1 text-sm font-medium capitalize text-white">
+            <p className="mt-1 text-sm font-medium capitalize text-zinc-900 dark:text-white">
               {pemilik}
             </p>
           </div>
@@ -91,7 +95,7 @@ export default function UmkmSidebar({
               Alamat
             </p>
 
-            <p className="mt-1 text-sm leading-6 capitalize text-zinc-400">
+            <p className="mt-1 text-sm leading-6 capitalize text-zinc-500 dark:text-zinc-400">
               {alamat}
             </p>
           </div>
@@ -116,11 +120,13 @@ export default function UmkmSidebar({
             py-3
             text-sm
             font-medium
-            text-violet-300
+            text-violet-600
             transition-all
             duration-300
             hover:bg-violet-500/15
-            hover:text-white
+            hover:text-zinc-900
+            dark:text-violet-300
+            dark:hover:text-white
           "
         >
           Lihat Lokasi
@@ -130,8 +136,10 @@ export default function UmkmSidebar({
           instagram?.trim() ||
           facebook?.trim() ||
           tiktok?.trim()) && (
-          <div className="mt-6 border-t border-white/10 pt-5">
-            <h4 className="text-sm font-semibold text-white">Hubungi UMKM</h4>
+          <div className="mt-6 border-t border-white pt-5 dark:border-white/10">
+            <h4 className="text-sm font-semibold text-zinc-900 dark:text-white">
+              Hubungi UMKM
+            </h4>
 
             <div className="mt-4 flex flex-col gap-2">
               {whatsappNumber && (
@@ -149,11 +157,13 @@ export default function UmkmSidebar({
                     py-2.5
                     text-sm
                     font-medium
-                    text-violet-300
+                    text-violet-600
                     transition-all
                     duration-300
                     hover:bg-violet-500/15
-                    hover:text-white
+                    hover:text-zinc-900
+                    dark:text-violet-300
+                    dark:hover:text-white
                   "
                 >
                   Chat WhatsApp
@@ -172,18 +182,22 @@ export default function UmkmSidebar({
                     w-full
                     rounded-xl
                     border
-                    border-white/10
-                    bg-white/[0.03]
+                    border-white
+                    bg-light-bg
                     px-4
                     py-2.5
                     text-sm
                     font-medium
-                    text-zinc-300
+                    text-zinc-600
                     transition-all
                     duration-300
                     hover:border-violet-500/20
                     hover:bg-violet-500/10
-                    hover:text-white
+                    hover:text-zinc-900
+                    dark:border-white/10
+                    dark:bg-white/[0.03]
+                    dark:text-zinc-300
+                    dark:hover:text-white
                   "
                 >
                   Instagram
@@ -204,18 +218,22 @@ export default function UmkmSidebar({
                     w-full
                     rounded-xl
                     border
-                    border-white/10
-                    bg-white/[0.03]
+                    border-white
+                    bg-light-bg
                     px-4
                     py-2.5
                     text-sm
                     font-medium
-                    text-zinc-300
+                    text-zinc-600
                     transition-all
                     duration-300
                     hover:border-violet-500/20
                     hover:bg-violet-500/10
-                    hover:text-white
+                    hover:text-zinc-900
+                    dark:border-white/10
+                    dark:bg-white/[0.03]
+                    dark:text-zinc-300
+                    dark:hover:text-white
                   "
                 >
                   TikTok
@@ -231,18 +249,22 @@ export default function UmkmSidebar({
                     w-full
                     rounded-xl
                     border
-                    border-white/10
-                    bg-white/[0.03]
+                    border-white
+                    bg-light-bg
                     px-4
                     py-2.5
                     text-sm
                     font-medium
-                    text-zinc-300
+                    text-zinc-600
                     transition-all
                     duration-300
                     hover:border-violet-500/20
                     hover:bg-violet-500/10
-                    hover:text-white
+                    hover:text-zinc-900
+                    dark:border-white/10
+                    dark:bg-white/[0.03]
+                    dark:text-zinc-300
+                    dark:hover:text-white
                   "
                 >
                   Facebook

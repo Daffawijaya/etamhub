@@ -26,16 +26,20 @@ export default function Pagination({
           justify-center
           rounded-xl
           border
-          border-white/10
-          bg-[#161616]
-          text-zinc-300
+          border-white
+          bg-light-bg
+          text-zinc-700
           transition-all
           duration-300
           hover:border-violet-500/20
           hover:bg-violet-500/10
-          hover:text-white
+          hover:text-zinc-900
           disabled:cursor-not-allowed
           disabled:opacity-40
+          dark:border-white/10
+          dark:bg-[#161616]
+          dark:text-zinc-300
+          dark:hover:text-white
         "
       >
         ←
@@ -60,16 +64,21 @@ export default function Pagination({
                     border
                     border-violet-500/20
                     bg-violet-500/10
-                    text-violet-300
+                    text-violet-600
+                    dark:text-violet-300
                   `
                   : `
                     border
-                    border-white/10
-                    bg-[#161616]
-                    text-zinc-400
+                    border-white
+                    bg-light-bg
+                    text-zinc-500
                     hover:border-violet-500/20
                     hover:bg-violet-500/10
-                    hover:text-white
+                    hover:text-zinc-900
+                    dark:border-white/10
+                    dark:bg-[#161616]
+                    dark:text-zinc-400
+                    dark:hover:text-white
                   `
               }
             `}
@@ -90,16 +99,20 @@ export default function Pagination({
           justify-center
           rounded-xl
           border
-          border-white/10
-          bg-[#161616]
-          text-zinc-300
+          border-white
+          bg-light-bg
+          text-zinc-700
           transition-all
           duration-300
           hover:border-violet-500/20
           hover:bg-violet-500/10
-          hover:text-white
+          hover:text-zinc-900
           disabled:cursor-not-allowed
           disabled:opacity-40
+          dark:border-white/10
+          dark:bg-[#161616]
+          dark:text-zinc-300
+          dark:hover:text-white
         "
       >
         →

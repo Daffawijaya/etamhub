@@ -36,12 +36,16 @@ export default function UmkmCard({
         flex-col
         h-full
         overflow-hidden
-        bg-[#1b1b1b]
+        rounded-3xl
+        bg-light
         border
-        border-zinc-800
-        hover:border-zinc-700
+        border-white
+        hover:border-white
         transition-all
         duration-300
+        dark:bg-[#1b1b1b]
+        dark:border-zinc-800
+        dark:hover:border-zinc-700
       "
     >
       {/* Image */}
@@ -50,7 +54,9 @@ export default function UmkmCard({
           relative
           aspect-[4/3]
           overflow-hidden
-          bg-zinc-900
+          rounded-t-3xl
+          bg-light-bg
+          dark:bg-zinc-900
         "
       >
         <Image
@@ -107,7 +113,8 @@ export default function UmkmCard({
             md:text-xl
             font-semibold
             leading-tight
-            text-white
+            text-zinc-900
+            dark:text-white
             line-clamp-3
           "
         >
@@ -140,7 +147,8 @@ export default function UmkmCard({
               items-center
               text-[11px]
               sm:text-sm
-              text-zinc-400
+              text-zinc-500
+              dark:text-zinc-400
             "
           >
             {typeof distance === "number" && (
@@ -160,7 +168,8 @@ export default function UmkmCard({
                 sm:gap-2
                 text-[11px]
                 sm:text-sm
-                text-white
+                text-zinc-900
+                dark:text-white
                 transition-all
                 duration-300
                 group-hover:translate-x-1

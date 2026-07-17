@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import Navbar from "@/components/navbar/Navbar";
 import UmkmDetail from "@/components/Umkm/UmkmDetail";
 import { umkms } from "@/data/umkm";
 import Footer from "@/components/Footer";
@@ -27,7 +26,7 @@ export default async function UmkmPage({ params }: Props) {
     .replace(/\s+/g, "-");
 
   return (
-    <div className="min-h-screen flex flex-col bg-dark">
+    <div className="min-h-screen flex flex-col bg-light-bg dark:bg-dark">
       <DetailNavbar />
 
       <main
@@ -35,11 +34,9 @@ export default async function UmkmPage({ params }: Props) {
           relative
           flex-1
           overflow-hidden
-          bg-dark
           py-20
         "
       >
-
         <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-6">
           <Breadcrumb
             items={[

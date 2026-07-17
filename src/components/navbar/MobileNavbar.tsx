@@ -1,15 +1,23 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import DaftarModal from "../DaftarModal";
+import { IoIosMoon, IoIosSunny } from "react-icons/io";
 
 export default function MobileNavbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   const pathname = usePathname();
 
@@ -59,27 +67,45 @@ export default function MobileNavbar() {
       <div
         className={`
           fixed inset-0 z-[60]
-          bg-[#121313]
+          bg-light dark:bg-dark
           transition-transform duration-300 ease-out
           ${open ? "translate-y-0" : "-translate-y-full"}
         `}
       >
         {/* Header */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-white/10">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-white dark:border-white/10">
           <Link
             href="/"
             onClick={() => setOpen(false)}
-            className="text-xl font-bold tracking-wide text-white"
+            className="text-xl font-bold tracking-wide text-black dark:text-white"
           >
             etamhub.
           </Link>
 
-          <button
-            onClick={() => setOpen(false)}
-            className="text-white text-3xl"
-          >
-            <FiX />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={toggleTheme}
+              className="
+      w-10 h-10
+      flex items-center justify-center
+      text-black dark:text-white
+      text-xl
+    "
+            >
+              {theme === "dark" ? (
+                <IoIosSunny />
+              ) : (
+                <IoIosMoon className="text-black" />
+              )}
+            </button>
+
+            <button
+              onClick={() => setOpen(false)}
+              className="text-black dark:text-white text-3xl"
+            >
+              <FiX />
+            </button>
+          </div>
         </div>
 
         {/* Menu */}
@@ -87,7 +113,7 @@ export default function MobileNavbar() {
           <Link
             href="/"
             onClick={() => setOpen(false)}
-            className="text-white text-xl font-medium"
+            className="text-black dark:text-white text-xl font-medium"
           >
             Beranda
           </Link>
@@ -95,7 +121,7 @@ export default function MobileNavbar() {
           <Link
             href="/#kecamatan"
             onClick={() => setOpen(false)}
-            className="text-white text-xl font-medium"
+            className="text-black dark:text-white text-xl font-medium"
           >
             Kecamatan
           </Link>
@@ -103,7 +129,7 @@ export default function MobileNavbar() {
           <Link
             href="/about"
             onClick={() => setOpen(false)}
-            className="text-white text-xl font-medium"
+            className="text-black dark:text-white text-xl font-medium"
           >
             Tentang
           </Link>
@@ -125,7 +151,7 @@ export default function MobileNavbar() {
               transition-colors
             "
           >
-            Tambah UMKM
+            Daftar UMKM
           </button>
         </div>
       </div>

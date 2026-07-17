@@ -1,5 +1,7 @@
 "use client";
 
+import { useTheme } from "next-themes";
+import { IoIosSunny, IoIosMoon } from "react-icons/io";
 import Link from "next/link";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -8,6 +10,11 @@ import DaftarModal from "../DaftarModal";
 export default function DetailNavbar() {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
+  };
 
   return (
     <>
@@ -16,12 +23,15 @@ export default function DetailNavbar() {
         className="
           fixed top-0 left-0 z-50
           w-full h-14
-          border-b border-zinc-700 bg-dark/40 backdrop-blur-xl 
+          border-b border-white bg-light dark:border-zinc-700 dark:bg-dark/40 backdrop-blur-xl 
         "
       >
         <div className="max-w-7xl mx-auto h-full px-5 flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="text-xl font-bold tracking-wide text-white">
+          <Link
+            href="/"
+            className="text-xl font-bold tracking-wide text-black dark:text-white"
+          >
             etamhub.
           </Link>
 
@@ -29,45 +39,63 @@ export default function DetailNavbar() {
           <div className="hidden lg:flex items-center gap-10">
             <Link
               href="/"
-              className="text-sm text-white/80 hover:text-white transition"
+              className="text-sm text-black hover:text-black/80 dark:text-white/80 dark:hover:text-white transition"
             >
               Beranda
             </Link>
 
             <Link
               href="/#kecamatan"
-              className="text-sm text-white/80 hover:text-white transition"
+              className="text-sm text-black hover:text-black/80 dark:text-white/80 dark:hover:text-white transition"
             >
               Kecamatan
             </Link>
 
             <Link
               href="/about"
-              className="text-sm text-white/80 hover:text-white transition"
+              className="text-sm text-black hover:text-black/80 dark:text-white/80 dark:hover:text-white transition"
             >
               Tentang
             </Link>
           </div>
 
           {/* Desktop Button */}
-          <div className="hidden lg:block">
+          {/* Desktop Button */}
+          <div className="hidden lg:flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="
+      w-10 h-10 rounded-md
+      flex items-center justify-center
+      border border-black/10 dark:border-white/10
+      text-black dark:text-white
+      transition
+    "
+            >
+              {theme === "dark" ? (
+                <IoIosSunny />
+              ) : (
+                <IoIosMoon className="text-black" />
+              )}
+            </button>
+
             <button
               onClick={() => setIsModalOpen(true)}
               className="
-                h-10 px-5 rounded-md
-                bg-white text-black
-                text-sm font-medium
-                transition hover:opacity-90
-              "
+      h-10 px-5 rounded-md
+      bg-white text-black
+      text-sm font-medium
+      transition hover:opacity-90
+    "
             >
-              Tambah UMKM
+              Daftar UMKM
             </button>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setOpen(true)}
-            className="lg:hidden text-white text-xl"
+            className="lg:hidden text-black dark:text-white text-xl"
           >
             <FiMenu />
           </button>
@@ -75,39 +103,57 @@ export default function DetailNavbar() {
       </nav>
 
       {/* Mobile Menu */}
+      {/* Fullscreen Menu */}
       <div
         className={`
-          fixed top-0 left-0 z-[60]
-          w-full h-screen
-          bg-dark
+          fixed inset-0 z-[60]
+          bg-light dark:bg-dark
           transition-transform duration-300 ease-out
           ${open ? "translate-y-0" : "-translate-y-full"}
         `}
       >
         {/* Header */}
-        <div className="h-14 flex items-center justify-between px-5 border-b border-white/10">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-white dark:border-white/10">
           <Link
             href="/"
             onClick={() => setOpen(false)}
-            className="text-xl font-bold tracking-wide text-white"
+            className="text-xl font-bold tracking-wide text-black dark:text-white"
           >
             etamhub.
           </Link>
 
-          <button
-            onClick={() => setOpen(false)}
-            className="text-white text-3xl"
-          >
-            <FiX />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={toggleTheme}
+              className="
+      w-10 h-10
+      flex items-center justify-center
+      text-black dark:text-white
+      text-xl
+    "
+            >
+              {theme === "dark" ? (
+                <IoIosSunny />
+              ) : (
+                <IoIosMoon className="text-black" />
+              )}
+            </button>
+
+            <button
+              onClick={() => setOpen(false)}
+              className="text-black dark:text-white text-3xl"
+            >
+              <FiX />
+            </button>
+          </div>
         </div>
 
         {/* Menu */}
-        <div className="flex flex-col gap-8 px-6 pt-8">
+        <div className="flex flex-col px-6 pt-10 gap-8">
           <Link
             href="/"
             onClick={() => setOpen(false)}
-            className="text-white text-xl"
+            className="text-black dark:text-white text-xl font-medium"
           >
             Beranda
           </Link>
@@ -115,7 +161,7 @@ export default function DetailNavbar() {
           <Link
             href="/#kecamatan"
             onClick={() => setOpen(false)}
-            className="text-white text-xl"
+            className="text-black dark:text-white text-xl font-medium"
           >
             Kecamatan
           </Link>
@@ -123,13 +169,13 @@ export default function DetailNavbar() {
           <Link
             href="/about"
             onClick={() => setOpen(false)}
-            className="text-white text-xl"
+            className="text-black dark:text-white text-xl font-medium"
           >
             Tentang
           </Link>
         </div>
 
-        {/* Mobile Button */}
+        {/* Button */}
         <div className="absolute bottom-6 left-0 w-full px-6">
           <button
             onClick={() => {
@@ -137,13 +183,15 @@ export default function DetailNavbar() {
               setIsModalOpen(true);
             }}
             className="
-              w-full h-10 rounded-md
+              w-full h-11 rounded-lg
               flex items-center justify-center
               bg-white text-black
               text-sm font-medium
+              hover:bg-zinc-200
+              transition-colors
             "
           >
-            Tambah UMKM
+            Daftar UMKM
           </button>
         </div>
       </div>
