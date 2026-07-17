@@ -47,7 +47,6 @@ export default function TeamStats() {
             bg-light
             dark:bg-white/[0.03]
             rounded-2xl
-            dark:rounded-none
             backdrop-blur-sm
             p-3
             sm:p-4
