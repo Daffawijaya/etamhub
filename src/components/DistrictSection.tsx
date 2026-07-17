@@ -2,7 +2,6 @@ import Link from "next/link";
 import { umkms } from "@/data/umkm";
 import { slugify } from "@/lib/slugify";
 import SectionHeader from "./textBlock/SectionHeader";
-import BottomGlow from "./decoration/BottomGlow";
 
 export default function DistrictSection() {
   const districtMap = umkms.reduce<Record<string, number>>((acc, item) => {
@@ -20,7 +19,8 @@ export default function DistrictSection() {
       className="
         relative 
         overflow-hidden 
-        bg-dark 
+        bg-light-bg
+        dark:bg-dark 
         py-16 
         sm:py-20 
         md:py-32
@@ -63,8 +63,6 @@ export default function DistrictSection() {
           "
         />
       </div>
-
-      {/* <BottomGlow /> */}
 
       <div
         className="
@@ -120,17 +118,21 @@ export default function DistrictSection() {
                   relative
                   overflow-hidden
                   rounded-2xl
-                  md:rounded-3xl
+                  dark:rounded-none
                   border
-                  border-white/10
-                  bg-[#161616]
+                  border-white
+                  dark:border-white/10
+                  bg-light
+                  dark:bg-[#161616]
                   p-5
                   sm:p-6
                   md:p-7
                   transition-all
                   duration-300
-                  hover:border-white/20
-                  hover:bg-[#1a1a1a]
+                  
+                  dark:hover:border-white/20
+                  hover:bg-[#fbfbfd]
+                  dark:hover:bg-[#1a1a1a]
                   hover:-translate-y-1
                 "
               >
@@ -169,7 +171,8 @@ export default function DistrictSection() {
                         sm:text-xl
                         md:text-2xl
                         font-medium
-                        text-white
+                        text-zinc-900
+                        dark:text-white
                         truncate
                       "
                       title={district}
@@ -187,7 +190,7 @@ export default function DistrictSection() {
                     <div className="mt-4 sm:mt-5 flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-violet-400" />
 
-                      <p className="text-zinc-400 text-sm md:text-base">
+                      <p className="text-zinc-500 dark:text-zinc-400 text-sm md:text-base">
                         {totalUmkm} UMKM Terdaftar
                       </p>
                     </div>
@@ -204,37 +207,23 @@ export default function DistrictSection() {
                       sm:h-11
                       rounded-xl
                       border
-                      border-white/10
-                      bg-white/[0.03]
-                      text-zinc-300
+                      border-black/10
+                      dark:border-white/10
+                      bg-black/[0.03]
+                      dark:bg-white/[0.03]
+                      text-zinc-500
+                      dark:text-zinc-300
                       shrink-0
                       transition-all
                       duration-300
-                      group-hover:text-white
+                      group-hover:text-zinc-900
+                      dark:group-hover:text-white
                       group-hover:translate-x-1
                     "
                   >
                     →
                   </div>
                 </div>
-
-                {/* Bottom Accent Line */}
-                {/* <div
-                  className="
-                    absolute
-                    bottom-0
-                    left-0
-                    h-px
-                    w-0
-                    bg-gradient-to-r
-                    from-violet-500
-                    via-fuchsia-400
-                    to-transparent
-                    transition-all
-                    duration-500
-                    group-hover:w-full
-                  "
-                /> */}
               </Link>
             );
           })}

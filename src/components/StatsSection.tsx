@@ -27,7 +27,7 @@ export default function StatsSection() {
   ];
 
   return (
-    <section className="bg-dark py-12 sm:py-16 md:py-24">
+    <section className="bg-light-bg dark:bg-dark py-12 sm:py-16 md:py-24 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeader
           title="Statistik UMKM"
@@ -36,75 +36,81 @@ export default function StatsSection() {
 
         <div
           className="
-            mt-10
-            sm:mt-14
-            md:mt-20
-            grid
-            grid-cols-1
-            lg:grid-cols-3
-            gap-4
-            sm:gap-6
-          "
+          mt-10
+          sm:mt-14
+          md:mt-20
+          grid
+          grid-cols-1
+          lg:grid-cols-3
+          gap-4
+          sm:gap-6
+        "
         >
           {stats.map((stat) => (
             <div
               key={stat.label}
               className="
-                bg-[#1b1b1b]
-                border
-                border-zinc-800
-                hover:border-zinc-700
-                transition-all
-                duration-300
-                p-6
-                sm:p-8
-                md:p-10
-                min-h-[180px]
-                sm:min-h-[220px]
-                md:min-h-[260px]
-                flex
-                flex-col
-                justify-center
-              "
+              bg-light
+              dark:bg-[#1b1b1b]
+              rounded-2xl dark:rounded-none
+              border
+              border-white
+              dark:border-zinc-800
+              dark:hover:border-zinc-700
+              transition-all
+              duration-300
+              p-6
+              sm:p-8
+              md:p-10
+              min-h-[180px]
+              sm:min-h-[220px]
+              md:min-h-[260px]
+              flex
+              flex-col
+              justify-center
+            "
             >
               <h3
                 className="
-                  text-4xl
-                  sm:text-5xl
-                  md:text-6xl
-                  lg:text-7xl
-                  font-semibold
-                  tracking-tight
-                  text-white
-                "
+                text-4xl
+                sm:text-5xl
+                md:text-6xl
+                lg:text-7xl
+                font-semibold
+                tracking-tight
+                text-zinc-900
+                dark:text-white
+              "
               >
                 {stat.value}
               </h3>
 
               <p
                 className="
-                  mt-3
-                  sm:mt-5
-                  text-lg
-                  sm:text-xl
-                  md:text-2xl
-                  font-medium
-                  text-white
-                "
+                mt-3
+                sm:mt-5
+                text-lg
+                sm:text-xl
+                md:text-2xl
+                font-medium
+                text-zinc-900
+                dark:text-white
+              "
               >
                 {stat.label}
               </p>
 
               <p
                 className="
-                  mt-2
-                  sm:mt-3
-                  text-sm
-                  sm:text-base
-                  text-zinc-400
-                  leading-relaxed
-                  max-w-xs
-                "
+                mt-2
+                sm:mt-3
+                text-sm
+                sm:text-base
+                text-zinc-600
+                dark:text-zinc-400
+                leading-relaxed
+                max-w-xs
+              "
               >
                 {stat.desc}
               </p>

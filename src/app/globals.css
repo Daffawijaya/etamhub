@@ -1,12 +1,15 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
 }
 
-.font-coiny {
-  font-family: var(--font-coiny);
+.dark {
+  --background: #121313;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -18,7 +21,18 @@
   --color-primary: #531553;
   --color-secondary: #E4A63A;
   --color-third: #f5ede5;
+
   --color-dark: #121313;
+
+  --color-light: #ebebf4;
+  --color-light-hover: #dedeea;
+
+  --color-light-bg: #e7e7f1;
+  --color-light-bg-hover: #dcdcea;
+
+  --color-light-card: #fbfbfd;
+  --color-light-card-hover: #f1f1f5;
+
   --color-gry: #f6f9f9;
 }
 
