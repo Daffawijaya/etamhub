@@ -10,7 +10,7 @@ import { IoIosMoon, IoIosSunny } from "react-icons/io";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   const [mounted, setMounted] = useState(false);
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
@@ -71,10 +71,10 @@ export default function Navbar() {
             {/* Toggle Theme */}
             {mounted && (
               <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
                 className="text-white text-lg"
               >
-                {theme === "dark" ? (
+                {resolvedTheme === "dark" ? (
                   <IoIosSunny />
                 ) : (
                   <IoIosMoon className="text-black" />

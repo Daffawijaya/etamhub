@@ -10,10 +10,10 @@ import DaftarModal from "../DaftarModal";
 export default function DetailNavbar() {
   const [open, setOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+    setTheme(resolvedTheme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -70,7 +70,7 @@ export default function DetailNavbar() {
       transition
     "
             >
-              {theme === "dark" ? (
+              {resolvedTheme === "dark" ? (
                 <IoIosSunny />
               ) : (
                 <IoIosMoon className="text-black" />
@@ -129,7 +129,7 @@ export default function DetailNavbar() {
       text-xl
     "
             >
-              {theme === "dark" ? (
+              {resolvedTheme === "dark" ? (
                 <IoIosSunny />
               ) : (
                 <IoIosMoon className="text-black" />
