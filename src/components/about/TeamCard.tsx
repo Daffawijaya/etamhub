@@ -137,7 +137,7 @@ export default function TeamCard({
                 text-white
               "
             >
-              Developer EtamHub
+              Developer etamhub
             </span>
           </>
         )}
