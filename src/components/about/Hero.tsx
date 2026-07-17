@@ -61,7 +61,7 @@ export default function HeroBackground() {
           z-10
           pointer-events-none
           bg-light-bg
-          dark:bg-dark
+          dark:bg-dark transition-colors
         "
         style={{
           WebkitMaskImage:

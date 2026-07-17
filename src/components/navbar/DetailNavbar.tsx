@@ -62,18 +62,15 @@ export default function DetailNavbar() {
           {/* Desktop Button */}
           <div className="hidden lg:flex items-center gap-3">
             <button
-              onClick={toggleTheme}
-              className="
-      w-10 h-10 
-      flex items-center justify-center
-      text-black dark:text-white
-      transition
-    "
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              className="text-lg cursor-pointer pr-3"
             >
               {resolvedTheme === "dark" ? (
-                <IoIosSunny />
+                <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
               ) : (
-                <IoIosMoon className="text-black" />
+                <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
               )}
             </button>
 
@@ -121,18 +118,15 @@ export default function DetailNavbar() {
 
           <div className="flex items-center gap-1">
             <button
-              onClick={toggleTheme}
-              className="
-      w-10 h-10
-      flex items-center justify-center
-      text-black dark:text-white
-      text-xl
-    "
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              className="text-lg cursor-pointer pr-3"
             >
               {resolvedTheme === "dark" ? (
-                <IoIosSunny />
+                <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
               ) : (
-                <IoIosMoon className="text-black" />
+                <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
               )}
             </button>
 

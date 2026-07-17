@@ -94,16 +94,16 @@ export default function MobileNavbar() {
 
           <div className="flex items-center gap-1">
             <button
-              onClick={toggleTheme}
-              className="
-    w-10 h-10
-    flex items-center justify-center
-    text-black dark:text-white
-    text-xl
-  "
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
+              className="text-lg cursor-pointer pr-3"
             >
-              {mounted &&
-                (resolvedTheme === "dark" ? <IoIosSunny /> : <IoIosMoon />)}
+              {resolvedTheme === "dark" ? (
+                <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
+              ) : (
+                <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
+              )}
             </button>
 
             <button
