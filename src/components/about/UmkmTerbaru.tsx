@@ -8,7 +8,7 @@ export default function UmkmTerbaruSection() {
   const latestUmkms = [...umkms].sort((a, b) => b.id - a.id).slice(0, 4);
 
   return (
-    <section className="bg-dark py-8 sm:py-10 md:py-16">
+    <section className="bg-light-bg dark:bg-dark py-8 sm:py-10 md:py-16 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
         <SectionHeader
           title="UMKM Terbaru"
@@ -37,10 +37,13 @@ export default function UmkmTerbaruSection() {
                 flex
                 flex-col
                 overflow-hidden
-                bg-[#1b1b1b]
+                bg-light
+                dark:bg-[#1b1b1b]
                 border
-                border-zinc-800
-                hover:border-zinc-700
+                border-white
+                dark:border-zinc-800
+                rounded-2xl
+                dark:hover:border-zinc-700
                 transition-all
                 duration-300
               "
@@ -51,7 +54,9 @@ export default function UmkmTerbaruSection() {
                   relative
                   aspect-[4/3]
                   overflow-hidden
-                  bg-zinc-900
+                  rounded-t-2xl
+                  bg-zinc-200
+                  dark:bg-zinc-900
                 "
               >
                 <Image
@@ -106,7 +111,8 @@ export default function UmkmTerbaruSection() {
                     md:text-xl
                     font-semibold
                     leading-tight
-                    text-white
+                    text-zinc-900
+                    dark:text-white
                     line-clamp-3
                   "
                 >
@@ -119,7 +125,8 @@ export default function UmkmTerbaruSection() {
                     sm:mt-3
                     text-[11px]
                     sm:text-sm
-                    text-zinc-400
+                    text-zinc-600
+                    dark:text-zinc-400
                   "
                 >
                   {umkm.subkategori}
@@ -133,6 +140,7 @@ export default function UmkmTerbaruSection() {
                     sm:text-sm
                     leading-relaxed
                     text-zinc-500
+                    dark:text-zinc-500
                     line-clamp-2
                   "
                 >
@@ -148,7 +156,8 @@ export default function UmkmTerbaruSection() {
                       sm:gap-2
                       text-[11px]
                       sm:text-sm
-                      text-white
+                      text-zinc-900
+                      dark:text-white
                       transition-all
                       duration-300
                       group-hover:translate-x-1

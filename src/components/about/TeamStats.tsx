@@ -42,8 +42,12 @@ export default function TeamStats() {
           key={item.label}
           className="
             border
-            border-white/10
-            bg-white/[0.03]
+            border-white
+            dark:border-white/10
+            bg-light
+            dark:bg-white/[0.03]
+            rounded-2xl
+            dark:rounded-none
             backdrop-blur-sm
             p-3
             sm:p-4
@@ -56,7 +60,8 @@ export default function TeamStats() {
               sm:text-4xl
               md:text-6xl
               font-bold
-              text-white
+              text-zinc-900
+              dark:text-white
               tracking-tight
             "
           >
@@ -71,7 +76,8 @@ export default function TeamStats() {
               text-xs
               sm:text-sm
               md:text-base
-              text-white/60
+              text-zinc-600
+              dark:text-white/60
               leading-snug
             "
           >

@@ -34,7 +34,7 @@ export default function Hero() {
 
       {/* Text Tengah */}
       <div className="absolute inset-0 flex items-center justify-center z-10 -translate-y-22">
-        <h1 className="text-white text-3xl md:text-6xl text-center px-4 leading-tight">
+        <h1 className="text-black dark:text-white text-3xl md:text-5xl text-center px-4 leading-tight">
           Jelajahi Seluruh UMKM
           <br />
           Kutai Kartanegara
@@ -67,6 +67,24 @@ export default function Hero() {
           }}
         />
       </div>
+
+      {/* Light mode overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none dark:hidden z-[1]"
+        style={{
+          background: `
+      linear-gradient(
+  to bottom,
+  rgba(231,231,241,.5) 0%,
+  rgba(231,231,241,.15) 50%,
+  rgba(231,231,241,.15) 65%,
+  rgba(231,231,241,.4) 80%,
+  rgba(231,231,241,.7) 92%,
+  rgba(231,231,241,1) 100%
+)
+    `,
+        }}
+      />
     </section>
   );
 }

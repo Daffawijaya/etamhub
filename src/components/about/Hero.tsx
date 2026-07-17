@@ -3,7 +3,7 @@ import HeroNavbar from "../navbar/HeroNavbar";
 
 export default function HeroBackground() {
   return (
-    <section className="relative overflow-hidden bg-dark">
+    <section className="relative overflow-hidden bg-light-bg dark:bg-dark transition-colors">
       {/* Background atas */}
       <div
         className="
@@ -53,9 +53,16 @@ export default function HeroBackground() {
         />
       </div>
 
-      {/* Overlay hitam */}
+      {/* Overlay */}
       <div
-        className="absolute inset-0 z-10 pointer-events-none bg-dark"
+        className="
+          absolute
+          inset-0
+          z-10
+          pointer-events-none
+          bg-light-bg
+          dark:bg-dark
+        "
         style={{
           WebkitMaskImage:
             "linear-gradient(to top, #000 0%, #000 45%, rgba(0,0,0,.85) 60%, rgba(0,0,0,.45) 78%, rgba(0,0,0,.15) 92%, transparent 100%)",
@@ -109,7 +116,8 @@ export default function HeroBackground() {
             text-3xl
             sm:text-4xl
             md:text-5xl
-            text-white
+            text-zinc-900
+            dark:text-white
             text-center
           "
         >
@@ -122,7 +130,8 @@ export default function HeroBackground() {
             sm:mt-5
             md:mt-6
             text-center
-            text-zinc-400
+            text-zinc-600
+            dark:text-zinc-400
             max-w-3xl
             text-sm
             sm:text-base
