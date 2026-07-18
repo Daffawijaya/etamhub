@@ -16,7 +16,7 @@ export default function UmkmTerbaruSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
         <SectionHeader
           title="UMKM Terbaru"
-          description="Pelaku usaha yang baru bergabung dan memperkenalkan produk serta layanannya melalui EtamHub."
+          description="Pelaku usaha yang baru bergabung dan memperkenalkan produk serta layanannya melalui etamhub."
         />
 
         <div
