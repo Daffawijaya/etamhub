@@ -4,10 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { VscChevronRight } from "react-icons/vsc";
 import DaftarModal from "../DaftarModal";
+import { usePathname } from "next/navigation";
 
 export default function HeroNavbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const pathname = usePathname();
+
+  const isHome = pathname === "/";
 
   return (
     <header className="hidden lg:block absolute top-0 left-0 w-full z-30">
@@ -17,21 +21,33 @@ export default function HeroNavbar() {
           <nav className="flex flex-col items-start gap-2">
             <Link
               href="/"
-              className="text-black hover:black/70 dark:text-white/90 dark:hover:text-white transition text-sm"
+              className={`transition text-sm ${
+                isHome
+                  ? "dark:text-white/90 dark:hover:text-white text-white hover:text-white/80 duration-300"
+                  : "text-black hover:text-black/80 dark:text-white/90 dark:hover:text-white duration-300"
+              }`}
             >
               Beranda
             </Link>
 
             <Link
               href="/#kecamatan"
-              className="text-black hover:black/70 dark:text-white/90 dark:hover:text-white transition text-sm"
+              className={`transition text-sm ${
+                isHome
+                  ? "dark:text-white/90 dark:hover:text-white text-white hover:text-white/80 duration-300"
+                  : "text-black hover:text-black/80 dark:text-white/90 dark:hover:text-white duration-300"
+              }`}
             >
               Kecamatan
             </Link>
 
             <Link
               href="/about"
-              className="text-black hover:black/70 dark:text-white/90 dark:hover:text-white transition text-sm"
+              className={`transition text-sm ${
+                isHome
+                  ? "dark:text-white/90 dark:hover:text-white text-white hover:text-white/80 duration-300"
+                  : "text-black hover:text-black/80 dark:text-white/90 dark:hover:text-white duration-300"
+              }`}
             >
               Tentang
             </Link>
@@ -41,7 +57,11 @@ export default function HeroNavbar() {
           <div className="flex justify-center items-start">
             <Link
               href="/"
-              className="text-black dark:text-white font-semibold text-2xl tracking-tight"
+              className={`transition font-semibold text-2xl tracking-tight ${
+                isHome
+                  ? "dark:text-white dark:hover:text-white/80 text-white hover:text-white/80 duration-300"
+                  : "text-black hover:text-black/80 dark:text-white dark:hover:text-white/80 duration-300"
+              }`}
             >
               etamhub.
             </Link>
