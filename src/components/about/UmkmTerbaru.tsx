@@ -3,9 +3,12 @@ import Link from "next/link";
 import { umkms } from "@/data/umkm";
 import { imageUrl } from "@/lib/imageUrl";
 import SectionHeader from "../textBlock/SectionHeader";
+import BigChevronButtonButton from "../button/BigChevronButton";
+import { useRouter } from "next/navigation";
 
 export default function UmkmTerbaruSection() {
   const latestUmkms = [...umkms].sort((a, b) => b.id - a.id).slice(0, 4);
+  const router = useRouter();
 
   return (
     <section className="bg-light-bg dark:bg-dark py-8 sm:py-10 md:py-16 transition-colors">
@@ -170,6 +173,12 @@ export default function UmkmTerbaruSection() {
               </div>
             </Link>
           ))}
+        </div>
+        <div className="w-full  pt-12 flex justify-center">
+          <BigChevronButtonButton
+            title="Jelajahi Kecamatan"
+            onClick={() => router.push("/#kecamatan")}
+          />
         </div>
       </div>
     </section>

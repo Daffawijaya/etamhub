@@ -99,11 +99,12 @@ export default function MobileNavbar() {
               }
               className="text-lg cursor-pointer pr-3"
             >
-              {resolvedTheme === "dark" ? (
-                <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
-              ) : (
-                <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
-              )}
+              {mounted &&
+                (resolvedTheme === "dark" ? (
+                  <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
+                ) : (
+                  <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
+                ))}
             </button>
 
             <button
