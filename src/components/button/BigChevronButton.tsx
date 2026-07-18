@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { VscChevronRight } from "react-icons/vsc";
+import { IoChevronForward } from "react-icons/io5";
 
 type BigChevronButtonProps = {
   title: string;
@@ -70,12 +70,26 @@ export default function BigChevronButtonButton({
           flex
           items-center
           justify-center
-          text-black
-          dark:text-white
         "
       >
-        <VscChevronRight
-          size={17}
+        {/* Definisi Linear Gradient untuk SVG */}
+        <svg className="absolute w-0 h-0">
+          <defs>
+            <linearGradient id="chevron-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              {/* Stop Kiri: Ungu (#a855f7 adalah warna purple-500 Tailwind) */}
+              <stop offset="0%" className="[stop-color:#a855f7]" />
+              {/* Stop Kanan: Hitam di Light Mode, Putih di Dark Mode */}
+              <stop
+                offset="100%"
+                className="[stop-color:#a855f7] dark:[stop-color:#ffffff] transition-colors duration-500"
+              />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <IoChevronForward
+          size={20}
+          style={{ fill: "url(#chevron-grad)", stroke: "url(#chevron-grad)" }}
           className={`absolute ${
             isHovered
               ? "translate-x-5 opacity-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -83,8 +97,9 @@ export default function BigChevronButtonButton({
           }`}
         />
 
-        <VscChevronRight
-          size={15}
+        <IoChevronForward
+          size={20}
+          style={{ fill: "url(#chevron-grad)", stroke: "url(#chevron-grad)" }}
           className={`absolute ${
             isHovered
               ? "translate-x-0 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { imageUrl } from "@/lib/imageUrl";
+import BottomAccent from "../decoration/BottomAccent";
 
 type Props = {
   id: number;
@@ -46,6 +47,7 @@ export default function UmkmCard({
         dark:bg-[#1b1b1b]
         dark:border-zinc-800
         dark:hover:border-zinc-700
+        relative
       "
     >
       {/* Image */}
@@ -181,6 +183,7 @@ export default function UmkmCard({
           </div>
         </div>
       </div>
+      <BottomAccent />
     </Link>
   );
 }

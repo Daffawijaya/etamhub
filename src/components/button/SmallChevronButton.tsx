@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { VscChevronRight } from "react-icons/vsc";
+import { IoChevronForward } from "react-icons/io5";
 
 type SmallChevronButtonProps = {
   title: string;
@@ -35,9 +35,31 @@ export default function SmallChevronButton({
     >
       <span className="px-2 py-1 text-black text-sm font-medium">{title}</span>
 
-      <span className="relative overflow-hidden w-8 h-8 bg-black rounded-md flex items-center justify-center text-white">
-        <VscChevronRight
+      <span className="relative overflow-hidden w-8 h-8 bg-black rounded-md flex items-center justify-center">
+        {/* Definisi Linear Gradient untuk SVG (Kiri Ungu, Kanan Putih) */}
+        <svg className="absolute w-0 h-0">
+          <defs>
+            <linearGradient
+              id="small-chevron-grad"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="0%"
+            >
+              {/* Stop Kiri: Ungu */}
+              <stop offset="0%" className="[stop-color:#a855f7]" />
+              {/* Stop Kanan: Putih */}
+              <stop offset="100%" className="[stop-color:#ffffff]" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <IoChevronForward
           size={15}
+          style={{
+            fill: "url(#small-chevron-grad)",
+            stroke: "url(#small-chevron-grad)",
+          }}
           className={`absolute ${
             isHovered
               ? "translate-x-5 opacity-0 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
@@ -45,8 +67,12 @@ export default function SmallChevronButton({
           }`}
         />
 
-        <VscChevronRight
+        <IoChevronForward
           size={15}
+          style={{
+            fill: "url(#small-chevron-grad)",
+            stroke: "url(#small-chevron-grad)",
+          }}
           className={`absolute ${
             isHovered
               ? "translate-x-0 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"

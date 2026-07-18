@@ -19,7 +19,7 @@ export default function TeamSection({
   grid = false,
 }: TeamSectionProps) {
   return (
-    <section className="bg-light-bg dark:bg-dark pt-3 sm:pt-5 pb-16 sm:pb-20 lg:pb-28 transition-colors">
+    <section id="pendamping" className="bg-light-bg dark:bg-dark pt-3 sm:pt-5 pb-16 sm:pb-20 lg:pb-28 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-5 md:px-6">
         <h2
           className="

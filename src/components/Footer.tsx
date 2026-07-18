@@ -5,9 +5,7 @@ import { ReactNode } from "react";
 
 export default function Footer({ title }: { title?: ReactNode }) {
   return (
-    <footer className="relative overflow-hidden bg-light dark:bg-dark text-black dark:text-white transition-colors">
-      <div className="dark:h-px dark:bg-white/5" />
-
+    <footer className="border-t-[0.5px] border-light dark:border-white/10 relative overflow-hidden bg-light dark:bg-dark text-black dark:text-white transition-colors">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-10 z-20">
         {title && (
           <>
@@ -74,7 +72,8 @@ export default function Footer({ title }: { title?: ReactNode }) {
               </Link>
 
               <Link
-                href="/kontak"
+                href="https://daffayanwijaya.vercel.app"
+                target="_blank"
                 className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
               >
                 Kontak
@@ -90,46 +89,51 @@ export default function Footer({ title }: { title?: ReactNode }) {
 
             <div className="flex flex-col items-center md:items-start gap-3 md:gap-4">
               <Link
-                href="/umkm"
-                className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
-              >
-                Semua UMKM
-              </Link>
-
-              <Link
-                href="/kecamatan"
+                href="/#kecamatan"
                 className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
               >
                 Kecamatan
               </Link>
-
               <Link
-                href="/kategori"
+                href="/about#terbaru"
                 className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
               >
-                Kategori
+                UMKM Terbaru
               </Link>
             </div>
           </div>
 
           {/* Contact */}
+          {/* Contact */}
           <div className="text-center md:text-left">
-            <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
-              Dukungan
-            </p>
+            <div className="space-y-8">
+              <div>
+                <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
+                  Profil
+                </p>
 
-            <div className="space-y-3 md:space-y-4">
-              <p className="text-black/80 dark:text-white/80">
-                Dinas Koperasi & UMKM
-              </p>
+                <Link
+                  href="/about#pendamping"
+                  className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
+                >
+                  TA Pendamping UMKM
+                </Link>
+              </div>
 
-              <p className="text-black/50 dark:text-white/50">
-                Kutai Kartanegara
-              </p>
+              <div>
+                <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
+                  Instagram
+                </p>
 
-              <p className="text-black dark:text-white font-medium break-all">
-                etamhub@kukarkab.go.id
-              </p>
+                <Link
+                  href="https://instagram.com/kawaku.kukar"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
+                >
+                  @kawaku.kukar
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -146,7 +150,7 @@ export default function Footer({ title }: { title?: ReactNode }) {
         "
         >
           <p className="text-sm text-black/40 dark:text-white/40">
-            © {new Date().getFullYear()} etamhub
+            © {new Date().getFullYear()} etamhub.
           </p>
 
           <div
@@ -159,19 +163,9 @@ export default function Footer({ title }: { title?: ReactNode }) {
             gap-y-2
           "
           >
-            <Link
-              href="#"
-              className="text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition"
-            >
-              Sitemap
-            </Link>
-
-            <Link
-              href="#"
-              className="text-black/40 dark:text-white/40 hover:text-black dark:hover:text-white transition"
-            >
-              Kebijakan Privasi
-            </Link>
+            <p className="text-black/40 dark:text-white/40 transition text-sm">
+              by Tenaga Ahli Pendamping UMKM Kutai Kartanegara
+            </p>
           </div>
         </div>
       </div>
