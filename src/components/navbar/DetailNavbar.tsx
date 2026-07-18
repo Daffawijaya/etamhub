@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
 import DaftarModal from "../DaftarModal";
+import { navigation } from "@/data/navigation";
 
 export default function DetailNavbar() {
   const [open, setOpen] = useState(false);
@@ -37,26 +38,15 @@ export default function DetailNavbar() {
 
           {/* Desktop Menu */}
           <div className="hidden lg:flex items-center gap-10">
-            <Link
-              href="/"
-              className="text-sm text-black hover:text-black/80 dark:text-white/80 dark:hover:text-white transition"
-            >
-              Beranda
-            </Link>
-
-            <Link
-              href="/#kecamatan"
-              className="text-sm text-black hover:text-black/80 dark:text-white/80 dark:hover:text-white transition"
-            >
-              Kecamatan
-            </Link>
-
-            <Link
-              href="/about"
-              className="text-sm text-black hover:text-black/80 dark:text-white/80 dark:hover:text-white transition"
-            >
-              Tentang
-            </Link>
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm text-black hover:text-black/80 dark:text-white/80 dark:hover:text-white transition"
+              >
+                {item.label}
+              </Link>
+            ))}
           </div>
 
           {/* Desktop Button */}
@@ -141,29 +131,16 @@ export default function DetailNavbar() {
 
         {/* Menu */}
         <div className="flex flex-col px-6 pt-10 gap-8">
-          <Link
-            href="/"
-            onClick={() => setOpen(false)}
-            className="text-black dark:text-white text-xl font-medium"
-          >
-            Beranda
-          </Link>
-
-          <Link
-            href="/#kecamatan"
-            onClick={() => setOpen(false)}
-            className="text-black dark:text-white text-xl font-medium"
-          >
-            Kecamatan
-          </Link>
-
-          <Link
-            href="/about"
-            onClick={() => setOpen(false)}
-            className="text-black dark:text-white text-xl font-medium"
-          >
-            Tentang
-          </Link>
+          {navigation.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className="text-black dark:text-white text-xl font-medium"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
         {/* Button */}

@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import DaftarModal from "../DaftarModal";
 import { IoIosMoon, IoIosSunny } from "react-icons/io";
+import { navigation } from "@/data/navigation";
 
 export default function MobileNavbar() {
   const [open, setOpen] = useState(false);
@@ -118,29 +119,16 @@ export default function MobileNavbar() {
 
         {/* Menu */}
         <div className="flex flex-col px-6 pt-10 gap-8">
-          <Link
-            href="/"
-            onClick={() => setOpen(false)}
-            className="text-black dark:text-white text-xl font-medium"
-          >
-            Beranda
-          </Link>
-
-          <Link
-            href="/#kecamatan"
-            onClick={() => setOpen(false)}
-            className="text-black dark:text-white text-xl font-medium"
-          >
-            Kecamatan
-          </Link>
-
-          <Link
-            href="/about"
-            onClick={() => setOpen(false)}
-            className="text-black dark:text-white text-xl font-medium"
-          >
-            Tentang
-          </Link>
+          {navigation.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className="text-black dark:text-white text-xl font-medium"
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
 
         {/* Button */}

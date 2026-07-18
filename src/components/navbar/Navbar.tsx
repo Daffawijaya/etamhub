@@ -7,6 +7,7 @@ import { useTheme } from "next-themes";
 import DaftarModal from "../DaftarModal";
 import MobileNavbar from "./MobileNavbar";
 import { IoIosMoon, IoIosSunny } from "react-icons/io";
+import { navigation } from "@/data/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -61,11 +62,11 @@ export default function Navbar() {
 
             {/* Menu */}
             <div className="flex items-center gap-6">
-              <NavLink href="/">Beranda</NavLink>
-
-              <NavLink href="/#kecamatan">Kecamatan</NavLink>
-
-              <NavLink href="/about">Tentang</NavLink>
+              {navigation.map((item) => (
+                <NavLink key={item.href} href={item.href}>
+                  {item.label}
+                </NavLink>
+              ))}
             </div>
 
             {/* Toggle Theme */}
