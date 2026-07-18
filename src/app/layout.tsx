@@ -9,7 +9,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "EtamHub",
+  title: "etamhub",
   description: "Katalog UMKM Kutai Kartanegara",
   icons: {
     icon: "/eiconl.png",
