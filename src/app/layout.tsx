@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import Providers from "./provider";
-// import ScrollTop from "@/components/ScrollTop";
+import ScrollTop from "@/components/ScrollTop";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="id" suppressHydrationWarning>
       <body className={`${outfit.className} min-h-full flex flex-col`}>
         <Providers>
-          {/* <ScrollTop /> */}
+          <ScrollTop />
           {children}
         </Providers>
       </body>

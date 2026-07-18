@@ -2,6 +2,7 @@ import Link from "next/link";
 import { umkms } from "@/data/umkm";
 import { slugify } from "@/lib/slugify";
 import SectionHeader from "./textBlock/SectionHeader";
+import BottomAccent from "./decoration/BottomAccent";
 
 export default function DistrictSection() {
   const districtMap = umkms.reduce<Record<string, number>>((acc, item) => {
@@ -148,7 +149,6 @@ export default function DistrictSection() {
                     bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.12),transparent_50%)]
                   "
                 />
-
                 <div
                   className="
                     relative
@@ -224,6 +224,7 @@ export default function DistrictSection() {
                     →
                   </div>
                 </div>
+                <BottomAccent />
               </Link>
             );
           })}

@@ -5,13 +5,14 @@ import { imageUrl } from "@/lib/imageUrl";
 import SectionHeader from "../textBlock/SectionHeader";
 import BigChevronButtonButton from "../button/BigChevronButton";
 import { useRouter } from "next/navigation";
+import BottomAccent from "../decoration/BottomAccent";
 
 export default function UmkmTerbaruSection() {
   const latestUmkms = [...umkms].sort((a, b) => b.id - a.id).slice(0, 4);
   const router = useRouter();
 
   return (
-    <section className="bg-light-bg dark:bg-dark py-8 sm:py-10 md:py-16 transition-colors">
+    <section id="terbaru" className="bg-light-bg dark:bg-dark py-8 sm:py-10 md:py-16 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
         <SectionHeader
           title="UMKM Terbaru"
@@ -49,6 +50,7 @@ export default function UmkmTerbaruSection() {
                 dark:hover:border-zinc-700
                 transition-all
                 duration-300
+                relative
               "
             >
               {/* Image */}
@@ -166,11 +168,15 @@ export default function UmkmTerbaruSection() {
                       group-hover:translate-x-1
                     "
                   >
-                    Lihat Detail
+                    Lihat Detail 
                     <span>→</span>
+                  
                   </span>
+                    
                 </div>
+                 
               </div>
+            <BottomAccent />
             </Link>
           ))}
         </div>

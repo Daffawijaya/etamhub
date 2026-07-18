@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import HeroNavbar from "./navbar/HeroNavbar";
+import BigChevronButtonButton from "./button/BigChevronButton";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
+  const router = useRouter();
   return (
     <section
       className="min-h-[111vh] relative overflow-hidden"
@@ -22,10 +25,10 @@ export default function Hero() {
         `,
       }}
     >
-      <div className="absolute z-40 h-full w-full">
+      <div className="absolute z-40 w-full">
         <HeroNavbar />
       </div>
-      
+
       <div
         className="absolute z-20 inset-0 pointer-events-none opacity-18 mix-blend-overlay"
         style={{
@@ -36,12 +39,19 @@ export default function Hero() {
       />
 
       {/* Text Tengah */}
+
       <div className="absolute inset-0 flex items-center justify-center z-30 -translate-y-22">
-        <h1 className="text-white text-3xl font-normal md:text-6xl text-center px-4 leading-tight">
-          Jelajahi Seluruh UMKM
-          <br />
-          Kutai Kartanegara
-        </h1>
+        <div className="flex flex-col justify-center items-center space-y-4 md:space-y-8">
+          <h1 className="text-white text-3xl font-normal md:text-6xl text-center px-4 leading-tight">
+            Jelajahi Seluruh UMKM
+            <br />
+            Kutai Kartanegara
+          </h1>
+          <BigChevronButtonButton
+            title="Jelajahi Kecamatan"
+            onClick={() => router.push("/#kecamatan")}
+          />
+        </div>
       </div>
 
       {/* dark */}
