@@ -8,6 +8,10 @@ export const navigation = [
     href: "/#kecamatan",
   },
   {
+    label: "Peta UMKM",
+    href: "/peta",
+  },
+  {
     label: "Tentang",
     href: "/about",
   },

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import Providers from "./provider";
 import ScrollTop from "@/components/ScrollTop";
+import "leaflet/dist/leaflet.css";
 
 const outfit = Outfit({
   subsets: ["latin"],
