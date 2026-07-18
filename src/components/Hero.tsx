@@ -48,7 +48,7 @@ export default function Hero() {
             Kutai Kartanegara
           </h1>
           <BigChevronButtonButton
-            title="Jelajahi Kecamatan"
+            title="Pilih Kecamatan"
             onClick={() => router.push("/#kecamatan")}
           />
         </div>
