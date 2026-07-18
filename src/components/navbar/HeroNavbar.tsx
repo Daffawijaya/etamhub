@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { VscChevronRight } from "react-icons/vsc";
 import DaftarModal from "../DaftarModal";
 import { usePathname } from "next/navigation";
 import SmallChevronButton from "../button/SmallChevronButton";
+import { navigation } from "@/data/navigation";
 
 export default function HeroNavbar() {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const pathname = usePathname();
 
   const isHome = pathname === "/";
@@ -20,38 +19,19 @@ export default function HeroNavbar() {
         <div className="grid grid-cols-3 items-start">
           {/* Left Menu */}
           <nav className="flex flex-col items-start gap-2">
-            <Link
-              href="/"
-              className={`transition text-sm ${
-                isHome
-                  ? "dark:text-white/90 dark:hover:text-white text-white hover:text-white/80 duration-300"
-                  : "text-black hover:text-black/80 dark:text-white/90 dark:hover:text-white duration-300"
-              }`}
-            >
-              Beranda
-            </Link>
-
-            <Link
-              href="/#kecamatan"
-              className={`transition text-sm ${
-                isHome
-                  ? "dark:text-white/90 dark:hover:text-white text-white hover:text-white/80 duration-300"
-                  : "text-black hover:text-black/80 dark:text-white/90 dark:hover:text-white duration-300"
-              }`}
-            >
-              Kecamatan
-            </Link>
-
-            <Link
-              href="/about"
-              className={`transition text-sm ${
-                isHome
-                  ? "dark:text-white/90 dark:hover:text-white text-white hover:text-white/80 duration-300"
-                  : "text-black hover:text-black/80 dark:text-white/90 dark:hover:text-white duration-300"
-              }`}
-            >
-              Tentang
-            </Link>
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`transition text-sm ${
+                  isHome
+                    ? "text-white hover:text-white/80 dark:text-white/90 dark:hover:text-white"
+                    : "text-black hover:text-black/80 dark:text-white/90 dark:hover:text-white"
+                } duration-300`}
+              >
+                {item.label}
+              </Link>
+            ))}
           </nav>
 
           {/* Center Logo */}
