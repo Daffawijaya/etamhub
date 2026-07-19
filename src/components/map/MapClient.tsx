@@ -5,6 +5,7 @@ import UmkmMarker from "./UmkmMarker";
 import UmkmMapCard from "./UmkmMapCard";
 import UserLocation from "./UserLocation";
 import { useTheme } from "next-themes";
+import MapMyLocationButton from "./MapMyLocationButton";
 
 export default function MapClient() {
   const [selectedUmkm, setSelectedUmkm] = useState<any>(null);
@@ -41,6 +42,7 @@ export default function MapClient() {
       <MapContainer
         center={[-0.4138, 116.9891]}
         zoom={10}
+        attributionControl={false}
         zoomControl={false}
         className="h-screen w-screen"
       >
@@ -54,6 +56,8 @@ export default function MapClient() {
         />
 
         <UserLocation />
+
+        <MapMyLocationButton />
 
         {umkms.map((umkm) => (
           <UmkmMarker
