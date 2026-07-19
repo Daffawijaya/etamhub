@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { ReactNode } from "react";
+import { navigation } from "@/data/navigation";
 
 export default function Footer({ title }: { title?: ReactNode }) {
   return (
@@ -88,18 +89,15 @@ export default function Footer({ title }: { title?: ReactNode }) {
             </p>
 
             <div className="flex flex-col items-center md:items-start gap-3 md:gap-4">
-              <Link
-                href="/#kecamatan"
-                className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
-              >
-                Kecamatan
-              </Link>
-              <Link
-                href="/about#terbaru"
-                className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
-              >
-                UMKM Terbaru
-              </Link>
+              {navigation.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
+                >
+                  {item.label}
+                </Link>
+              ))}
             </div>
           </div>
 
