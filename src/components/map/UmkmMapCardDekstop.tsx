@@ -4,6 +4,7 @@ import { FaDirections } from "react-icons/fa";
 import { IoInformationCircleOutline } from "react-icons/io5";
 import BottomAccent from "../decoration/BottomAccent";
 import Link from "next/link";
+import { getCategoryColor } from "@/lib/categoryColors";
 
 type UmkmMapCardDesktopProps = {
   nama: string;
@@ -13,10 +14,6 @@ type UmkmMapCardDesktopProps = {
   lat: number;
   lng: number;
   id: number;
-  categoryColor: {
-    dot: string;
-    text: string;
-  };
 };
 
 export default function UmkmMapCardDesktop({
@@ -27,7 +24,6 @@ export default function UmkmMapCardDesktop({
   lat,
   lng,
   id,
-  categoryColor,
 }: UmkmMapCardDesktopProps) {
   const fotoUtama = Array.isArray(gambar) ? gambar[0] : gambar;
 
@@ -35,6 +31,8 @@ export default function UmkmMapCardDesktop({
     fotoUtama && fotoUtama.length > 2
       ? imageUrl(fotoUtama)
       : "https://placehold.co/600x400/e2e8f0/64748b?text=Tidak+Ada+Foto";
+
+  const { color, darkColor } = getCategoryColor(kategori);
 
   // Base style umum untuk kedua tombol ikon
   const baseButtonStyle = `
@@ -99,23 +97,16 @@ export default function UmkmMapCardDesktop({
         className="
           group
           relative
-
           w-[270px]
-
           overflow-hidden
-
           rounded-2xl
-
           border
           border-white
           dark:border-white/10
-
           bg-light
           dark:bg-[#161616]
-
           transition-all
           duration-300
-
           hover:bg-[#fbfbfd]
           dark:hover:bg-[#1a1a1a]
         "
@@ -149,46 +140,18 @@ export default function UmkmMapCardDesktop({
         </div>
 
         {/* Content */}
-        <div
-          className="
-            relative
-            z-10
-
-            flex
-            items-start
-            justify-between
-
-            gap-3
-
-            p-4
-          "
-        >
+        <div className="relative z-10 flex items-start justify-between gap-3 p-4">
           {/* Info */}
           <div className="flex-1 min-w-0">
-            <h3
-              className="
-                line-clamp-2
-
-                text-base
-                font-medium
-
-                leading-tight
-
-                text-zinc-900
-                dark:text-white
-              "
-            >
+            <h3 className="ine-clamp-2 text-base font-medium leading-tight text-zinc-900 dark:text-white">
               {nama}
             </h3>
 
             <p
               className="
                 mt-1
-
                 truncate
-
                 text-sm
-
                 text-zinc-500
                 dark:text-zinc-400
               "
@@ -205,20 +168,34 @@ export default function UmkmMapCardDesktop({
               "
             >
               <div
-                className={`
-                  h-2
-                  w-2
-                  rounded-full
-                  ${categoryColor.dot}
-                `}
+                className="
+    h-2
+    w-2
+    rounded-full
+    bg-[var(--category-color)]
+    dark:bg-[var(--category-dark-color)]
+  "
+                style={
+                  {
+                    "--category-color": color,
+                    "--category-dark-color": darkColor,
+                  } as React.CSSProperties
+                }
               />
 
               <p
-                className={`
-                  text-sm
-                  font-medium
-                  ${categoryColor.text}
-                `}
+                className="
+    text-sm
+    font-medium
+    text-[var(--category-color)]
+    dark:text-[var(--category-dark-color)]
+  "
+                style={
+                  {
+                    "--category-color": color,
+                    "--category-dark-color": darkColor,
+                  } as React.CSSProperties
+                }
               >
                 {kategori}
               </p>
@@ -240,9 +217,9 @@ export default function UmkmMapCardDesktop({
               title="Lihat Rute"
               className={ruteButtonStyle}
             >
-              <FaDirections 
-                size={17} 
-                className="!text-white dark:!text-white" 
+              <FaDirections
+                size={17}
+                className="!text-white dark:!text-white"
                 color="white"
               />
             </a>

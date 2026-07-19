@@ -23,7 +23,7 @@ export default function MapMyLocationButton() {
       },
       {
         enableHighAccuracy: true,
-      }
+      },
     );
   };
 
@@ -34,7 +34,8 @@ export default function MapMyLocationButton() {
         absolute
         bottom-5
         right-5
-        z-[1000]
+        z-[99999]
+pointer-events-auto
         h-12
         w-12
         rounded-full

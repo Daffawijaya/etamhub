@@ -22,34 +22,6 @@ export default function UmkmMapCard({
   id,
   onClose,
 }: UmkmMapCardProps) {
-  const getCategoryColor = (kat: string) => {
-    const key = kat.toLowerCase();
-
-    if (key.includes("perdagangan"))
-      return {
-        dot: "bg-green-500",
-        text: "text-green-600 dark:text-green-400",
-      };
-
-    if (key.includes("jasa"))
-      return {
-        dot: "bg-[#8B5CF6]",
-        text: "text-[#8B5CF6]",
-      };
-
-    if (key.includes("industri"))
-      return {
-        dot: "bg-[#F59E0B]",
-        text: "text-[#F59E0B]",
-      };
-
-    return {
-      dot: "bg-[#10B981]",
-      text: "text-[#10B981]",
-    };
-  };
-
-  const categoryColor = getCategoryColor(kategori);
 
   return (
     <>
@@ -62,7 +34,6 @@ export default function UmkmMapCard({
         lat={lat}
         lng={lng}
         id={id}
-        categoryColor={categoryColor}
         onClose={onClose}
       />
 
@@ -75,7 +46,6 @@ export default function UmkmMapCard({
         lat={lat}
         lng={lng}
         id={id}
-        categoryColor={categoryColor}
         
       />
     </>
