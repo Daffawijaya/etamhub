@@ -47,28 +47,36 @@ export default function MobileNavbar() {
       {/* Navbar */}
       <nav
         className={`
-          lg:hidden fixed top-0 left-0 z-50
-          w-screen h-12
-          flex items-center justify-between px-5
-          
-          transition-all duration-300
-          ${
-            transparentPage && !scrolled
-              ? "bg-transparent backdrop-blur-0 border-b border-black/10 dark:border-white/10"
-              : "bg-light dark:bg-dark/40 backdrop-blur-xl border-b border-white dark:border-white/10"
-          }
-        `}
+    lg:hidden fixed top-0 left-0 z-50
+    w-screen h-12
+    flex items-center justify-between px-5
+
+    transition-all duration-300
+    ${
+      transparentPage && !scrolled
+        ? "bg-transparent backdrop-blur-0 border-b border-white/20"
+        : "bg-light dark:bg-dark/40 backdrop-blur-xl border-b border-black/10 dark:border-white/10"
+    }
+  `}
       >
         <Link
           href="/"
-          className="text-xl font-bold tracking-wide text-black dark:text-white"
+          className={`text-xl font-bold tracking-wide ${
+            pathname === "/" && !scrolled
+              ? "text-white"
+              : "text-black dark:text-white"
+          }`}
         >
           etamhub.
         </Link>
 
         <button
           onClick={() => setOpen(true)}
-          className="text-black dark:text-white text-xl"
+          className={`text-xl ${
+            pathname === "/" && !scrolled
+              ? "text-white"
+              : "text-black dark:text-white"
+          }`}
         >
           <FiMenu />
         </button>
