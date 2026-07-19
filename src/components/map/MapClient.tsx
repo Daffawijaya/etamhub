@@ -6,6 +6,7 @@ import UmkmMapCard from "./UmkmMapCard";
 import UserLocation from "./UserLocation";
 import { useTheme } from "next-themes";
 import MapMyLocationButton from "./MapMyLocationButton";
+import KukarBoundary from "./KukarBoundary";
 
 export default function MapClient() {
   const [selectedUmkm, setSelectedUmkm] = useState<any>(null);
@@ -41,6 +42,10 @@ export default function MapClient() {
 
       <MapContainer
         center={[-0.4138, 116.9891]}
+        maxBounds={[
+          [-1.25, 115.1], // bawah, kiri
+          [1.7, 117.9], // atas, kanan
+        ]}
         zoom={10}
         attributionControl={false}
         zoomControl={false}
@@ -50,15 +55,16 @@ export default function MapClient() {
           key={resolvedTheme}
           url={
             resolvedTheme === "dark"
-              ? "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-              : "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+              ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
           }
-          attribution="&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap"
         />
 
         <UserLocation />
 
         <MapMyLocationButton />
+
+        <KukarBoundary />
 
         {umkms.map((umkm) => (
           <UmkmMarker
