@@ -33,13 +33,13 @@ function createIcon(kategori: string, nama: string) {
 
   return L.divIcon({
     className: "",
-    iconSize: [26, 32], // Ukuran pin Google Maps (Lebih kecil & pas)
-    iconAnchor: [13, 32], // Koordinat tumpuan tepat di ujung bawah lancip pin
+    iconSize: [26, 32], // Ukuran pin keseluruhan
+    iconAnchor: [13, 31], // Disesuaikan sedikit agar tepat berada di ujung lengkungan bawah
 
     html: `
       <div style="position: relative; width: 26px; height: 32px;">
         
-        <!-- TEKS DI SEBELAH KIRI (Font tipis/medium dengan stroke tipis rapi) -->
+        <!-- TEKS DI SEBELAH KIRI -->
         <div style="
           position: absolute;
           right: 32px;
@@ -56,9 +56,9 @@ function createIcon(kategori: string, nama: string) {
           ${nama}
         </div>
 
-        <!-- PIN UTAMA (Bentuk drop-pin mikro Google Maps dengan bayangan halus) -->
+        <!-- PIN UTAMA (Bentuk drop-pin rounded di ujung bawah) -->
         <svg width="26" height="32" viewBox="0 0 26 32" fill="none" style="filter: drop-shadow(0px 1px 3px rgba(0,0,0,0.25)); display: block;">
-          <path d="M13 32C13 32 26 22.4 26 13C26 5.8 20.2 0 13 0C5.8 0 0 5.8 0 13C0 22.4 13 32 13 32Z" fill="white"/>
+          <path d="M13 0 C5.8 0 0 5.8 0 13 c0 6 7 14 10 16.5 a4 4 0 0 0 6 0 c3-2.5 10-10.5 10-16.5 C26 5.8 20.2 0 13 0 Z" fill="white"/>
         </svg>
         
         <!-- BULATAN WARNA DI DALAM PIN -->

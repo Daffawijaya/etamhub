@@ -76,6 +76,7 @@ export default function UmkmMapCard({
         lng={lng}
         id={id}
         categoryColor={categoryColor}
+        
       />
     </>
   );
