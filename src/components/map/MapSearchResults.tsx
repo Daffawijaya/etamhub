@@ -42,7 +42,7 @@ export default function MapSearchResults({ search, results, onSelect }: Props) {
           </div>
         )}
 
-        {results.slice(0, 99).map((umkm) => (
+        {results.slice(0, 20).map((umkm) => (
           <button
             key={umkm.id}
             onClick={() => onSelect(umkm)}
