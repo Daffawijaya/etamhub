@@ -17,9 +17,9 @@ export default function MapClient() {
           box-shadow: none !important;
           padding: 0 !important;
         }
-          .leaflet-control-zoom {
-    display: none !important;
-  }
+        .leaflet-control-zoom {
+          display: none !important;
+        }
         .custom-google-popup .leaflet-popup-content {
           margin: 0 !important;
           padding: 0 !important;
@@ -57,6 +57,8 @@ export default function MapClient() {
             nama={umkm.nama}
             kategori={umkm.kategori}
             subkategori={umkm.subkategori}
+            // 🔥 TAMBAHAN: Kirim status aktif jika ID cocok dengan yang di-select
+            isActive={selectedUmkm?.id === umkm.id}
             onClick={() => {
               setSelectedUmkm(null);
 
@@ -75,6 +77,10 @@ export default function MapClient() {
             autoPan
             className="custom-google-popup"
             offset={[0, -10]}
+            // 🔥 FIX: Gunakan eventHandlers untuk mendeteksi saat popup tertutup/dihapus
+            eventHandlers={{
+              remove: () => setSelectedUmkm(null),
+            }}
           >
             <UmkmMapCard {...selectedUmkm} />
           </Popup>
