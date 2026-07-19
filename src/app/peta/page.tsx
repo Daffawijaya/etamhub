@@ -6,7 +6,10 @@ import Navbar from "@/components/navbar/Navbar";
 export default function PetaPage() {
   return (
     <>
-      <Navbar />
+    <div className="absolute z-90">
+       <Navbar />
+    </div>
+     
       <main className="relative z-0">
         <UmkmMap />
       </main>
