@@ -28,7 +28,7 @@ export default function MapSearchResults({ search, results, onSelect }: Props) {
       border
       border-white
       dark:border-white/10
-      max-h-[calc(100vh-var(--offset)-4px)]
+      max-h-[68vh]
       overflow-y-auto
       [scrollbar-width:none]
   [-ms-overflow-style:none]
@@ -42,7 +42,7 @@ export default function MapSearchResults({ search, results, onSelect }: Props) {
           </div>
         )}
 
-        {results.slice(0, 8).map((umkm) => (
+        {results.slice(0, 99).map((umkm) => (
           <button
             key={umkm.id}
             onClick={() => onSelect(umkm)}
