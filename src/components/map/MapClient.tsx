@@ -50,9 +50,10 @@ export default function MapClient() {
           key={resolvedTheme}
           url={
             resolvedTheme === "dark"
-              ? "https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
-              : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+              ? "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+              : "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
           }
+          attribution="&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap"
         />
 
         <UserLocation />
