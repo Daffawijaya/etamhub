@@ -4,9 +4,11 @@ import { umkms } from "@/data/umkm";
 import UmkmMarker from "./UmkmMarker";
 import UmkmMapCard from "./UmkmMapCard";
 import UserLocation from "./UserLocation";
+import { useTheme } from "next-themes";
 
 export default function MapClient() {
   const [selectedUmkm, setSelectedUmkm] = useState<any>(null);
+  const { resolvedTheme } = useTheme();
 
   return (
     <div className="relative h-screen w-screen">
@@ -43,8 +45,12 @@ export default function MapClient() {
         className="h-screen w-screen"
       >
         <TileLayer
-          attribution="&copy; OpenStreetMap"
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          key={resolvedTheme}
+          url={
+            resolvedTheme === "dark"
+              ? "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+              : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+          }
         />
 
         <UserLocation />

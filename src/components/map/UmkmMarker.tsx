@@ -15,13 +15,18 @@ type UmkmMarkerProps = {
 };
 
 // Konfigurasi Warna & Ikon
-const MARKER_CONFIG: Record<string, { color: string; svg: string }> = {
+const MARKER_CONFIG: Record<
+  string,
+  { color: string; darkColor: string; svg: string }
+> = {
   Jasa: {
     color: "#8B5CF6", // Ungu
+    darkColor: "#C4B5FD", // Ungu Kusam/Pastel untuk Dark Mode
     svg: `<rect width="20" height="14" x="2" y="6" rx="2"/><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>`,
   },
   Industri: {
     color: "#F59E0B", // Kuning/Amber
+    darkColor: "#FCD34D", // Kuning Kusam/Pastel untuk Dark Mode
     svg: `<path d="M2 20h20M20 18v-4l-5 2v-4l-5 2V7l-5 3v8"/>`,
   },
 };
@@ -43,11 +48,9 @@ function injectMarkerStyles() {
         position: relative;
         width: 26px;
         height: 32px;
-        /* Titik tumpu animasi persis di ujung bawah pin */
         transform-origin: bottom center; 
       }
       
-      /* Animasi HANYA saat marker diklik (Melompat & Membesar) */
       .umkm-pin-active {
         animation: pinSelect 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         z-index: 1000;
@@ -64,7 +67,7 @@ function injectMarkerStyles() {
 }
 
 // ==========================================
-// 📍 FUNGSI PEMBUAT IKON
+// 📍 FUNGSI PEMBUAT IKON (TAILWIND UTILITY)
 // ==========================================
 function createIcon(
   kategori: string,
@@ -72,36 +75,24 @@ function createIcon(
   isActive: boolean,
   textPosition: "left" | "right",
 ) {
-  const textPositionStyle =
-    textPosition === "right" ? "left: 32px;" : "right: 32px;";
+  // Kelas Tailwind untuk posisi teks
+  const textPositionClass =
+    textPosition === "right" ? "left-[32px]" : "right-[32px]";
 
   if (isActive) {
-    // 🔴 TAMPILAN AKTIF (MERAH) - Diberi class .umkm-pin-active
+    // 🔴 TAMPILAN AKTIF (MERAH)
     return L.divIcon({
       className: "",
       iconSize: [26, 32],
       iconAnchor: [13, 32],
       html: `
         <div class="umkm-pin-wrapper umkm-pin-active">
-          <!-- TEKS DINAMIS (Warna Merah) -->
-          <div style="
-            position: absolute;
-            ${textPositionStyle}
-            top: 13px;
-            transform: translateY(-50%);
-            color: #C5221F;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            font-size: 14px;
-            font-weight: 600;
-            white-space: nowrap;
-            -webkit-text-stroke: 3px white;
-            paint-order: stroke fill;
-            z-index: 1001;
-          ">
+          <!-- TEKS DINAMIS -->
+          <div class="absolute ${textPositionClass} top-[13px] -translate-y-1/2 text-[14px] font-semibold whitespace-nowrap z-[1001] [paint-order:stroke_fill] text-[#C5221F] dark:text-[#F87171] [-webkit-text-stroke:3px_white] dark:[-webkit-text-stroke:3px_#1A1D24]">
             ${nama}
           </div>
           <!-- PIN UTAMA MERAH -->
-          <svg width="26" height="32" viewBox="0 0 26 32" fill="none" style="filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.4)); display: block;">
+          <svg width="26" height="32" viewBox="0 0 26 32" fill="none" class="block drop-shadow-md">
             <path d="M13 0 C5.8 0 0 5.8 0 13 c0 6 7 14 10 16.5 a4 4 0 0 0 6 0 c3-2.5 10-10.5 10-16.5 C26 5.8 20.2 0 13 0 Z" fill="#EA4335"/>
             <circle cx="13" cy="11" r="4.5" fill="#8B0000"/>
           </svg>
@@ -110,9 +101,10 @@ function createIcon(
     });
   }
 
-  // 🟢 TAMPILAN DEFAULT (BELUM AKTIF) - Tanpa class animasi
-  const { color, svg } = MARKER_CONFIG[kategori] || {
+  // 🟢 TAMPILAN DEFAULT (BELUM AKTIF)
+  const { color, darkColor, svg } = MARKER_CONFIG[kategori] || {
     color: "#10B981", // Hijau Default
+    darkColor: "#6EE7B7", // Hijau Kusam/Pastel untuk Dark Mode
     svg: `<path d="M2 7h20M4 7V20a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7M9 22V12h6v10"/>`,
   };
 
@@ -121,47 +113,27 @@ function createIcon(
     iconSize: [26, 32],
     iconAnchor: [13, 32],
     html: `
-      <div class="umkm-pin-wrapper">
+      <!-- Bungkus dengan style CSS variable agar Tailwind bisa membaca warnanya -->
+      <div class="umkm-pin-wrapper" style="--cat-color: ${color}; --cat-dark-color: ${darkColor};">
+        
         <!-- TEKS DINAMIS -->
-        <div style="
-          position: absolute;
-          ${textPositionStyle}
-          top: 13px;
-          transform: translateY(-50%);
-          color: ${color};
-          font-family: 'Inter', 'Segoe UI', sans-serif;
-          font-size: 12px;
-          font-weight: 500;
-          white-space: nowrap;
-          -webkit-text-stroke: 3px white;
-          paint-order: stroke fill;
-        ">
+        <div class="absolute ${textPositionClass} top-[13px] -translate-y-1/2 text-[12px] font-medium whitespace-nowrap [paint-order:stroke_fill] text-[var(--cat-color)] dark:text-[var(--cat-dark-color)] [-webkit-text-stroke:3px_white] dark:[-webkit-text-stroke:3px_#1A1D24]">
           ${nama}
         </div>
-        <!-- PIN UTAMA -->
-        <svg width="26" height="32" viewBox="0 0 26 32" fill="none" style="filter: drop-shadow(0px 1px 3px rgba(0,0,0,0.25)); display: block;">
-          <path d="M13 0 C5.8 0 0 5.8 0 13 c0 6 7 14 10 16.5 a4 4 0 0 0 6 0 c3-2.5 10-10.5 10-16.5 C26 5.8 20.2 0 13 0 Z" fill="white"/>
+
+        <!-- PIN UTAMA (Luar) -->
+        <svg width="26" height="32" viewBox="0 0 26 32" fill="none" class="block drop-shadow-sm">
+          <path d="M13 0 C5.8 0 0 5.8 0 13 c0 6 7 14 10 16.5 a4 4 0 0 0 6 0 c3-2.5 10-10.5 10-16.5 C26 5.8 20.2 0 13 0 Z" class="fill-white dark:fill-[#6e7c97] transition-colors"/>
         </svg>
         
         <!-- BULATAN WARNA DI DALAM PIN -->
-        <div style="
-          position: absolute;
-          top: 3px;
-          left: 3px;
-          width: 20px;
-          height: 20px;
-          background: ${color};
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 2;
-        ">
+        <div class="absolute top-[3px] left-[3px] w-[20px] h-[20px] rounded-full flex items-center justify-center z-10 transition-colors bg-[var(--cat-color)] dark:bg-[var(--cat-dark-color)]">
           <!-- IKON LINE ART MIKRO -->
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="stroke-white dark:stroke-[#1A1D24] transition-colors">
             ${svg}
           </svg>
         </div>
+
       </div>
     `,
   });
