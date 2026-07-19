@@ -89,7 +89,7 @@ export default function UmkmMapCardMobile({
         fixed bottom-0 left-0 right-0 z-30 w-full max-w-none md:hidden
         rounded-t-3xl border-t border-zinc-200 dark:border-zinc-800
         bg-white dark:bg-[#181818] p-4 pb-6
-        shadow-[0_-8px_30px_rgb(0,0,0,0.2)]
+        shadow-lg
         transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
         ${
           isVisible && !isAnimateOut
@@ -105,9 +105,9 @@ export default function UmkmMapCardMobile({
           e.preventDefault();
           setIsExpanded(!isExpanded);
         }}
-        className="-mt-2 mb-1 flex w-full cursor-pointer justify-center py-3 group"
+        className="-mt-3 mb-1 flex w-full cursor-pointer justify-center py-3 group"
       >
-        <div className="h-1.5 w-12 rounded-full bg-zinc-300 transition-all duration-200 group-hover:bg-zinc-400 group-active:scale-90 group-active:bg-zinc-500 dark:bg-zinc-700 dark:group-hover:bg-zinc-600" />
+        <div className="h-1 w-12 rounded-full bg-zinc-300 transition-all duration-200 group-hover:bg-zinc-400 group-active:scale-90 group-active:bg-zinc-500 dark:bg-zinc-700 dark:group-hover:bg-zinc-600" />
       </div>
 
       <div className="flex items-start justify-between gap-3">
@@ -190,7 +190,7 @@ export default function UmkmMapCardMobile({
       <div
         className={`relative w-full overflow-hidden rounded-2xl bg-zinc-100 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] dark:bg-zinc-800 ${
           isExpanded
-            ? "mt-4 h-[25vh] opacity-100 shadow-lg"
+            ? "mt-4 h-[25vh] opacity-100"
             : "mt-0 h-0 opacity-0"
         }`}
       >
