@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { umkms } from "@/data/umkm";
 import UmkmMarker from "./UmkmMarker";
 import UmkmMapCard from "./UmkmMapCard";
@@ -7,11 +7,30 @@ import UserLocation from "./UserLocation";
 import { useTheme } from "next-themes";
 import MapMyLocationButton from "./MapMyLocationButton";
 import KukarBoundary from "./KukarBoundary";
+import MapSearch from "./MapSearch";
+import MapSearchResults from "./MapSearchResults";
+import FlyToMarker from "./FlyToMarker";
 
 export default function MapClient() {
   const [selectedUmkm, setSelectedUmkm] = useState<any>(null);
   const { resolvedTheme } = useTheme();
 
+  const [search, setSearch] = useState("");
+  const filteredUmkms = useMemo(() => {
+    if (!search.trim()) return [];
+
+    return umkms.filter((umkm) =>
+      [umkm.nama, umkm.kategori, umkm.subkategori, umkm.kecamatan]
+        .join(" ")
+        .toLowerCase()
+        .includes(search.toLowerCase()),
+    );
+  }, [search]);
+
+  const [flyTarget, setFlyTarget] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
   return (
     <div className="relative h-screen w-screen">
       {/* Inject CSS Reset Global untuk Leaflet Popup di sini agar component lebih bersih */}
@@ -39,7 +58,22 @@ export default function MapClient() {
           display: none !important;
         }
       `}</style>
+      <MapSearch value={search} onChange={setSearch} />
 
+      <MapSearchResults
+        search={search}
+        results={filteredUmkms}
+        onSelect={(umkm) => {
+          setSelectedUmkm(umkm);
+
+          setFlyTarget({
+            lat: umkm.lat,
+            lng: umkm.lng,
+          });
+
+          setSearch("");
+        }}
+      />
       <MapContainer
         center={[-0.4138, 116.9891]}
         maxBounds={[
@@ -66,25 +100,44 @@ export default function MapClient() {
 
         <KukarBoundary />
 
-        {umkms.map((umkm) => (
-          <UmkmMarker
-            key={umkm.id}
-            lat={umkm.lat}
-            lng={umkm.lng}
-            nama={umkm.nama}
-            kategori={umkm.kategori}
-            subkategori={umkm.subkategori}
-            // 🔥 TAMBAHAN: Kirim status aktif jika ID cocok dengan yang di-select
-            isActive={selectedUmkm?.id === umkm.id}
-            onClick={() => {
-              setSelectedUmkm(null);
+        <FlyToMarker lat={flyTarget?.lat} lng={flyTarget?.lng} />
+        {filteredUmkms.length > 0 || search.trim()
+          ? filteredUmkms.map((umkm) => (
+              <UmkmMarker
+                key={umkm.id}
+                lat={umkm.lat}
+                lng={umkm.lng}
+                nama={umkm.nama}
+                kategori={umkm.kategori}
+                subkategori={umkm.subkategori}
+                isActive={selectedUmkm?.id === umkm.id}
+                onClick={() => {
+                  setSelectedUmkm(null);
 
-              requestAnimationFrame(() => {
-                setSelectedUmkm(umkm);
-              });
-            }}
-          />
-        ))}
+                  requestAnimationFrame(() => {
+                    setSelectedUmkm(umkm);
+                  });
+                }}
+              />
+            ))
+          : umkms.map((umkm) => (
+              <UmkmMarker
+                key={umkm.id}
+                lat={umkm.lat}
+                lng={umkm.lng}
+                nama={umkm.nama}
+                kategori={umkm.kategori}
+                subkategori={umkm.subkategori}
+                isActive={selectedUmkm?.id === umkm.id}
+                onClick={() => {
+                  setSelectedUmkm(null);
+
+                  requestAnimationFrame(() => {
+                    setSelectedUmkm(umkm);
+                  });
+                }}
+              />
+            ))}
 
         {selectedUmkm && (
           <Popup
