@@ -69,8 +69,8 @@ export default function UmkmMapCardDesktop({
     dark:border-white/10
     bg-zinc-100
     dark:bg-zinc-800
-    text-zinc-800
-    dark:text-zinc-200
+    !text-zinc-800
+    dark:!text-zinc-200
     hover:bg-zinc-200
     dark:hover:bg-zinc-700
   `;
@@ -84,7 +84,7 @@ export default function UmkmMapCardDesktop({
         top-full
         left-1/2
         z-50
-        mt-5
+        mt-8
 
         -translate-x-1/2
 

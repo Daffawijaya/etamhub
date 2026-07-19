@@ -38,9 +38,9 @@ export default function UmkmMapCardMobile({
   const [isClosed, setIsClosed] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isAnimateOut, setIsAnimateOut] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
 
-  // Note: State ini tetap dipertahankan meski sekarang kita pakai fixed height animasi
+  // State ini mengontrol apakah gambar tampil atau tidak
+  const [isExpanded, setIsExpanded] = useState(false);
   const [imgRatio, setImgRatio] = useState<number | null>(null);
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -53,7 +53,7 @@ export default function UmkmMapCardMobile({
     setIsClosed(false);
     setIsAnimateOut(false);
     setIsVisible(false);
-    setIsExpanded(false);
+    setIsExpanded(false); // Pastikan gambar selalu tertutup saat buka umkm baru
     setImgRatio(null);
 
     const timer = setTimeout(() => {
@@ -68,26 +68,11 @@ export default function UmkmMapCardMobile({
     setTimeout(() => {
       setIsClosed(true);
       if (onClose) onClose();
-    }, 500); // Disesuaikan menjadi 500ms agar sinkron dengan transisi card
+    }, 500);
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (event: MouseEvent | TouchEvent) => {
-      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
-        handleClose();
-      }
-    };
-
-    if (!isClosed && !isAnimateOut) {
-      document.addEventListener("mousedown", handleOutsideClick);
-      document.addEventListener("touchstart", handleOutsideClick);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-      document.removeEventListener("touchstart", handleOutsideClick);
-    };
-  }, [isClosed, isAnimateOut]);
+  // PENTING: useEffect untuk handleOutsideClick sudah dihapus
+  // agar card tidak auto-close saat diklik di luar.
 
   if (!mounted || isClosed) return null;
 
@@ -108,12 +93,12 @@ export default function UmkmMapCardMobile({
         transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)]
         ${
           isVisible && !isAnimateOut
-            ? "translate-y-0 opacity-100" 
-            : "translate-y-full opacity-0" 
+            ? "translate-y-0 opacity-100"
+            : "translate-y-full opacity-0"
         }
       `}
     >
-      {/* Handle Bar: Ditekan geser atas, tekan lagi geser bawah */}
+      {/* Handle Bar: Ditekan untuk menampilkan / menyembunyikan gambar */}
       <div
         onClick={() => setIsExpanded(!isExpanded)}
         onTouchEnd={(e) => {
@@ -143,6 +128,7 @@ export default function UmkmMapCardMobile({
           </div>
         </div>
 
+        {/* Tombol X (Close) - Satu-satunya cara menutup card sekarang */}
         <button
           onClick={handleClose}
           type="button"
@@ -173,7 +159,10 @@ export default function UmkmMapCardMobile({
             active:scale-90 active:bg-[#164e63]
           "
         >
-          <FaDirections size={16} className="transition-transform group-hover:scale-110" />
+          <FaDirections
+            size={16}
+            className="transition-transform group-hover:scale-110"
+          />
           <span>Rute</span>
         </a>
 
@@ -194,14 +183,15 @@ export default function UmkmMapCardMobile({
       </div>
 
       {/* 
-        PERUBAHAN UTAMA: 
-        Style aspect-ratio dihapus, sebagai gantinya menggunakan tinggi tetap h-[50vh] vs h-40. 
-        Karena ini unit fix (bukan auto), browser sekarang dapat menganimasikan tingginya 
-        sehingga memberi efek mendurung sisa kartu "geser atas" dengan mulus.
+        Container Gambar: 
+        Diatur h-0 dan opacity-0 saat isExpanded false,
+        dan berubah ke h-[50vh] saat isExpanded true.
       */}
       <div
-        className={`relative mt-4 w-full overflow-hidden rounded-2xl bg-zinc-100 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] dark:bg-zinc-800 ${
-          isExpanded ? "h-[50vh] shadow-lg" : "h-40"
+        className={`relative w-full overflow-hidden rounded-2xl bg-zinc-100 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] dark:bg-zinc-800 ${
+          isExpanded
+            ? "mt-4 h-[25vh] opacity-100 shadow-lg"
+            : "mt-0 h-0 opacity-0"
         }`}
       >
         <Image

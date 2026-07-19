@@ -57,15 +57,22 @@ export default function MapClient() {
             nama={umkm.nama}
             kategori={umkm.kategori}
             subkategori={umkm.subkategori}
-            onClick={() => setSelectedUmkm(umkm)}
+            onClick={() => {
+              setSelectedUmkm(null);
+
+              requestAnimationFrame(() => {
+                setSelectedUmkm(umkm);
+              });
+            }}
           />
         ))}
 
         {selectedUmkm && (
           <Popup
+            key={selectedUmkm.id}
             position={[selectedUmkm.lat, selectedUmkm.lng]}
             closeButton={false}
-            autoPan={true}
+            autoPan
             className="custom-google-popup"
             offset={[0, -10]}
           >
