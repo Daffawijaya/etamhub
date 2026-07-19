@@ -51,41 +51,50 @@ export default function Footer({ title }: { title?: ReactNode }) {
             </p>
           </div>
 
-          {/* Menu */}
+          <div></div>
+
+          {/* Contact */}
           <div className="text-center md:text-left">
             <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
-              Navigasi
+              Profil
             </p>
 
-            <div className="flex flex-col items-center md:items-start gap-3 md:gap-4">
+            <div className="flex flex-col gap-3">
               <Link
-                href="/"
+                href="/about#pendamping"
                 className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
               >
-                Beranda
+                TA Pendamping UMKM
               </Link>
 
               <Link
-                href="/about"
-                className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
-              >
-                Tentang
-              </Link>
-
-              <Link
-                href="https://daffayanwijaya.vercel.app"
+                href="https://instagram.com/kawaku.kukar"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
               >
-                Kontak
+                @kawaku.kukar
               </Link>
             </div>
+
+            <p className="text-black/40 dark:text-white/40 text-sm mt-8 mb-4 md:mb-5">
+              Kontak Pengembang
+            </p>
+
+            <Link
+              href="https://daffayanwijaya.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
+            >
+              Daffa Yan Wijaya
+            </Link>
           </div>
 
           {/* UMKM */}
           <div className="text-center md:text-left">
             <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
-              Eksplorasi
+              Navigasi
             </p>
 
             <div className="flex flex-col items-center md:items-start gap-3 md:gap-4">
@@ -98,40 +107,6 @@ export default function Footer({ title }: { title?: ReactNode }) {
                   {item.label}
                 </Link>
               ))}
-            </div>
-          </div>
-
-          {/* Contact */}
-          {/* Contact */}
-          <div className="text-center md:text-left">
-            <div className="space-y-8">
-              <div>
-                <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
-                  Profil
-                </p>
-
-                <Link
-                  href="/about#pendamping"
-                  className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
-                >
-                  TA Pendamping UMKM
-                </Link>
-              </div>
-
-              <div>
-                <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
-                  Instagram
-                </p>
-
-                <Link
-                  href="https://instagram.com/kawaku.kukar"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
-                >
-                  @kawaku.kukar
-                </Link>
-              </div>
             </div>
           </div>
         </div>
