@@ -7,6 +7,8 @@ import Image from "next/image";
 import { FaDirections } from "react-icons/fa";
 import { IoInformationCircleOutline, IoClose } from "react-icons/io5";
 import Link from "next/link";
+import { getCategoryColor } from "@/lib/categoryColors";
+import type { CSSProperties } from "react";
 
 type UmkmMapCardMobileProps = {
   nama: string;
@@ -16,10 +18,6 @@ type UmkmMapCardMobileProps = {
   lat: number;
   lng: number;
   id: number;
-  categoryColor: {
-    dot: string;
-    text: string;
-  };
   onClose?: () => void;
 };
 
@@ -31,7 +29,6 @@ export default function UmkmMapCardMobile({
   lat,
   lng,
   id,
-  categoryColor,
   onClose,
 }: UmkmMapCardMobileProps) {
   const [mounted, setMounted] = useState(false);
@@ -71,9 +68,6 @@ export default function UmkmMapCardMobile({
     }, 500);
   };
 
-  // PENTING: useEffect untuk handleOutsideClick sudah dihapus
-  // agar card tidak auto-close saat diklik di luar.
-
   if (!mounted || isClosed) return null;
 
   const fotoUtama = Array.isArray(gambar) ? gambar[0] : gambar;
@@ -81,6 +75,13 @@ export default function UmkmMapCardMobile({
     fotoUtama && fotoUtama.length > 2
       ? imageUrl(fotoUtama)
       : "https://placehold.co/600x400/e2e8f0/64748b?text=Tidak+Ada+Foto";
+
+  const { color, darkColor } = getCategoryColor(kategori);
+
+  const categoryStyle = {
+    "--category-color": color,
+    "--category-dark-color": darkColor,
+  } as CSSProperties;
 
   const cardContent = (
     <div
@@ -120,8 +121,25 @@ export default function UmkmMapCardMobile({
             <span className="truncate font-medium">{subkategori}</span>
             <span>•</span>
             <div className="flex items-center gap-1.5">
-              <div className={`h-2 w-2 rounded-full ${categoryColor.dot}`} />
-              <span className={`font-medium ${categoryColor.text}`}>
+              <div
+                className="
+      h-2
+      w-2
+      rounded-full
+      bg-[var(--category-color)]
+      dark:bg-[var(--category-dark-color)]
+    "
+                style={categoryStyle}
+              />
+
+              <span
+                className="
+      font-medium
+      text-[var(--category-color)]
+      dark:text-[var(--category-dark-color)]
+    "
+                style={categoryStyle}
+              >
                 {kategori}
               </span>
             </div>
@@ -189,9 +207,7 @@ export default function UmkmMapCardMobile({
       */}
       <div
         className={`relative w-full overflow-hidden rounded-2xl bg-zinc-100 transition-all duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] dark:bg-zinc-800 ${
-          isExpanded
-            ? "mt-4 h-[25vh] opacity-100"
-            : "mt-0 h-0 opacity-0"
+          isExpanded ? "mt-4 h-[25vh] opacity-100" : "mt-0 h-0 opacity-0"
         }`}
       >
         <Image
