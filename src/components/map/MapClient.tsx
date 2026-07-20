@@ -10,9 +10,11 @@ import KukarBoundary from "./KukarBoundary";
 import MapSearch from "./MapSearch";
 import MapSearchResults from "./MapSearchResults";
 import FlyToMarker from "./FlyToMarker";
+import MapMarkers from "./MapMarkers";
+import type { Umkm } from "@/data/umkm";
 
 export default function MapClient() {
-  const [selectedUmkm, setSelectedUmkm] = useState<any>(null);
+  const [selectedUmkm, setSelectedUmkm] = useState<Umkm | null>(null);
   const { resolvedTheme } = useTheme();
 
   const [search, setSearch] = useState("");
@@ -101,43 +103,14 @@ export default function MapClient() {
         <KukarBoundary />
 
         <FlyToMarker lat={flyTarget?.lat} lng={flyTarget?.lng} />
-        {filteredUmkms.length > 0 || search.trim()
-          ? filteredUmkms.map((umkm) => (
-              <UmkmMarker
-                key={umkm.id}
-                lat={umkm.lat}
-                lng={umkm.lng}
-                nama={umkm.nama}
-                kategori={umkm.kategori}
-                subkategori={umkm.subkategori}
-                isActive={selectedUmkm?.id === umkm.id}
-                onClick={() => {
-                  setSelectedUmkm(null);
 
-                  requestAnimationFrame(() => {
-                    setSelectedUmkm(umkm);
-                  });
-                }}
-              />
-            ))
-          : umkms.map((umkm) => (
-              <UmkmMarker
-                key={umkm.id}
-                lat={umkm.lat}
-                lng={umkm.lng}
-                nama={umkm.nama}
-                kategori={umkm.kategori}
-                subkategori={umkm.subkategori}
-                isActive={selectedUmkm?.id === umkm.id}
-                onClick={() => {
-                  setSelectedUmkm(null);
-
-                  requestAnimationFrame(() => {
-                    setSelectedUmkm(umkm);
-                  });
-                }}
-              />
-            ))}
+        <MapMarkers
+          data={
+            filteredUmkms.length > 0 || search.trim() ? filteredUmkms : umkms
+          }
+          selectedUmkm={selectedUmkm}
+          setSelectedUmkm={setSelectedUmkm}
+        />
 
         {selectedUmkm && (
           <Popup
