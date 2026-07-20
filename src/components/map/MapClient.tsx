@@ -1,7 +1,6 @@
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { useState, useMemo } from "react";
 import { umkms } from "@/data/umkm";
-import UmkmMarker from "./UmkmMarker";
 import UmkmMapCard from "./UmkmMapCard";
 import UserLocation from "./UserLocation";
 import { useTheme } from "next-themes";
@@ -89,11 +88,10 @@ export default function MapClient() {
       >
         <TileLayer
           key={resolvedTheme}
-          url={
-            resolvedTheme === "dark"
-              ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-              : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-          }
+          url="https://{s}.google.com/vt/lyrs=m&apistyle=s.e:l.i|p.v:off&x={x}&y={y}&z={z}"
+          subdomains={["mt0", "mt1", "mt2", "mt3"]}
+          className={resolvedTheme === "dark" ? "google-dark-tiles" : ""}
+          maxZoom={20}
         />
 
         <UserLocation />

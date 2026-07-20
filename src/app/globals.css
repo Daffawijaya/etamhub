@@ -60,3 +60,7 @@ body {
   max-width: none !important;
 }
 
+.google-dark-tiles {
+  /* hue-rotate dinaikkan ke 210deg untuk membuang rona hijau dan mengunci warna biru malam (navy) */
+  filter: invert(100%) hue-rotate(220deg) brightness(85%) contrast(90%) saturate(100%);
+}
