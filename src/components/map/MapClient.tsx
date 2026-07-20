@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { useState, useMemo } from "react";
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 import UmkmMapCard from "./UmkmMapCard";
 import UserLocation from "./UserLocation";
 import { useTheme } from "next-themes";
