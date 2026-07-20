@@ -1,4 +1,4 @@
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 import SectionHeader from "./textBlock/SectionHeader";
 
 export default function StatsSection() {
