@@ -31,8 +31,7 @@ export default function MapMyLocationButton() {
     <button
       onClick={handleLocate}
       className="
-        absolute
-        bottom-5
+        fixed bottom-5
         right-5
         z-[99999]
 pointer-events-auto
