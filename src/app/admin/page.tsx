@@ -4,7 +4,7 @@ import DashboardGrid from "@/components/admin/DashboardGrid";
 
 export default function AdminPage() {
   return (
-    <main className="min-h-screen bg-[#f7f6f2]">
+    <main className="min-h-screen bg-light-bg">
       <div className="flex">
         <AdminSidebar />
 

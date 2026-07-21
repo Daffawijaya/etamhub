@@ -21,7 +21,7 @@ const actions = [
 
 export default function QuickActions() {
   return (
-    <div className="rounded-[32px] bg-white p-6 shadow-sm">
+    <div className="rounded-[32px] bg-white p-6">
       <h3 className="mb-6 text-lg font-semibold">Quick Actions</h3>
 
       <div className="grid grid-cols-2 gap-4">
