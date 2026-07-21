@@ -1,63 +1,67 @@
-import Link from "next/link";
+import Image from "next/image";
 import umkms from "@/data/umkm.json";
+import { MoreHorizontal } from "lucide-react";
 
 export default function LatestUmkm() {
-  const latest = [...umkms]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
-    .slice(0, 5);
+  const latest = [...umkms].reverse().slice(0, 5);
 
   return (
-    <section className="rounded-3xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-[#181818]">
-      <h2 className="mb-1 text-xl font-semibold text-black dark:text-white">
-        UMKM Terbaru
-      </h2>
+    <div className="rounded-[32px] bg-transparent">
+      <div className="mb-6 flex gap-8">
+        <button className="border-b-2 border-slate-900 pb-2 font-semibold">
+          UMKM Terbaru
+        </button>
 
-      <p className="mb-6 text-sm text-neutral-500 dark:text-neutral-400">
-        5 data UMKM terakhir yang ditambahkan
-      </p>
+        <button className="pb-2 text-slate-400">Semua</button>
+      </div>
 
-      <div className="space-y-3">
-        {latest.map((umkm) => (
-          <Link
-            key={umkm.id}
-            href={`/umkm/${umkm.id}`}
-            className="
-              flex
-              items-center
-              justify-between
-              rounded-2xl
-              border
-              border-black/5
-              p-4
-              transition
-              hover:bg-neutral-50
-              dark:border-white/10
-              dark:hover:bg-white/5
-            "
+      <div className="space-y-4">
+        {latest.map((item) => (
+          <div
+            key={item.id}
+            className="flex items-center rounded-3xl bg-white px-5 py-4 shadow-sm"
           >
-            <div>
-              <h3 className="font-medium text-black dark:text-white">
-                {umkm.nama}
-              </h3>
-
-              <p className="text-sm text-neutral-500">{umkm.kecamatan}</p>
+            {/* Foto */}
+            <div className="relative h-12 w-12 overflow-hidden rounded-xl">
+              <Image
+                src={item.gambar?.[0] || "/placeholder.jpg"}
+                alt={item.nama}
+                fill
+                className="object-cover"
+              />
             </div>
 
-            <div className="text-right">
-              <p className="text-xs text-neutral-500">
-                {new Date(umkm.createdAt).toLocaleDateString("id-ID", {
-                  day: "numeric",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </p>
+            {/* Nama */}
+            <div className="ml-4 flex-1">
+              <h4 className="font-semibold text-slate-900">{item.nama}</h4>
+
+              <p className="text-sm text-slate-400">UMKM #{item.id}</p>
             </div>
-          </Link>
+
+            {/* Kategori */}
+            <div className="w-40">
+              <p className="font-medium">{item.kategori}</p>
+            </div>
+
+            {/* Kecamatan */}
+            <div className="w-40">
+              <p className="text-slate-600">{item.kecamatan}</p>
+            </div>
+
+            {/* Status */}
+            <div className="w-24">
+              <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
+                Aktif
+              </span>
+            </div>
+
+            {/* Action */}
+            <button className="ml-4">
+              <MoreHorizontal size={20} />
+            </button>
+          </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 }

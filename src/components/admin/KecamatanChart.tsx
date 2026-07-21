@@ -1,57 +1,44 @@
-"use client";
-
 import umkms from "@/data/umkm.json";
-
-import {
-  ResponsiveContainer,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-} from "recharts";
 
 export default function KecamatanChart() {
   const data = Object.entries(
     umkms.reduce(
       (acc, item) => {
-        acc[item.kecamatan] = (acc[item.kecamatan] || 0) + 1;
-
+        acc[item.kecamatan] =
+          (acc[item.kecamatan] || 0) + 1;
         return acc;
       },
-      {} as Record<string, number>,
-    ),
+      {} as Record<string, number>
+    )
   )
-    .map(([kecamatan, total]) => ({
-      kecamatan,
-      total,
-    }))
-    .sort((a, b) => b.total - a.total)
-    .slice(0, 10);
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
 
   return (
-    <section className="rounded-3xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-[#181818]">
-      <h2 className="mb-1 text-xl font-semibold text-black dark:text-white">
-        UMKM per Kecamatan
-      </h2>
+    <div className="rounded-[32px] bg-white p-6 shadow-sm">
+      <h3 className="mb-6 text-lg font-semibold">
+        Top Kecamatan
+      </h3>
 
-      <p className="mb-6 text-sm text-neutral-500 dark:text-neutral-400">
-        Top 10 kecamatan dengan jumlah UMKM terbanyak
-      </p>
+      <div className="space-y-4">
+        {data.map(([kecamatan, total]) => (
+          <div key={kecamatan}>
+            <div className="mb-1 flex justify-between text-sm">
+              <span>{kecamatan}</span>
+              <span>{total}</span>
+            </div>
 
-      <div className="h-[350px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart layout="vertical" data={data}>
-            <XAxis type="number" />
-
-            <YAxis type="category" dataKey="kecamatan" width={120} />
-
-            <Tooltip />
-
-            <Bar dataKey="total" fill="#1184CA" radius={[0, 8, 8, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+            <div className="h-2 rounded-full bg-slate-100">
+              <div
+                className="h-2 rounded-full bg-[#1184CA]"
+                style={{
+                  width: `${(total / data[0][1]) * 100}%`,
+                }}
+              />
+            </div>
+          </div>
+        ))}
       </div>
-    </section>
+    </div>
   );
 }

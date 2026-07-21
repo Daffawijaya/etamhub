@@ -1,27 +1,17 @@
-import CategoryPieChart from "@/components/admin/CategoryPieChart";
-import DashboardHeader from "@/components/admin/DashboardHeader";
-import KecamatanChart from "@/components/admin/KecamatanChart";
-import StatsCards from "@/components/admin/StatsCards";
-import UmkmMapWidget from "@/components/admin/UmkmMapWidget";
-import LatestUmkm from "@/components/admin/LatestUmkm";
-import QuickActions from "@/components/admin/QuickActions";
+import AdminNavbar from "@/components/admin/AdminNavbar";
+import AdminSidebar from "@/components/admin/AdminSidebar";
+import DashboardGrid from "@/components/admin/DashboardGrid";
 
 export default function AdminPage() {
   return (
-    <main className="min-h-screen bg-light-bg dark:bg-dark">
-      <div className="mx-auto max-w-7xl space-y-6">
-        <DashboardHeader />
-        <QuickActions />
-        <StatsCards />
+    <main className="min-h-screen bg-[#f7f6f2]">
+      <div className="flex">
+        <AdminSidebar />
 
-        <UmkmMapWidget />
-
-        <div className="grid gap-6 lg:grid-cols-2">
-          <KecamatanChart />
-          <CategoryPieChart />
+        <div className="flex-1 p-8">
+          <AdminNavbar />
+          <DashboardGrid />
         </div>
-
-        <LatestUmkm />
       </div>
     </main>
   );
