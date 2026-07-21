@@ -1,13 +1,24 @@
+import CategoryPieChart from "@/components/admin/CategoryPieChart";
+import DashboardHeader from "@/components/admin/DashboardHeader";
+import KecamatanChart from "@/components/admin/KecamatanChart";
+import StatsCards from "@/components/admin/StatsCards";
+import UmkmMapWidget from "@/components/admin/UmkmMapWidget";
+
 export default function AdminPage() {
   return (
-    <div>
-      <h1 className="text-3xl font-bold">
-        Dashboard
-      </h1>
+    <main className="min-h-screen bg-light-bg dark:bg-dark md:p-6">
+      <div className="mx-auto max-w-7xl space-y-6">
+        <DashboardHeader />
 
-      <p className="mt-2 text-gray-600">
-        Selamat datang di Admin EtamHub
-      </p>
-    </div>
+        <StatsCards />
+
+        <UmkmMapWidget />
+
+        <div className="grid gap-6 lg:grid-cols-2">
+          <KecamatanChart />
+          <CategoryPieChart />
+        </div>
+      </div>
+    </main>
   );
 }

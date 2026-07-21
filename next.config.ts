@@ -2,10 +2,19 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: [
-      "images.unsplash.com",
-      "images.alodokter.com",
-      "drive.google.com",
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "images.alodokter.com",
+      },
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+      },
     ],
   },
 };

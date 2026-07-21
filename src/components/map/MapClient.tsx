@@ -1,3 +1,5 @@
+"use client";
+
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { useState, useMemo } from "react";
 import umkms from "@/data/umkm.json";

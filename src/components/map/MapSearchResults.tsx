@@ -1,6 +1,6 @@
 "use client";
 
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 
 type Umkm = (typeof umkms)[number];
 
