@@ -3,13 +3,15 @@ import DashboardHeader from "@/components/admin/DashboardHeader";
 import KecamatanChart from "@/components/admin/KecamatanChart";
 import StatsCards from "@/components/admin/StatsCards";
 import UmkmMapWidget from "@/components/admin/UmkmMapWidget";
+import LatestUmkm from "@/components/admin/LatestUmkm";
+import QuickActions from "@/components/admin/QuickActions";
 
 export default function AdminPage() {
   return (
-    <main className="min-h-screen bg-light-bg dark:bg-dark md:p-6">
+    <main className="min-h-screen bg-light-bg dark:bg-dark">
       <div className="mx-auto max-w-7xl space-y-6">
         <DashboardHeader />
-
+        <QuickActions />
         <StatsCards />
 
         <UmkmMapWidget />
@@ -18,6 +20,8 @@ export default function AdminPage() {
           <KecamatanChart />
           <CategoryPieChart />
         </div>
+
+        <LatestUmkm />
       </div>
     </main>
   );

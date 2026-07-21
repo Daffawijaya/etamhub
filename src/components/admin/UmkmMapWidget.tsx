@@ -3,18 +3,17 @@
 import dynamic from "next/dynamic";
 import umkms from "@/data/umkm.json";
 
-const MapClient = dynamic(() => import("@/components/map/MapClient"), {
+const MapClient = dynamic(() => import("../map/MapClient"), {
   ssr: false,
 });
 
 export default function UmkmMapWidget() {
   const totalUmkm = umkms.length;
-
   const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;
 
   return (
-    <section className="overflow-hidden rounded-3xl border border-black/5 bg-white shadow-sm dark:border-white/10 dark:bg-[#181818]">
-      <div className="border-b border-black/5 p-6 dark:border-white/10">
+    <section className="overflow-hidden rounded-3xl border border-black/5 bg-white dark:border-white/10 dark:bg-[#181818]">
+      <div className="relative z-10 border-b border-black/5 p-6 dark:border-white/10">
         <h2 className="text-xl font-semibold text-black dark:text-white">
           Peta UMKM
         </h2>
@@ -24,7 +23,7 @@ export default function UmkmMapWidget() {
         </p>
       </div>
 
-      <div className="h-[550px]">
+      <div className="relative z-0 h-[550px]">
         <MapClient />
       </div>
     </section>
