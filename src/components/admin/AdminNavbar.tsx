@@ -1,16 +1,24 @@
 "use client";
 
-import { Bell, Plus, Search, Settings } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Bell, LogOut, Plus, Search } from "lucide-react";
 
 export default function AdminNavbar() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // hapus token/session jika ada
+    localStorage.removeItem("token");
+
+    // arahkan ke halaman login
+    router.push("/login");
+  };
+
   return (
     <header className="flex items-center justify-between gap-6">
       {/* Left */}
       <div>
         <h1 className="text-4xl font-bold text-slate-900">Dashboard</h1>
-        <p className="mt-1 text-sm text-slate-500">
-          Kelola data UMKM Kutai Kartanegara
-        </p>
       </div>
 
       {/* Right */}
@@ -36,25 +44,17 @@ export default function AdminNavbar() {
         </button>
 
         {/* Notification */}
-        <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
+        <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm transition hover:bg-slate-50">
           <Bell size={18} />
         </button>
 
-        {/* Settings */}
-        <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
-          <Settings size={18} />
-        </button>
-
-        {/* Profile */}
-        <button className="flex items-center gap-3 rounded-2xl bg-white px-3 py-2 shadow-sm">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-sm font-bold text-white">
-            D
-          </div>
-
-          <div className="text-left">
-            <p className="text-sm font-semibold text-slate-900">Admin</p>
-            <p className="text-xs text-slate-500">EtamHub</p>
-          </div>
+        {/* Logout */}
+        <button
+          onClick={handleLogout}
+          className="flex h-12 items-center gap-2 rounded-2xl bg-red-500 px-4 text-sm font-medium text-white transition hover:bg-red-600"
+        >
+          <LogOut size={18} />
+          Keluar
         </button>
       </div>
     </header>

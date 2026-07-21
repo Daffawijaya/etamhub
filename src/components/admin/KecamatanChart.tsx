@@ -12,10 +12,10 @@ export default function KecamatanChart() {
     )
   )
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
+    .slice(0, 7);
 
   return (
-    <div className="rounded-[32px] bg-white p-6 shadow-sm">
+    <div className="rounded-[32px] bg-white p-6">
       <h3 className="mb-6 text-lg font-semibold">
         Top Kecamatan
       </h3>

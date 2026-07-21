@@ -41,7 +41,7 @@ const menus = [
 
 export default function AdminSidebar() {
   return (
-    <aside className="sticky top-0 flex h-screen w-72 flex-col border-r border-slate-200 bg-white">
+    <aside className="sticky top-0 flex h-screen w-70 flex-col border-r border-slate-200 bg-white">
       {/* Logo */}
       <div className="border-b border-slate-100 p-6">
         <div className="flex items-center gap-3">
