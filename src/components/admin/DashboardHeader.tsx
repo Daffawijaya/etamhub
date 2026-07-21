@@ -6,7 +6,7 @@ export default function DashboardHeader() {
   });
 
   return (
-    <div className="flex flex-col gap-3 rounded-3xl bg-white p-6 shadow-sm">
+    <div className="flex flex-col gap-3 rounded-3xl bg-white p-6">
       <h1 className="text-3xl font-bold">Halo Daffa 👋</h1>
 
       <p className="text-neutral-500">Selamat Datang di Dashboard EtamHub</p>

@@ -39,7 +39,7 @@ export default function CategoryPieChart() {
   ];
 
   return (
-    <section className="rounded-3xl border border-black/5 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-[#181818]">
+    <section className="rounded-3xl border border-black/5 bg-white p-6 dark:border-white/10 dark:bg-[#181818]">
       <h2 className="mb-1 text-xl font-semibold text-black dark:text-white">
         Distribusi Kategori
       </h2>

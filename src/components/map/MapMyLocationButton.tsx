@@ -3,7 +3,11 @@
 import { LocateFixed } from "lucide-react";
 import { useMap } from "react-leaflet";
 
-export default function MapMyLocationButton() {
+type Props = {
+  fixed?: boolean;
+};
+
+export default function MapMyLocationButton({ fixed = true }: Props) {
   const map = useMap();
 
   const handleLocate = () => {
@@ -30,7 +34,9 @@ export default function MapMyLocationButton() {
   return (
     <button
       onClick={handleLocate}
-      className="
+      className={`
+  ${fixed ? "fixed bottom-5 right-5" : "absolute bottom-4 right-4"}
+      
         fixed bottom-5
         right-5
         z-[99999]
@@ -50,7 +56,7 @@ pointer-events-auto
         transition-all
         hover:scale-105
         active:scale-95
-      "
+      `}
       aria-label="Lokasi Saya"
     >
       <LocateFixed size={20} />

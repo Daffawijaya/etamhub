@@ -35,7 +35,7 @@ export default function MapClient() {
     lng: number;
   } | null>(null);
   return (
-    <div className="relative h-screen w-screen">
+    <div className="relative h-full w-full">
       {/* Inject CSS Reset Global untuk Leaflet Popup di sini agar component lebih bersih */}
       <style>{`
         .custom-google-popup .leaflet-popup-content-wrapper {
@@ -86,7 +86,7 @@ export default function MapClient() {
         zoom={10}
         attributionControl={false}
         zoomControl={false}
-        className="h-screen w-screen"
+        className="relative h-full w-full"
       >
         <TileLayer
           key={resolvedTheme}

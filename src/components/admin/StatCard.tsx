@@ -19,11 +19,11 @@ export default function StatCard({ title, value, icon, color }: StatCardProps) {
         border-black/5
         bg-white
         p-6
-        shadow-sm
+       
         transition-all
         duration-300
         hover:-translate-y-1
-        hover:shadow-xl
+       
         dark:border-white/10
         dark:bg-[#181818]
       "
