@@ -5,7 +5,11 @@ export async function POST() {
     success: true,
   });
 
-  response.cookies.delete("admin");
+  response.cookies.set("admin", "", {
+    httpOnly: true,
+    path: "/",
+    maxAge: 0,
+  });
 
   return response;
 }

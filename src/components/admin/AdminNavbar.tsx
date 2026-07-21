@@ -1,17 +1,15 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { Bell, LogOut, Plus, Search } from "lucide-react";
 
 export default function AdminNavbar() {
-  const router = useRouter();
 
-  const handleLogout = () => {
-    // hapus token/session jika ada
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await fetch("/api/logout", {
+      method: "POST",
+    });
 
-    // arahkan ke halaman login
-    router.push("/login");
+    window.location.href = "/login";
   };
 
   return (
