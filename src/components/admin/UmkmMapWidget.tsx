@@ -1,6 +1,11 @@
+"use client";
+
+import dynamic from "next/dynamic";
 import umkms from "@/data/umkm.json";
 
-import MapClient from "@/components/map/MapClient";
+const MapClient = dynamic(() => import("@/components/map/MapClient"), {
+  ssr: false,
+});
 
 export default function UmkmMapWidget() {
   const totalUmkm = umkms.length;
