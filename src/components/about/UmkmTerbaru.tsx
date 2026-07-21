@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 import { imageUrl } from "@/lib/imageUrl";
 import SectionHeader from "../textBlock/SectionHeader";
 import BigChevronButtonButton from "../button/BigChevronButton";
