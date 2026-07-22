@@ -1,11 +1,6 @@
 import umkms from "@/data/umkm.json";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function KecamatanChart() {
   const data = Object.entries(
@@ -27,9 +22,7 @@ export default function KecamatanChart() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          Top Kecamatan
-        </CardTitle>
+        <CardTitle className="text-lg font-semibold">Top Kecamatan</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-5">
@@ -39,14 +32,10 @@ export default function KecamatanChart() {
           return (
             <div key={kecamatan}>
               <div className="mb-2 flex items-center justify-between text-sm">
-                <span className="font-medium text-slate-700">
-                  {kecamatan}
-                </span>
+                <span className="font-medium text-slate-700">{kecamatan}</span>
 
                 <div className="flex items-center gap-2">
-                  <span className="text-slate-500">
-                    {total} UMKM
-                  </span>
+                  <span className="text-slate-500">{total} UMKM</span>
 
                   <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600">
                     {percentage}%

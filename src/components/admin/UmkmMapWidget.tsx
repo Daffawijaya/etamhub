@@ -23,7 +23,7 @@ export default function UmkmMapWidget() {
       </CardHeader>
 
       <CardContent className="p-0">
-        <div className="h-[335px]">
+        <div className="h-[340px]">
           <MapWidget />
         </div>
       </CardContent>
