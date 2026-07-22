@@ -1,6 +1,8 @@
 import umkms from "@/data/umkm.json";
 import { MapPinned, Store, Tags } from "lucide-react";
 
+import { Card } from "@/components/ui/card";
+
 export default function StatsCards() {
   const totalUmkm = umkms.length;
 
@@ -9,7 +11,7 @@ export default function StatsCards() {
   const totalSubkategori = new Set(umkms.map((item) => item.subkategori)).size;
 
   return (
-    <div className="relative overflow-hidden rounded-[32px] bg-gradient-to-br from-[#ff7a59] via-[#ff6b7d] to-[#ff4fa3] p-8 text-white">
+    <Card className="relative overflow-hidden bg-gradient-to-br from-[#ff7a59] via-[#ff6b7d] to-[#ff4fa3] p-8 text-white shadow-none">
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10" />
       <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/10" />
 
@@ -26,7 +28,7 @@ export default function StatsCards() {
               {totalUmkm.toLocaleString("id-ID")}
             </h2>
 
-            <p className="mt-1 text-sm text-white/70">Terdaftar di etamhub.</p>
+            <p className="mt-1 text-sm text-white/70">Terdaftar di EtamHub.</p>
           </div>
         </div>
 
@@ -50,6 +52,6 @@ export default function StatsCards() {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }

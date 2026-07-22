@@ -13,7 +13,7 @@ export default function DashboardGrid() {
       <div className="col-span-8 space-y-6">
         <div className="grid grid-cols-2 gap-6">
           <StatsCards />
-          <CategoryPieChart />
+          <QuickActions />
         </div>
 
         <LatestUmkm />
@@ -23,7 +23,7 @@ export default function DashboardGrid() {
 
       {/* RIGHT COLUMN */}
       <div className="col-span-4 space-y-6">
-        <QuickActions />
+        <CategoryPieChart />
 
         <KecamatanChart />
 

@@ -3,6 +3,14 @@ import { MoreHorizontal } from "lucide-react";
 import umkms from "@/data/umkm.json";
 import { getUmkmImage } from "@/lib/getUmkmImage";
 
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
+
 const getCategoryStyle = (kategori: string) => {
   switch (kategori) {
     case "Perdagangan":
@@ -28,22 +36,22 @@ export default function LatestUmkm() {
     .slice(0, 5);
 
   return (
-    <div className="overflow-hidden rounded-[32px] bg-white">
-      {/* Header */}
-      <div className="border-b border-slate-100 px-6 py-5">
-        <h2 className="text-xl font-bold text-slate-900">UMKM Terbaru</h2>
+    <Card className="pb-3">
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold text-slate-900">
+          UMKM Terbaru
+        </CardTitle>
 
-        <p className="mt-1 text-sm text-slate-500">
+        <CardDescription className="text-sm text-slate-500">
           5 UMKM yang terakhir ditambahkan ke EtamHub
-        </p>
-      </div>
+        </CardDescription>
+      </CardHeader>
 
-      {/* List */}
-      <div className="py-2">
+      <CardContent className="p-0">
         {latest.map((item, index) => (
           <div
             key={item.id}
-            className={`flex items-center gap-4 px-6 py-3 ${
+            className={`flex items-center gap-4 px-6 py-2.5 ${
               index !== latest.length - 1 ? "border-b border-slate-100" : ""
             }`}
           >
@@ -101,7 +109,7 @@ export default function LatestUmkm() {
             </button>
           </div>
         ))}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }

@@ -1,6 +1,19 @@
 "use client";
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 type Umkm = {
   id: number;
@@ -20,7 +33,7 @@ export default function AdminUmkmPage() {
   }
 
   async function deleteUmkm(id: number) {
-    const yakin = confirm("Hapus UMKM ini?");
+    const yakin = confirm("Yakin ingin menghapus UMKM ini?");
 
     if (!yakin) return;
 
@@ -36,59 +49,74 @@ export default function AdminUmkmPage() {
   }, []);
 
   return (
-    <main className="p-8">
-      <h1 className="text-2xl font-bold mb-6">Data UMKM</h1>
-      <Link
-        href="/admin/tambah"
-        className="px-4 py-2 rounded bg-blue-600 text-white"
-      >
-        Tambah UMKM
-      </Link>
-      <div className="overflow-x-auto">
-        <table className="w-full border">
-          <thead>
-            <tr className="border bg-gray-100">
-              <th className="p-3 text-left">Nama</th>
+    <main className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-3xl font-bold">Data UMKM</h1>
 
-              <th className="p-3 text-left">Kategori</th>
+          <p className="text-muted-foreground">Kelola seluruh data UMKM</p>
+        </div>
 
-              <th className="p-3 text-left">Kecamatan</th>
-
-              <th className="p-3">Aksi</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {umkms.map((u) => (
-              <tr key={u.id} className="border">
-                <td className="p-3">{u.nama}</td>
-
-                <td className="p-3">{u.kategori}</td>
-
-                <td className="p-3">{u.kecamatan}</td>
-
-                <td className="p-3">
-                  <div className="flex gap-2">
-                    <Link
-                      href={`/admin/edit/${u.id}`}
-                      className="px-3 py-1 rounded bg-amber-500 text-white"
-                    >
-                      Edit
-                    </Link>
-
-                    <button
-                      onClick={() => deleteUmkm(u.id)}
-                      className="px-3 py-1 rounded bg-red-500 text-white"
-                    >
-                      Hapus
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Link href="/admin/tambah">
+          <Button>Tambah UMKM</Button>
+        </Link>
       </div>
+
+      <Card className="rounded-3xl">
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Nama UMKM</TableHead>
+
+                <TableHead>Kategori</TableHead>
+
+                <TableHead>Kecamatan</TableHead>
+
+                <TableHead className="text-right">Aksi</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {umkms.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center py-10">
+                    Belum ada data UMKM
+                  </TableCell>
+                </TableRow>
+              ) : (
+                umkms.map((u) => (
+                  <TableRow key={u.id}>
+                    <TableCell className="font-medium">{u.nama}</TableCell>
+
+                    <TableCell>{u.kategori}</TableCell>
+
+                    <TableCell>{u.kecamatan}</TableCell>
+
+                    <TableCell>
+                      <div className="flex justify-end gap-2">
+                        <Link href={`/admin/edit/${u.id}`}>
+                          <Button size="sm" variant="secondary">
+                            Edit
+                          </Button>
+                        </Link>
+
+                        <Button
+                          size="sm"
+                          variant="destructive"
+                          onClick={() => deleteUmkm(u.id)}
+                        >
+                          Hapus
+                        </Button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
     </main>
   );
 }
