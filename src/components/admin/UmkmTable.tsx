@@ -1,5 +1,7 @@
+"use client";
+
 import Image from "next/image";
-import { MoreHorizontal } from "lucide-react";
+import UmkmRowActions from "./UmkmRowActions";
 import { getUmkmImage } from "@/lib/getUmkmImage";
 
 interface Umkm {
@@ -14,6 +16,12 @@ interface Umkm {
   createdAt: string;
 }
 
+interface UmkmTableProps {
+  data: Umkm[];
+  columns?: UmkmTableColumns;
+  onEdit?: (item: Umkm) => void;
+}
+
 interface UmkmTableColumns {
   gambar?: boolean;
   nama?: boolean;
@@ -23,11 +31,6 @@ interface UmkmTableColumns {
   kecamatan?: boolean;
   createdAt?: boolean;
   action?: boolean;
-}
-
-interface UmkmTableProps {
-  data: Umkm[];
-  columns?: UmkmTableColumns;
 }
 
 const getCategoryStyle = (kategori: string) => {
@@ -58,6 +61,7 @@ const formatDate = (date: string) => {
 
 export default function UmkmTable({
   data,
+  onEdit,
   columns = {
     gambar: true,
     nama: true,
@@ -154,9 +158,7 @@ export default function UmkmTable({
 
           {/* Action */}
           {columns.action && (
-            <button className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full transition hover:bg-slate-100">
-              <MoreHorizontal size={18} />
-            </button>
+            <UmkmRowActions id={item.id} onEdit={() => onEdit?.(item)} />
           )}
         </div>
       ))}
