@@ -7,10 +7,7 @@ interface UmkmSearchProps {
   onChange: (value: string) => void;
 }
 
-export default function UmkmSearch({
-  value,
-  onChange,
-}: UmkmSearchProps) {
+export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
   return (
     <div className="relative w-full max-w-sm">
       <Search
@@ -24,24 +21,25 @@ export default function UmkmSearch({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="
-          h-11
-          w-full
-          rounded-2xl
-          border
-          border-slate-200
-          bg-white
-          px-4
-          text-sm
-          text-slate-700
-          placeholder:text-slate-400
-          outline-none
-          transition-all
-          duration-200
-          hover:border-slate-300
-          focus:border-sky-500
-          focus:ring-4
-          focus:ring-sky-500/10
-        "
+    h-11
+    w-full
+    rounded-2xl
+    border
+    border-slate-200
+    bg-white
+    pl-11
+    pr-4
+    text-sm
+    text-slate-700
+    placeholder:text-slate-400
+    outline-none
+    transition-all
+    duration-200
+    hover:border-slate-300
+    focus:border-sky-500
+    focus:ring-4
+    focus:ring-sky-500/10
+  "
       />
     </div>
   );
