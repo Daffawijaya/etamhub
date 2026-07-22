@@ -1,6 +1,8 @@
+"use client";
+
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { useState, useMemo } from "react";
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 import UmkmMapCard from "./UmkmMapCard";
 import UserLocation from "./UserLocation";
 import { useTheme } from "next-themes";
@@ -33,7 +35,7 @@ export default function MapClient() {
     lng: number;
   } | null>(null);
   return (
-    <div className="relative h-screen w-screen">
+    <div className="relative h-full w-full">
       {/* Inject CSS Reset Global untuk Leaflet Popup di sini agar component lebih bersih */}
       <style>{`
         .custom-google-popup .leaflet-popup-content-wrapper {
@@ -84,7 +86,7 @@ export default function MapClient() {
         zoom={10}
         attributionControl={false}
         zoomControl={false}
-        className="h-screen w-screen"
+        className="relative h-full w-full"
       >
         <TileLayer
           key={resolvedTheme}

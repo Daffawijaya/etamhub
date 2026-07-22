@@ -4,7 +4,7 @@ import { useMemo, useState, use, useEffect } from "react";
 import Footer from "@/components/Footer";
 import UmkmCard from "@/components/district/UmkmCard";
 import KategoriFilter from "@/components/district/KategoriFilter";
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 import { slugify } from "@/lib/slugify";
 import Breadcrumb from "@/components/Breadcrumb";
 import Pagination from "@/components/district/Pagination";

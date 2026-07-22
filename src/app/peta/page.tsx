@@ -10,7 +10,7 @@ export default function PetaPage() {
        <Navbar />
     </div>
      
-      <main className="relative z-0">
+      <main className="relative h-screen w-full z-0">
         <UmkmMap />
       </main>
     </>

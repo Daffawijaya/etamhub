@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 import { slugify } from "@/lib/slugify";
 import SectionHeader from "./textBlock/SectionHeader";
 import BottomAccent from "./decoration/BottomAccent";
