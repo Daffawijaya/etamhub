@@ -1,7 +1,5 @@
 import { Download, FileSpreadsheet, Plus, Upload } from "lucide-react";
 
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
 const actions = [
   {
     icon: Plus,
@@ -23,29 +21,32 @@ const actions = [
 
 export default function QuickActions() {
   return (
-    <Card>
-      <CardHeader className="pb-0">
-        <CardTitle className="text-lg font-semibold">Quick Actions</CardTitle>
-      </CardHeader>
+    <div className="rounded-2xl bg-white p-6">
+      <h2 className="mb-5 text-lg font-semibold">
+        Quick Actions
+      </h2>
 
-      <CardContent>
-        <div className="grid grid-cols-2 gap-4">
-          {actions.map((action) => {
-            const Icon = action.icon;
+      <div className="grid grid-cols-2 gap-4">
+        {actions.map((action) => {
+          const Icon = action.icon;
 
-            return (
-              <button
-                key={action.label}
-                className="rounded-2xl border border-slate-100 p-5 transition hover:bg-slate-50"
-              >
-                <Icon size={24} className="mx-auto mb-3" />
+          return (
+            <button
+              key={action.label}
+              className="rounded-2xl p-5 transition hover:bg-slate-50"
+            >
+              <Icon
+                size={24}
+                className="mx-auto mb-3 text-slate-700"
+              />
 
-                <p className="text-sm font-medium">{action.label}</p>
-              </button>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
+              <p className="text-sm font-medium text-slate-900">
+                {action.label}
+              </p>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }

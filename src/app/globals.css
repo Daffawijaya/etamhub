@@ -60,3 +60,18 @@ body {
 .google-dark-tiles {
   filter: invert(100%) hue-rotate(220deg) brightness(100%) contrast(85%) saturate(100%);
 }
+
+html,
+body,
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
+}

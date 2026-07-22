@@ -1,12 +1,5 @@
 import umkms from "@/data/umkm.json";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 export default function KecamatanChart() {
   const data = Object.entries(
     umkms.reduce(
@@ -19,20 +12,18 @@ export default function KecamatanChart() {
     ),
   )
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 9);
+    .slice(0, 7);
 
   const maxValue = data[0]?.[1] ?? 1;
   const totalUmkm = umkms.length;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">
-          Top Kecamatan
-        </CardTitle>
-      </CardHeader>
+    <div className="rounded-2xl bg-white p-6 shadow-sm">
+      <h2 className="mb-5 text-lg font-semibold">
+        Top Kecamatan
+      </h2>
 
-      <CardContent className="space-y-5">
+      <div className="space-y-5">
         {data.map(([kecamatan, total]) => {
           const percentage = ((total / totalUmkm) * 100).toFixed(1);
 
@@ -67,7 +58,7 @@ export default function KecamatanChart() {
             </div>
           );
         })}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
