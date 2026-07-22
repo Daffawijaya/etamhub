@@ -1,5 +1,4 @@
 import umkms from "@/data/umkm.json";
-
 import UmkmTable from "./UmkmTable";
 
 export default function LatestUmkm() {
@@ -21,7 +20,19 @@ export default function LatestUmkm() {
       </div>
 
       <div className="pb-3">
-        <UmkmTable data={latest} />
+        <div className="pb-3">
+          <UmkmTable
+            data={latest}
+            columns={{
+              gambar: true,
+              nama: true,
+              kategori: true,
+              kecamatan: true,
+              createdAt: true,
+              action: true,
+            }}
+          />
+        </div>
       </div>
     </div>
   );
