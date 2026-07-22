@@ -1,12 +1,5 @@
 import umkms from "@/data/umkm.json";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
 import UmkmTable from "./UmkmTable";
 
 export default function LatestUmkm() {
@@ -18,22 +11,18 @@ export default function LatestUmkm() {
     .slice(0, 5);
 
   return (
-    <Card className="pb-3">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold text-slate-900">
-          UMKM Terbaru
-        </CardTitle>
+    <div className="overflow-hidden rounded-2xl bg-white">
+      <div className="p-6">
+        <h2 className="text-lg font-semibold text-slate-900">UMKM Terbaru</h2>
 
-        <CardDescription className="text-sm text-slate-500">
+        <p className="mt-1 text-sm text-slate-500">
           5 UMKM yang terakhir ditambahkan ke EtamHub
-        </CardDescription>
-      </CardHeader>
+        </p>
+      </div>
 
-      <CardContent className="p-0">
-        <CardContent className="p-0">
-          <UmkmTable data={latest} />
-        </CardContent>
-      </CardContent>
-    </Card>
+      <div className="pb-3">
+        <UmkmTable data={latest} />
+      </div>
+    </div>
   );
 }

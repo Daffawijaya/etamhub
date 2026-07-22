@@ -24,7 +24,6 @@ export default function AdminNavbar({ title = "Dashboard" }: AdminNavbarProps) {
 
       {/* Right */}
       <div className="flex items-center gap-4">
-
         <button className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm transition hover:bg-slate-50">
           <Bell size={18} />
         </button>

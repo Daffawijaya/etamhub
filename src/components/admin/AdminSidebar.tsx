@@ -50,12 +50,8 @@ export default function AdminSidebar() {
           </div>
 
           <div>
-            <h2 className="font-bold text-slate-900">
-              EtamHub
-            </h2>
-            <p className="text-xs text-slate-500">
-              Admin Dashboard
-            </p>
+            <h2 className="font-bold text-slate-900">EtamHub</h2>
+            <p className="text-xs text-slate-500">Admin Dashboard</p>
           </div>
         </div>
       </div>
@@ -77,9 +73,7 @@ export default function AdminSidebar() {
                 className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
               >
                 <Icon size={20} />
-                <span className="font-medium">
-                  {menu.label}
-                </span>
+                <span className="font-medium">{menu.label}</span>
               </Link>
             );
           })}
