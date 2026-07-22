@@ -1,7 +1,5 @@
 import umkms from "@/data/umkm.json";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
 const COLORS = {
   Perdagangan: "#1184CA",
   Jasa: "#844EC0",
@@ -22,38 +20,41 @@ export default function CategoryStats() {
   );
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">Kategori UMKM</CardTitle>
-      </CardHeader>
+    <div className="rounded-2xl bg-white p-6 shadow-sm">
+      <h2 className="mb-5 text-lg font-semibold">
+        Kategori UMKM
+      </h2>
 
-      <CardContent className="space-y-5">
+      <div className="space-y-5">
         {data.map(([name, value]) => {
           const percentage = (value / total) * 100;
 
           return (
             <div key={name}>
               <div className="mb-2 flex items-center justify-between">
-                <span className="font-medium">{name}</span>
+                <span className="font-medium text-gray-900">
+                  {name}
+                </span>
 
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-gray-500">
                   {value} UMKM
                 </span>
               </div>
 
-              <div className="h-3 overflow-hidden rounded-full bg-muted">
+              <div className="h-3 overflow-hidden rounded-full bg-gray-100">
                 <div
-                  className="h-full rounded-full transition-all"
+                  className="h-full rounded-full transition-all duration-300"
                   style={{
                     width: `${percentage}%`,
-                    backgroundColor: COLORS[name as keyof typeof COLORS],
+                    backgroundColor:
+                      COLORS[name as keyof typeof COLORS],
                   }}
                 />
               </div>
             </div>
           );
         })}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

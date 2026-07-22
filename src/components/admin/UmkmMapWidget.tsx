@@ -2,31 +2,24 @@
 
 import dynamic from "next/dynamic";
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-} from "@/components/ui/card";
-
 const MapWidget = dynamic(() => import("@/components/map/MapWidget"), {
   ssr: false,
 });
 
 export default function UmkmMapWidget() {
   return (
-    <Card className="p-0">
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold pt-4">
+    <div className="overflow-hidden rounded-2xl bg-white shadow-sm">
+      <div className="px-6 pt-6 pb-4">
+        <h2 className="text-lg font-semibold">
           Peta Sebaran UMKM
-        </CardTitle>
-      </CardHeader>
+        </h2>
+      </div>
 
-      <CardContent className="p-0">
+      <div className="p-0">
         <div className="h-[340px]">
           <MapWidget />
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

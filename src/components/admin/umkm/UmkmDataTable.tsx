@@ -1,17 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+
 import UmkmSearch from "../UmkmSearch";
 import UmkmFilters from "../UmkmFilters";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 import UmkmTable from "../UmkmTable";
 import UmkmPagination from "./UmkmPagination";
 
@@ -38,18 +30,24 @@ export default function UmkmDataTable({ data }: Props) {
     let result = [...data];
 
     // Search
-    result = result.filter((item) =>
-      item.nama.toLowerCase().includes(search.toLowerCase()),
-    );
+    if (search) {
+      result = result.filter((item) =>
+        item.nama.toLowerCase().includes(search.toLowerCase()),
+      );
+    }
 
-    // Kecamatan
+    // Filter kecamatan
     if (kecamatan !== "all") {
-      result = result.filter((item) => item.kecamatan === kecamatan);
+      result = result.filter(
+        (item) => item.kecamatan === kecamatan,
+      );
     }
 
     // Sorting
     if (sort === "nama") {
-      result.sort((a, b) => a.nama.localeCompare(b.nama));
+      result.sort((a, b) =>
+        a.nama.localeCompare(b.nama),
+      );
     }
 
     if (sort === "terbaru") {
@@ -61,19 +59,27 @@ export default function UmkmDataTable({ data }: Props) {
 
   const totalPages = Math.ceil(filteredData.length / limit);
 
-  const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
+  const paginatedData = filteredData.slice(
+    (page - 1) * limit,
+    page * limit,
+  );
 
   return (
-    <Card className="py-0">
-      <CardHeader>
-        <div className="flex items-center justify-between">
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+      {/* Header */}
+      <div className="border-b border-slate-200 px-6 py-5">
+        <div className="flex items-center justify-between gap-4">
+          
           <div>
-            <CardTitle className="text-2xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-slate-900">
               Data UMKM
-            </CardTitle>
+            </h2>
 
-            <CardDescription>Kelola data UMKM terdaftar</CardDescription>
+            <p className="mt-1 text-sm text-slate-500">
+              Kelola data UMKM terdaftar
+            </p>
           </div>
+
 
           <div className="flex items-center gap-3">
             <UmkmSearch
@@ -98,18 +104,24 @@ export default function UmkmDataTable({ data }: Props) {
               }}
             />
           </div>
-        </div>
-      </CardHeader>
 
-      <CardContent className="p-0">
+        </div>
+      </div>
+
+
+      {/* Table */}
+      <div className="p-0">
         <UmkmTable data={paginatedData} />
 
         <UmkmPagination
           page={page}
           totalPages={totalPages}
-          onPageChange={setPage}
+          onPageChange={(value) => {
+            setPage(value);
+          }}
         />
-      </CardContent>
-    </Card>
+      </div>
+
+    </div>
   );
 }
