@@ -54,8 +54,8 @@ export default function MobileNavbar() {
     transition-all duration-300
     ${
       transparentPage && !scrolled
-        ? "bg-transparent backdrop-blur-0 border-b border-white/20"
-        : "bg-light dark:bg-dark/40 backdrop-blur-xl border-b border-black/10 dark:border-white/10"
+        ? "bg-transparent backdrop-blur-0 border-b dark:border-white/20 border-white/80"
+        : "bg-light dark:bg-dark/40 backdrop-blur-xl border-b border-white dark:border-white/10"
     }
   `}
       >

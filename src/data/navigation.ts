@@ -4,15 +4,15 @@ export const navigation = [
     href: "/",
   },
   {
-    label: "Kecamatan",
-    href: "/#kecamatan",
-  },
-  {
     label: "Peta UMKM",
     href: "/peta",
   },
   {
     label: "Tentang",
     href: "/about",
+  },
+  {
+    label: "Login",
+    href: "/login",
   },
 ];

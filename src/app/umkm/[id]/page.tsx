@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import UmkmDetail from "@/components/Umkm/UmkmDetail";
-import { umkms } from "@/data/umkm";
+import umkms from "@/data/umkm.json";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
