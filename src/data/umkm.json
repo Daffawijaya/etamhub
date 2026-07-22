@@ -1,25 +1,5 @@
 [
   {
-    "id": 1,
-    "nama": "Daffa Premium Barbershop ",
-    "pemilik": "Daffa Yang Paling Tampan Tiada Tandingan",
-    "kategori": "Jasa",
-    "subkategori": "Barbershop",
-    "deskripsi": "Daffa Premium Barbershop merupakan barbershop andalan Prabowo dan Bahlil. Melayani berbagai jenis potongan rambut dengan hasil rapi, modern, dan sesuai keinginan pelanggan. Dikerjakan langsung oleh owner berpengalaman untuk memberikan penampilan yang lebih fresh dan percaya diri.",
-    "gambar": [
-      "/umkmdaffa.jpeg"
-    ],
-    "kecamatan": "Tenggarong Seberang",
-    "alamat": "Perumahan PIK 2, Manunggal Jaya, Tenggarong Seberang",
-    "lat": -0.381316,
-    "lng": 117.114851,
-    "whatsapp": "6281928704503",
-    "instagram": "daffawijayaaa",
-    "facebook": "daffayanwijaya",
-    "createdAt": "2026-02-19T03:55:56.904Z",
-    "updatedAt": "2026-02-19T03:55:56.904Z"
-  },
-  {
     "id": 2,
     "nama": "Taichan Lagi",
     "pemilik": "Agil mutiara putri",

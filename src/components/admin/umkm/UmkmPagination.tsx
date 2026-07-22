@@ -13,43 +13,75 @@ export default function UmkmPagination({
   totalPages,
   onPageChange,
 }: Props) {
+  const getPages = () => {
+    const pages: (number | string)[] = [];
+
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    pages.push(1);
+
+    if (page > 3) pages.push("...");
+
+    for (
+      let i = Math.max(2, page - 1);
+      i <= Math.min(totalPages - 1, page + 1);
+      i++
+    ) {
+      pages.push(i);
+    }
+
+    if (page < totalPages - 2) pages.push("...");
+
+    pages.push(totalPages);
+
+    return pages;
+  };
+
   return (
-    <div className="flex items-center justify-between px-6 py-4">
+    <div className="flex flex-col gap-4 border-t border-slate-100 px-6 py-5 md:flex-row md:items-center md:justify-between">
       <p className="text-sm text-slate-500">
-        Halaman {page} dari {totalPages}
+        Halaman <span className="font-semibold text-slate-900">{page}</span>{" "}
+        dari <span className="font-semibold text-slate-900">{totalPages}</span>
       </p>
 
       <div className="flex items-center gap-2">
         <button
           disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border disabled:opacity-40"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronLeft size={18} />
         </button>
 
-        {Array.from({ length: totalPages }).map((_, index) => {
-          const number = index + 1;
-
-          return (
+        {getPages().map((item, index) =>
+          item === "..." ? (
+            <span
+              key={index}
+              className="flex h-10 w-10 items-center justify-center text-slate-400"
+            >
+              ...
+            </span>
+          ) : (
             <button
-              key={number}
-              onClick={() => onPageChange(number)}
-              className={`h-9 w-9 rounded-lg text-sm ${
-                page === number
-                  ? "bg-primary text-white"
-                  : "border text-slate-600"
+              key={item}
+              onClick={() => onPageChange(Number(item))}
+              className={`h-10 w-10 rounded-xl text-sm font-medium transition ${
+                page === item
+                  ? "bg-dark text-white shadow-sm"
+                  : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
               }`}
             >
-              {number}
+              {item}
             </button>
-          );
-        })}
+          ),
+        )}
 
         <button
           disabled={page === totalPages}
           onClick={() => onPageChange(page + 1)}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border disabled:opacity-40"
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:bg-slate-50 disabled:pointer-events-none disabled:opacity-40"
         >
           <ChevronRight size={18} />
         </button>
