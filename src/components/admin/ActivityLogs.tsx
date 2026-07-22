@@ -1,5 +1,7 @@
 import umkms from "@/data/umkm.json";
 
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
 function getRelativeTime(dateString: string) {
   const date = new Date(dateString);
   const now = new Date();
@@ -43,22 +45,25 @@ export default function ActivityLogs() {
     }));
 
   return (
-    <div className="rounded-[32px] bg-white p-6">
-      <h3 className="mb-6 text-lg font-semibold">Aktivitas Terbaru</h3>
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg font-semibold">
+          Aktivitas Terbaru
+        </CardTitle>
+      </CardHeader>
 
-      <div className="space-y-5">
+      <CardContent className="space-y-5">
         {activities.map((activity, index) => (
           <div key={index} className="flex gap-3">
             <div className="mt-2 h-2.5 w-2.5 rounded-full bg-green-500" />
 
             <div>
-              <p className="font-medium text-slate-900">{activity.title}</p>
-
-              <p className="text-sm text-slate-500">{activity.time}</p>
+              <p className="font-medium">{activity.title}</p>
+              <p className="text-sm text-muted-foreground">{activity.time}</p>
             </div>
           </div>
         ))}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
