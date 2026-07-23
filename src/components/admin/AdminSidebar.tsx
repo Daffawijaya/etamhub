@@ -22,13 +22,13 @@ const menus = [
   {
     label: "Peta",
     icon: MapPinned,
-    href: "/admin/map",
+    href: "/admin/peta",
   },
 ];
 
 export default function AdminSidebar() {
   return (
-    <aside className="sticky top-0 flex h-screen w-70 flex-col border-r border-slate-200 bg-white">
+    <aside className="sticky top-0 flex h-screen w-70 flex-col bg-white">
       {/* Logo */}
       <div className="border-b border-slate-100 p-6">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900">

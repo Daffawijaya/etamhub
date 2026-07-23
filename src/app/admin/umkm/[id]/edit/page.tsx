@@ -20,7 +20,7 @@ export default async function EditUmkmPage({ params }: Props) {
   const umkm = await res.json();
 
   return (
-    <div>
+    <div className="px-6 pb-6">
       <EditUmkmForm data={umkm} />
     </div>
   );

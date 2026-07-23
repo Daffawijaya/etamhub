@@ -1,8 +1,8 @@
 "use client";
 
-import umkms from "@/data/umkm.json";
+"use client";
 
-type Umkm = (typeof umkms)[number];
+import type { Umkm } from "@/data/umkm";
 
 type Props = {
   search: string;

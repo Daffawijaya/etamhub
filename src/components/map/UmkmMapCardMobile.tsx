@@ -17,7 +17,7 @@ type UmkmMapCardMobileProps = {
   gambar: string | string[];
   lat: number;
   lng: number;
-  id: number;
+  id: string;
   onClose?: () => void;
 };
 

@@ -1,5 +1,5 @@
 export type Umkm = {
-  id: number;
+  id: string;
   nama: string;
   pemilik: string;
   kategori: string;
@@ -10,8 +10,10 @@ export type Umkm = {
   alamat: string;
   lat: number;
   lng: number;
-  whatsapp?: string;
+  whatsapp?: string | number;
   instagram?: string;
   facebook?: string;
   tiktok?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };

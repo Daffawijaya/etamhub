@@ -13,7 +13,7 @@ type UmkmMapCardDesktopProps = {
   gambar: string | string[];
   lat: number;
   lng: number;
-  id: number;
+   id: string;
 };
 
 export default function UmkmMapCardDesktop({
