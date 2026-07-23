@@ -1,7 +1,8 @@
 import UmkmDataTable from "@/components/admin/umkm/UmkmDataTable";
+import { getBaseUrl } from "@/lib/api";
 
 async function getUmkms() {
-  const res = await fetch("http://localhost:3000/api/umkm", {
+  const res = await fetch(`${getBaseUrl()}/api/umkm`, {
     cache: "no-store",
   });
 

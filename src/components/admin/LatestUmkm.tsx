@@ -1,9 +1,8 @@
 import UmkmTable from "./UmkmTable";
+import { getBaseUrl } from "@/lib/api";
 
 export default async function LatestUmkm() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/umkm`, {
-    cache: "no-store",
-  });
+  const res = await fetch(`${getBaseUrl()}/api/umkm`);
 
   if (!res.ok) {
     throw new Error("Gagal mengambil data UMKM");

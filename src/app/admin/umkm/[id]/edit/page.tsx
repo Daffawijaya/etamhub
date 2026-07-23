@@ -1,5 +1,5 @@
 import EditUmkmForm from "@/components/admin/umkm/EditUmkmForm";
-
+import { getBaseUrl } from "@/lib/api";
 interface Props {
   params: Promise<{
     id: string;
@@ -9,7 +9,7 @@ interface Props {
 export default async function EditUmkmPage({ params }: Props) {
   const { id } = await params;
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/umkm/${id}`, {
+  const res = await fetch(`${getBaseUrl()}/api/umkm/${id}`, {
     cache: "no-store",
   });
 

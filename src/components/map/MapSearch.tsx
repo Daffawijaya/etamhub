@@ -9,7 +9,7 @@ type MapSearchProps = {
 
 export default function MapSearch({ value, onChange }: MapSearchProps) {
   return (
-    <div className="absolute top-14 lg:top-19 xl:top-5 px-4 flex justify-center xl:justify-start w-screen z-[1001]">
+    <div className="absolute top-14 lg:top-19 xl:top-5 px-4 flex justify-center xl:justify-start w-screen xl:w-auto z-[1001]">
       <div
         className="
         h-11

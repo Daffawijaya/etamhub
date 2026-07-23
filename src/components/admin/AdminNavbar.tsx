@@ -1,6 +1,7 @@
 "use client";
 
-import { Bell, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
+import AdminNotification from "./AdminNotification";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "../ThemeToggle";
 
@@ -25,17 +26,18 @@ export default function AdminNavbar({ title = "Dashboard" }: AdminNavbarProps) {
     return (
       <header className="absolute top-4 right-6 z-[1000]">
         <div className="flex items-center gap-4">
-          <button
+          <div
             className="
-              flex h-12 w-12 items-center justify-center rounded-2xl 
-              bg-white dark:bg-dark-card 
-              text-slate-900 dark:text-white
-              transition-all duration-300
-              hover:bg-slate-50 dark:hover:bg-neutral-800
-            "
+            flex h-12 w-12 items-center justify-center rounded-2xl
+            bg-white dark:bg-dark-card
+            text-slate-900 dark:text-white
+            transition-all duration-300
+            hover:bg-slate-50 dark:hover:bg-neutral-800
+          "
           >
-            <Bell size={18} />
-          </button>
+            <ThemeToggle />
+          </div>
+          <AdminNotification />
 
           <button
             onClick={handleLogout}
@@ -81,17 +83,7 @@ export default function AdminNavbar({ title = "Dashboard" }: AdminNavbarProps) {
           <ThemeToggle />
         </div>
 
-        <button
-          className="
-            flex h-12 w-12 items-center justify-center rounded-2xl
-            bg-white dark:bg-dark-card
-            text-slate-900 dark:text-white
-            transition-all duration-300
-            hover:bg-slate-50 dark:hover:bg-neutral-800
-          "
-        >
-          <Bell size={18} />
-        </button>
+        <AdminNotification />
 
         <button
           onClick={handleLogout}
