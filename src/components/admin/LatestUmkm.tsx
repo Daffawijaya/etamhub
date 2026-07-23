@@ -19,11 +19,40 @@ export default async function LatestUmkm() {
     .slice(0, 5);
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white">
+    <div
+      className="
+        overflow-hidden 
+        rounded-2xl 
+        bg-white
+        dark:bg-dark-card
+        transition-colors
+        duration-300
+      "
+    >
       <div className="p-6">
-        <h2 className="text-lg font-semibold text-slate-900">UMKM Terbaru</h2>
+        <h2
+          className="
+            text-lg 
+            font-semibold 
+            text-slate-900
+            dark:text-white
+            transition-colors
+            duration-300
+          "
+        >
+          UMKM Terbaru
+        </h2>
 
-        <p className="mt-1 text-sm text-slate-500">
+        <p
+          className="
+            mt-1 
+            text-sm 
+            text-slate-500
+            dark:text-slate-400
+            transition-colors
+            duration-300
+          "
+        >
           5 UMKM yang terakhir ditambahkan ke EtamHub
         </p>
       </div>

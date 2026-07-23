@@ -77,7 +77,16 @@ export default function QuickActions() {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-6">
+    <div
+      className="
+        rounded-2xl
+        bg-white
+        dark:bg-dark-card
+        p-6
+        transition-colors
+        duration-300
+      "
+    >
       <input
         ref={fileRef}
         type="file"
@@ -86,7 +95,19 @@ export default function QuickActions() {
         onChange={handleImport}
       />
 
-      <h2 className="mb-5 text-lg font-semibold">Quick Actions</h2>
+      <h2
+        className="
+          mb-5
+          text-lg
+          font-semibold
+          text-slate-900
+          dark:text-white
+          transition-colors
+          duration-300
+        "
+      >
+        Quick Actions
+      </h2>
 
       <div className="grid grid-cols-2 gap-4">
         {actions.map((action) => {
@@ -100,7 +121,9 @@ export default function QuickActions() {
                 rounded-2xl
                 p-5
                 transition
+                duration-300
                 hover:bg-slate-50
+                dark:hover:bg-dark
               "
             >
               <Icon
@@ -109,6 +132,9 @@ export default function QuickActions() {
                   mx-auto
                   mb-3
                   text-slate-700
+                  dark:text-slate-200
+                  transition-colors
+                  duration-300
                 "
               />
 
@@ -117,6 +143,9 @@ export default function QuickActions() {
                   text-sm
                   font-medium
                   text-slate-900
+                  dark:text-white
+                  transition-colors
+                  duration-300
                 "
               >
                 {action.label}

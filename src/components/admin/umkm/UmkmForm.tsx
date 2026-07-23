@@ -158,7 +158,6 @@ export default function UmkmForm({ mode, data }: Props) {
           gambar: uploadedImages,
 
           lat: form.lat ? Number(form.lat) : null,
-
           lng: form.lng ? Number(form.lng) : null,
         }),
       });
@@ -168,11 +167,9 @@ export default function UmkmForm({ mode, data }: Props) {
       }
 
       router.push("/admin/umkm");
-
       router.refresh();
     } catch (error) {
       console.error(error);
-
       alert("Terjadi kesalahan saat menyimpan data");
     } finally {
       setUploading(false);
@@ -183,9 +180,10 @@ export default function UmkmForm({ mode, data }: Props) {
     <div
       className="
         bg-white
-        border border-slate-200
+        dark:bg-dark-card
         rounded-2xl
         px-6 py-5
+        transition-colors duration-300
       "
     >
       <div className="mb-8">
@@ -194,12 +192,21 @@ export default function UmkmForm({ mode, data }: Props) {
             text-2xl
             font-bold
             text-slate-900
+            dark:text-white
+            transition-colors duration-300
           "
         >
           {mode === "create" ? "Tambah UMKM" : "Edit UMKM"}
         </h1>
 
-        <p className="text-sm text-slate-500 mt-1">
+        <p
+          className="
+          text-sm
+          text-slate-500
+          dark:text-slate-400
+          mt-1
+        "
+        >
           {mode === "create"
             ? "Tambahkan data UMKM baru ke katalog."
             : "Perbarui data UMKM yang sudah ada."}
@@ -210,10 +217,10 @@ export default function UmkmForm({ mode, data }: Props) {
         <Section title="Informasi UMKM">
           <div
             className="
-              grid
-              md:grid-cols-2
-              gap-4
-            "
+            grid
+            md:grid-cols-2
+            gap-4
+          "
           >
             <Input
               name="nama"
@@ -231,11 +238,11 @@ export default function UmkmForm({ mode, data }: Props) {
 
             <div
               className="
-                md:col-span-2
-                grid
-                md:grid-cols-2
-                gap-4
-              "
+              md:col-span-2
+              grid
+              md:grid-cols-2
+              gap-4
+            "
             >
               <KategoriSelect
                 value={form.kategori}
@@ -299,11 +306,19 @@ export default function UmkmForm({ mode, data }: Props) {
             className="
               w-full
               h-36
+              placeholder:text-slate-400
+dark:placeholder:text-slate-500
               rounded-xl
               border border-slate-200
+              dark:border-slate-800
+              bg-white
+              dark:bg-dark
+              text-slate-900
+              dark:text-white
               px-4 py-3
               text-sm
               outline-none
+              transition-colors duration-300
               focus:border-[#1184CA]
             "
           />
@@ -312,10 +327,10 @@ export default function UmkmForm({ mode, data }: Props) {
         <Section title="Lokasi">
           <div
             className="
-              grid
-              md:grid-cols-2
-              gap-4
-            "
+            grid
+            md:grid-cols-2
+            gap-4
+          "
           >
             <Input
               name="lat"
@@ -336,10 +351,10 @@ export default function UmkmForm({ mode, data }: Props) {
         <Section title="Kontak & Sosial Media">
           <div
             className="
-              grid
-              md:grid-cols-2
-              gap-4
-            "
+            grid
+            md:grid-cols-2
+            gap-4
+          "
           >
             {[
               ["whatsapp", "WhatsApp"],
@@ -368,15 +383,26 @@ export default function UmkmForm({ mode, data }: Props) {
               border
               border-dashed
               border-slate-300
+              dark:border-slate-700
               rounded-xl
               p-6
               cursor-pointer
               hover:bg-slate-50
+              dark:hover:bg-slate-900
+              transition-colors duration-300
             "
           >
             <Upload size={18} />
 
-            <span className="text-sm">Upload gambar</span>
+            <span
+              className="
+              text-sm
+              text-slate-700
+              dark:text-slate-300
+            "
+            >
+              Upload gambar
+            </span>
 
             <input
               hidden
@@ -390,30 +416,36 @@ export default function UmkmForm({ mode, data }: Props) {
           {images.length > 0 && (
             <div
               className="
-                grid
-                grid-cols-2
-                md:grid-cols-4
-                gap-4
-                mt-4
-              "
+              grid
+              grid-cols-2
+              md:grid-cols-4
+              gap-4
+              mt-4
+            "
             >
               {images.map((image, index) => (
                 <div
                   key={`${image.url}-${index}`}
                   className="
-                    relative
-                    border
-                    rounded-xl
-                    overflow-hidden
-                  "
+                  relative
+                  border
+                  border-slate-200
+                  dark:border-slate-800
+                  rounded-xl
+                  overflow-hidden
+                "
                 >
                   <img
                     src={
                       image.type === "old" ? getUmkmImage(image.url) : image.url
                     }
                     alt="gambar UMKM"
-                    referrerPolicy="no-referrer" /* <-- TAMBAHKAN ATRIBUT INI */
-                    className="h-28 w-full object-cover"
+                    referrerPolicy="no-referrer"
+                    className="
+                    h-28
+                    w-full
+                    object-cover
+                  "
                   />
 
                   <button
@@ -422,15 +454,20 @@ export default function UmkmForm({ mode, data }: Props) {
                       setImages((prev) => prev.filter((_, i) => i !== index));
                     }}
                     className="
-                      absolute
-                      top-2
-                      right-2
-                      bg-white
-                      rounded-full
-                      border
-                      p-1
-                      hover:bg-slate-100
-                    "
+                    absolute
+                    top-2
+                    right-2
+                    bg-white
+                    dark:bg-dark
+                    rounded-full
+                    border
+                    border-slate-200
+                    dark:border-slate-700
+                    p-1
+                    hover:bg-slate-100
+                    dark:hover:bg-slate-800
+                    transition-colors
+                  "
                   >
                     <X size={14} />
                   </button>
@@ -449,6 +486,8 @@ export default function UmkmForm({ mode, data }: Props) {
             py-3
             rounded-xl
             font-medium
+            transition-all duration-300
+            hover:opacity-90
             disabled:opacity-50
           "
         >
@@ -481,14 +520,22 @@ function Input({
       value={value}
       onChange={onChange}
       className="
-        w-full
-        rounded-xl
-        border border-slate-200
-        px-4 py-3
-        text-sm
-        outline-none
-        focus:border-[#1184CA]
-      "
+w-full
+rounded-xl
+border border-slate-200
+dark:border-slate-800
+bg-white
+dark:bg-dark
+text-slate-900
+dark:text-white
+placeholder:text-slate-400
+dark:placeholder:text-slate-500
+px-4 py-3
+text-sm
+outline-none
+transition-colors duration-300
+focus:border-[#1184CA]
+"
     />
   );
 }
@@ -504,9 +551,11 @@ function Section({
     <section className="space-y-4">
       <h2
         className="
-          font-semibold
-          text-slate-800
-        "
+font-semibold
+text-slate-800
+dark:text-white
+transition-colors duration-300
+"
       >
         {title}
       </h2>

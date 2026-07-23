@@ -48,21 +48,16 @@ export default function ActivityLogs() {
     .map((item) => ({
       ...item,
       activityDate:
-        item.updatedAt ||
-        item.createdAt ||
-        new Date().toISOString(),
+        item.updatedAt || item.createdAt || new Date().toISOString(),
     }))
     .sort(
       (a, b) =>
-        new Date(b.activityDate).getTime() -
-        new Date(a.activityDate).getTime(),
+        new Date(b.activityDate).getTime() - new Date(a.activityDate).getTime(),
     )
     .slice(0, 5)
     .map((item) => ({
       title:
-        item.createdAt &&
-        item.updatedAt &&
-        item.createdAt !== item.updatedAt
+        item.createdAt && item.updatedAt && item.createdAt !== item.updatedAt
           ? `Update UMKM ${item.nama}`
           : `Tambah UMKM ${item.nama}`,
 
@@ -70,30 +65,79 @@ export default function ActivityLogs() {
     }));
 
   return (
-    <div className="rounded-2xl bg-white p-6">
-      <h2 className="mb-5 text-lg font-semibold text-gray-900">
+    <div
+      className="
+        rounded-2xl
+        bg-white
+        dark:bg-dark-card
+        p-6
+        transition-colors
+        duration-300
+      "
+    >
+      <h2
+        className="
+          mb-5
+          text-lg
+          font-semibold
+          text-gray-900
+          dark:text-white
+          transition-colors
+          duration-300
+        "
+      >
         Aktivitas Terbaru
       </h2>
 
       {activities.length === 0 ? (
-        <p className="text-sm text-gray-500">
+        <p
+          className="
+            text-sm
+            text-gray-500
+            dark:text-gray-400
+            transition-colors
+            duration-300
+          "
+        >
           Belum ada aktivitas
         </p>
       ) : (
         <div className="space-y-5">
           {activities.map((activity, index) => (
-            <div
-              key={index}
-              className="flex gap-3"
-            >
-              <div className="mt-2 h-2.5 w-2.5 shrink-0 rounded-full bg-green-500" />
+            <div key={index} className="flex gap-3">
+              <div
+                className="
+                  mt-2
+                  h-2.5
+                  w-2.5
+                  shrink-0
+                  rounded-full
+                  bg-green-500
+                "
+              />
 
               <div>
-                <p className="font-medium text-gray-900">
+                <p
+                  className="
+                    font-medium
+                    text-gray-900
+                    dark:text-white
+                    transition-colors
+                    duration-300
+                  "
+                >
                   {activity.title}
                 </p>
 
-                <p className="text-sm text-gray-500">
+                <p
+                  className="
+                    text-sm
+                    text-gray-500
+                    dark:text-gray-400
+                    transition-colors
+                    duration-300
+                  "
+                >
                   {activity.time}
                 </p>
               </div>

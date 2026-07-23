@@ -16,7 +16,7 @@ export default async function UmkmPage() {
   const umkms = await getUmkms();
 
   return (
-    <div className="space-y-6 px-6 pb-6">
+    <div className="space-y-6 px-6 pb-6 bg-light dark:bg-dark">
       <div>
         <UmkmDataTable data={umkms} />
       </div>

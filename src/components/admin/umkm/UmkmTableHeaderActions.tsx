@@ -49,7 +49,6 @@ export default function UmkmTableHeaderActions() {
   }
 
   async function handleClick(type: string) {
-
     if (type === "import") {
       fileRef.current?.click();
       return;
@@ -87,20 +86,42 @@ export default function UmkmTableHeaderActions() {
                 inline-flex
                 items-center
                 gap-2
+
                 rounded-xl
+
                 border
                 border-slate-200
+                dark:border-slate-800
+
                 bg-white
+                dark:bg-dark-card
+
                 px-3
                 py-2
+
                 text-sm
                 font-medium
+
                 text-slate-700
-                transition
+                dark:text-white
+
+                transition-all
+                duration-300
+
                 hover:bg-slate-50
+                dark:hover:bg-dark
               "
             >
-              <Icon size={16} />
+              <Icon
+                size={16}
+                className="
+                  text-slate-600
+                  dark:text-slate-300
+                  transition-colors
+                  duration-300
+                "
+              />
+
               {action.label}
             </button>
           );
