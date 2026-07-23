@@ -3,12 +3,11 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { imageUrl } from "@/lib/imageUrl";
 import SectionHeader from "../textBlock/SectionHeader";
-import BigChevronButtonButton from "../button/BigChevronButton";
 import BottomAccent from "../decoration/BottomAccent";
 import ExploreButton from "../button/ExploreButton";
 
 export default async function UmkmTerbaruSection() {
-  const { data: latestUmkms, error } = await supabase
+  let { data: latestUmkms, error } = await supabase
     .from("umkm")
     .select("*")
     .order("created_at", {
@@ -17,13 +16,33 @@ export default async function UmkmTerbaruSection() {
     .limit(4);
 
   if (error) {
+    const fallback = await supabase
+      .from("umkm")
+      .select("*")
+      .order("id", {
+        ascending: false,
+      })
+      .limit(4);
+
+    latestUmkms = fallback.data;
+    error = fallback.error;
+  }
+
+  if (error) {
     throw new Error(error.message);
   }
 
   return (
     <section
       id="terbaru"
-      className="bg-light-bg dark:bg-dark py-8 sm:py-10 md:py-16 transition-colors"
+      className="
+        bg-light-bg
+        dark:bg-dark
+        py-8
+        sm:py-10
+        md:py-16
+        transition-colors
+      "
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
         <SectionHeader
@@ -65,7 +84,6 @@ export default async function UmkmTerbaruSection() {
                 relative
               "
             >
-              {/* Image */}
               <div
                 className="
                   relative
@@ -93,10 +111,18 @@ export default async function UmkmTerbaruSection() {
                   "
                 />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    bg-gradient-to-t
+                    from-black/60
+                    via-black/10
+                    to-transparent
+                  "
+                />
               </div>
 
-              {/* Content */}
               <div
                 className="
                   flex
@@ -185,11 +211,13 @@ export default async function UmkmTerbaruSection() {
                   </span>
                 </div>
               </div>
+
               <BottomAccent />
             </Link>
           ))}
         </div>
-        <div className="w-full  pt-12 flex justify-center">
+
+        <div className="w-full pt-12 flex justify-center">
           <ExploreButton />
         </div>
       </div>

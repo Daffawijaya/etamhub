@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(req: NextRequest) {
-  const isAdmin = req.cookies.get("admin")?.value === "true";
+  const admin = req.cookies.get("admin")?.value;
 
-  if (!isAdmin) {
+  if (!admin) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 

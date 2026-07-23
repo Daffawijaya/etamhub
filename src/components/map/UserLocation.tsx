@@ -36,14 +36,9 @@ export default function UserLocation() {
   const [position, setPosition] = useState<[number, number] | null>(null);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setPosition([pos.coords.latitude, pos.coords.longitude]);
-      },
-      (err) => {
-        console.log("Lokasi gagal:", err.message);
-      },
-    );
+    navigator.geolocation.getCurrentPosition((pos) => {
+      setPosition([pos.coords.latitude, pos.coords.longitude]);
+    });
   }, []);
 
   if (!position) return null;
