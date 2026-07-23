@@ -16,7 +16,7 @@ export default function UmkmMapWidget() {
       </div>
 
       <div className="p-0">
-        <div className="h-[355px]">
+        <div className="h-[320px]">
           <MapWidget />
         </div>
       </div>

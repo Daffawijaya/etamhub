@@ -563,5 +563,26 @@
     "tiktok": "",
     "createdAt": "2026-05-18T03:55:56.907Z",
     "updatedAt": "2026-05-18T03:55:56.907Z"
+  },
+  {
+    "id": 1784772963991,
+    "nama": "KodeKita",
+    "pemilik": "Daffa yang Paling Tampan Tiada Tandingan",
+    "kategori": "Jasa",
+    "subkategori": "Pembuatan Website",
+    "deskripsi": "Andalan prabowo dan gibran",
+    "kecamatan": "Tenggarong Seberang",
+    "alamat": "Perumahan PIK 2 (Samping rumah produksi PIK Baking House)",
+    "lat": -0.38128436952841,
+    "lng": 0,
+    "whatsapp": "081928704503",
+    "instagram": "daffawijayaaa",
+    "facebook": "",
+    "tiktok": "",
+    "gambar": [
+      "/uploads/umkm/abcb1a00-09a2-4e38-9d08-ad0ae8a6e8d2.png",
+      "/uploads/umkm/535180fd-5f3f-430b-bef9-2c336f418ab5.jpg"
+    ],
+    "createdAt": "2026-07-23T02:16:03.991Z"
   }
 ]
