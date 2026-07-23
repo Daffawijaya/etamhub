@@ -18,7 +18,7 @@ export default function AdminNavbar({ title = "Dashboard" }: AdminNavbarProps) {
       method: "POST",
     });
 
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
   // Khusus halaman peta
