@@ -4,6 +4,28 @@ import path from "path";
 
 const filePath = path.join(process.cwd(), "src/data/umkm.json");
 
+// GET UMKM BY ID
+export async function GET(
+  req: Request,
+  context: { params: Promise<{ id: string }> },
+) {
+  const { id } = await context.params;
+
+  const file = await fs.readFile(filePath, "utf-8");
+  const umkms = JSON.parse(file);
+
+  const umkm = umkms.find((u: any) => String(u.id) === id);
+
+  if (!umkm) {
+    return NextResponse.json(
+      { message: "UMKM tidak ditemukan" },
+      { status: 404 },
+    );
+  }
+
+  return NextResponse.json(umkm);
+}
+
 // UPDATE UMKM
 export async function PUT(
   req: Request,
@@ -14,10 +36,9 @@ export async function PUT(
   const body = await req.json();
 
   const file = await fs.readFile(filePath, "utf-8");
-
   const umkms = JSON.parse(file);
 
-  const index = umkms.findIndex((u: any) => u.id === Number(id));
+  const index = umkms.findIndex((u: any) => String(u.id) === id);
 
   if (index === -1) {
     return NextResponse.json(
@@ -29,7 +50,7 @@ export async function PUT(
   umkms[index] = {
     ...umkms[index],
     ...body,
-    id: Number(id),
+    id: umkms[index].id, // pertahankan id lama
   };
 
   await fs.writeFile(filePath, JSON.stringify(umkms, null, 2));
@@ -48,10 +69,9 @@ export async function DELETE(
   const { id } = await context.params;
 
   const file = await fs.readFile(filePath, "utf-8");
+  const umkms = JSON.parse(file);
 
-  let umkms = JSON.parse(file);
-
-  const filtered = umkms.filter((u: any) => u.id !== Number(id));
+  const filtered = umkms.filter((u: any) => String(u.id) !== id);
 
   if (filtered.length === umkms.length) {
     return NextResponse.json(
@@ -65,23 +85,4 @@ export async function DELETE(
   return NextResponse.json({
     success: true,
   });
-}
-
-export async function GET(
-  req: Request,
-  context: { params: Promise<{ id: string }> },
-) {
-  const { id } = await context.params;
-
-  const file = await fs.readFile(filePath, "utf-8");
-
-  const umkms = JSON.parse(file);
-
-  const umkm = umkms.find((u: any) => u.id === Number(id));
-
-  if (!umkm) {
-    return NextResponse.json({ message: "Tidak ditemukan" }, { status: 404 });
-  }
-
-  return NextResponse.json(umkm);
 }

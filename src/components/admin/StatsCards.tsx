@@ -13,7 +13,7 @@ export default function StatsCards() {
   ).size;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#ff7a59] via-[#ff6b7d] to-[#ff4fa3] p-8 text-white shadow-sm">
+    <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#ff7a59] via-[#ff6b7d] to-[#ff4fa3] p-8 text-white">
       <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/10" />
 
       <div className="absolute -bottom-16 -left-10 h-40 w-40 rounded-full bg-white/10" />

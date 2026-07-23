@@ -17,7 +17,7 @@ export default async function UmkmPage() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl border-0 bg-white shadow-sm">
+      <div>
         <UmkmDataTable data={umkms} />
       </div>
     </div>

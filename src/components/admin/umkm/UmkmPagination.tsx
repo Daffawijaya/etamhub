@@ -69,7 +69,7 @@ export default function UmkmPagination({
               onClick={() => onPageChange(Number(item))}
               className={`h-10 w-10 rounded-xl text-sm font-medium transition ${
                 page === item
-                  ? "bg-dark text-white shadow-sm"
+                  ? "bg-dark text-white"
                   : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
               }`}
             >
