@@ -18,8 +18,8 @@
 }
 
 @theme {
-
   --color-dark: #121313;
+  --color-dark-card: #1b1b1b;
 
   --color-light: #ebebf4;
   --color-light-hover: #dedeea;
@@ -58,7 +58,8 @@ body {
 }
 
 .google-dark-tiles {
-  filter: invert(100%) hue-rotate(220deg) brightness(100%) contrast(85%) saturate(100%);
+  filter: invert(100%) hue-rotate(220deg) brightness(100%) contrast(85%)
+    saturate(100%);
 }
 
 html,

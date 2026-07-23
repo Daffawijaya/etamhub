@@ -32,14 +32,12 @@ export default function UmkmDataTable({ data }: Props) {
   const filteredData = useMemo(() => {
     let result = [...data];
 
-    // Search
     if (search) {
       result = result.filter((item) =>
         item.nama.toLowerCase().includes(search.toLowerCase()),
       );
     }
 
-    // Filter kecamatan
     if (kecamatan !== "all") {
       result = result.filter((item) => item.kecamatan === kecamatan);
     }
@@ -48,7 +46,6 @@ export default function UmkmDataTable({ data }: Props) {
       result = result.filter((item) => item.kategori === kategori);
     }
 
-    // Sorting
     if (sort === "nama") {
       result.sort((a, b) => a.nama.localeCompare(b.nama));
     }
@@ -65,14 +62,45 @@ export default function UmkmDataTable({ data }: Props) {
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+    <div
+      className="
+        overflow-hidden
+        rounded-2xl
+  
+        bg-white
+
+        dark:bg-dark-card
+        transition-colors
+        duration-300
+      "
+    >
       {/* Header */}
       <div className="px-6 py-5">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900">Data UMKM</h2>
+            <h2
+              className="
+                text-2xl
+                font-bold
+                text-slate-900
+                dark:text-white
+                transition-colors
+                duration-300
+              "
+            >
+              Data UMKM
+            </h2>
 
-            <p className="mt-1 text-sm text-slate-500">
+            <p
+              className="
+                mt-1
+                text-sm
+                text-slate-500
+                dark:text-slate-400
+                transition-colors
+                duration-300
+              "
+            >
               Kelola data UMKM terdaftar
             </p>
           </div>

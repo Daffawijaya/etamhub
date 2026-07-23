@@ -28,19 +28,51 @@ const menus = [
 
 export default function AdminSidebar() {
   return (
-    <aside className="sticky top-0 flex h-screen w-70 flex-col bg-white">
+    <aside
+      className="
+        sticky top-0 flex h-screen w-70 flex-col 
+        bg-white dark:bg-dark-card
+        transition-colors duration-300
+      "
+    >
       {/* Logo */}
-      <div className="border-b border-slate-100 p-6">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
+      <div
+        className="
+          border-b border-slate-100 dark:border-neutral-800
+          p-6
+          transition-colors duration-300
+        "
+      >
+        <h2
+          className="
+            text-2xl font-bold tracking-tight
+            text-slate-900 dark:text-white
+            transition-colors duration-300
+          "
+        >
           etamhub.
         </h2>
 
-        <p className="mt-1 text-xs text-slate-500">Admin Dashboard</p>
+        <p
+          className="
+            mt-1 text-xs
+            text-slate-500 dark:text-neutral-400
+            transition-colors duration-300
+          "
+        >
+          Admin Dashboard
+        </p>
       </div>
 
       {/* Menu */}
       <nav className="flex-1 p-4">
-        <p className="mb-3 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        <p
+          className="
+            mb-3 px-3 text-xs font-semibold uppercase tracking-wider
+            text-slate-400 dark:text-neutral-500
+            transition-colors duration-300
+          "
+        >
           Menu
         </p>
 
@@ -52,7 +84,14 @@ export default function AdminSidebar() {
               <Link
                 key={menu.label}
                 href={menu.href}
-                className="flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+                className="
+                  flex items-center gap-3 rounded-2xl 
+                  px-4 py-3
+                  text-slate-600 dark:text-neutral-300
+                  transition-all duration-300
+                  hover:bg-slate-100 dark:hover:bg-neutral-800
+                  hover:text-slate-900 dark:hover:text-white
+                "
               >
                 <Icon size={20} />
 

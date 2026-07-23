@@ -31,26 +31,58 @@ export default function Select({
         className="
           w-full
           appearance-none
+
           rounded-xl
+
           border
           border-slate-200
+          dark:border-slate-800
+
           bg-white
+          dark:bg-dark
+
           px-4
           py-3
           pr-10
+
           text-sm
+
           text-slate-700
+          dark:text-white
+
           outline-none
-          transition
+
+          transition-colors
+          duration-300
+
           focus:border-[#1184CA]
           focus:ring-1
           focus:ring-[#1184CA]/20
         "
       >
-        <option value="">{placeholder ?? `Pilih ${name}`}</option>
+        <option
+          value=""
+          className="
+            bg-white
+            dark:bg-dark
+            text-slate-900
+            dark:text-white
+          "
+        >
+          {placeholder ?? `Pilih ${name}`}
+        </option>
 
         {sortedOptions.map((option) => (
-          <option key={option} value={option}>
+          <option
+            key={option}
+            value={option}
+            className="
+              bg-white
+              dark:bg-dark
+              text-slate-900
+              dark:text-white
+            "
+          >
             {option}
           </option>
         ))}
@@ -70,7 +102,12 @@ export default function Select({
           h-4
           w-4
           -translate-y-1/2
+
           text-slate-500
+          dark:text-slate-400
+
+          transition-colors
+          duration-300
         "
       >
         <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />

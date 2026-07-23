@@ -20,8 +20,27 @@ export default function CategoryStats() {
   );
 
   return (
-    <div className="rounded-2xl bg-white p-6">
-      <h2 className="mb-5 text-lg font-semibold">
+    <div
+      className="
+        rounded-2xl 
+        bg-white 
+        dark:bg-dark-card
+        p-6
+        transition-colors
+        duration-300
+      "
+    >
+      <h2
+        className="
+          mb-5 
+          text-lg 
+          font-semibold 
+          text-gray-900
+          dark:text-white
+          transition-colors
+          duration-300
+        "
+      >
         Kategori UMKM
       </h2>
 
@@ -32,18 +51,49 @@ export default function CategoryStats() {
           return (
             <div key={name}>
               <div className="mb-2 flex items-center justify-between">
-                <span className="font-medium text-gray-900">
+                <span
+                  className="
+                    font-medium
+                    text-gray-900
+                    dark:text-white
+                    transition-colors
+                    duration-300
+                  "
+                >
                   {name}
                 </span>
 
-                <span className="text-sm text-gray-500">
+                <span
+                  className="
+                    text-sm
+                    text-gray-500
+                    dark:text-gray-400
+                    transition-colors
+                    duration-300
+                  "
+                >
                   {value} UMKM
                 </span>
               </div>
 
-              <div className="h-3 overflow-hidden rounded-full bg-gray-100">
+              <div
+                className="
+                  h-3
+                  overflow-hidden
+                  rounded-full
+                  bg-gray-100
+                  dark:bg-black/30
+                  transition-colors
+                  duration-300
+                "
+              >
                 <div
-                  className="h-full rounded-full transition-all duration-300"
+                  className="
+                    h-full
+                    rounded-full
+                    transition-all
+                    duration-300
+                  "
                   style={{
                     width: `${percentage}%`,
                     backgroundColor:

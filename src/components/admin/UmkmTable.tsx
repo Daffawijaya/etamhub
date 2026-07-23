@@ -36,16 +36,36 @@ interface UmkmTableColumns {
 const getCategoryStyle = (kategori: string) => {
   switch (kategori) {
     case "Perdagangan":
-      return "bg-blue-50 text-blue-700";
+      return `
+        bg-blue-50 
+        text-blue-700
+        dark:bg-blue-500/20
+        dark:text-blue-300
+      `;
 
     case "Jasa":
-      return "bg-purple-50 text-purple-700";
+      return `
+        bg-purple-50 
+        text-purple-700
+        dark:bg-purple-500/20
+        dark:text-purple-300
+      `;
 
     case "Industri":
-      return "bg-orange-50 text-orange-700";
+      return `
+        bg-orange-50 
+        text-orange-700
+        dark:bg-orange-500/20
+        dark:text-orange-300
+      `;
 
     default:
-      return "bg-slate-100 text-slate-700";
+      return `
+        bg-slate-100 
+        text-slate-700
+        dark:bg-white/10
+        dark:text-slate-300
+      `;
   }
 };
 
@@ -78,9 +98,20 @@ export default function UmkmTable({
       {data.map((item, index) => (
         <div
           key={item.id}
-          className={`flex items-center gap-4 px-6 py-2.5 ${
-            index !== data.length - 1 ? "border-b border-slate-100" : ""
-          }`}
+          className={`
+            flex
+            items-center
+            gap-4
+            px-6
+            py-2.5
+            transition-colors
+            duration-300
+            ${
+              index !== data.length - 1
+                ? "border-b border-slate-100 dark:border-white/10"
+                : ""
+            }
+          `}
         >
           {/* Gambar */}
           {columns.gambar && (
@@ -97,11 +128,30 @@ export default function UmkmTable({
           {/* Nama */}
           {columns.nama && (
             <div className="min-w-0 flex-1">
-              <h4 className="truncate text-[17px] font-semibold text-slate-900">
+              <h4
+                className="
+                  truncate
+                  text-[17px]
+                  font-semibold
+                  text-slate-900
+                  dark:text-white
+                  transition-colors
+                  duration-300
+                "
+              >
                 {item.nama}
               </h4>
 
-              <p className="truncate text-sm text-slate-400">
+              <p
+                className="
+                  truncate
+                  text-sm
+                  text-slate-400
+                  dark:text-slate-500
+                  transition-colors
+                  duration-300
+                "
+              >
                 {item.subkategori || "Belum ada subkategori"}
               </p>
             </div>
@@ -110,7 +160,16 @@ export default function UmkmTable({
           {/* Pemilik */}
           {columns.pemilik && (
             <div className="w-[150px] flex-shrink-0">
-              <p className="truncate font-medium text-slate-700">
+              <p
+                className="
+                  truncate
+                  font-medium
+                  text-slate-700
+                  dark:text-slate-200
+                  transition-colors
+                  duration-300
+                "
+              >
                 {item.pemilik || "-"}
               </p>
             </div>
@@ -119,7 +178,16 @@ export default function UmkmTable({
           {/* WhatsApp */}
           {columns.whatsapp && (
             <div className="w-[130px] flex-shrink-0">
-              <p className="truncate text-sm text-slate-500">
+              <p
+                className="
+                  truncate
+                  text-sm
+                  text-slate-500
+                  dark:text-slate-400
+                  transition-colors
+                  duration-300
+                "
+              >
                 {item.whatsapp || "-"}
               </p>
             </div>
@@ -129,9 +197,17 @@ export default function UmkmTable({
           {columns.kategori && (
             <div className="w-[120px] flex-shrink-0">
               <span
-                className={`inline-flex rounded-full px-3 py-1.5 text-sm font-medium ${getCategoryStyle(
-                  item.kategori,
-                )}`}
+                className={`
+                  inline-flex
+                  rounded-full
+                  px-3
+                  py-1.5
+                  text-sm
+                  font-medium
+                  transition-colors
+                  duration-300
+                  ${getCategoryStyle(item.kategori)}
+                `}
               >
                 {item.kategori}
               </span>
@@ -141,7 +217,16 @@ export default function UmkmTable({
           {/* Kecamatan */}
           {columns.kecamatan && (
             <div className="w-[120px] flex-shrink-0">
-              <p className="truncate font-medium text-slate-700">
+              <p
+                className="
+                  truncate
+                  font-medium
+                  text-slate-700
+                  dark:text-slate-200
+                  transition-colors
+                  duration-300
+                "
+              >
                 {item.kecamatan}
               </p>
             </div>
@@ -150,7 +235,15 @@ export default function UmkmTable({
           {/* Tanggal */}
           {columns.createdAt && (
             <div className="w-[100px] flex-shrink-0">
-              <p className="text-sm text-slate-500">
+              <p
+                className="
+                  text-sm
+                  text-slate-500
+                  dark:text-slate-400
+                  transition-colors
+                  duration-300
+                "
+              >
                 {formatDate(item.createdAt)}
               </p>
             </div>

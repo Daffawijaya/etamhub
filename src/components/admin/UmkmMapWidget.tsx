@@ -8,15 +8,33 @@ const MapWidget = dynamic(() => import("@/components/map/MapWidget"), {
 
 export default function UmkmMapWidget() {
   return (
-    <div className="overflow-hidden rounded-2xl bg-white">
-      <div className="px-6 pt-6 pb-4">
-        <h2 className="text-lg font-semibold">
+    <div
+      className="
+        overflow-hidden
+        rounded-2xl
+        bg-white
+        dark:bg-dark-card
+        transition-colors
+        duration-300
+      "
+    >
+      <div className="p-6">
+        <h2
+          className="
+            text-lg
+            font-semibold
+            text-gray-900
+            dark:text-white
+            transition-colors
+            duration-300
+          "
+        >
           Peta Sebaran UMKM
         </h2>
       </div>
 
       <div className="p-0">
-        <div className="h-[333px]">
+        <div className="h-[325px]">
           <MapWidget />
         </div>
       </div>

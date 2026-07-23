@@ -3,26 +3,19 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useTheme } from "next-themes";
 import DaftarModal from "../DaftarModal";
 import MobileNavbar from "./MobileNavbar";
-import { IoIosMoon, IoIosSunny } from "react-icons/io";
 import { navigation } from "@/data/navigation";
+import ThemeToggle from "../ThemeToggle";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { resolvedTheme, setTheme } = useTheme();
 
-  const [mounted, setMounted] = useState(false);
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
   const [showNavbar, setShowNavbar] = useState(
     pathname !== "/" && pathname !== "/about",
   );
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const isHeroPage = pathname === "/" || pathname === "/about";
@@ -69,21 +62,7 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Toggle Theme */}
-            {mounted && (
-              <button
-                onClick={() =>
-                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
-                }
-                className="text-lg cursor-pointer"
-              >
-                {resolvedTheme === "dark" ? (
-                  <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
-                ) : (
-                  <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
-                )}
-              </button>
-            )}
+            <ThemeToggle />
 
             {/* Button */}
             <button
