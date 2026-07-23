@@ -1,7 +1,16 @@
-import umkms from "@/data/umkm.json";
 import UmkmTable from "./UmkmTable";
 
-export default function LatestUmkm() {
+export default async function LatestUmkm() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/umkm`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Gagal mengambil data UMKM");
+  }
+
+  const umkms = await res.json();
+
   const latest = [...umkms]
     .sort(
       (a, b) =>
@@ -20,19 +29,17 @@ export default function LatestUmkm() {
       </div>
 
       <div className="pb-3">
-        <div className="pb-3">
-          <UmkmTable
-            data={latest}
-            columns={{
-              gambar: true,
-              nama: true,
-              kategori: true,
-              kecamatan: true,
-              createdAt: true,
-              action: true,
-            }}
-          />
-        </div>
+        <UmkmTable
+          data={latest}
+          columns={{
+            gambar: true,
+            nama: true,
+            kategori: true,
+            kecamatan: true,
+            createdAt: true,
+            action: true,
+          }}
+        />
       </div>
     </div>
   );

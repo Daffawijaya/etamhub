@@ -6,6 +6,7 @@ import UmkmSearch from "../UmkmSearch";
 import UmkmFilters from "../UmkmFilters";
 import UmkmTable from "../UmkmTable";
 import UmkmPagination from "./UmkmPagination";
+import UmkmTableHeaderActions from "./UmkmTableHeaderActions";
 
 interface Props {
   data: any[];
@@ -64,16 +65,22 @@ export default function UmkmDataTable({ data }: Props) {
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white ">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
       {/* Header */}
-      <div className="px-6 py-5 w-full">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900">Data UMKM</h2>
-          <p className="mt-1 text-sm text-slate-500">
-            Kelola data UMKM terdaftar
-          </p>
+      <div className="px-6 py-5">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900">Data UMKM</h2>
+
+            <p className="mt-1 text-sm text-slate-500">
+              Kelola data UMKM terdaftar
+            </p>
+          </div>
+
+          <UmkmTableHeaderActions />
         </div>
-        <div className="flex items-center justify-between pt-3">
+
+        <div className="flex items-center justify-between pt-4">
           <UmkmSearch
             value={search}
             onChange={(value) => {

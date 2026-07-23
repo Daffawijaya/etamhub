@@ -25,7 +25,7 @@ export default function AdminLayout({
       return "Tambah UMKM";
     }
 
-    if (pathname.startsWith("/admin/edit")) {
+    if (pathname.match(/^\/admin\/umkm\/[^/]+\/edit$/)) {
       return "Edit UMKM";
     }
 

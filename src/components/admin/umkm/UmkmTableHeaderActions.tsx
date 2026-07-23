@@ -1,8 +1,7 @@
 "use client";
 
-import { Download, FileSpreadsheet, Plus, Upload } from "lucide-react";
+import { Download, FileSpreadsheet, Upload } from "lucide-react";
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
 
 import {
   downloadUmkmTemplate,
@@ -11,11 +10,6 @@ import {
 } from "@/lib/excel";
 
 const actions = [
-  {
-    icon: Plus,
-    label: "Tambah",
-    type: "add",
-  },
   {
     icon: Upload,
     label: "Import",
@@ -33,8 +27,7 @@ const actions = [
   },
 ];
 
-export default function QuickActions() {
-  const router = useRouter();
+export default function UmkmTableHeaderActions() {
   const fileRef = useRef<HTMLInputElement>(null);
 
   async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
@@ -56,10 +49,6 @@ export default function QuickActions() {
   }
 
   async function handleClick(type: string) {
-    if (type === "add") {
-      router.push("/admin/tambah");
-      return;
-    }
 
     if (type === "import") {
       fileRef.current?.click();
@@ -77,7 +66,7 @@ export default function QuickActions() {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-6">
+    <>
       <input
         ref={fileRef}
         type="file"
@@ -86,45 +75,37 @@ export default function QuickActions() {
         onChange={handleImport}
       />
 
-      <h2 className="mb-5 text-lg font-semibold">Quick Actions</h2>
-
-      <div className="grid grid-cols-2 gap-4">
+      <div className="flex flex-wrap items-center gap-2">
         {actions.map((action) => {
           const Icon = action.icon;
 
           return (
             <button
-              key={action.label}
+              key={action.type}
               onClick={() => handleClick(action.type)}
               className="
-                rounded-2xl
-                p-5
+                inline-flex
+                items-center
+                gap-2
+                rounded-xl
+                border
+                border-slate-200
+                bg-white
+                px-3
+                py-2
+                text-sm
+                font-medium
+                text-slate-700
                 transition
                 hover:bg-slate-50
               "
             >
-              <Icon
-                size={24}
-                className="
-                  mx-auto
-                  mb-3
-                  text-slate-700
-                "
-              />
-
-              <p
-                className="
-                  text-sm
-                  font-medium
-                  text-slate-900
-                "
-              >
-                {action.label}
-              </p>
+              <Icon size={16} />
+              {action.label}
             </button>
           );
         })}
       </div>
-    </div>
+    </>
   );
 }
