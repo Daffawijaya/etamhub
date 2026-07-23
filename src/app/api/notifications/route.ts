@@ -5,12 +5,12 @@ export async function GET() {
   const { data, error } = await supabase
     .from("notifications")
     .select("*")
-    .order("createdAt", {
+    .order("created_at", {
       ascending: false,
     });
 
   if (error) {
-    console.error(error);
+    console.error("NOTIFICATION ERROR:", error);
 
     return NextResponse.json(
       {
