@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { Umkm } from "@/data/umkm";
 
 const MapClient = dynamic(() => import("@/components/map/MapClient"), {
   ssr: false,
@@ -11,6 +12,10 @@ const MapClient = dynamic(() => import("@/components/map/MapClient"), {
   ),
 });
 
-export default function MapLoader() {
-  return <MapClient />;
+interface Props {
+  umkms: Umkm[];
+}
+
+export default function MapLoader({ umkms }: Props) {
+  return <MapClient umkms={umkms} />;
 }

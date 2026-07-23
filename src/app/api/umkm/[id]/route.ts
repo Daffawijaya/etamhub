@@ -1,13 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
-
-const umkmPath = path.join(process.cwd(), "src/data/umkm.json");
-
-const notificationPath = path.join(
-  process.cwd(),
-  "src/data/notifications.json",
-);
+import { supabase } from "@/lib/supabase";
 
 const MAX_NOTIFICATION_AGE = 30 * 24 * 60 * 60 * 1000;
 
@@ -22,18 +14,20 @@ function cleanNotifications(notifications: any[]) {
 // =========================
 // GET UMKM BY ID
 // =========================
+
 export async function GET(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
 
-  const file = await fs.readFile(umkmPath, "utf-8");
-  const umkms = JSON.parse(file);
+  const { data, error } = await supabase
+    .from("umkm")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-  const umkm = umkms.find((u: any) => String(u.id) === id);
-
-  if (!umkm) {
+  if (error || !data) {
     return NextResponse.json(
       {
         message: "UMKM tidak ditemukan",
@@ -44,12 +38,13 @@ export async function GET(
     );
   }
 
-  return NextResponse.json(umkm);
+  return NextResponse.json(data);
 }
 
 // =========================
 // UPDATE UMKM
 // =========================
+
 export async function PUT(
   req: Request,
   context: { params: Promise<{ id: string }> },
@@ -58,17 +53,13 @@ export async function PUT(
 
   const body = await req.json();
 
-  const umkmFile = await fs.readFile(umkmPath, "utf-8");
-  const umkms = JSON.parse(umkmFile);
+  const { data: oldData, error: findError } = await supabase
+    .from("umkm")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-  const notificationFile = await fs.readFile(notificationPath, "utf-8");
-  let notifications = JSON.parse(notificationFile);
-
-  notifications = cleanNotifications(notifications);
-
-  const index = umkms.findIndex((u: any) => String(u.id) === id);
-
-  if (index === -1) {
+  if (findError || !oldData) {
     return NextResponse.json(
       {
         message: "UMKM tidak ditemukan",
@@ -81,56 +72,62 @@ export async function PUT(
 
   const now = new Date().toISOString();
 
-  umkms[index] = {
-    ...umkms[index],
+  const updated = {
     ...body,
-    id: umkms[index].id,
-    createdAt: umkms[index].createdAt,
+    id: oldData.id,
+    createdAt: oldData.createdAt,
     updatedAt: now,
   };
 
-  notifications.unshift({
+  const { data, error } = await supabase
+    .from("umkm")
+    .update(updated)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+
+  await supabase.from("notifications").insert({
     id: crypto.randomUUID(),
     type: "update",
-    title: `Update UMKM ${umkms[index].nama}`,
+    title: `Update UMKM ${updated.nama}`,
     createdAt: now,
     read: false,
   });
 
-  await fs.writeFile(umkmPath, JSON.stringify(umkms, null, 2), "utf-8");
-
-  await fs.writeFile(
-    notificationPath,
-    JSON.stringify(notifications, null, 2),
-    "utf-8",
-  );
-
   return NextResponse.json({
     success: true,
-    data: umkms[index],
+    data,
   });
 }
 
 // =========================
 // DELETE UMKM
 // =========================
+
 export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
 
-  const umkmFile = await fs.readFile(umkmPath, "utf-8");
-  const umkms = JSON.parse(umkmFile);
+  const { data: target, error: findError } = await supabase
+    .from("umkm")
+    .select("*")
+    .eq("id", id)
+    .single();
 
-  const notificationFile = await fs.readFile(notificationPath, "utf-8");
-  let notifications = JSON.parse(notificationFile);
-
-  notifications = cleanNotifications(notifications);
-
-  const target = umkms.find((u: any) => String(u.id) === id);
-
-  if (!target) {
+  if (findError || !target) {
     return NextResponse.json(
       {
         message: "UMKM tidak ditemukan",
@@ -141,41 +138,28 @@ export async function DELETE(
     );
   }
 
-  // =========================
-  // Hapus gambar
-  // =========================
-  if (Array.isArray(target.gambar)) {
-    for (const image of target.gambar) {
-      const imagePath = path.join(process.cwd(), "public", image);
+  const { error } = await supabase.from("umkm").delete().eq("id", id);
 
-      try {
-        await fs.unlink(imagePath);
-      } catch {
-        console.log("Gagal hapus gambar:", image);
-      }
-    }
+  if (error) {
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      {
+        status: 500,
+      },
+    );
   }
 
-  // =========================
-  // Hapus data UMKM
-  // =========================
-  const filtered = umkms.filter((u: any) => String(u.id) !== id);
+  const now = new Date().toISOString();
 
-  notifications.unshift({
+  await supabase.from("notifications").insert({
     id: crypto.randomUUID(),
     type: "delete",
     title: `Hapus UMKM ${target.nama}`,
-    createdAt: new Date().toISOString(),
+    createdAt: now,
     read: false,
   });
-
-  await fs.writeFile(umkmPath, JSON.stringify(filtered, null, 2), "utf-8");
-
-  await fs.writeFile(
-    notificationPath,
-    JSON.stringify(notifications, null, 2),
-    "utf-8",
-  );
 
   return NextResponse.json({
     success: true,

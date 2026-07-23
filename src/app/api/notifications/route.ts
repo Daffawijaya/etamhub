@@ -1,26 +1,26 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
-
-const filePath = path.join(process.cwd(), "src/data/notifications.json");
+import { supabase } from "@/lib/supabase";
 
 export async function GET() {
-  try {
-    const file = await fs.readFile(filePath, "utf-8");
+  const { data, error } = await supabase
+    .from("notifications")
+    .select("*")
+    .order("createdAt", {
+      ascending: false,
+    });
 
-    const notifications = JSON.parse(file);
-
-    notifications.sort(
-      (a: any, b: any) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    );
-
-    return NextResponse.json(notifications);
-  } catch (error) {
+  if (error) {
     console.error(error);
 
-    return NextResponse.json([], {
-      status: 200,
-    });
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      {
+        status: 500,
+      },
+    );
   }
+
+  return NextResponse.json(data ?? []);
 }

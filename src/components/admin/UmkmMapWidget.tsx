@@ -1,12 +1,17 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { Umkm } from "@/data/umkm";
 
 const MapWidget = dynamic(() => import("@/components/map/MapWidget"), {
   ssr: false,
 });
 
-export default function UmkmMapWidget() {
+interface Props {
+  umkms: Umkm[];
+}
+
+export default function UmkmMapWidget({ umkms }: Props) {
   return (
     <div
       className="
@@ -35,7 +40,7 @@ export default function UmkmMapWidget() {
 
       <div className="p-0">
         <div className="h-[328px]">
-          <MapWidget />
+          <MapWidget umkms={umkms} />
         </div>
       </div>
     </div>

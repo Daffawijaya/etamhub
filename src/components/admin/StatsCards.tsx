@@ -1,7 +1,11 @@
-import umkms from "@/data/umkm.json";
 import { MapPinned, Store, Tags } from "lucide-react";
+import type { Umkm } from "@/data/umkm";
 
-export default function StatsCards() {
+interface Props {
+  umkms: Umkm[];
+}
+
+export default function StatsCards({ umkms }: Props) {
   const totalUmkm = umkms.length;
 
   const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;

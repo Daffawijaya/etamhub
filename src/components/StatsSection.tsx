@@ -1,7 +1,15 @@
-import umkms from "@/data/umkm.json";
+import { supabase } from "@/lib/supabase";
 import SectionHeader from "./textBlock/SectionHeader";
 
-export default function StatsSection() {
+export default async function StatsSection() {
+  const { data: umkms, error } = await supabase
+    .from("umkm")
+    .select("kecamatan, subkategori");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
   const totalUmkm = umkms.length;
 
   const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;

@@ -1,4 +1,4 @@
-import umkms from "@/data/umkm.json";
+import type { Umkm } from "@/data/umkm";
 
 const COLORS = {
   Perdagangan: "#1184CA",
@@ -6,7 +6,11 @@ const COLORS = {
   Industri: "#F59E0B",
 };
 
-export default function CategoryStats() {
+interface Props {
+  umkms: Umkm[];
+}
+
+export default function CategoryStats({ umkms }: Props) {
   const total = umkms.length;
 
   const data = Object.entries(
@@ -46,7 +50,7 @@ export default function CategoryStats() {
 
       <div className="space-y-5">
         {data.map(([name, value]) => {
-          const percentage = (value / total) * 100;
+          const percentage = total ? (value / total) * 100 : 0;
 
           return (
             <div key={name}>
@@ -96,8 +100,7 @@ export default function CategoryStats() {
                   "
                   style={{
                     width: `${percentage}%`,
-                    backgroundColor:
-                      COLORS[name as keyof typeof COLORS],
+                    backgroundColor: COLORS[name as keyof typeof COLORS],
                   }}
                 />
               </div>

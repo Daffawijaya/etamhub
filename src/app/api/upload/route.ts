@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import fs from "fs/promises";
-import path from "path";
+import { supabase } from "@/lib/supabase";
 import { v4 as uuid } from "uuid";
 
 export async function POST(req: Request) {
@@ -16,22 +15,13 @@ export async function POST(req: Request) {
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
-    // Validasi ekstensi
-    const allowedExtensions = [
-      "jpg",
-      "jpeg",
-      "png",
-      "webp",
-    ];
+    const allowedExtensions = ["jpg", "jpeg", "png", "webp"];
 
-    const ext = file.name
-      .split(".")
-      .pop()
-      ?.toLowerCase();
+    const ext = file.name.split(".").pop()?.toLowerCase();
 
     if (!ext || !allowedExtensions.includes(ext)) {
       return NextResponse.json(
@@ -41,12 +31,10 @@ export async function POST(req: Request) {
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
-
-    // Validasi ukuran 5MB
     const maxSize = 5 * 1024 * 1024;
 
     if (file.size > maxSize) {
@@ -56,67 +44,44 @@ export async function POST(req: Request) {
         },
         {
           status: 400,
-        }
+        },
       );
     }
 
-
-    // Folder upload
-    const uploadDir = path.join(
-      process.cwd(),
-      "public/uploads/umkm"
-    );
-
-
-    await fs.mkdir(uploadDir, {
-      recursive: true,
-    });
-
-
-    // UUID hanya untuk nama file
     const filename = `${uuid()}.${ext}`;
 
-    const filepath = path.join(
-      uploadDir,
-      filename
-    );
+    const buffer = Buffer.from(await file.arrayBuffer());
 
+    const { error } = await supabase.storage
+      .from("umkm")
+      .upload(filename, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
 
-    const buffer = Buffer.from(
-      await file.arrayBuffer()
-    );
+    if (error) {
+      throw error;
+    }
 
-
-    await fs.writeFile(
-      filepath,
-      buffer
-    );
-
-
-    const imageUrl = `/uploads/umkm/${filename}`;
-
+    const { data: publicUrl } = supabase.storage
+      .from("umkm")
+      .getPublicUrl(filename);
 
     return NextResponse.json({
       success: true,
-      url: imageUrl,
+      url: publicUrl.publicUrl,
       filename,
     });
-
-
   } catch (error) {
-    console.error(
-      "UPLOAD ERROR:",
-      error
-    );
+    console.error("UPLOAD ERROR:", error);
 
     return NextResponse.json(
       {
-        message:
-          "Terjadi kesalahan saat upload file.",
+        message: "Terjadi kesalahan saat upload file.",
       },
       {
         status: 500,
-      }
+      },
     );
   }
 }
