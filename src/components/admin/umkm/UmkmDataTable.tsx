@@ -64,7 +64,7 @@ export default function UmkmDataTable({ data }: Props) {
   const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white ">
+    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white ">
       {/* Header */}
       <div className="px-6 py-5 w-full">
         <div>

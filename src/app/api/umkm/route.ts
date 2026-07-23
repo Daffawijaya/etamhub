@@ -17,7 +17,6 @@ export async function GET() {
   return NextResponse.json(umkms);
 }
 
-
 // TAMBAH UMKM
 export async function POST(req: Request) {
   const body = await req.json();
@@ -26,21 +25,18 @@ export async function POST(req: Request) {
 
   const umkms = JSON.parse(file);
 
-
   const newUmkm = {
     id: Date.now(),
     ...body,
+    createdAt: new Date().toISOString(),
   };
 
-
   umkms.push(newUmkm);
-
 
   await fs.writeFile(
     filePath,
     JSON.stringify(umkms, null, 2)
   );
-
 
   return NextResponse.json({
     success: true,
