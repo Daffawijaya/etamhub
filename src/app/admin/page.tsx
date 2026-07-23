@@ -2,7 +2,7 @@ import DashboardGrid from "@/components/admin/DashboardGrid";
 
 export default function AdminPage() {
   return (
-    <main className="min-h-screen bg-light-bg">
+    <main className="min-h-screen px-6 pb-6">
       <DashboardGrid />
     </main>
   );

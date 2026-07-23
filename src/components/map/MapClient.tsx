@@ -2,7 +2,6 @@
 
 import { MapContainer, TileLayer, Popup } from "react-leaflet";
 import { useState, useMemo } from "react";
-import umkms from "@/data/umkm.json";
 import UmkmMapCard from "./UmkmMapCard";
 import UserLocation from "./UserLocation";
 import { useTheme } from "next-themes";
@@ -13,6 +12,9 @@ import MapSearchResults from "./MapSearchResults";
 import FlyToMarker from "./FlyToMarker";
 import MapMarkers from "./MapMarkers";
 import type { Umkm } from "@/data/umkm";
+import umkmsData from "@/data/umkm.json";
+
+const umkms = umkmsData as Umkm[];
 
 export default function MapClient() {
   const [selectedUmkm, setSelectedUmkm] = useState<Umkm | null>(null);

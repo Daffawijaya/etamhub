@@ -37,10 +37,10 @@ export default function AdminLayout({
       <div className="flex">
         <AdminSidebar />
 
-        <div className="flex-1 p-8">
-          <AdminNavbar title={getTitle()} />
+        <div className="flex-1">
+          <AdminNavbar title={getTitle()}  />
 
-          <div className="mt-8">{children}</div>
+          <div>{children}</div>
         </div>
       </div>
     </main>
