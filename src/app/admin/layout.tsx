@@ -37,7 +37,7 @@ export default function AdminLayout({
       <div className="flex">
         <AdminSidebar />
 
-        <div className="flex-1">
+        <div className="flex-1 bg-light dark:bg-dark">
           <AdminNavbar title={getTitle()}  />
 
           <div>{children}</div>
