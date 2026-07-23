@@ -1,9 +1,9 @@
-import MapClient from "@/components/map/MapClient";
+import MapLoader from "@/components/map/MapLoader";
 
 export default function Page() {
   return (
     <div className="w-full h-screen">
-      <MapClient />
+      <MapLoader />
     </div>
   );
 }

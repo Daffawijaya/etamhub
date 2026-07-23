@@ -6,7 +6,7 @@ import UmkmInfo from "./UmkmInfo";
 import UmkmSidebar from "./UmkmSidebar";
 
 type Props = {
-  id: number;
+  id: string;
   nama: string;
   pemilik: string;
   kategori: string;

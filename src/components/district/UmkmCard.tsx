@@ -4,7 +4,7 @@ import { imageUrl } from "@/lib/imageUrl";
 import BottomAccent from "../decoration/BottomAccent";
 
 type Props = {
-  id: number;
+  id: string;
   nama: string;
   subkategori: string;
   deskripsi: string;

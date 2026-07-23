@@ -71,14 +71,35 @@ export async function DELETE(
   const file = await fs.readFile(filePath, "utf-8");
   const umkms = JSON.parse(file);
 
-  const filtered = umkms.filter((u: any) => String(u.id) !== id);
+  // cari data yang mau dihapus
+  const target = umkms.find((u: any) => String(u.id) === id);
 
-  if (filtered.length === umkms.length) {
+  if (!target) {
     return NextResponse.json(
       { message: "UMKM tidak ditemukan" },
       { status: 404 },
     );
   }
+
+  // =========================
+  // HAPUS FILE GAMBAR
+  // =========================
+
+  if (Array.isArray(target.gambar)) {
+    for (const image of target.gambar) {
+      const imagePath = path.join(process.cwd(), "public", image);
+
+      try {
+        await fs.unlink(imagePath);
+      } catch (error) {
+        // file tidak ada, lanjut saja
+        console.log("Gagal hapus gambar:", image);
+      }
+    }
+  }
+
+  // hapus data json
+  const filtered = umkms.filter((u: any) => String(u.id) !== id);
 
   await fs.writeFile(filePath, JSON.stringify(filtered, null, 2));
 

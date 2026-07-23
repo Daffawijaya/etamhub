@@ -1,6 +1,6 @@
 [
   {
-    "id": 2,
+    "id": "2",
     "nama": "Taichan Lagi",
     "pemilik": "Agil mutiara putri",
     "kategori": "Perdagangan",
@@ -25,7 +25,7 @@
     "updatedAt": "2026-04-21T03:55:56.907Z"
   },
   {
-    "id": 3,
+    "id": "3",
     "nama": "Narasari",
     "pemilik": "Lilik handayani",
     "kategori": "Industri",
@@ -46,7 +46,7 @@
     "updatedAt": "2026-03-07T03:55:56.907Z"
   },
   {
-    "id": 4,
+    "id": "4",
     "nama": "Ulinara",
     "pemilik": "Emiliani",
     "kategori": "Industri",
@@ -66,7 +66,7 @@
     "updatedAt": "2026-05-23T03:55:56.907Z"
   },
   {
-    "id": 5,
+    "id": "5",
     "nama": "Manik Fashion Putak",
     "pemilik": "Yulia Ngerung",
     "kategori": "Industri",
@@ -87,7 +87,7 @@
     "updatedAt": "2026-05-09T03:55:56.907Z"
   },
   {
-    "id": 6,
+    "id": "6",
     "nama": "PDKT Cafe",
     "pemilik": "Muhammad Haydar Respati",
     "kategori": "Perdagangan",
@@ -108,7 +108,7 @@
     "updatedAt": "2026-03-17T03:55:56.907Z"
   },
   {
-    "id": 7,
+    "id": "7",
     "nama": "Mamamatcha Drink Handil 2",
     "pemilik": "Della Safitriana",
     "kategori": "Perdagangan",
@@ -137,7 +137,7 @@
     "updatedAt": "2026-04-07T03:55:56.907Z"
   },
   {
-    "id": 8,
+    "id": "8",
     "nama": "UD Arya Motor",
     "pemilik": "Komang",
     "kategori": "Jasa",
@@ -158,7 +158,7 @@
     "updatedAt": "2026-06-24T03:55:56.907Z"
   },
   {
-    "id": 9,
+    "id": "9",
     "nama": "Amplang Mila",
     "pemilik": "Urmila Sari",
     "kategori": "Industri",
@@ -180,7 +180,7 @@
     "updatedAt": "2026-04-25T03:55:56.907Z"
   },
   {
-    "id": 10,
+    "id": "10",
     "nama": "Bronsted Donny Lowry",
     "pemilik": "Donny",
     "kategori": "Industri",
@@ -205,7 +205,7 @@
     "updatedAt": "2026-05-03T03:55:56.907Z"
   },
   {
-    "id": 11,
+    "id": "11",
     "nama": "Om Apink BarberShop",
     "pemilik": "Afri",
     "kategori": "Jasa",
@@ -230,7 +230,7 @@
     "updatedAt": "2026-05-19T03:55:56.907Z"
   },
   {
-    "id": 12,
+    "id": "12",
     "nama": "Roti Balok Jelawat",
     "pemilik": "Devi Yunita Sari",
     "kategori": "Industri",
@@ -252,7 +252,7 @@
     "updatedAt": "2026-05-28T03:55:56.907Z"
   },
   {
-    "id": 13,
+    "id": "13",
     "nama": "Sofia Brownie",
     "pemilik": "Siti Zulfa",
     "kategori": "Industri",
@@ -282,7 +282,7 @@
     "updatedAt": "2026-06-20T03:55:56.907Z"
   },
   {
-    "id": 14,
+    "id": "14",
     "nama": "Dapoer Etam King City",
     "pemilik": "Ida Nahriah",
     "kategori": "Industri",
@@ -309,7 +309,7 @@
     "updatedAt": "2026-02-23T03:55:56.907Z"
   },
   {
-    "id": 15,
+    "id": "15",
     "nama": "Yuni Riadi Rental & Carter",
     "pemilik": "Memet Riadi",
     "kategori": "Jasa",
@@ -334,7 +334,7 @@
     "updatedAt": "2026-06-18T03:55:56.907Z"
   },
   {
-    "id": 16,
+    "id": "16",
     "nama": "Kedai Zia",
     "pemilik": "Rizki",
     "kategori": "Perdagangan",
@@ -355,7 +355,7 @@
     "updatedAt": "2026-03-29T03:55:56.907Z"
   },
   {
-    "id": 17,
+    "id": "17",
     "nama": "Ayara Coffee Milk Tea & Boba",
     "pemilik": "Azira Maura Kianah",
     "kategori": "Perdagangan",
@@ -376,7 +376,7 @@
     "updatedAt": "2026-06-19T03:55:56.907Z"
   },
   {
-    "id": 18,
+    "id": "18",
     "nama": "Heilo",
     "pemilik": "Putri",
     "kategori": "Perdagangan",
@@ -397,7 +397,7 @@
     "updatedAt": "2026-01-30T03:55:56.907Z"
   },
   {
-    "id": 19,
+    "id": "19",
     "nama": "Es Teh Solo Muara Wis",
     "pemilik": "Lisa Amalia",
     "kategori": "Perdagangan",
@@ -418,7 +418,7 @@
     "updatedAt": "2026-05-12T03:55:56.907Z"
   },
   {
-    "id": 20,
+    "id": "20",
     "nama": "Pencucian Mobil dan Motor",
     "pemilik": "Fhatan Dury",
     "kategori": "Jasa",
@@ -439,7 +439,7 @@
     "updatedAt": "2026-05-15T03:55:56.907Z"
   },
   {
-    "id": 21,
+    "id": "21",
     "nama": "Warung Numnum",
     "pemilik": "Anisa",
     "kategori": "Perdagangan",
@@ -470,7 +470,7 @@
     "alamat": "Desa Muara Wis, RT.08",
     "lat": -0.317567,
     "lng": 116.490329,
-    "whatsapp": 82345545727,
+    "whatsapp": "82345545727",
     "instagram": "",
     "facebook": "https://web.facebook.com/warung.reza.9/?_rdc=1&_rdr#",
     "tiktok": "",
@@ -491,7 +491,7 @@
     "alamat": "Jl. Poros Muara Muntai - Desa Lebak Mantan Trans, RT.04 Dusun Mekar Sari",
     "lat": -0.430743,
     "lng": 116.486514,
-    "whatsapp": 82251004701,
+    "whatsapp": "82251004701",
     "instagram": "",
     "facebook": "",
     "tiktok": "",
@@ -512,7 +512,7 @@
     "alamat": "Jl.Poros, RT.07 Desa Lebak Cilong",
     "lat": -0.4441544,
     "lng": 116.5310041,
-    "whatsapp": 81257562825,
+    "whatsapp": "81257562825",
     "instagram": "",
     "facebook": "https://web.facebook.com/ArCellLebakCilong/?_rdc=1&_rdr#",
     "tiktok": "",
@@ -533,7 +533,7 @@
     "alamat": "Desa Lebak Cilong, RT.05, No.42",
     "lat": -0.4452811,
     "lng": 116.5285764,
-    "whatsapp": 8115802733,
+    "whatsapp": "8115802733",
     "instagram": "",
     "facebook": "",
     "tiktok": "",
@@ -554,7 +554,7 @@
     "alamat": "RT.05, NO.20 Desa Lebak Cilong",
     "lat": -0.4453625,
     "lng": 116.5266452,
-    "whatsapp": 82118192057,
+    "whatsapp": "82118192057",
     "instagram": "",
     "facebook": "",
     "tiktok": "",
@@ -575,7 +575,7 @@
     "alamat": "Jl. Junjung Buih Kutai Lama RT 02 No 04, Desa Kutai Lama, Kecamatan Anggana, Kabupaten Kutai Kartanegara",
     "lat": -0.56800597670514,
     "lng": 117.315722207069,
-    "whatsapp": 81258108260,
+    "whatsapp": "81258108260",
     "instagram": "indrianirhyu",
     "facebook": "iinindriani.vlog",
     "tiktok": "",
@@ -585,5 +585,26 @@
     ],
     "createdAt": "2026-07-23T06:27:19.122Z",
     "updatedAt": "2026-07-23T06:27:19.122Z"
+  },
+  {
+    "id": "00ddb22c-ca2c-4c09-ad5b-0b8346a213b5",
+    "nama": "KodeKita",
+    "pemilik": "Daffa yang Paling Tampan Tiada Tandingan",
+    "kategori": "Jasa",
+    "subkategori": "Pembuatan Website",
+    "deskripsi": "Pembuatan Website terpercaya untuk kebutuhan pemerintahan, instansi, bisnis, dan UMKM yang menghadirkan solusi digital profesional, modern, dan mudah digunakan. Melayani pembuatan website custom dengan desain menarik, performa optimal, serta sistem yang disesuaikan dengan kebutuhan pengguna.\n\nDengan pengalaman dalam pengembangan website, kami membantu membangun identitas digital yang kuat melalui website profil, website layanan, portal informasi, hingga platform bisnis online. Setiap website dirancang agar tampil profesional, responsif di berbagai perangkat, aman, dan mampu meningkatkan kredibilitas serta jangkauan informasi.\n\nMenjadi partner digital dalam mendukung transformasi teknologi, kami berkomitmen menghadirkan layanan pembuatan website berkualitas untuk membantu pemerintahan, perusahaan, dan pelaku UMKM berkembang di era digital. Mengutamakan inovasi, ketepatan kebutuhan, serta hasil akhir yang memberikan nilai tambah bagi setiap pelanggan.",
+    "kecamatan": "Tenggarong Seberang",
+    "alamat": "Perumahan PIK 2 (Samping rumah produksi PIK Baking House)",
+    "lat": -0.38041981396155383,
+    "lng": 117.11536944836332,
+    "whatsapp": "081928704503",
+    "instagram": "daffawijayaaa",
+    "facebook": "",
+    "tiktok": "",
+    "gambar": [
+      "/uploads/umkm/117c735c-c8c5-4b6a-b834-2e3a6ed1a949.jpg",
+      "/uploads/umkm/36edfb56-e464-4b06-b9cf-3f8d178e1855.jpg"
+    ],
+    "createdAt": "2026-07-23T09:53:58.260Z"
   }
 ]

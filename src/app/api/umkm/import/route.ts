@@ -5,61 +5,87 @@ import path from "path";
 const filePath = path.join(process.cwd(), "src/data/umkm.json");
 
 export async function POST(req: Request) {
-  const excelData = await req.json();
+  try {
+    const excelData = await req.json();
 
-  const file = await fs.readFile(filePath, "utf-8");
-  const umkms = JSON.parse(file);
+    const file = await fs.readFile(filePath, "utf-8");
 
-  const newData = excelData.map((item: any) => {
-    const now = new Date().toISOString();
+    const umkms = JSON.parse(file);
 
-    return {
-      id: crypto.randomUUID(),
+    const newData = excelData.map((item: any) => {
+      const now = new Date().toISOString();
 
-      nama: item["Nama UMKM"] ?? "",
+      return {
+        // UUID string
+        id: crypto.randomUUID(),
 
-      pemilik: item["Pemilik"] ?? "",
+        // Text fields
+        nama: String(item["Nama UMKM"] ?? ""),
 
-      kategori: item["Kategori"] ?? "",
+        pemilik: String(item["Pemilik"] ?? ""),
 
-      subkategori: item["Subkategori"] ?? "",
+        kategori: String(item["Kategori"] ?? ""),
 
-      deskripsi: item["Deskripsi usaha"] ?? "",
+        subkategori: String(item["Subkategori"] ?? ""),
 
-      kecamatan: item["Kecamatan"] ?? "",
+        deskripsi: String(item["Deskripsi usaha"] ?? ""),
 
-      alamat: item["Alamat lengkap"] ?? "",
+        kecamatan: String(item["Kecamatan"] ?? ""),
 
-      lat: Number(item["Latitude"]) || 0,
+        alamat: String(item["Alamat lengkap"] ?? ""),
 
-      lng: Number(item["Longitude"]) || 0,
+        // Coordinate tetap number
+        lat: Number(item["Latitude"]) || 0,
 
-      whatsapp: item["whatsapp"] ?? "",
+        lng: Number(item["Longitude"]) || 0,
 
-      instagram: item["instagram"] ?? "",
+        // Pastikan nomor dan sosial media string
+        whatsapp: item["whatsapp"]
+          ? (() => {
+              const phone = String(item["whatsapp"]).replace(/\.0$/, "");
 
-      facebook: item["facebook url"] ?? "",
+              return phone.startsWith("0") ? phone : `0${phone}`;
+            })()
+          : "",
 
-      tiktok: item["tiktok"] ?? "",
+        instagram: String(item["instagram"] ?? ""),
 
-      gambar: item["Foto usaha/produk"]
-        ? item["Foto usaha/produk"]
-            .split(",")
-            .map((img: string) => img.trim())
-            .filter(Boolean)
-        : [],
+        facebook: String(item["facebook url"] ?? ""),
 
-      createdAt: now,
-      updatedAt: now,
-    };
-  });
+        tiktok: String(item["tiktok"] ?? ""),
 
-  const updated = [...umkms, ...newData];
+        // Multiple image URL
+        gambar: item["Foto usaha/produk"]
+          ? String(item["Foto usaha/produk"])
+              .split(",")
+              .map((img: string) => img.trim())
+              .filter(Boolean)
+          : [],
 
-  await fs.writeFile(filePath, JSON.stringify(updated, null, 2));
+        createdAt: now,
+        updatedAt: now,
+      };
+    });
 
-  return NextResponse.json({
-    success: true,
-    total: newData.length,
-  });
+    const updated = [...umkms, ...newData];
+
+    await fs.writeFile(filePath, JSON.stringify(updated, null, 2), "utf-8");
+
+    return NextResponse.json({
+      success: true,
+      total: newData.length,
+    });
+  } catch (error) {
+    console.error("IMPORT ERROR:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message: "Gagal import data UMKM",
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 }

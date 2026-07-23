@@ -8,11 +8,19 @@ import { useRouter } from "next/navigation";
 import BottomAccent from "../decoration/BottomAccent";
 
 export default function UmkmTerbaruSection() {
-  const latestUmkms = [...umkms].sort((a, b) => b.id - a.id).slice(0, 4);
+  const latestUmkms = [...umkms]
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
+    .slice(0, 4);
   const router = useRouter();
 
   return (
-    <section id="terbaru" className="bg-light-bg dark:bg-dark py-8 sm:py-10 md:py-16 transition-colors">
+    <section
+      id="terbaru"
+      className="bg-light-bg dark:bg-dark py-8 sm:py-10 md:py-16 transition-colors"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
         <SectionHeader
           title="UMKM Terbaru"
@@ -168,15 +176,12 @@ export default function UmkmTerbaruSection() {
                       group-hover:translate-x-1
                     "
                   >
-                    Lihat Detail 
+                    Lihat Detail
                     <span>→</span>
-                  
                   </span>
-                    
                 </div>
-                 
               </div>
-            <BottomAccent />
+              <BottomAccent />
             </Link>
           ))}
         </div>

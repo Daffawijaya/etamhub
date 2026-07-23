@@ -2,11 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 
-const filePath = path.join(
-  process.cwd(),
-  "src/data/umkm.json"
-);
-
+const filePath = path.join(process.cwd(), "src/data/umkm.json");
 
 // GET semua UMKM
 export async function GET() {
@@ -26,17 +22,14 @@ export async function POST(req: Request) {
   const umkms = JSON.parse(file);
 
   const newUmkm = {
-    id: Date.now(),
+    id: crypto.randomUUID(),
     ...body,
     createdAt: new Date().toISOString(),
   };
 
   umkms.push(newUmkm);
 
-  await fs.writeFile(
-    filePath,
-    JSON.stringify(umkms, null, 2)
-  );
+  await fs.writeFile(filePath, JSON.stringify(umkms, null, 2));
 
   return NextResponse.json({
     success: true,
