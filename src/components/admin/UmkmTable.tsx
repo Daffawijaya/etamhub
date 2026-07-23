@@ -3,18 +3,7 @@
 import Image from "next/image";
 import UmkmRowActions from "./UmkmRowActions";
 import { getUmkmImage } from "@/lib/getUmkmImage";
-
-interface Umkm {
-  id: number | string;
-  nama: string;
-  pemilik?: string;
-  whatsapp?: string;
-  gambar: string | string[];
-  subkategori?: string;
-  kategori: string;
-  kecamatan: string;
-  createdAt: string;
-}
+import type { Umkm } from "@/data/umkm";
 
 interface UmkmTableProps {
   data: Umkm[];
@@ -113,7 +102,6 @@ export default function UmkmTable({
             }
           `}
         >
-          {/* Gambar */}
           {columns.gambar && (
             <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl">
               <Image
@@ -125,7 +113,6 @@ export default function UmkmTable({
             </div>
           )}
 
-          {/* Nama */}
           {columns.nama && (
             <div className="min-w-0 flex-1">
               <h4
@@ -135,8 +122,6 @@ export default function UmkmTable({
                   font-semibold
                   text-slate-900
                   dark:text-white
-                  transition-colors
-                  duration-300
                 "
               >
                 {item.nama}
@@ -148,8 +133,6 @@ export default function UmkmTable({
                   text-sm
                   text-slate-400
                   dark:text-slate-500
-                  transition-colors
-                  duration-300
                 "
               >
                 {item.subkategori || "Belum ada subkategori"}
@@ -157,43 +140,22 @@ export default function UmkmTable({
             </div>
           )}
 
-          {/* Pemilik */}
           {columns.pemilik && (
             <div className="w-[150px] flex-shrink-0">
-              <p
-                className="
-                  truncate
-                  font-medium
-                  text-slate-700
-                  dark:text-slate-200
-                  transition-colors
-                  duration-300
-                "
-              >
+              <p className="truncate font-medium text-slate-700 dark:text-slate-200">
                 {item.pemilik || "-"}
               </p>
             </div>
           )}
 
-          {/* WhatsApp */}
           {columns.whatsapp && (
             <div className="w-[130px] flex-shrink-0">
-              <p
-                className="
-                  truncate
-                  text-sm
-                  text-slate-500
-                  dark:text-slate-400
-                  transition-colors
-                  duration-300
-                "
-              >
+              <p className="truncate text-sm text-slate-500 dark:text-slate-400">
                 {item.whatsapp || "-"}
               </p>
             </div>
           )}
 
-          {/* Kategori */}
           {columns.kategori && (
             <div className="w-[120px] flex-shrink-0">
               <span
@@ -204,8 +166,6 @@ export default function UmkmTable({
                   py-1.5
                   text-sm
                   font-medium
-                  transition-colors
-                  duration-300
                   ${getCategoryStyle(item.kategori)}
                 `}
               >
@@ -214,42 +174,22 @@ export default function UmkmTable({
             </div>
           )}
 
-          {/* Kecamatan */}
           {columns.kecamatan && (
             <div className="w-[120px] flex-shrink-0">
-              <p
-                className="
-                  truncate
-                  font-medium
-                  text-slate-700
-                  dark:text-slate-200
-                  transition-colors
-                  duration-300
-                "
-              >
+              <p className="truncate font-medium text-slate-700 dark:text-slate-200">
                 {item.kecamatan}
               </p>
             </div>
           )}
 
-          {/* Tanggal */}
           {columns.createdAt && (
             <div className="w-[100px] flex-shrink-0">
-              <p
-                className="
-                  text-sm
-                  text-slate-500
-                  dark:text-slate-400
-                  transition-colors
-                  duration-300
-                "
-              >
-                {formatDate(item.createdAt)}
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                {formatDate(item.created_at)}
               </p>
             </div>
           )}
 
-          {/* Action */}
           {columns.action && <UmkmRowActions id={item.id} />}
         </div>
       ))}

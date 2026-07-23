@@ -1,6 +1,10 @@
-import umkms from "@/data/umkm.json";
+import type { Umkm } from "@/data/umkm";
 
-export default function KecamatanChart() {
+interface Props {
+  umkms: Umkm[];
+}
+
+export default function KecamatanChart({ umkms }: Props) {
   const data = Object.entries(
     umkms.reduce(
       (acc, item) => {
@@ -44,7 +48,9 @@ export default function KecamatanChart() {
 
       <div className="space-y-5">
         {data.map(([kecamatan, total]) => {
-          const percentage = ((total / totalUmkm) * 100).toFixed(1);
+          const percentage = totalUmkm
+            ? ((total / totalUmkm) * 100).toFixed(1)
+            : "0";
 
           return (
             <div key={kecamatan}>

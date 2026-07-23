@@ -1,9 +1,14 @@
-"use client";
-
+import { supabase } from "@/lib/supabase";
 import UmkmMap from "@/components/map/UmkmMap";
 import Navbar from "@/components/navbar/Navbar";
 
-export default function PetaPage() {
+export default async function PetaPage() {
+  const { data: umkms, error } = await supabase.from("umkm").select("*");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
   return (
     <>
       <div className="absolute z-90">
@@ -11,7 +16,7 @@ export default function PetaPage() {
       </div>
 
       <main className="relative h-screen w-full z-0">
-        <UmkmMap />
+        <UmkmMap umkms={umkms ?? []} />
       </main>
     </>
   );

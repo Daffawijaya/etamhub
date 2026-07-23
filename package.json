@@ -6,10 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "import:umkm": "tsx scripts/import-umkm.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
+    "@supabase/supabase-js": "^2.110.8",
+    "dotenv": "^17.4.2",
     "file-saver": "^2.0.5",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.24.0",
@@ -33,6 +36,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "tailwindcss": "^4",
+    "tsx": "^4.23.1",
     "typescript": "^5"
   }
 }

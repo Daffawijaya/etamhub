@@ -1,13 +1,18 @@
 "use client";
 
 import { MapContainer, TileLayer } from "react-leaflet";
-import umkms from "@/data/umkm.json";
 import MapMarkers from "./MapMarkers";
 import { useTheme } from "next-themes";
 import KukarBoundary from "./KukarBoundary";
+import type { Umkm } from "@/data/umkm";
 
-export default function MapWidget() {
+interface Props {
+  umkms: Umkm[];
+}
+
+export default function MapWidget({ umkms }: Props) {
   const { resolvedTheme } = useTheme();
+
   return (
     <MapContainer
       center={[-0.4138, 116.9891]}
@@ -27,7 +32,9 @@ export default function MapWidget() {
         className={resolvedTheme === "dark" ? "google-dark-tiles" : ""}
         maxZoom={20}
       />
+
       <KukarBoundary />
+
       <MapMarkers data={umkms} selectedUmkm={null} setSelectedUmkm={() => {}} />
     </MapContainer>
   );

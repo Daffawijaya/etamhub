@@ -1,14 +1,25 @@
 import Link from "next/link";
-import umkms from "@/data/umkm.json";
+import { supabase } from "@/lib/supabase";
 import { slugify } from "@/lib/slugify";
 import SectionHeader from "./textBlock/SectionHeader";
 import BottomAccent from "./decoration/BottomAccent";
 
-export default function DistrictSection() {
-  const districtMap = umkms.reduce<Record<string, number>>((acc, item) => {
-    acc[item.kecamatan] = (acc[item.kecamatan] || 0) + 1;
-    return acc;
-  }, {});
+export default async function DistrictSection() {
+  const { data: umkms, error } = await supabase
+    .from("umkm")
+    .select("kecamatan");
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  const districtMap = (umkms || []).reduce<Record<string, number>>(
+    (acc, item) => {
+      acc[item.kecamatan] = (acc[item.kecamatan] || 0) + 1;
+      return acc;
+    },
+    {},
+  );
 
   const districts = Object.keys(districtMap).sort((a, b) =>
     a.localeCompare(b, "id", { sensitivity: "base" }),

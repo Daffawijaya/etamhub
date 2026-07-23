@@ -10,10 +10,12 @@ export type Umkm = {
   alamat: string;
   lat: number;
   lng: number;
-  whatsapp?: string | number;
+
+  whatsapp?: string;
   instagram?: string;
   facebook?: string;
   tiktok?: string;
-  createdAt?: string;
-  updatedAt?: string;
+
+  created_at: string;
+  updated_at: string;
 };

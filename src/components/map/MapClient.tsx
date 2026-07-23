@@ -12,11 +12,12 @@ import MapSearchResults from "./MapSearchResults";
 import FlyToMarker from "./FlyToMarker";
 import MapMarkers from "./MapMarkers";
 import type { Umkm } from "@/data/umkm";
-import umkmsData from "@/data/umkm.json";
 
-const umkms = umkmsData as Umkm[];
+interface Props {
+  umkms: Umkm[];
+}
 
-export default function MapClient() {
+export default function MapClient({ umkms }: Props) {
   const [selectedUmkm, setSelectedUmkm] = useState<Umkm | null>(null);
   const { resolvedTheme } = useTheme();
 

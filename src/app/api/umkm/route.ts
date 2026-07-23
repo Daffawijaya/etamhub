@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
+import { supabase } from "@/lib/supabase";
 import fs from "fs/promises";
 import path from "path";
 
-const umkmPath = path.join(process.cwd(), "src/data/umkm.json");
 const notificationPath = path.join(
   process.cwd(),
   "src/data/notifications.json",
@@ -10,67 +10,95 @@ const notificationPath = path.join(
 
 // GET semua UMKM
 export async function GET() {
-  const file = await fs.readFile(umkmPath, "utf-8");
-  const umkms = JSON.parse(file);
+  const { data, error } = await supabase
+    .from("umkm")
+    .select("*")
+    .order("created_at", {
+      ascending: false,
+    });
 
-  return NextResponse.json(umkms);
+  if (error) {
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+
+  return NextResponse.json(data);
 }
 
 // TAMBAH UMKM
 export async function POST(req: Request) {
-  const body = await req.json();
+  try {
+    const body = await req.json();
 
-  // Ambil data UMKM
-  const umkmFile = await fs.readFile(umkmPath, "utf-8");
-  const umkms = JSON.parse(umkmFile);
+    const now = new Date().toISOString();
 
-  // Ambil data notifikasi
-  const notificationFile = await fs.readFile(notificationPath, "utf-8");
-  const notifications = JSON.parse(notificationFile);
+    const newUmkm = {
+      id: crypto.randomUUID(),
+      ...body,
+      created_at: now,
+      updated_at: now,
+    };
 
-  const now = new Date().toISOString();
+    // =========================
+    // Insert Supabase
+    // =========================
+    const { data, error } = await supabase
+      .from("umkm")
+      .insert(newUmkm)
+      .select()
+      .single();
 
-  const newUmkm = {
-    id: crypto.randomUUID(),
-    ...body,
-    createdAt: now,
-    updatedAt: now,
-  };
+    if (error) {
+      throw error;
+    }
 
-  // Simpan UMKM
-  umkms.push(newUmkm);
+    // =========================
+    // Notifikasi
+    // =========================
+    const notificationFile = await fs.readFile(notificationPath, "utf-8");
 
-  // Tambah notifikasi
-  notifications.unshift({
-    id: crypto.randomUUID(),
-    type: "create",
-    title: `Tambah UMKM ${newUmkm.nama}`,
-    createdAt: now,
-    read: false,
-  });
+    const notifications = JSON.parse(notificationFile);
 
-  // =========================
-  // Hapus notifikasi lebih dari 30 hari
-  // =========================
-  const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-  const nowTime = Date.now();
+    notifications.unshift({
+      id: crypto.randomUUID(),
+      type: "create",
+      title: `Tambah UMKM ${data.nama}`,
+      createdAt: now,
+      read: false,
+    });
 
-  const filteredNotifications = notifications.filter((item: any) => {
-    return nowTime - new Date(item.createdAt).getTime() <= THIRTY_DAYS;
-  });
+    const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
 
-  // Simpan UMKM
-  await fs.writeFile(umkmPath, JSON.stringify(umkms, null, 2), "utf-8");
+    const filteredNotifications = notifications.filter((item: any) => {
+      return Date.now() - new Date(item.createdAt).getTime() <= THIRTY_DAYS;
+    });
 
-  // Simpan notifikasi
-  await fs.writeFile(
-    notificationPath,
-    JSON.stringify(filteredNotifications, null, 2),
-    "utf-8",
-  );
+    await fs.writeFile(
+      notificationPath,
+      JSON.stringify(filteredNotifications, null, 2),
+      "utf-8",
+    );
 
-  return NextResponse.json({
-    success: true,
-    data: newUmkm,
-  });
+    return NextResponse.json({
+      success: true,
+      data,
+    });
+  } catch (error: any) {
+    console.error(error);
+
+    return NextResponse.json(
+      {
+        message: error.message,
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 }

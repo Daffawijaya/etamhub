@@ -1,20 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
-import umkms from "@/data/umkm.json";
+import { supabase } from "@/lib/supabase";
 import { imageUrl } from "@/lib/imageUrl";
 import SectionHeader from "../textBlock/SectionHeader";
 import BigChevronButtonButton from "../button/BigChevronButton";
-import { useRouter } from "next/navigation";
 import BottomAccent from "../decoration/BottomAccent";
+import ExploreButton from "../button/ExploreButton";
 
-export default function UmkmTerbaruSection() {
-  const latestUmkms = [...umkms]
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-    )
-    .slice(0, 4);
-  const router = useRouter();
+export default async function UmkmTerbaruSection() {
+  const { data: latestUmkms, error } = await supabase
+    .from("umkm")
+    .select("*")
+    .order("created_at", {
+      ascending: false,
+    })
+    .limit(4);
+
+  if (error) {
+    throw new Error(error.message);
+  }
 
   return (
     <section
@@ -40,7 +44,7 @@ export default function UmkmTerbaruSection() {
             md:gap-6
           "
         >
-          {latestUmkms.map((umkm) => (
+          {latestUmkms?.map((umkm) => (
             <Link
               key={`${umkm.id}-${umkm.nama}`}
               href={`/umkm/${umkm.id}`}
@@ -186,10 +190,7 @@ export default function UmkmTerbaruSection() {
           ))}
         </div>
         <div className="w-full  pt-12 flex justify-center">
-          <BigChevronButtonButton
-            title="Jelajahi Kecamatan"
-            onClick={() => router.push("/#kecamatan")}
-          />
+          <ExploreButton />
         </div>
       </div>
     </section>

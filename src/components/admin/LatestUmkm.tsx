@@ -1,19 +1,15 @@
 import UmkmTable from "./UmkmTable";
-import { getBaseUrl } from "@/lib/api";
+import type { Umkm } from "@/data/umkm";
 
-export default async function LatestUmkm() {
-  const res = await fetch(`${getBaseUrl()}/api/umkm`);
+interface Props {
+  umkms: Umkm[];
+}
 
-  if (!res.ok) {
-    throw new Error("Gagal mengambil data UMKM");
-  }
-
-  const umkms = await res.json();
-
+export default function LatestUmkm({ umkms }: Props) {
   const latest = [...umkms]
     .sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
     .slice(0, 5);
 
