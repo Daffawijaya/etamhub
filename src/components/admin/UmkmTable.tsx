@@ -250,9 +250,7 @@ export default function UmkmTable({
           )}
 
           {/* Action */}
-          {columns.action && (
-            <UmkmRowActions id={item.id} onEdit={() => onEdit?.(item)} />
-          )}
+          {columns.action && <UmkmRowActions id={item.id} />}
         </div>
       ))}
     </>
