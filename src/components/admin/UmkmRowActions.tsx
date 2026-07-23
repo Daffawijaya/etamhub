@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 interface Props {
-  id: number | string;
+  id: string | number;
   onEdit?: () => void;
 }
 
-export default function UmkmRowActions({ id, onEdit }: Props) {
+export default function UmkmRowActions({ id }: Props) {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -84,7 +84,7 @@ export default function UmkmRowActions({ id, onEdit }: Props) {
       >
         <button
           onClick={() => {
-            onEdit?.();
+            router.push(`/admin/umkm/${id}/edit`);
             setOpen(false);
           }}
           className="flex w-full items-center gap-3 px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50"

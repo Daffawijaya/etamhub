@@ -32,7 +32,7 @@ export default function AdminSidebar() {
       {/* Logo */}
       <div className="border-b border-slate-100 p-6">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-          etamhub
+          etamhub.
         </h2>
 
         <p className="mt-1 text-xs text-slate-500">Admin Dashboard</p>

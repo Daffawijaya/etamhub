@@ -18,7 +18,7 @@ export default function KecamatanChart() {
   const totalUmkm = umkms.length;
 
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
+    <div className="rounded-2xl bg-white p-6">
       <h2 className="mb-5 text-lg font-semibold">
         Top Kecamatan
       </h2>
