@@ -12,7 +12,7 @@ export default function KecamatanChart() {
     ),
   )
     .sort((a, b) => b[1] - a[1])
-    .slice(0, 7);
+    .slice(0, 9);
 
   const maxValue = data[0]?.[1] ?? 1;
   const totalUmkm = umkms.length;

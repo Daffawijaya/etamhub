@@ -1,18 +1,26 @@
-import umkms from "@/data/umkm.json";
+import { getBaseUrl } from "@/lib/api";
+import { Download, Pencil, Plus, Trash2 } from "lucide-react";
+
+interface Notification {
+  id: string;
+  type: "create" | "update" | "delete" | "import";
+  title: string;
+  createdAt: string;
+}
+
+const icons = {
+  create: Plus,
+  update: Pencil,
+  delete: Trash2,
+  import: Download,
+};
 
 function getRelativeTime(dateString?: string) {
   if (!dateString) return "Belum ada waktu";
 
-  const date = new Date(dateString);
-  const now = new Date();
+  const diff = Date.now() - new Date(dateString).getTime();
 
-  if (isNaN(date.getTime())) {
-    return "Tanggal tidak valid";
-  }
-
-  const diff = now.getTime() - date.getTime();
-
-  const minutes = Math.floor(diff / 1000 / 60);
+  const minutes = Math.floor(diff / 60000);
 
   if (minutes < 1) return "Baru saja";
 
@@ -38,31 +46,26 @@ function getRelativeTime(dateString?: string) {
     return `${months} bulan lalu`;
   }
 
-  const years = Math.floor(months / 12);
-
-  return `${years} tahun lalu`;
+  return `${Math.floor(months / 12)} tahun lalu`;
 }
 
-export default function ActivityLogs() {
-  const activities = [...umkms]
-    .map((item) => ({
-      ...item,
-      activityDate:
-        item.updatedAt || item.createdAt || new Date().toISOString(),
-    }))
+export default async function ActivityLogs() {
+  const res = await fetch(`${getBaseUrl()}/api/notifications`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Gagal mengambil aktivitas");
+  }
+
+  const notifications: Notification[] = await res.json();
+
+  const activities = notifications
     .sort(
       (a, b) =>
-        new Date(b.activityDate).getTime() - new Date(a.activityDate).getTime(),
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     )
-    .slice(0, 5)
-    .map((item) => ({
-      title:
-        item.createdAt && item.updatedAt && item.createdAt !== item.updatedAt
-          ? `Update UMKM ${item.nama}`
-          : `Tambah UMKM ${item.nama}`,
-
-      time: getRelativeTime(item.activityDate),
-    }));
+    .slice(0, 5);
 
   return (
     <div
@@ -82,8 +85,6 @@ export default function ActivityLogs() {
           font-semibold
           text-gray-900
           dark:text-white
-          transition-colors
-          duration-300
         "
       >
         Aktivitas Terbaru
@@ -95,54 +96,82 @@ export default function ActivityLogs() {
             text-sm
             text-gray-500
             dark:text-gray-400
-            transition-colors
-            duration-300
           "
         >
           Belum ada aktivitas
         </p>
       ) : (
-        <div className="space-y-5">
-          {activities.map((activity, index) => (
-            <div key={index} className="flex gap-3">
+        <div className="space-y-4">
+          {activities.map((item) => {
+            const Icon = icons[item.type];
+
+            return (
               <div
+                key={item.id}
                 className="
-                  mt-2
-                  h-2.5
-                  w-2.5
-                  shrink-0
-                  rounded-full
-                  bg-green-500
+                  flex
+                  items-center
+                  gap-3
                 "
-              />
-
-              <div>
-                <p
+              >
+                <div
                   className="
-                    font-medium
-                    text-gray-900
-                    dark:text-white
-                    transition-colors
-                    duration-300
+                    flex
+                    h-9
+                    w-9
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-xl
+                    bg-gray-100
+                    text-gray-600
+                    dark:bg-neutral-800
+                    dark:text-gray-300
                   "
                 >
-                  {activity.title}
-                </p>
+                  <Icon size={16} />
+                </div>
 
-                <p
+                <div
                   className="
-                    text-sm
-                    text-gray-500
-                    dark:text-gray-400
-                    transition-colors
-                    duration-300
+                    flex
+                    min-w-0
+                    flex-1
+                    items-center
+                    justify-between
+                    gap-3
                   "
                 >
-                  {activity.time}
-                </p>
+                  <p
+                    className="
+                      min-w-0
+                      flex-1
+                      truncate
+                      text-sm
+                      font-medium
+                      text-gray-900
+                      dark:text-white
+                    "
+                    title={item.title}
+                  >
+                    {item.title}
+                  </p>
+
+                  <span
+                    className="
+                      shrink-0
+                      whitespace-nowrap
+                      text-xs
+                      text-gray-500
+                      dark:text-gray-400
+                    "
+                  >
+                    {getRelativeTime(item.createdAt)}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
