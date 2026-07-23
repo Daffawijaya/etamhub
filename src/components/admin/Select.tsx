@@ -47,9 +47,7 @@ export default function Select({
           focus:ring-[#1184CA]/20
         "
       >
-        <option value="">
-          {placeholder ?? `Pilih ${name}`}
-        </option>
+        <option value="">{placeholder ?? `Pilih ${name}`}</option>
 
         {sortedOptions.map((option) => (
           <option key={option} value={option}>
@@ -75,11 +73,7 @@ export default function Select({
           text-slate-500
         "
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M6 9l6 6 6-6"
-        />
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 9l6 6 6-6" />
       </svg>
     </div>
   );
