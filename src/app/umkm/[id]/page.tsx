@@ -14,7 +14,7 @@ type Props = {
 export default async function UmkmPage({ params }: Props) {
   const { id } = await params;
 
-  const umkm = umkms.find((item) => item.id === Number(id));
+  const umkm = umkms.find((item) => item.id === id);
 
   if (!umkm) {
     notFound();

@@ -27,9 +27,8 @@ export default function Home() {
       <Footer
         title={
           <>
-            Potensi lokal dari setiap kecamatan 
-           
-            tersaji dalam satu ekosistem digital
+            Potensi lokal dari setiap kecamatan tersaji dalam satu ekosistem
+            digital
           </>
         }
       />

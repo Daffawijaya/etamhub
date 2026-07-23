@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     response.cookies.set("admin", "true", {
       httpOnly: true,
       path: "/",
-      maxAge: 60 * 60 * 24,
+      maxAge: 60 * 60, // 1 jam
       sameSite: "lax",
       secure: process.env.NODE_ENV === "production",
     });
@@ -29,6 +29,6 @@ export async function POST(req: Request) {
     },
     {
       status: 401,
-    }
+    },
   );
 }

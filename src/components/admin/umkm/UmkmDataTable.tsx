@@ -51,7 +51,10 @@ export default function UmkmDataTable({ data }: Props) {
     }
 
     if (sort === "terbaru") {
-      result.sort((a, b) => b.id - a.id);
+      result.sort(
+        (a, b) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+      );
     }
 
     return result;

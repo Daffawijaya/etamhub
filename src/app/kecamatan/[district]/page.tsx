@@ -264,7 +264,7 @@ export default function KecamatanPage({ params }: Props) {
               {paginatedData.map((item) => (
                 <UmkmCard
                   key={item.id}
-                  id={item.id}
+                  id={String(item.id)}
                   nama={item.nama}
                   subkategori={item.subkategori}
                   deskripsi={item.deskripsi}
