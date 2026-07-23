@@ -1,0 +1,93 @@
+[
+  {
+    "id": "5a5ab1c2-6bdb-44f3-bd0d-7ceca8f2848d",
+    "type": "delete",
+    "title": "Hapus UMKM umkm testong",
+    "createdAt": "2026-07-23T12:02:15.030Z",
+    "read": true
+  },
+  {
+    "id": "cde04afc-6505-49e0-b22d-02bf66c860d3",
+    "type": "update",
+    "title": "Update UMKM umkm testong",
+    "createdAt": "2026-07-23T12:02:00.850Z",
+    "read": true
+  },
+  {
+    "id": "9c491672-c60b-4f21-966e-ded11aa3ee95",
+    "type": "create",
+    "title": "Tambah UMKM umkm testong",
+    "createdAt": "2026-07-23T11:59:00.091Z",
+    "read": true
+  },
+  {
+    "id": "01b71004-f9b4-4aae-bd67-cc0ed54f12e7",
+    "type": "update",
+    "title": "Update UMKM KodeKita",
+    "createdAt": "2026-07-23T11:52:09.751Z",
+    "read": true
+  },
+  {
+    "id": "ec0f7fcc-4112-41e2-b217-2f71e786ee7c",
+    "type": "update",
+    "title": "Update UMKM KodeKita",
+    "createdAt": "2026-07-23T11:51:44.950Z",
+    "read": true
+  },
+  {
+    "id": "018d8df6-7072-4c89-8351-4200c7a0c2cd",
+    "type": "delete",
+    "title": "Hapus UMKM Pencucian Mobil dan Motor",
+    "createdAt": "2026-07-23T11:51:06.998Z",
+    "read": true
+  },
+  {
+    "id": "d00fcd8b-2dd9-48e5-a28f-a5ca14d27b6d",
+    "type": "delete",
+    "title": "Hapus UMKM Pencucian Mobil dan Motor",
+    "createdAt": "2026-07-23T11:51:02.247Z",
+    "read": true
+  },
+  {
+    "id": "28531e22-c82f-433d-9f01-4c712375cd57",
+    "type": "delete",
+    "title": "Hapus UMKM Pencucian Mobil dan Motor",
+    "createdAt": "2026-07-23T11:50:49.620Z",
+    "read": true
+  },
+  {
+    "id": "7e0b23e6-5c53-475c-be6b-79d85854dd9d",
+    "type": "import",
+    "title": "Import 1 data UMKM",
+    "createdAt": "2026-07-23T11:50:28.069Z",
+    "read": true
+  },
+  {
+    "id": "2a75d20b-6d5b-4120-a53a-2913415aaa4c",
+    "type": "import",
+    "title": "Import 1 data UMKM",
+    "createdAt": "2026-07-23T11:49:52.920Z",
+    "read": true
+  },
+  {
+    "id": "da8d0d13-5bb2-4621-bc3e-ae61c363070c",
+    "type": "import",
+    "title": "Import 1 data UMKM",
+    "createdAt": "2026-07-23T11:47:35.603Z",
+    "read": true
+  },
+  {
+    "id": "a30f2a03-cf24-4a0c-a3f7-e6f4fe17f60f",
+    "type": "delete",
+    "title": "Hapus UMKM Pencucian Mobil dan Motor",
+    "createdAt": "2026-07-23T11:35:37.973Z",
+    "read": true
+  },
+  {
+    "id": "aa797f2e-d101-45f2-b0c6-b0c903cc20c9",
+    "type": "delete",
+    "title": "Hapus UMKM Pencucian Mobil dan Motor",
+    "createdAt": "2026-07-23T11:35:13.596Z",
+    "read": true
+  }
+]

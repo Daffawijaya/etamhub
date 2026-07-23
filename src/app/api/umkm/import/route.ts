@@ -2,74 +2,99 @@ import { NextResponse } from "next/server";
 import fs from "fs/promises";
 import path from "path";
 
-const filePath = path.join(process.cwd(), "src/data/umkm.json");
+const umkmPath = path.join(process.cwd(), "src/data/umkm.json");
+
+const notificationPath = path.join(
+  process.cwd(),
+  "src/data/notifications.json",
+);
 
 export async function POST(req: Request) {
   try {
     const excelData = await req.json();
 
-    const file = await fs.readFile(filePath, "utf-8");
+    const umkmFile = await fs.readFile(umkmPath, "utf-8");
+    const umkms = JSON.parse(umkmFile);
 
-    const umkms = JSON.parse(file);
+    const notificationFile = await fs.readFile(notificationPath, "utf-8");
+    const notifications = JSON.parse(notificationFile);
 
-    const newData = excelData.map((item: any) => {
-      const now = new Date().toISOString();
+    const now = new Date().toISOString();
 
-      return {
-        // UUID string
-        id: crypto.randomUUID(),
+    const newData = excelData.map((item: any) => ({
+      id: crypto.randomUUID(),
 
-        // Text fields
-        nama: String(item["Nama UMKM"] ?? ""),
+      nama: String(item["Nama UMKM"] ?? ""),
 
-        pemilik: String(item["Pemilik"] ?? ""),
+      pemilik: String(item["Pemilik"] ?? ""),
 
-        kategori: String(item["Kategori"] ?? ""),
+      kategori: String(item["Kategori"] ?? ""),
 
-        subkategori: String(item["Subkategori"] ?? ""),
+      subkategori: String(item["Subkategori"] ?? ""),
 
-        deskripsi: String(item["Deskripsi usaha"] ?? ""),
+      deskripsi: String(item["Deskripsi usaha"] ?? ""),
 
-        kecamatan: String(item["Kecamatan"] ?? ""),
+      kecamatan: String(item["Kecamatan"] ?? ""),
 
-        alamat: String(item["Alamat lengkap"] ?? ""),
+      alamat: String(item["Alamat lengkap"] ?? ""),
 
-        // Coordinate tetap number
-        lat: Number(item["Latitude"]) || 0,
+      lat: Number(item["Latitude"]) || 0,
 
-        lng: Number(item["Longitude"]) || 0,
+      lng: Number(item["Longitude"]) || 0,
 
-        // Pastikan nomor dan sosial media string
-        whatsapp: item["whatsapp"]
-          ? (() => {
-              const phone = String(item["whatsapp"]).replace(/\.0$/, "");
+      whatsapp: item["whatsapp"]
+        ? (() => {
+            const phone = String(item["whatsapp"]).replace(/\.0$/, "");
 
-              return phone.startsWith("0") ? phone : `0${phone}`;
-            })()
-          : "",
+            return phone.startsWith("0") ? phone : `0${phone}`;
+          })()
+        : "",
 
-        instagram: String(item["instagram"] ?? ""),
+      instagram: String(item["instagram"] ?? ""),
 
-        facebook: String(item["facebook url"] ?? ""),
+      facebook: String(item["facebook url"] ?? ""),
 
-        tiktok: String(item["tiktok"] ?? ""),
+      tiktok: String(item["tiktok"] ?? ""),
 
-        // Multiple image URL
-        gambar: item["Foto usaha/produk"]
-          ? String(item["Foto usaha/produk"])
-              .split(",")
-              .map((img: string) => img.trim())
-              .filter(Boolean)
-          : [],
+      gambar: item["Foto usaha/produk"]
+        ? String(item["Foto usaha/produk"])
+            .split(",")
+            .map((img: string) => img.trim())
+            .filter(Boolean)
+        : [],
 
-        createdAt: now,
-        updatedAt: now,
-      };
-    });
+      createdAt: now,
+      updatedAt: now,
+    }));
 
     const updated = [...umkms, ...newData];
 
-    await fs.writeFile(filePath, JSON.stringify(updated, null, 2), "utf-8");
+    await fs.writeFile(umkmPath, JSON.stringify(updated, null, 2), "utf-8");
+
+    // Tambah notifikasi import
+    notifications.unshift({
+      id: crypto.randomUUID(),
+      type: "import",
+      title: `Import ${newData.length} data UMKM`,
+      createdAt: now,
+      read: false,
+    });
+
+    // =========================
+    // Hapus notifikasi lebih dari 30 hari
+    // =========================
+    const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+    const nowTime = Date.now();
+
+    const filteredNotifications = notifications.filter((item: any) => {
+      return nowTime - new Date(item.createdAt).getTime() <= THIRTY_DAYS;
+    });
+
+    await fs.writeFile(
+      notificationPath,
+      JSON.stringify(filteredNotifications, null, 2),
+      "utf-8",
+    );
 
     return NextResponse.json({
       success: true,
