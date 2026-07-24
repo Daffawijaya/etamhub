@@ -5,7 +5,7 @@ interface Notification {
   id: string;
   type: "create" | "update" | "delete" | "import";
   title: string;
-  createdAt: string;
+  created_at: string;
 }
 
 const icons = {
@@ -63,7 +63,7 @@ export default async function ActivityLogs() {
   const activities = notifications
     .sort(
       (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
     )
     .slice(0, 5);
 
@@ -166,7 +166,7 @@ export default async function ActivityLogs() {
                       dark:text-gray-400
                     "
                   >
-                    {getRelativeTime(item.createdAt)}
+                    {getRelativeTime(item.created_at)}
                   </span>
                 </div>
               </div>
