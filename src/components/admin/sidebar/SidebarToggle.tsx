@@ -20,11 +20,11 @@ export default function SidebarToggle({
   top-9
   z-50
 
-  ${collapsed ? "-right-3" : "right-2"}
+  ${collapsed ? "-right-2" : "right-2"}
 
   flex
   h-5
-  w-5
+  w-3
   items-center
   justify-center
   rounded-sm
