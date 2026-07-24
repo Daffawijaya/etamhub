@@ -6,15 +6,15 @@ export async function GET() {
     const { data, error } = await supabase
       .from("umkm")
       .select("*")
-      .order("nama", { ascending: true });
+      .order("created_at", {
+        ascending: false,
+      });
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error(error);
+    console.error("GET UMKM ERROR:", error);
 
     return NextResponse.json(
       {
@@ -29,70 +29,34 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const rows = await req.json();
-
-    if (!Array.isArray(rows) || rows.length === 0) {
-      return NextResponse.json(
-        {
-          message: "Data import kosong.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
+    const body = await req.json();
 
     const now = new Date().toISOString();
 
-    const umkms = rows.map((item: any) => ({
-      id: crypto.randomUUID(),
-      nama: item["Nama UMKM"] ?? "",
-      pemilik: item["Pemilik"] ?? "",
-      kategori: item["Kategori"] ?? "",
-      subkategori: item["Subkategori"] ?? "",
-      deskripsi:
-        item["Deskripsi usaha"] ??
-        item["Deskripsi usaha (umkm apa, produk yang dijual)"] ??
-        "",
-      gambar: item["Foto usaha/produk"]
-        ? String(item["Foto usaha/produk"])
-            .split(",")
-            .map((v: string) => v.trim())
-            .filter(Boolean)
-        : [],
-      kecamatan: item["Kecamatan"] ?? "",
-      alamat: item["Alamat lengkap"] ?? "",
-      lat: Number(item["Latitude"]) || null,
-      lng: Number(item["Longitude"]) || null,
-      whatsapp: item["whatsapp"] ?? item["whatsapp (08xxxxxxxxxx)"] ?? "",
-      instagram: item["instagram"] ?? item["instagram id (tanpa @)"] ?? "",
-      facebook: item["facebook url"] ?? "",
-      tiktok: item["tiktok"] ?? item["tiktok id (tanpa @)"] ?? "",
-      created_at: now,
-      updated_at: now,
-    }));
+    const { data, error } = await supabase
+      .from("umkm")
+      .insert({
+        id: crypto.randomUUID(),
+        ...body,
+        created_at: now,
+        updated_at: now,
+      })
+      .select()
+      .single();
 
-    const { data, error } = await supabase.from("umkm").insert(umkms).select();
-
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     await supabase.from("notifications").insert({
       id: crypto.randomUUID(),
-      type: "import",
-      title: `Berhasil mengimpor ${data.length} UMKM`,
+      type: "create",
+      title: `Menambahkan UMKM ${data.nama}`,
       created_at: now,
       read: false,
     });
 
-    return NextResponse.json({
-      success: true,
-      imported: data.length,
-      data,
-    });
+    return NextResponse.json(data);
   } catch (error: any) {
-    console.error(error);
+    console.error("POST UMKM ERROR:", error);
 
     return NextResponse.json(
       {

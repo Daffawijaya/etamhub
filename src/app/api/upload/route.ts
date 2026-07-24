@@ -53,7 +53,7 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(await file.arrayBuffer());
 
     const { error } = await supabase.storage
-      .from("umkm")
+      .from("umkm-images")
       .upload(filename, buffer, {
         contentType: file.type,
         upsert: false,
@@ -64,7 +64,7 @@ export async function POST(req: Request) {
     }
 
     const { data: publicUrl } = supabase.storage
-      .from("umkm")
+      .from("umkm-images")
       .getPublicUrl(filename);
 
     return NextResponse.json({
