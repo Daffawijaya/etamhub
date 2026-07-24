@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+const MAX_NOTIFICATION_AGE = 30 * 24 * 60 * 60 * 1000;
+
+function cleanNotifications(notifications: any[]) {
+  const now = Date.now();
+
+  return notifications.filter(
+    (item) => now - new Date(item.created_at).getTime() <= MAX_NOTIFICATION_AGE,
+  );
+}
+
 // =========================
 // GET UMKM BY ID
 // =========================
@@ -43,7 +53,6 @@ export async function PUT(
 
   const body = await req.json();
 
-  // ambil data lama
   const { data: oldData, error: findError } = await supabase
     .from("umkm")
     .select("*")
@@ -70,7 +79,6 @@ export async function PUT(
     updated_at: now,
   };
 
-  // update database
   const { data, error } = await supabase
     .from("umkm")
     .update(updated)
@@ -89,13 +97,10 @@ export async function PUT(
     );
   }
 
-  // buat notification update
   const { error: notifError } = await supabase.from("notifications").insert({
     id: crypto.randomUUID(),
     type: "update",
     title: `Update UMKM ${updated.nama}`,
-    old_data: oldData,
-    new_data: data,
     created_at: now,
     read: false,
   });
@@ -138,21 +143,19 @@ export async function DELETE(
   }
 
   // =========================
-  // HAPUS GAMBAR STORAGE
+  // DELETE IMAGE FROM STORAGE
   // =========================
 
   if (target.gambar && Array.isArray(target.gambar)) {
     const imagePaths = target.gambar
       .map((url: string) => {
-        const marker = "/umkm-images/";
+        const path = "/umkm-images/";
 
-        const index = url.indexOf(marker);
+        const index = url.indexOf(path);
 
-        if (index === -1) {
-          return null;
-        }
+        if (index === -1) return null;
 
-        return url.substring(index + marker.length);
+        return url.substring(index + path.length);
       })
       .filter(Boolean);
 
@@ -168,7 +171,7 @@ export async function DELETE(
   }
 
   // =========================
-  // HAPUS DATA UMKM
+  // DELETE DATABASE DATA
   // =========================
 
   const { error } = await supabase.from("umkm").delete().eq("id", id);
@@ -184,18 +187,16 @@ export async function DELETE(
     );
   }
 
-  const now = new Date().toISOString();
+  // =========================
+  // CREATE NOTIFICATION
+  // =========================
 
-  // =========================
-  // NOTIFICATION DELETE
-  // =========================
+  const now = new Date().toISOString();
 
   const { error: notifError } = await supabase.from("notifications").insert({
     id: crypto.randomUUID(),
     type: "delete",
     title: `Hapus UMKM ${target.nama}`,
-    old_data: target,
-    new_data: null,
     created_at: now,
     read: false,
   });
