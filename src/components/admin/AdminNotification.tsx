@@ -1,13 +1,13 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Bell, Download, Pencil, Plus, Trash2 } from "lucide-react";
+import { Bell, Upload, Pencil, Plus, Trash2 } from "lucide-react";
 
 interface Notification {
   id: string;
   type: "create" | "update" | "delete" | "import";
   title: string;
-  createdAt: string;
+  created_at: string;
   read: boolean;
 }
 
@@ -15,7 +15,7 @@ const icons = {
   create: Plus,
   update: Pencil,
   delete: Trash2,
-  import: Download,
+  import: Upload,
 };
 
 function getRelativeTime(dateString: string) {
@@ -185,7 +185,7 @@ export default function AdminNotification() {
                           text-xs text-gray-500 dark:text-gray-400
                         "
                       >
-                        {getRelativeTime(item.createdAt)}
+                        {getRelativeTime(item.created_at)}
                       </span>
                     </div>
                   </div>

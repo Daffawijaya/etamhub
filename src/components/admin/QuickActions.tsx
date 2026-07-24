@@ -43,36 +43,35 @@ export default function QuickActions() {
     if (!file) return;
 
     try {
-      const total = await importUmkmExcel(file);
+      const result = await importUmkmExcel(file);
 
-      alert(`${total} UMKM berhasil diimport`);
-    } catch (error) {
+      alert(`${result.imported} UMKM berhasil diimport`);
+    } catch (error: any) {
       console.error(error);
 
-      alert("Gagal import data");
+      alert(error.message || "Gagal import data");
     }
 
     e.target.value = "";
   }
 
   async function handleClick(type: string) {
-    if (type === "add") {
-      router.push("/admin/tambah");
-      return;
-    }
+    switch (type) {
+      case "add":
+        router.push("/admin/tambah");
+        break;
 
-    if (type === "import") {
-      fileRef.current?.click();
-      return;
-    }
+      case "import":
+        fileRef.current?.click();
+        break;
 
-    if (type === "export") {
-      await exportUmkmExcel();
-      return;
-    }
+      case "export":
+        await exportUmkmExcel();
+        break;
 
-    if (type === "template") {
-      downloadUmkmTemplate();
+      case "template":
+        downloadUmkmTemplate();
+        break;
     }
   }
 
@@ -116,6 +115,7 @@ export default function QuickActions() {
           return (
             <button
               key={action.label}
+              type="button"
               onClick={() => handleClick(action.type)}
               className="
                 rounded-2xl
