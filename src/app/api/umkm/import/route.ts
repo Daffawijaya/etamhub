@@ -69,7 +69,7 @@ export async function POST(req: Request) {
       .insert({
         id: crypto.randomUUID(),
         type: "import",
-        title: `Berhasil mengimpor ${data.length} UMKM`,
+        title: `Import ${data.length} UMKM`,
         created_at: now,
         read: false,
       });

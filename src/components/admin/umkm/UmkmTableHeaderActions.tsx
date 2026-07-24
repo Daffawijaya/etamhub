@@ -36,9 +36,9 @@ export default function UmkmTableHeaderActions() {
     if (!file) return;
 
     try {
-      const total = await importUmkmExcel(file);
+      const result = await importUmkmExcel(file);
 
-      alert(`${total} UMKM berhasil diimport`);
+      alert(`Import ${result.imported} UMKM`);
     } catch (error) {
       console.error(error);
 
