@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
-import AdminSidebar from "@/components/admin/AdminSidebar";
+import AdminSidebar from "@/components/admin/sidebar/AdminSidebar";
 import AdminNavbar from "@/components/admin/AdminNavbar";
 
 export default function AdminLayout({
