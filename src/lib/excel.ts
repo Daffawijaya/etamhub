@@ -38,42 +38,29 @@ export function downloadUmkmTemplate() {
 export async function exportUmkmExcel() {
   const res = await fetch("/api/umkm");
 
+  const result = await res.json();
+
   if (!res.ok) {
-    throw new Error("Gagal export data");
+    throw new Error(result.message || "Gagal export data");
   }
 
-  const data = await res.json();
-
-  const rows = data.map((item: any) => ({
+  const rows = result.map((item: any) => ({
     "Nama UMKM": item.nama,
-
     Pemilik: item.pemilik,
-
     Kategori: item.kategori,
-
     Subkategori: item.subkategori ?? "",
-
-    "Deskripsi usaha (umkm apa, produk yang dijual)": item.deskripsi,
-
+    "Deskripsi usaha": item.deskripsi,
     "Foto usaha/produk": Array.isArray(item.gambar)
       ? item.gambar.join(", ")
       : (item.gambar ?? ""),
-
     Kecamatan: item.kecamatan,
-
     "Alamat lengkap": item.alamat,
-
     Latitude: item.lat,
-
     Longitude: item.lng,
-
-    "whatsapp (08xxxxxxxxxx)": item.whatsapp,
-
-    "instagram id (tanpa @)": item.instagram,
-
+    whatsapp: item.whatsapp,
+    instagram: item.instagram,
     "facebook url": item.facebook,
-
-    "tiktok id (tanpa @)": item.tiktok,
+    tiktok: item.tiktok,
   }));
 
   const worksheet = XLSX.utils.json_to_sheet(rows);
@@ -93,25 +80,32 @@ export async function exportUmkmExcel() {
 export async function importUmkmExcel(file: File) {
   const buffer = await file.arrayBuffer();
 
-  const workbook = XLSX.read(buffer);
+  const workbook = XLSX.read(buffer, {
+    type: "array",
+    cellDates: true,
+  });
 
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-  const data = XLSX.utils.sheet_to_json(sheet);
+  const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet);
+
+  if (rows.length === 0) {
+    throw new Error("File Excel tidak memiliki data.");
+  }
 
   const res = await fetch("/api/umkm/import", {
     method: "POST",
-
     headers: {
       "Content-Type": "application/json",
     },
-
-    body: JSON.stringify(data),
+    body: JSON.stringify(rows),
   });
 
+  const result = await res.json();
+
   if (!res.ok) {
-    throw new Error("Gagal import data");
+    throw new Error(result.message || "Gagal import data");
   }
 
-  return data.length;
+  return result;
 }

@@ -1,23 +1,21 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
-import fs from "fs/promises";
-import path from "path";
 
-const notificationPath = path.join(
-  process.cwd(),
-  "src/data/notifications.json",
-);
-
-// GET semua UMKM
 export async function GET() {
-  const { data, error } = await supabase
-    .from("umkm")
-    .select("*")
-    .order("created_at", {
-      ascending: false,
-    });
+  try {
+    const { data, error } = await supabase
+      .from("umkm")
+      .select("*")
+      .order("nama", { ascending: true });
 
-  if (error) {
+    if (error) {
+      throw error;
+    }
+
+    return NextResponse.json(data);
+  } catch (error: any) {
+    console.error(error);
+
     return NextResponse.json(
       {
         message: error.message,
@@ -27,66 +25,70 @@ export async function GET() {
       },
     );
   }
-
-  return NextResponse.json(data);
 }
 
-// TAMBAH UMKM
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const rows = await req.json();
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Data import kosong.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
 
     const now = new Date().toISOString();
 
-    const newUmkm = {
+    const umkms = rows.map((item: any) => ({
       id: crypto.randomUUID(),
-      ...body,
+      nama: item["Nama UMKM"] ?? "",
+      pemilik: item["Pemilik"] ?? "",
+      kategori: item["Kategori"] ?? "",
+      subkategori: item["Subkategori"] ?? "",
+      deskripsi:
+        item["Deskripsi usaha"] ??
+        item["Deskripsi usaha (umkm apa, produk yang dijual)"] ??
+        "",
+      gambar: item["Foto usaha/produk"]
+        ? String(item["Foto usaha/produk"])
+            .split(",")
+            .map((v: string) => v.trim())
+            .filter(Boolean)
+        : [],
+      kecamatan: item["Kecamatan"] ?? "",
+      alamat: item["Alamat lengkap"] ?? "",
+      lat: Number(item["Latitude"]) || null,
+      lng: Number(item["Longitude"]) || null,
+      whatsapp: item["whatsapp"] ?? item["whatsapp (08xxxxxxxxxx)"] ?? "",
+      instagram: item["instagram"] ?? item["instagram id (tanpa @)"] ?? "",
+      facebook: item["facebook url"] ?? "",
+      tiktok: item["tiktok"] ?? item["tiktok id (tanpa @)"] ?? "",
       created_at: now,
       updated_at: now,
-    };
+    }));
 
-    // =========================
-    // Insert Supabase
-    // =========================
-    const { data, error } = await supabase
-      .from("umkm")
-      .insert(newUmkm)
-      .select()
-      .single();
+    const { data, error } = await supabase.from("umkm").insert(umkms).select();
 
     if (error) {
       throw error;
     }
 
-    // =========================
-    // Notifikasi
-    // =========================
-    const notificationFile = await fs.readFile(notificationPath, "utf-8");
-
-    const notifications = JSON.parse(notificationFile);
-
-    notifications.unshift({
+    await supabase.from("notifications").insert({
       id: crypto.randomUUID(),
-      type: "create",
-      title: `Tambah UMKM ${data.nama}`,
-      createdAt: now,
+      type: "import",
+      title: `Berhasil mengimpor ${data.length} UMKM`,
+      created_at: now,
       read: false,
     });
 
-    const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-
-    const filteredNotifications = notifications.filter((item: any) => {
-      return Date.now() - new Date(item.createdAt).getTime() <= THIRTY_DAYS;
-    });
-
-    await fs.writeFile(
-      notificationPath,
-      JSON.stringify(filteredNotifications, null, 2),
-      "utf-8",
-    );
-
     return NextResponse.json({
       success: true,
+      imported: data.length,
       data,
     });
   } catch (error: any) {

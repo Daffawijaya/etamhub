@@ -1,84 +1,97 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
-export async function GET() {
-  const { data, error } = await supabase
-    .from("umkm")
-    .select("*")
-    .order("createdAt", {
-      ascending: false,
-    });
-
-  if (error) {
-    return NextResponse.json(
-      {
-        message: error.message,
-      },
-      {
-        status: 500,
-      },
-    );
-  }
-
-  return NextResponse.json(data);
-}
-
-
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const rows = await req.json();
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return NextResponse.json(
+        {
+          message: "Data import kosong.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
 
     const now = new Date().toISOString();
 
-    const newUmkm = {
-      id: crypto.randomUUID(),
+    const umkms = rows.map((item: Record<string, any>) => {
+      const lat = Number(item["Latitude"]);
+      const lng = Number(item["Longitude"]);
 
-      ...body,
+      return {
+        id: crypto.randomUUID(),
+        nama: String(item["Nama UMKM"] ?? "").trim(),
+        pemilik: String(item["Pemilik"] ?? "").trim(),
+        kategori: String(item["Kategori"] ?? "").trim(),
+        subkategori: String(item["Subkategori"] ?? "").trim(),
+        deskripsi: String(
+          item["Deskripsi usaha"] ??
+            item["Deskripsi usaha (umkm apa, produk yang dijual)"] ??
+            "",
+        ).trim(),
+        gambar: item["Foto usaha/produk"]
+          ? String(item["Foto usaha/produk"])
+              .split(",")
+              .map((v: string) => v.trim())
+              .filter(Boolean)
+          : [],
+        kecamatan: String(item["Kecamatan"] ?? "").trim(),
+        alamat: String(item["Alamat lengkap"] ?? "").trim(),
+        lat: Number.isFinite(lat) ? lat : null,
+        lng: Number.isFinite(lng) ? lng : null,
+        whatsapp: String(
+          item["whatsapp"] ?? item["whatsapp (08xxxxxxxxxx)"] ?? "",
+        ).trim(),
+        instagram: String(
+          item["instagram"] ?? item["instagram id (tanpa @)"] ?? "",
+        ).trim(),
+        facebook: String(item["facebook url"] ?? "").trim(),
+        tiktok: String(
+          item["tiktok"] ?? item["tiktok id (tanpa @)"] ?? "",
+        ).trim(),
+        created_at: now,
+        updated_at: now,
+      };
+    });
 
-      createdAt: now,
-      updatedAt: now,
-    };
-
-
-    const { data, error } = await supabase
-      .from("umkm")
-      .insert(newUmkm)
-      .select()
-      .single();
-
+    const { data, error } = await supabase.from("umkm").insert(umkms).select();
 
     if (error) {
       throw error;
     }
 
-
-    await supabase
+    const { error: notificationError } = await supabase
       .from("notifications")
       .insert({
         id: crypto.randomUUID(),
-        type: "create",
-        title: `Tambah UMKM ${newUmkm.nama}`,
-        createdAt: now,
+        type: "import",
+        title: `Berhasil mengimpor ${data.length} UMKM`,
+        created_at: now,
         read: false,
       });
 
+    if (notificationError) {
+      console.error("Notification Error:", notificationError);
+    }
 
     return NextResponse.json({
       success: true,
-      data,
+      imported: data.length,
     });
-
-
-  } catch (error:any) {
+  } catch (error: any) {
+    console.error("Import Error:", error);
 
     return NextResponse.json(
       {
-        message:error.message,
+        message: error.message || "Terjadi kesalahan saat import UMKM.",
       },
       {
-        status:500,
+        status: 500,
       },
     );
-
   }
 }
