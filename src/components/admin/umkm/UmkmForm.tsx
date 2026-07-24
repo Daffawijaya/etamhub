@@ -146,31 +146,31 @@ export default function UmkmForm({ mode, data }: Props) {
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify({
           ...form,
-
           subkategori:
             form.subkategori === "Lainnya"
               ? subkategoriLainnya
               : form.subkategori,
-
           gambar: uploadedImages,
-
           lat: form.lat ? Number(form.lat) : null,
           lng: form.lng ? Number(form.lng) : null,
         }),
       });
 
+      const result = await response.json();
+
+      console.log(result);
+
       if (!response.ok) {
-        throw new Error("Gagal menyimpan UMKM");
+        throw new Error(result.message || "Gagal menyimpan UMKM");
       }
 
       router.push("/admin/umkm");
       router.refresh();
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert("Terjadi kesalahan saat menyimpan data");
+      alert(error.message);
     } finally {
       setUploading(false);
     }
