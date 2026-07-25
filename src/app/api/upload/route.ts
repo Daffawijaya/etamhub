@@ -68,9 +68,11 @@ export async function POST(req: Request) {
 
     const filename = `${uuid()}.webp`;
 
+    const uploadData = new Uint8Array(webpBuffer);
+
     const { error } = await supabase.storage
       .from("umkm-images")
-      .upload(filename, webpBuffer, {
+      .upload(filename, uploadData, {
         contentType: "image/webp",
         upsert: false,
       });
