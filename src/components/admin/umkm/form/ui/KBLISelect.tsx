@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { X } from "lucide-react";
 import { kbliData } from "@/data/kbli";
 
 interface Props {
-  value: string;
-  onChange: (value: string) => void;
+  value: string[];
+  onChange: (value: string[]) => void;
 }
 
 export default function KBLISelect({ value, onChange }: Props) {
@@ -16,40 +17,65 @@ export default function KBLISelect({ value, onChange }: Props) {
       const keyword = search.toLowerCase();
 
       return (
-        item.kode.includes(keyword) || item.nama.toLowerCase().includes(keyword)
+        !value.includes(item.kode) &&
+        (item.kode.includes(keyword) ||
+          item.nama.toLowerCase().includes(keyword))
       );
     })
     .slice(0, 10);
 
   return (
-    <div className="relative">
+    <div className="relative space-y-3">
       <input
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        placeholder="Cari KBLI..."
+        placeholder="Cari kode atau nama KBLI..."
         className="
           w-full
           rounded-xl
           border
           border-slate-200
           dark:border-slate-800
-
           bg-white
           dark:bg-dark
-placeholder:text-slate-400
-      dark:placeholder:text-slate-500
           px-4
           py-3
-
           text-sm
           text-slate-700
           dark:text-white
-
+          placeholder:text-slate-400
+          dark:placeholder:text-slate-500
           outline-none
-
           focus:border-pur
         "
       />
+
+      {value.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {value.map((kode) => (
+            <button
+              key={kode}
+              type="button"
+              onClick={() => onChange(value.filter((item) => item !== kode))}
+              className="
+                flex
+                items-center
+                gap-1.5
+                rounded-md
+                bg-slate-500/10
+                text-black
+                dark:text-white
+                pl-2 pr-1
+                py-1
+                text-sm
+              "
+            >
+              {kode}
+              <X size={14} />
+            </button>
+          ))}
+        </div>
+      )}
 
       {search && filtered.length > 0 && (
         <div
@@ -73,24 +99,22 @@ placeholder:text-slate-400
               key={item.kode}
               type="button"
               onClick={() => {
-                onChange(item.kode);
-                setSearch(`${item.kode} - ${item.nama}`);
+                onChange([...value, item.kode]);
+                setSearch("");
               }}
               className="
                 w-full
                 px-4
                 py-3
                 text-left
-                text-sm
                 hover:bg-slate-100
                 dark:hover:bg-slate-800
-                text-slate-700
-                dark:text-white
               "
             >
-              <b>{item.kode}</b>
-              <br />
-              <span>{item.nama}</span>
+              <div className="font-semibold">{item.kode}</div>
+              <div className="text-sm text-slate-500 dark:text-slate-400">
+                {item.nama}
+              </div>
             </button>
           ))}
         </div>

@@ -5,6 +5,7 @@ interface SelectProps {
   value: string;
   options: readonly string[];
   placeholder?: string;
+  required?: boolean;
   onChange: (value: string) => void;
 }
 
@@ -13,6 +14,7 @@ export default function Select({
   value,
   options,
   placeholder,
+  required = false,
   onChange,
 }: SelectProps) {
   const sortedOptions = [...options].sort((a, b) => {
@@ -27,6 +29,7 @@ export default function Select({
       <select
         name={name}
         value={value}
+        required={required}
         onChange={(e) => onChange(e.target.value)}
         className="
           w-full

@@ -14,6 +14,18 @@ import SocialSection from "./sections/SocialSection";
 import ImageSection from "./sections/ImageSection";
 import PublishSection from "./sections/PublishSection";
 
+import {
+  isValidFacebookUrl,
+  isValidInstagramUsername,
+  isValidTiktokUsername,
+  normalizeWhatsapp,
+  normalizeInstagramUsername,
+  normalizeTiktokUsername,
+  isValidWhatsapp,
+  isValidEmail,
+  isValidNib,
+} from "@/lib/validation";
+
 interface Props {
   mode: "create" | "edit";
 
@@ -61,7 +73,11 @@ export default function UmkmForm({ mode, data }: Props) {
           email: data.email ?? "",
 
           nib: data.nib ?? "",
-          kbli: data.kbli ?? "",
+          kbli: Array.isArray(data.kbli)
+            ? data.kbli
+            : data.kbli
+              ? [data.kbli]
+              : [],
 
           npwp: data.npwp ?? "",
 
@@ -113,8 +129,44 @@ export default function UmkmForm({ mode, data }: Props) {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
-    setLoading(true);
+    if (!/^\d{16}$/.test(form.nik)) {
+      alert("NIK harus berupa 16 angka");
+      return;
+    }
+    if (!isValidNib(form.nib)) {
+      alert("NIB harus berupa 13 angka");
+      return;
+    }
+    if (!isValidFacebookUrl(form.facebook)) {
+      alert("URL Facebook tidak valid");
+      return;
+    }
 
+    if (!isValidWhatsapp(form.whatsapp)) {
+      alert("Nomor WhatsApp tidak valid");
+      return;
+    }
+
+    if (!isValidInstagramUsername(form.instagram)) {
+      alert("Username Instagram tidak valid");
+      return;
+    }
+
+    if (!isValidTiktokUsername(form.tiktok)) {
+      alert("Username TikTok tidak valid");
+      return;
+    }
+
+    if (!isValidEmail(form.email)) {
+      alert("Email tidak valid");
+      return;
+    }
+    if (images.length === 0) {
+      alert("Gambar UMKM wajib diupload");
+      return;
+    }
+
+    setLoading(true);
     try {
       const uploadedImages: string[] = [];
 
@@ -132,7 +184,9 @@ export default function UmkmForm({ mode, data }: Props) {
 
       const payload = {
         ...form,
-
+        instagram: normalizeInstagramUsername(form.instagram),
+        whatsapp: normalizeWhatsapp(form.whatsapp),
+        tiktok: normalizeTiktokUsername(form.tiktok),
         subkategori:
           form.subkategori === "Lainnya"
             ? subkategoriLainnya
@@ -225,7 +279,7 @@ space-y-8
           subkategoriLainnya={subkategoriLainnya}
           setSubkategoriLainnya={setSubkategoriLainnya}
         />
-
+        <ImageSection images={images} required setImages={setImages} />
         <OwnerSection form={form} setForm={setForm} />
 
         <BusinessSection form={form} setForm={setForm} />
@@ -233,8 +287,6 @@ space-y-8
         <LocationSection form={form} setForm={setForm} />
 
         <SocialSection form={form} setForm={setForm} />
-
-        <ImageSection images={images} setImages={setImages} />
 
         <PublishSection form={form} setForm={setForm} />
 

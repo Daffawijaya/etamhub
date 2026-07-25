@@ -23,7 +23,7 @@ export interface UmkmFormData {
   email: string;
 
   nib: string;
-  kbli: string;
+  kbli: string[];
   npwp: string;
   halal: string;
   pirt: string;

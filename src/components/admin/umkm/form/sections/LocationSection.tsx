@@ -24,6 +24,7 @@ export default function LocationSection({ form, setForm }: Props) {
     <FormSection title="Lokasi">
       <div className="grid md:grid-cols-2 gap-4">
         <KecamatanSelect
+          required
           value={form.kecamatan}
           onChange={(value) =>
             setForm((prev) => ({
@@ -34,22 +35,25 @@ export default function LocationSection({ form, setForm }: Props) {
         />
 
         <FormField
+          required
           name="alamat"
-          placeholder="Alamat Lengkap"
+          placeholder="Alamat Lengkap*"
           value={form.alamat}
           onChange={handleChange}
         />
 
         <FormField
+          required
           name="lat"
-          placeholder="Latitude"
+          placeholder="Latitude*"
           value={form.lat}
           onChange={handleChange}
         />
 
         <FormField
+          required
           name="lng"
-          placeholder="Longitude"
+          placeholder="Longitude*"
           value={form.lng}
           onChange={handleChange}
         />

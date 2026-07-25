@@ -2,16 +2,24 @@ interface Props {
   name: string;
   placeholder: string;
   value: string;
+  required?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   type?: string;
+  pattern?: string;
+  maxLength?: number;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
 }
 
 export default function FormField({
   name,
   placeholder,
   value,
+  required = false,
   onChange,
   type = "text",
+  pattern,
+  maxLength,
+  inputMode,
 }: Props) {
   return (
     <input
@@ -20,6 +28,10 @@ export default function FormField({
       placeholder={placeholder}
       value={value}
       onChange={onChange}
+      required={required}
+       pattern={pattern}
+  maxLength={maxLength}
+  inputMode={inputMode}
       className="
       w-full
       rounded-xl

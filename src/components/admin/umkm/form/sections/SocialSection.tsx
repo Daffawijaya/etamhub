@@ -9,10 +9,10 @@ interface Props {
 }
 
 export default function SocialSection({ form, setForm }: Props) {
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(name: keyof UmkmFormData, value: string) {
     setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value,
+      [name]: value,
     }));
   }
 
@@ -26,31 +26,40 @@ export default function SocialSection({ form, setForm }: Props) {
         "
       >
         <FormField
+          required
           name="whatsapp"
-          placeholder="WhatsApp"
+          placeholder="WhatsApp*"
+          type="tel"
           value={form.whatsapp}
-          onChange={handleChange}
+          pattern="(08|628)[0-9]{8,11}"
+          maxLength={13}
+          onChange={(e) =>
+            handleChange(
+              "whatsapp",
+              e.target.value.replace(/\D/g, "").slice(0, 13),
+            )
+          }
         />
 
         <FormField
           name="instagram"
           placeholder="Instagram"
           value={form.instagram}
-          onChange={handleChange}
+          onChange={(e) => handleChange("instagram", e.target.value)}
         />
 
         <FormField
           name="facebook"
           placeholder="Facebook URL"
           value={form.facebook}
-          onChange={handleChange}
+          onChange={(e) => handleChange("facebook", e.target.value)}
         />
 
         <FormField
           name="tiktok"
           placeholder="TikTok"
           value={form.tiktok}
-          onChange={handleChange}
+          onChange={(e) => handleChange("tiktok", e.target.value)}
         />
       </div>
     </FormSection>

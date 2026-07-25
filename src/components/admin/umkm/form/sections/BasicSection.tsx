@@ -42,16 +42,18 @@ gap-4
       >
         <FormField
           name="nama"
-          placeholder="Nama UMKM"
+          placeholder="Nama UMKM*"
           value={form.nama}
           onChange={change}
+          required
         />
 
         <FormField
           name="pemilik"
-          placeholder="Nama Pemilik"
+          placeholder="Nama Pemilik*"
           value={form.pemilik}
           onChange={change}
+          required
         />
 
         <div
@@ -64,6 +66,7 @@ gap-4
         >
           <KategoriSelect
             value={form.kategori}
+            required
             onChange={(value) => {
               setForm((prev) => ({
                 ...prev,
@@ -79,6 +82,7 @@ gap-4
 
           <div>
             <SubkategoriSelect
+              required
               kategori={form.kategori}
               value={form.subkategori}
               onChange={(value) => {
@@ -104,7 +108,8 @@ gap-4
 
       <textarea
         name="deskripsi"
-        placeholder="Deskripsi UMKM"
+        required
+        placeholder="Deskripsi UMKM*"
         value={form.deskripsi}
         onChange={change}
         className="

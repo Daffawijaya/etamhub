@@ -25,7 +25,7 @@ export const initialForm: UmkmFormData = {
   email: "",
 
   nib: "",
-  kbli: "",
+  kbli: [],
   npwp: "",
   halal: "",
   pirt: "",

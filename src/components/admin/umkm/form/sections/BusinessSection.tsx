@@ -20,17 +20,22 @@ export default function BusinessSection({ form, setForm }: Props) {
   return (
     <FormSection title="Legalitas Usaha">
       <div
-        className="
+        className=" flex w-full items-start
 grid
 md:grid-cols-2
-gap-4
+gap-4 
 "
       >
         <FormField
           name="nib"
           placeholder="NIB"
           value={form.nib}
-          onChange={handleChange}
+          onChange={(e) =>
+            setForm((prev) => ({
+              ...prev,
+              nib: e.target.value.replace(/\D/g, "").slice(0, 13),
+            }))
+          }
         />
 
         <KBLISelect

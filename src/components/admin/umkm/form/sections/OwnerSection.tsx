@@ -23,16 +23,23 @@ export default function OwnerSection({ form, setForm }: Props) {
       <div className="grid md:grid-cols-2 gap-4">
         <FormField
           name="nik"
-          placeholder="NIK"
+          placeholder="NIK*"
           value={form.nik}
-          onChange={(e) => handleChange("nik", e.target.value)}
+          required
+          pattern="[0-9]{16}"
+          maxLength={16}
+          inputMode="numeric"
+          onChange={(e) =>
+            handleChange("nik", e.target.value.replace(/\D/g, "").slice(0, 16))
+          }
         />
 
         <FormSelect
           name="jenis_kelamin"
           value={form.jenis_kelamin}
           options={jenisKelamin}
-          placeholder="Pilih Jenis Kelamin"
+          placeholder="Pilih Jenis Kelamin*"
+          required
           onChange={(value) => handleChange("jenis_kelamin", value)}
         />
 

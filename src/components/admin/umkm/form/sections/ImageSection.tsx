@@ -7,13 +7,13 @@ import { getUmkmImage } from "@/lib/getUmkmImage";
 
 interface Props {
   images: ImageItem[];
-
+  required?: boolean;
   setImages: React.Dispatch<React.SetStateAction<ImageItem[]>>;
 }
 
 export default function ImageSection({
   images,
-
+  required = false,
   setImages,
 }: Props) {
   function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -35,7 +35,7 @@ export default function ImageSection({
   }
 
   return (
-    <FormSection title="Gambar UMKM">
+    <FormSection title={`Gambar UMKM${required ? "*" : ""}`}>
       <label
         className="
 flex
