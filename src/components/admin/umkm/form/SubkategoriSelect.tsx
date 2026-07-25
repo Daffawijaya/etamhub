@@ -1,6 +1,6 @@
 "use client";
 
-import Select from "../Select";
+import Select from "../../Select";
 import { UMKM_CATEGORIES } from "@/app/constants/umkmCategories";
 
 interface Props {

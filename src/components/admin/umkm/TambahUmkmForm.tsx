@@ -1,6 +1,6 @@
 "use client";
 
-import UmkmForm from "./UmkmForm";
+import UmkmForm from "./form/UmkmForm";
 
 export default function TambahUmkmForm() {
   return <UmkmForm mode="create" />;

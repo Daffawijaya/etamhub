@@ -1,6 +1,6 @@
 "use client";
 
-import Select from "../Select";
+import Select from "../../Select";
 import { KECAMATAN_KUKAR } from "@/app/constants/kecamatanKukar";
 
 interface Props {
