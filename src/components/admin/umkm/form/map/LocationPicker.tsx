@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import { MapContainer, TileLayer } from "react-leaflet";
-import { MapPin, Check, X, LocateFixed } from "lucide-react";
+import { MapPin, Check, X } from "lucide-react";
 
 import MapMarker from "./MapMarker";
 import MapEvents from "./MapEvents";

@@ -118,6 +118,7 @@ export default function UmkmTable({
               <h4
                 className="
                   truncate
+                  capitalize
                   text-[17px]
                   font-semibold
                   text-slate-900

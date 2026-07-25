@@ -1,4 +1,12 @@
-import TambahUmkmForm from "@/components/admin/umkm/TambahUmkmForm";
+'use client';
+
+import dynamic from "next/dynamic";
+
+// Import the component dynamically and disable Server-Side Rendering (SSR)
+const TambahUmkmForm = dynamic(
+  () => import("@/components/admin/umkm/TambahUmkmForm"),
+  { ssr: false },
+);
 
 export default function Page() {
   return (
