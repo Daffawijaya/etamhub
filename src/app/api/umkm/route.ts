@@ -1,6 +1,20 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 
+function normalizeWhatsapp(phone?: string) {
+  if (!phone) return "";
+
+  let value = phone.replace(/\D/g, "");
+
+  if (value.startsWith("62")) {
+    value = "0" + value.slice(2);
+  } else if (value.startsWith("8")) {
+    value = "0" + value;
+  }
+
+  return value;
+}
+
 export async function GET() {
   try {
     const { data, error } = await supabase
@@ -30,7 +44,7 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-
+    body.whatsapp = normalizeWhatsapp(body.whatsapp);
     const now = new Date().toISOString();
 
     const { data, error } = await supabase

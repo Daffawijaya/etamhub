@@ -1,17 +1,18 @@
 import { NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
 import { v4 as uuid } from "uuid";
+import sharp from "sharp";
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
 
-    const file = formData.get("file") as File | null;
+    const file = formData.get("file");
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return NextResponse.json(
         {
-          message: "File tidak ditemukan",
+          message: "File tidak ditemukan.",
         },
         {
           status: 400,
@@ -19,15 +20,17 @@ export async function POST(req: Request) {
       );
     }
 
-    const allowedExtensions = ["jpg", "jpeg", "png", "webp"];
+    const allowedMimeTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+    ];
 
-    const ext = file.name.split(".").pop()?.toLowerCase();
-
-    if (!ext || !allowedExtensions.includes(ext)) {
+    if (!allowedMimeTypes.includes(file.type)) {
       return NextResponse.json(
         {
-          message:
-            "Format file tidak didukung. Gunakan JPG, JPEG, PNG, atau WEBP.",
+          message: "Format file harus JPG, JPEG, PNG, atau WEBP.",
         },
         {
           status: 400,
@@ -40,7 +43,7 @@ export async function POST(req: Request) {
     if (file.size > maxSize) {
       return NextResponse.json(
         {
-          message: "Ukuran file maksimal 5MB.",
+          message: "Ukuran file maksimal 5 MB.",
         },
         {
           status: 400,
@@ -48,14 +51,27 @@ export async function POST(req: Request) {
       );
     }
 
-    const filename = `${uuid()}.${ext}`;
+    const inputBuffer = Buffer.from(await file.arrayBuffer());
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    // Convert ke WebP + resize jika terlalu besar
+    const webpBuffer = await sharp(inputBuffer)
+      .rotate() // mengikuti orientasi kamera HP
+      .resize({
+        width: 1920,
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality: 80,
+        effort: 6,
+      })
+      .toBuffer();
+
+    const filename = `${uuid()}.webp`;
 
     const { error } = await supabase.storage
       .from("umkm-images")
-      .upload(filename, buffer, {
-        contentType: file.type,
+      .upload(filename, webpBuffer, {
+        contentType: "image/webp",
         upsert: false,
       });
 
@@ -63,14 +79,14 @@ export async function POST(req: Request) {
       throw error;
     }
 
-    const { data: publicUrl } = supabase.storage
+    const { data } = supabase.storage
       .from("umkm-images")
       .getPublicUrl(filename);
 
     return NextResponse.json({
       success: true,
-      url: publicUrl.publicUrl,
       filename,
+      url: data.publicUrl,
     });
   } catch (error) {
     console.error("UPLOAD ERROR:", error);
