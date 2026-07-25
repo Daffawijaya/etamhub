@@ -55,9 +55,8 @@ export default function FormSelect({
           transition-colors
           duration-300
 
-          focus:border-[#1184CA]
-          focus:ring-1
-          focus:ring-[#1184CA]/20
+          focus:border-pur
+
         "
       >
         <option

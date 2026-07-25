@@ -1,13 +1,14 @@
+"use client";
+
 import FormField from "../ui/FormField";
 import FormSection from "../ui/FormSection";
-
 import KecamatanSelect from "../KecamatanSelect";
+import LocationPicker from "../map/LocationPicker";
 
 import { UmkmFormData } from "../types";
 
 interface Props {
   form: UmkmFormData;
-
   setForm: React.Dispatch<React.SetStateAction<UmkmFormData>>;
 }
 
@@ -21,19 +22,12 @@ export default function LocationSection({ form, setForm }: Props) {
 
   return (
     <FormSection title="Lokasi">
-      <div
-        className="
-grid
-md:grid-cols-2
-gap-4
-"
-      >
+      <div className="grid md:grid-cols-2 gap-4">
         <KecamatanSelect
           value={form.kecamatan}
           onChange={(value) =>
             setForm((prev) => ({
               ...prev,
-
               kecamatan: value,
             }))
           }
@@ -58,6 +52,20 @@ gap-4
           placeholder="Longitude"
           value={form.lng}
           onChange={handleChange}
+        />
+      </div>
+
+      <div className="mt-6">
+        <LocationPicker
+          latitude={form.lat}
+          longitude={form.lng}
+          onSave={(lat, lng) =>
+            setForm((prev) => ({
+              ...prev,
+              lat: lat.toString(),
+              lng: lng.toString(),
+            }))
+          }
         />
       </div>
     </FormSection>

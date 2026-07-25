@@ -112,6 +112,8 @@ w-full
 h-36
 rounded-xl
 border
+placeholder:text-slate-400
+      dark:placeholder:text-slate-500
 border-slate-200
 dark:border-slate-800
 bg-white
@@ -120,7 +122,7 @@ px-4
 py-3
 text-sm
 outline-none
-focus:border-[#1184CA]
+focus:border-pur
 "
       />
     </FormSection>

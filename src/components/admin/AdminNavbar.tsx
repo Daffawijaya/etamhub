@@ -43,7 +43,7 @@ export default function AdminNavbar({ title = "Dashboard" }: AdminNavbarProps) {
             onClick={handleLogout}
             className="
               flex h-12 items-center gap-2 rounded-2xl 
-              bg-red-500 px-4 text-sm font-medium text-white
+              bg-red-500 dark:bg-danger px-4 text-sm font-medium text-white
               transition-all duration-300
               hover:bg-red-600
             "
@@ -89,9 +89,9 @@ export default function AdminNavbar({ title = "Dashboard" }: AdminNavbarProps) {
           onClick={handleLogout}
           className="
             flex h-12 items-center gap-2 rounded-2xl 
-            bg-red-500 px-4 text-sm font-medium text-white
+            bg-red-500 dark:bg-danger px-4 text-sm font-medium text-white
             transition-all duration-300
-            hover:bg-red-600
+            hover:bg-red-600 dark:hover:bg-danger-hover
           "
         >
           <LogOut size={18} />

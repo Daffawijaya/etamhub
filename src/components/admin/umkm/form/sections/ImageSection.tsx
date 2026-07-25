@@ -49,8 +49,10 @@ dark:border-slate-700
 rounded-xl
 p-6
 cursor-pointer
-hover:bg-slate-50
-dark:hover:bg-slate-900
+hover:bg-[#e8ddf0]
+dark:hover:bg-[#24152e]
+transition
+duration-300
 "
       >
         <Upload size={18} />

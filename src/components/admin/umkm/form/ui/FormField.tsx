@@ -36,7 +36,7 @@ export default function FormField({
       py-3
       text-sm
       outline-none
-      focus:border-[#1184CA]
+      focus:border-pur
       transition
       "
     />

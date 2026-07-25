@@ -36,7 +36,8 @@ export default function KBLISelect({ value, onChange }: Props) {
 
           bg-white
           dark:bg-dark
-
+placeholder:text-slate-400
+      dark:placeholder:text-slate-500
           px-4
           py-3
 
@@ -46,9 +47,7 @@ export default function KBLISelect({ value, onChange }: Props) {
 
           outline-none
 
-          focus:border-[#1184CA]
-          focus:ring-1
-          focus:ring-[#1184CA]/20
+          focus:border-pur
         "
       />
 

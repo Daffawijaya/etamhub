@@ -26,10 +26,10 @@ const getCategoryStyle = (kategori: string) => {
   switch (kategori) {
     case "Perdagangan":
       return `
-        bg-blue-50 
-        text-blue-700
-        dark:bg-blue-500/20
-        dark:text-blue-300
+        bg-green-50 
+        text-green-700
+        dark:bg-green-500/20
+        dark:text-green-300
       `;
 
     case "Jasa":

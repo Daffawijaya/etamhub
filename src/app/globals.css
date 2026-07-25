@@ -30,7 +30,25 @@
   --color-light-card: #fbfbfd;
   --color-light-card-hover: #f1f1f5;
 
+  --color-button-gray: #4a4a4a;
+  --color-button-gray-hover: #5a5a5a;
+
+  /* green */
+  --color-success: #006239;
+  --color-success-hover: #00854D;
+
+  /* red */
+  --color-danger: #A52A2A;
+  --color-danger-hover: #C03636;
+
   --color-gry: #f6f9f9;
+
+  --color-pur: #8b5cf6;
+  --color-pur-dark: #c4b5fd;
+  --color-yel: #f59e0b;
+  --color-yel-dark: #fcd34d;
+  --color-gre: #10b981;
+  --color-gre-dark: #6ee7b7;
 }
 
 * {
