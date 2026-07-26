@@ -3,7 +3,7 @@ import UmkmMap from "@/components/map/UmkmMap";
 import Navbar from "@/components/navbar/Navbar";
 
 export default async function PetaPage() {
-  const { data: umkms, error } = await supabase.from("umkm").select("*");
+  const { data: umkms, error } = await supabase.from("umkm").select("*").eq("published", true);;
 
   if (error) {
     throw new Error(error.message);
