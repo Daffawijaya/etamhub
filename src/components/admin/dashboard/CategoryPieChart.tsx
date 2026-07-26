@@ -1,5 +1,3 @@
-import type { Umkm } from "@/data/umkm";
-
 const COLORS = {
   Perdagangan: "#1184CA",
   Jasa: "#844EC0",
@@ -7,21 +5,14 @@ const COLORS = {
 };
 
 interface Props {
-  umkms: Umkm[];
+  data: {
+    name: string;
+    value: number;
+  }[];
 }
 
-export default function CategoryStats({ umkms }: Props) {
-  const total = umkms.length;
-
-  const data = Object.entries(
-    umkms.reduce(
-      (acc, item) => {
-        acc[item.kategori] = (acc[item.kategori] || 0) + 1;
-        return acc;
-      },
-      {} as Record<string, number>,
-    ),
-  );
+export default function CategoryStats({ data }: Props) {
+  const total = data.reduce((acc, item) => acc + item.value, 0);
 
   return (
     <div
@@ -49,22 +40,20 @@ export default function CategoryStats({ umkms }: Props) {
       </h2>
 
       <div className="space-y-5">
-        {data.map(([name, value]) => {
-          const percentage = total ? (value / total) * 100 : 0;
+        {data.map((item) => {
+          const percentage = total ? (item.value / total) * 100 : 0;
 
           return (
-            <div key={name}>
+            <div key={item.name}>
               <div className="mb-2 flex items-center justify-between">
                 <span
                   className="
                     font-medium
                     text-gray-900
                     dark:text-white
-                    transition-colors
-                    duration-300
                   "
                 >
-                  {name}
+                  {item.name}
                 </span>
 
                 <span
@@ -72,11 +61,9 @@ export default function CategoryStats({ umkms }: Props) {
                     text-sm
                     text-gray-500
                     dark:text-gray-400
-                    transition-colors
-                    duration-300
                   "
                 >
-                  {value} UMKM
+                  {item.value} UMKM
                 </span>
               </div>
 
@@ -87,8 +74,6 @@ export default function CategoryStats({ umkms }: Props) {
                   rounded-full
                   bg-gray-100
                   dark:bg-black/30
-                  transition-colors
-                  duration-300
                 "
               >
                 <div
@@ -100,7 +85,7 @@ export default function CategoryStats({ umkms }: Props) {
                   "
                   style={{
                     width: `${percentage}%`,
-                    backgroundColor: COLORS[name as keyof typeof COLORS],
+                    backgroundColor: COLORS[item.name as keyof typeof COLORS],
                   }}
                 />
               </div>

@@ -1,14 +1,16 @@
 "use client";
 
 interface Props {
-  sort: string;
+  kecamatanOptions: string[];
+  kategoriOptions: string[];
+
   kecamatan: string;
   kategori: string;
-  kecamatanOptions: string[];
+  sort: string;
 
-  onSortChange: (value: string) => void;
   onKecamatanChange: (value: string) => void;
   onKategoriChange: (value: string) => void;
+  onSortChange: (value: string) => void;
 }
 
 export default function UmkmFilters({
@@ -16,6 +18,7 @@ export default function UmkmFilters({
   kecamatan,
   kategori,
   kecamatanOptions,
+  kategoriOptions,
   onSortChange,
   onKecamatanChange,
   onKategoriChange,
@@ -84,17 +87,13 @@ export default function UmkmFilters({
           Semua Kategori
         </option>
 
-        <option className={optionClass} value="Jasa">
-          Jasa
-        </option>
-
-        <option className={optionClass} value="Perdagangan">
-          Perdagangan
-        </option>
-
-        <option className={optionClass} value="Industri">
-          Industri
-        </option>
+        {kategoriOptions
+          .filter((item) => item !== "all")
+          .map((item) => (
+            <option className={optionClass} key={item} value={item}>
+              {item}
+            </option>
+          ))}
       </select>
 
       {/* Kecamatan */}

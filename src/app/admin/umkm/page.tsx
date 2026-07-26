@@ -1,25 +1,10 @@
 import UmkmDataTable from "@/components/admin/umkm/UmkmDataTable";
-import { getBaseUrl } from "@/lib/api";
-
-async function getUmkms() {
-  const res = await fetch(`${getBaseUrl()}/api/umkm`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Gagal mengambil data UMKM");
-  }
-
-  return res.json();
-}
 
 export default async function UmkmPage() {
-  const umkms = await getUmkms();
-
   return (
     <div className="space-y-6 px-6 pb-6 bg-light dark:bg-dark h-min-screen">
       <div className="bg-light dark:bg-dark h-min-screen">
-        <UmkmDataTable data={umkms} />
+        <UmkmDataTable limit={10} />
       </div>
     </div>
   );

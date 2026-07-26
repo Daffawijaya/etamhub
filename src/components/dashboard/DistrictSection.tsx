@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { slugify } from "@/lib/slugify";
-import SectionHeader from "./textBlock/SectionHeader";
-import BottomAccent from "./decoration/BottomAccent";
+import SectionHeader from "../textBlock/SectionHeader";
+import BottomAccent from "../decoration/BottomAccent";
 
 export default async function DistrictSection() {
   const { data: umkms, error } = await supabase
     .from("umkm")
-    .select("kecamatan");
-
+    .select("kecamatan")
+    .eq("published", true)
   if (error) {
     throw new Error(error.message);
   }

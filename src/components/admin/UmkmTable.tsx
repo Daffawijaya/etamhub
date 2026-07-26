@@ -6,9 +6,8 @@ import { getUmkmImage } from "@/lib/getUmkmImage";
 import type { Umkm } from "@/data/umkm";
 
 interface UmkmTableProps {
-  data: Umkm[];
+  data?: Umkm[];
   columns?: UmkmTableColumns;
-  onEdit?: (item: Umkm) => void;
 }
 
 interface UmkmTableColumns {
@@ -69,8 +68,7 @@ const formatDate = (date: string) => {
 };
 
 export default function UmkmTable({
-  data,
-  onEdit,
+  data = [],
   columns = {
     gambar: true,
     nama: true,

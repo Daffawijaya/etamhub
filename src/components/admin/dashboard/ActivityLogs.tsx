@@ -1,4 +1,3 @@
-import { getBaseUrl } from "@/lib/api";
 import { Download, Pencil, Plus, Trash2 } from "lucide-react";
 
 interface Notification {
@@ -6,6 +5,10 @@ interface Notification {
   type: "create" | "update" | "delete" | "import";
   title: string;
   created_at: string;
+}
+
+interface Props {
+  activities: Notification[];
 }
 
 const icons = {
@@ -49,23 +52,7 @@ function getRelativeTime(dateString?: string) {
   return `${Math.floor(months / 12)} tahun lalu`;
 }
 
-export default async function ActivityLogs() {
-  const res = await fetch(`${getBaseUrl()}/api/notifications`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Gagal mengambil aktivitas");
-  }
-
-  const notifications: Notification[] = await res.json();
-
-  const activities = notifications
-    .sort(
-      (a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-    )
-    .slice(0, 5);
+export default function ActivityLogs({ activities }: Props) {
 
   return (
     <div

@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import HeroNavbar from "./navbar/HeroNavbar";
-import BigChevronButtonButton from "./button/BigChevronButton";
+import HeroNavbar from "../navbar/HeroNavbar";
+import BigChevronButtonButton from "../button/BigChevronButton";
 import { useRouter } from "next/navigation";
 
 export default function Hero() {

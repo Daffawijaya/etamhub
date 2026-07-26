@@ -1,37 +1,33 @@
 import { MapPinned, Store, Tags } from "lucide-react";
-import type { Umkm } from "@/data/umkm";
 
 interface Props {
-  umkms: Umkm[];
+  stats: {
+    totalUmkm: number;
+    totalKecamatan: number;
+    totalSubkategori: number;
+  };
 }
 
-export default function StatsCards({ umkms }: Props) {
-  const totalUmkm = umkms.length;
-
-  const totalKecamatan = new Set(umkms.map((item) => item.kecamatan)).size;
-
-  const totalSubkategori = new Set(umkms.map((item) => item.subkategori)).size;
-
+export default function StatsCards({ stats }: Props) {
   return (
     <div
       className="
-    relative overflow-hidden rounded-2xl p-8 text-white
-    bg-gradient-to-br
+        relative overflow-hidden rounded-2xl p-8 text-white
+        bg-gradient-to-br
 
-    from-[#ff7a59]
-    via-[#ff6b7d]
-    to-[#ff4fa3]
+        from-[#ff7a59]
+        via-[#ff6b7d]
+        to-[#ff4fa3]
 
-    dark:from-[#1b1027]
-    dark:via-[#21152f]
-    dark:to-[#130f1d]
+        dark:from-[#1b1027]
+        dark:via-[#21152f]
+        dark:to-[#130f1d]
 
-    transition-all
-    duration-500
-    ease-in-out
-  "
+        transition-all
+        duration-500
+        ease-in-out
+      "
     >
-      {/* glow */}
       <div
         className="
           absolute -right-16 -top-16
@@ -69,7 +65,7 @@ export default function StatsCards({ umkms }: Props) {
             <p className="text-white/70">Total UMKM</p>
 
             <h2 className="text-6xl font-bold leading-none">
-              {totalUmkm.toLocaleString("id-ID")}
+              {stats.totalUmkm.toLocaleString("id-ID")}
             </h2>
 
             <p className="mt-1 text-white/70">Terdaftar di etamhub.</p>
@@ -92,7 +88,7 @@ export default function StatsCards({ umkms }: Props) {
               <span className="text-sm text-white/80">Kecamatan</span>
             </div>
 
-            <p className="text-2xl font-bold">{totalKecamatan}</p>
+            <p className="text-2xl font-bold">{stats.totalKecamatan}</p>
           </div>
 
           <div
@@ -110,7 +106,7 @@ export default function StatsCards({ umkms }: Props) {
               <span className="text-sm text-white/80">Subkategori</span>
             </div>
 
-            <p className="text-2xl font-bold">{totalSubkategori}</p>
+            <p className="text-2xl font-bold">{stats.totalSubkategori}</p>
           </div>
         </div>
       </div>

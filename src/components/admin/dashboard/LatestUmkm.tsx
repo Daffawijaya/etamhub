@@ -1,4 +1,4 @@
-import UmkmTable from "./UmkmTable";
+import UmkmTable from "../UmkmTable";
 import type { Umkm } from "@/data/umkm";
 
 interface Props {

@@ -1,11 +1,11 @@
 import { supabase } from "@/lib/supabase";
-import SectionHeader from "./textBlock/SectionHeader";
+import SectionHeader from "../textBlock/SectionHeader";
 
 export default async function StatsSection() {
   const { data: umkms, error } = await supabase
     .from("umkm")
-    .select("kecamatan, subkategori");
-
+    .select("kecamatan, subkategori")
+    .eq("published", true);
   if (error) {
     throw new Error(error.message);
   }

@@ -7,9 +7,10 @@ import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 interface Props {
   id: string | number;
+  onEdit?: () => void;
 }
 
-export default function UmkmRowActions({ id }: Props) {
+export default function UmkmRowActions({ id, onEdit }: Props) {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -139,7 +140,12 @@ export default function UmkmRowActions({ id }: Props) {
           >
             <button
               onClick={() => {
-                router.push(`/admin/umkm/${id}/edit`);
+                if (onEdit) {
+                  onEdit();
+                } else {
+                  router.push(`/admin/umkm/${id}/edit`);
+                }
+
                 setOpen(false);
               }}
               className="

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { cookies } from "next/headers";
 import {
   isValidEmail,
   isValidFacebookUrl,
@@ -12,18 +13,88 @@ import {
   normalizeWhatsapp,
 } from "@/lib/validation";
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    const { data, error } = await supabase
+    const cookieStore = await cookies();
+    console.log("ADMIN COOKIE:", cookieStore.get("admin"));
+    const isAdmin = !!cookieStore.get("admin");
+    const { searchParams } = new URL(req.url);
+
+    const search = searchParams.get("search");
+    const kecamatan = searchParams.get("kecamatan");
+    const kategori = searchParams.get("kategori");
+
+    const allowedSort = ["nama", "created_at"];
+
+    const sortParam = searchParams.get("sort");
+
+    const sort = allowedSort.includes(sortParam ?? "")
+      ? sortParam!
+      : "created_at";
+    const order = searchParams.get("order") === "asc";
+
+    const page = Number(searchParams.get("page") || 1);
+    const limit = Number(searchParams.get("limit") || 10);
+
+    let umkmQuery = supabaseAdmin.from("umkm").select("*", { count: "exact" });
+
+    // Public hanya yang publish
+    if (!isAdmin) {
+      umkmQuery = umkmQuery.eq("published", true);
+    }
+
+    // Filter kecamatan
+    if (kecamatan) {
+      umkmQuery = umkmQuery.eq("kecamatan", kecamatan);
+    }
+
+    // Filter kategori
+    if (kategori) {
+      umkmQuery = umkmQuery.eq("kategori", kategori);
+    }
+
+    // Search nama
+    if (search) {
+      umkmQuery = umkmQuery.ilike("nama", `%${search}%`);
+    }
+
+    // Sorting
+    umkmQuery = umkmQuery.order(sort, {
+      ascending: order,
+    });
+
+    // Pagination
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    umkmQuery = umkmQuery.range(from, to);
+
+    const { data: filtersData } = await supabaseAdmin
       .from("umkm")
-      .select("*")
-      .order("created_at", {
-        ascending: false,
-      });
+      .select("kecamatan, kategori");
+
+    const kecamatanOptions = [
+      ...new Set(filtersData?.map((item) => item.kecamatan).filter(Boolean)),
+    ];
+
+    const kategoriOptions = [
+      ...new Set(filtersData?.map((item) => item.kategori).filter(Boolean)),
+    ];
+
+    const { data, error, count } = await umkmQuery;
 
     if (error) throw error;
 
-    return NextResponse.json(data);
+    return NextResponse.json({
+      data,
+      total: count,
+      page,
+      limit,
+      filters: {
+        kecamatan: kecamatanOptions,
+        kategori: kategoriOptions,
+      },
+    });
   } catch (error: any) {
     console.error("GET UMKM ERROR:", error);
 
@@ -58,7 +129,7 @@ export async function POST(req: Request) {
     ].forEach((field) => {
       body[field] = normalizeNullable(body[field]);
     });
-    const { data: existingNik, error: nikError } = await supabase
+    const { data: existingNik, error: nikError } = await supabaseAdmin
       .from("umkm")
       .select("id")
       .eq("nik", body.nik)
@@ -74,7 +145,7 @@ export async function POST(req: Request) {
     }
 
     if (body.nib) {
-      const { data: existingNib, error: nibError } = await supabase
+      const { data: existingNib, error: nibError } = await supabaseAdmin
         .from("umkm")
         .select("id")
         .eq("nib", body.nib)
@@ -128,7 +199,7 @@ export async function POST(req: Request) {
 
     const now = new Date().toISOString();
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from("umkm")
       .insert({
         id: crypto.randomUUID(),
@@ -141,7 +212,7 @@ export async function POST(req: Request) {
 
     if (error) throw error;
 
-    await supabase.from("notifications").insert({
+    await supabaseAdmin.from("notifications").insert({
       id: crypto.randomUUID(),
       type: "create",
       title: `Menambahkan UMKM ${data.nama}`,

@@ -1,9 +1,9 @@
 import Navbar from "@/components/navbar/Navbar";
-import StatsSection from "@/components/StatsSection";
-import DistrictSection from "@/components/DistrictSection";
+import StatsSection from "@/components/dashboard/StatsSection";
+import DistrictSection from "@/components/dashboard/DistrictSection";
 import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import InsightSection from "@/components/InsightSection";
+import Hero from "@/components/dashboard/Hero";
+import InsightSection from "@/components/dashboard/InsightSection";
 import FooterBrand from "@/components/FooterBrand";
 
 export default function Home() {

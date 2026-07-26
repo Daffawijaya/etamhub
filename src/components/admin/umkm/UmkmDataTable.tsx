@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import UmkmSearch from "../UmkmSearch";
 import UmkmFilters from "../UmkmFilters";
@@ -9,60 +9,51 @@ import UmkmPagination from "./UmkmPagination";
 import UmkmTableHeaderActions from "./UmkmTableHeaderActions";
 
 interface Props {
-  data: any[];
+  limit?: number;
 }
 
-export default function UmkmDataTable({ data }: Props) {
+export default function UmkmDataTable({ limit = 10 }: Props) {
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("nama");
   const [kecamatan, setKecamatan] = useState("all");
   const [kategori, setKategori] = useState("all");
   const [page, setPage] = useState(1);
   const router = useRouter();
+  const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
+  const [kategoriOptions, setKategoriOptions] = useState<string[]>([]);
+  const [umkms, setUmkms] = useState<any[]>([]);
+  const [total, setTotal] = useState(0);
 
-  const limit = 10;
+  const fetchUmkms = useCallback(async () => {
+    const params = new URLSearchParams({
+      admin: "true",
+      page: String(page),
+      limit: String(limit),
+      sort,
+      order: sort === "nama" ? "asc" : "desc",
+    });
 
-  const kecamatanOptions = useMemo(() => {
-    return [
-      "all",
-      ...new Set(data.map((item) => item.kecamatan).filter(Boolean)),
-    ];
-  }, [data]);
+    if (search) params.append("search", search);
+    if (kecamatan !== "all") params.append("kecamatan", kecamatan);
+    if (kategori !== "all") params.append("kategori", kategori);
 
-  const filteredData = useMemo(() => {
-    let result = [...data];
+    const res = await fetch(`/api/umkm?${params}`);
 
-    if (search) {
-      result = result.filter((item) =>
-        item.nama.toLowerCase().includes(search.toLowerCase()),
-      );
-    }
+    const result = await res.json();
 
-    if (kecamatan !== "all") {
-      result = result.filter((item) => item.kecamatan === kecamatan);
-    }
+    console.log("API RESULT:", result);
 
-    if (kategori !== "all") {
-      result = result.filter((item) => item.kategori === kategori);
-    }
+    setUmkms(result.data ?? []);
+    setTotal(result.total ?? 0);
 
-    if (sort === "nama") {
-      result.sort((a, b) => a.nama.localeCompare(b.nama));
-    }
+    setKecamatanOptions(["all", ...(result.filters?.kecamatan ?? [])]);
 
-    if (sort === "terbaru") {
-      result.sort(
-        (a, b) =>
-          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-      );
-    }
-
-    return result;
-  }, [data, search, sort, kecamatan, kategori]);
-
-  const totalPages = Math.ceil(filteredData.length / limit);
-
-  const paginatedData = filteredData.slice((page - 1) * limit, page * limit);
+    setKategoriOptions(["all", ...(result.filters?.kategori ?? [])]);
+  }, [page, limit, search, sort, kecamatan, kategori]);
+  useEffect(() => {
+    fetchUmkms();
+  }, [fetchUmkms]);
+  const totalPages = Math.ceil(total / limit);
 
   return (
     <div
@@ -121,20 +112,21 @@ export default function UmkmDataTable({ data }: Props) {
           />
 
           <UmkmFilters
-            sort={sort}
+            kecamatanOptions={kecamatanOptions}
+            kategoriOptions={kategoriOptions}
             kecamatan={kecamatan}
             kategori={kategori}
-            kecamatanOptions={kecamatanOptions}
-            onSortChange={(value) => {
-              setSort(value ?? "nama");
-              setPage(1);
-            }}
+            sort={sort}
             onKecamatanChange={(value) => {
-              setKecamatan(value ?? "all");
+              setKecamatan(value);
               setPage(1);
             }}
             onKategoriChange={(value) => {
-              setKategori(value ?? "all");
+              setKategori(value);
+              setPage(1);
+            }}
+            onSortChange={(value) => {
+              setSort(value);
               setPage(1);
             }}
           />
@@ -143,19 +135,12 @@ export default function UmkmDataTable({ data }: Props) {
 
       {/* Table */}
       <div className="p-0">
-        <UmkmTable
-          data={paginatedData}
-          onEdit={(item) => {
-            router.push(`/admin/umkm/edit/${item.id}`);
-          }}
-        />
+        <UmkmTable data={umkms} />
 
         <UmkmPagination
           page={page}
           totalPages={totalPages}
-          onPageChange={(value) => {
-            setPage(value);
-          }}
+          onPageChange={setPage}
         />
       </div>
     </div>

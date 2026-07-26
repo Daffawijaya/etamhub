@@ -1,4 +1,4 @@
-import DashboardGrid from "@/components/admin/DashboardGrid";
+import DashboardGrid from "@/components/admin/dashboard/DashboardGrid";
 
 export default function AdminPage() {
   return (

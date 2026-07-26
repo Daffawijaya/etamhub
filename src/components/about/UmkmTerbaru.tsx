@@ -10,6 +10,7 @@ export default async function UmkmTerbaruSection() {
   let { data: latestUmkms, error } = await supabase
     .from("umkm")
     .select("*")
+    .eq("published", true)
     .order("created_at", {
       ascending: false,
     })
