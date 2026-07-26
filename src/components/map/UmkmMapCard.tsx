@@ -22,7 +22,6 @@ export default function UmkmMapCard({
   id,
   onClose,
 }: UmkmMapCardProps) {
-
   return (
     <>
       {/* Tampilan Mobile (< md) */}
@@ -46,7 +45,6 @@ export default function UmkmMapCard({
         lat={lat}
         lng={lng}
         id={id}
-        
       />
     </>
   );

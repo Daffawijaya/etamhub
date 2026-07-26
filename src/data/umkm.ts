@@ -3,15 +3,17 @@ export type Umkm = {
 
   nama: string;
   pemilik: string | null;
-  kategori: string | null;
-  subkategori: string | null;
+
+  kategori: string;
+  subkategori: string;
+
   deskripsi: string | null;
 
-  kecamatan: string | null;
+  kecamatan: string;
   alamat: string | null;
 
-  lat: number | null;
-  lng: number | null;
+  lat: number;
+  lng: number;
 
   whatsapp: string | null;
   instagram: string | null;
@@ -30,10 +32,10 @@ export type Umkm = {
   haki: string | null;
 
   kbli: string[] | null;
-  gambar: string[] | null;
+  gambar: string[];
 
   created_at: string;
   updated_at: string | null;
 
-  published: boolean | null;
+  published: boolean;
 };
