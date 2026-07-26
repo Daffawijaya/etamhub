@@ -3,18 +3,28 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
-import { MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { Eye, EyeOff, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 
 interface Props {
   id: string | number;
+  published: boolean | null;
   onEdit?: () => void;
+  onStatusChanged?: () => void;
+  showPublishAction?: boolean;
 }
 
-export default function UmkmRowActions({ id, onEdit }: Props) {
+export default function UmkmRowActions({
+  id,
+  published,
+  onEdit,
+  onStatusChanged,
+  showPublishAction = true,
+}: Props) {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [publishLoading, setPublishLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -60,14 +70,40 @@ export default function UmkmRowActions({ id, onEdit }: Props) {
 
     setOpen((prev) => !prev);
   }
+  async function handleTogglePublished() {
+    try {
+      setPublishLoading(true);
 
+      const res = await fetch(`/api/umkm/${id}/publish`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          published: !published,
+        }),
+      });
+
+      if (!res.ok) {
+        throw new Error("Gagal mengubah status");
+      }
+
+      setOpen(false);
+      onStatusChanged?.();
+    } catch (error) {
+      console.error(error);
+      alert("Gagal mengubah status");
+    } finally {
+      setPublishLoading(false);
+    }
+  }
   async function handleDelete() {
     const confirmDelete = window.confirm("Yakin ingin menghapus UMKM ini?");
 
     if (!confirmDelete) return;
 
     try {
-      setLoading(true);
+      setDeleteLoading(true);
 
       const res = await fetch(`/api/umkm/${id}`, {
         method: "DELETE",
@@ -83,7 +119,7 @@ export default function UmkmRowActions({ id, onEdit }: Props) {
       console.error(error);
       alert("Gagal menghapus UMKM");
     } finally {
-      setLoading(false);
+      setDeleteLoading(false);
     }
   }
 
@@ -164,17 +200,43 @@ export default function UmkmRowActions({ id, onEdit }: Props) {
               <Pencil size={16} />
               Edit UMKM
             </button>
+            {showPublishAction && (
+              <>
+                <button
+                  disabled={publishLoading}
+                  onClick={handleTogglePublished}
+                  className="
+        flex w-full items-center gap-3
+        px-4 py-3
+        text-sm font-medium
 
-            <div
-              className="
-                h-px
-                bg-slate-100
-                dark:bg-white/10
-              "
-            />
+        text-slate-700
+        transition-colors duration-300
+        hover:bg-slate-50
+
+        dark:text-slate-200
+        dark:hover:bg-white/10
+      "
+                >
+                  {published ? <EyeOff size={16} /> : <Eye size={16} />}
+                  {publishLoading
+                    ? "Mengubah..."
+                    : published
+                      ? "Jadikan Privat"
+                      : "Jadikan Publik"}
+                </button>
+
+                <div
+                  className="
+        bg-slate-100
+        dark:bg-white/10
+      "
+                />
+              </>
+            )}
 
             <button
-              disabled={loading}
+              disabled={deleteLoading}
               onClick={handleDelete}
               className="
                 flex w-full items-center gap-3
@@ -194,7 +256,7 @@ export default function UmkmRowActions({ id, onEdit }: Props) {
             >
               <Trash2 size={16} />
 
-              {loading ? "Menghapus..." : "Hapus UMKM"}
+              {deleteLoading ? "Menghapus..." : "Hapus UMKM"}
             </button>
           </div>,
           document.body,

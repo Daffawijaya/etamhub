@@ -8,6 +8,8 @@ import type { Umkm } from "@/data/umkm";
 interface UmkmTableProps {
   data?: Umkm[];
   columns?: UmkmTableColumns;
+  onStatusChanged?: () => void;
+  showPublishAction?: boolean;
 }
 
 interface UmkmTableColumns {
@@ -18,10 +20,11 @@ interface UmkmTableColumns {
   kategori?: boolean;
   kecamatan?: boolean;
   createdAt?: boolean;
+  status?: boolean;
   action?: boolean;
 }
 
-const getCategoryStyle = (kategori: string) => {
+const getCategoryStyle = (kategori: string | null) => {
   switch (kategori) {
     case "Perdagangan":
       return `
@@ -57,6 +60,20 @@ const getCategoryStyle = (kategori: string) => {
   }
 };
 
+const getStatusStyle = (published: boolean | null) => {
+  return published
+    ? `
+        bg-green-50
+        text-green-700
+        dark:bg-green-500/20
+        dark:text-green-300
+      `
+    : `
+        bg-slate-500/10
+        text-slate-500
+      `;
+};
+
 const formatDate = (date: string) => {
   if (!date) return "-";
 
@@ -77,8 +94,11 @@ export default function UmkmTable({
     kategori: true,
     kecamatan: true,
     createdAt: true,
+    status: true,
     action: true,
   },
+  onStatusChanged,
+  showPublishAction = true,
 }: UmkmTableProps) {
   return (
     <>
@@ -181,6 +201,24 @@ export default function UmkmTable({
             </div>
           )}
 
+          {columns.status && (
+            <div className="w-[110px] flex-shrink-0">
+              <span
+                className={`
+        inline-flex
+        rounded-full
+        px-3
+        py-1.5
+        text-sm
+        font-medium
+        ${getStatusStyle(item.published)}
+      `}
+              >
+                {item.published ? "Publik" : "Privat"}
+              </span>
+            </div>
+          )}
+
           {columns.createdAt && (
             <div className="w-[100px] flex-shrink-0">
               <p className="text-sm text-slate-500 dark:text-slate-400">
@@ -189,7 +227,14 @@ export default function UmkmTable({
             </div>
           )}
 
-          {columns.action && <UmkmRowActions id={item.id} />}
+          {columns.action && (
+            <UmkmRowActions
+              id={item.id}
+              published={item.published}
+              onStatusChanged={onStatusChanged}
+              showPublishAction={showPublishAction}
+            />
+          )}
         </div>
       ))}
     </>

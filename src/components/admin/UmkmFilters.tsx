@@ -7,7 +7,9 @@ interface Props {
   kecamatan: string;
   kategori: string;
   sort: string;
+  status: string;
 
+  onStatusChange: (value: string) => void;
   onKecamatanChange: (value: string) => void;
   onKategoriChange: (value: string) => void;
   onSortChange: (value: string) => void;
@@ -17,11 +19,13 @@ export default function UmkmFilters({
   sort,
   kecamatan,
   kategori,
+  status,
   kecamatanOptions,
   kategoriOptions,
   onSortChange,
   onKecamatanChange,
   onKategoriChange,
+  onStatusChange,
 }: Props) {
   const selectClass = `
     h-11
@@ -62,6 +66,24 @@ export default function UmkmFilters({
 
   return (
     <div className="flex flex-wrap items-center gap-3">
+      {/* Status */}
+      <select
+        value={status}
+        onChange={(e) => onStatusChange(e.target.value)}
+        className={`${selectClass} w-40`}
+      >
+        <option className={optionClass} value="all">
+          Semua Status
+        </option>
+
+        <option className={optionClass} value="public">
+          Publik
+        </option>
+
+        <option className={optionClass} value="private">
+          Privat
+        </option>
+      </select>
       {/* Sort */}
       <select
         value={sort}

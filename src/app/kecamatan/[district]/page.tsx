@@ -4,7 +4,6 @@ import { useMemo, useState, use, useEffect } from "react";
 import Footer from "@/components/Footer";
 import UmkmCard from "@/components/district/UmkmCard";
 import KategoriFilter from "@/components/district/KategoriFilter";
-import { slugify } from "@/lib/slugify";
 import Breadcrumb from "@/components/Breadcrumb";
 import Pagination from "@/components/district/Pagination";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
@@ -49,6 +48,8 @@ export default function KecamatanPage({ params }: Props) {
   const { district } = use(params);
 
   const [umkms, setUmkms] = useState<Umkm[]>([]);
+  const [total, setTotal] = useState(0);
+  const limit = 8;
 
   const [kategori, setKategori] = useState("Semua");
   const [urutTerdekat, setUrutTerdekat] = useState(false);
@@ -59,46 +60,35 @@ export default function KecamatanPage({ params }: Props) {
   } | null>(null);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(8);
 
   // Ambil dari Supabase lewat API
   useEffect(() => {
     async function fetchUmkm() {
       try {
-        const res = await fetch("/api/umkm");
+        const districtName = district
+          .split("-")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(" ");
 
-        if (!res.ok) {
-          throw new Error("Gagal mengambil data UMKM");
-        }
+        const params = new URLSearchParams({
+          kecamatan: districtName,
+          page: String(currentPage),
+          limit: String(limit),
+        });
 
-        const data = await res.json();
+        const res = await fetch(`/api/umkm?${params}`);
 
-        setUmkms(data);
+        const result = await res.json();
+
+        setUmkms(result.data ?? []);
+        setTotal(result.total ?? 0);
       } catch (error) {
         console.error(error);
       }
     }
 
     fetchUmkm();
-  }, []);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) {
-        setItemsPerPage(8);
-      } else {
-        setItemsPerPage(6);
-      }
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  }, [district, currentPage]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -123,14 +113,10 @@ export default function KecamatanPage({ params }: Props) {
     );
   }, [urutTerdekat]);
 
-  const data = useMemo(() => {
-    return umkms.filter((item) => slugify(item.kecamatan) === district);
-  }, [umkms, district]);
-
-  const totalSubkategori = new Set(data.map((item) => item.subkategori)).size;
+  const totalSubkategori = new Set(umkms.map((item) => item.subkategori)).size;
 
   const filteredData = useMemo(() => {
-    let hasil = [...data];
+    let hasil = [...umkms];
 
     if (kategori !== "Semua") {
       hasil = hasil.filter((item) => item.kategori === kategori);
@@ -167,16 +153,11 @@ export default function KecamatanPage({ params }: Props) {
     }
 
     return dataDenganJarak;
-  }, [data, kategori, urutTerdekat, userLocation]);
+  }, [umkms, kategori, urutTerdekat, userLocation]);
 
-  const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPages = Math.ceil(total / limit);
 
-  const paginatedData = filteredData.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage,
-  );
-
-  const districtName = data[0]?.kecamatan ?? "Tidak Diketahui";
+  const districtName = umkms[0]?.kecamatan ?? "Tidak Diketahui";
 
   return (
     <div className="min-h-screen flex flex-col bg-light-bg dark:bg-dark text-zinc-900 dark:text-white">
@@ -197,7 +178,7 @@ export default function KecamatanPage({ params }: Props) {
 
         <DistrictHero
           districtName={districtName}
-          totalUmkm={data.length}
+            totalUmkm={total}
           totalSubkategori={totalSubkategori}
           urutTerdekat={urutTerdekat}
         />
@@ -213,7 +194,7 @@ export default function KecamatanPage({ params }: Props) {
         </div>
 
         <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-6">
-          {paginatedData.map((item) => (
+          {filteredData.map((item) => (
             <UmkmCard
               key={item.id}
               id={item.id}

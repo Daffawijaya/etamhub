@@ -55,6 +55,7 @@ export default function LatestUmkm({ umkms }: Props) {
       <div className="pb-3">
         <UmkmTable
           data={latest}
+          showPublishAction={false}
           columns={{
             gambar: true,
             nama: true,

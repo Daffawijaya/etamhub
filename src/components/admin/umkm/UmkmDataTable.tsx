@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import UmkmSearch from "../UmkmSearch";
 import UmkmFilters from "../UmkmFilters";
 import UmkmTable from "../UmkmTable";
@@ -18,7 +17,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
   const [kecamatan, setKecamatan] = useState("all");
   const [kategori, setKategori] = useState("all");
   const [page, setPage] = useState(1);
-  const router = useRouter();
+  const [status, setStatus] = useState("all");
   const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
   const [kategoriOptions, setKategoriOptions] = useState<string[]>([]);
   const [umkms, setUmkms] = useState<any[]>([]);
@@ -26,7 +25,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
 
   const fetchUmkms = useCallback(async () => {
     const params = new URLSearchParams({
-      admin: "true",
+      mode: "admin",
       page: String(page),
       limit: String(limit),
       sort,
@@ -36,12 +35,11 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
     if (search) params.append("search", search);
     if (kecamatan !== "all") params.append("kecamatan", kecamatan);
     if (kategori !== "all") params.append("kategori", kategori);
+    if (status !== "all") params.append("status", status);
 
     const res = await fetch(`/api/umkm?${params}`);
 
     const result = await res.json();
-
-    console.log("API RESULT:", result);
 
     setUmkms(result.data ?? []);
     setTotal(result.total ?? 0);
@@ -49,7 +47,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
     setKecamatanOptions(["all", ...(result.filters?.kecamatan ?? [])]);
 
     setKategoriOptions(["all", ...(result.filters?.kategori ?? [])]);
-  }, [page, limit, search, sort, kecamatan, kategori]);
+  }, [page, limit, search, sort, kecamatan, kategori, status]);
   useEffect(() => {
     fetchUmkms();
   }, [fetchUmkms]);
@@ -117,6 +115,11 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
             kecamatan={kecamatan}
             kategori={kategori}
             sort={sort}
+            status={status}
+            onStatusChange={(value) => {
+              setStatus(value);
+              setPage(1);
+            }}
             onKecamatanChange={(value) => {
               setKecamatan(value);
               setPage(1);
@@ -135,7 +138,21 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
 
       {/* Table */}
       <div className="p-0">
-        <UmkmTable data={umkms} />
+        <UmkmTable
+          data={umkms}
+          columns={{
+            gambar: true,
+            nama: true,
+            pemilik: true,
+            whatsapp: true,
+            kategori: true,
+            kecamatan: true,
+            createdAt: false,
+            status: true,
+            action: true,
+          }}
+          onStatusChanged={fetchUmkms}
+        />
 
         <UmkmPagination
           page={page}

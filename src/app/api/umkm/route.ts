@@ -16,11 +16,15 @@ import {
 export async function GET(req: Request) {
   try {
     const cookieStore = await cookies();
-    console.log("ADMIN COOKIE:", cookieStore.get("admin"));
+
     const isAdmin = !!cookieStore.get("admin");
+
     const { searchParams } = new URL(req.url);
 
+    const mode = searchParams.get("mode");
+
     const search = searchParams.get("search");
+    const status = searchParams.get("status");
     const kecamatan = searchParams.get("kecamatan");
     const kategori = searchParams.get("kategori");
 
@@ -34,12 +38,14 @@ export async function GET(req: Request) {
     const order = searchParams.get("order") === "asc";
 
     const page = Number(searchParams.get("page") || 1);
-    const limit = Number(searchParams.get("limit") || 10);
+    const requestedLimit = Number(searchParams.get("limit") || 10);
+
+    const limit = Math.min(requestedLimit, 1000);
 
     let umkmQuery = supabaseAdmin.from("umkm").select("*", { count: "exact" });
 
-    // Public hanya yang publish
-    if (!isAdmin) {
+    // hanya request admin dashboard yang boleh lihat semua data
+    if (!(isAdmin && mode === "admin")) {
       umkmQuery = umkmQuery.eq("published", true);
     }
 
@@ -52,7 +58,11 @@ export async function GET(req: Request) {
     if (kategori) {
       umkmQuery = umkmQuery.eq("kategori", kategori);
     }
-
+    if (status === "public") {
+      umkmQuery = umkmQuery.eq("published", true);
+    } else if (status === "private") {
+      umkmQuery = umkmQuery.eq("published", false);
+    }
     // Search nama
     if (search) {
       umkmQuery = umkmQuery.ilike("nama", `%${search}%`);
