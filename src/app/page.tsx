@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import Navbar from "@/components/navbar/Navbar";
 import StatsSection from "@/components/dashboard/StatsSection";
 import DistrictSection from "@/components/dashboard/DistrictSection";

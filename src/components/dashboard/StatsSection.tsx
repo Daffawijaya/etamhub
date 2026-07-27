@@ -1,5 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import SectionHeader from "../textBlock/SectionHeader";
+export const dynamic = "force-dynamic";
 
 export default async function StatsSection() {
   const { data: umkms, error } = await supabase
