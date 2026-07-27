@@ -29,6 +29,10 @@ export default function AdminLayout({
       return "Edit UMKM";
     }
 
+    if (pathname.match(/^\/admin\/umkm\/[^/]/)) {
+      return "Detail UMKM";
+    }
+
     return "Admin";
   };
 

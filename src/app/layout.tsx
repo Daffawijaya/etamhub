@@ -4,6 +4,7 @@ import { Outfit } from "next/font/google";
 import Providers from "./provider";
 import ScrollTop from "@/components/ScrollTop";
 import "leaflet/dist/leaflet.css";
+import TopLoader from "@/components/TopLoader";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -26,7 +27,9 @@ export default function RootLayout({
     <html lang="id" suppressHydrationWarning>
       <body className={`${outfit.className} min-h-full flex flex-col`}>
         <Providers>
+          <TopLoader />
           <ScrollTop />
+
           {children}
         </Providers>
       </body>

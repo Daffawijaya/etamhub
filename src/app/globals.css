@@ -35,11 +35,11 @@
 
   /* green */
   --color-success: #006239;
-  --color-success-hover: #00854D;
+  --color-success-hover: #00854d;
 
   /* red */
-  --color-danger: #A52A2A;
-  --color-danger-hover: #C03636;
+  --color-danger: #a52a2a;
+  --color-danger-hover: #c03636;
 
   --color-gry: #f6f9f9;
 
@@ -93,4 +93,54 @@ body::-webkit-scrollbar,
   width: 0 !important;
   height: 0 !important;
   display: none !important;
+}
+
+/* EtamHub Loading Bar */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: linear-gradient(90deg, #1184ca 0%, #844ec0 50%, #ca3785 100%);
+
+  background-size: 200% 100%;
+  animation: etamhub-gradient 1.5s linear infinite;
+}
+
+/* efek cahaya di ujung */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0;
+
+  width: 100px;
+  height: 100%;
+
+  opacity: 1;
+
+  transform: rotate(3deg) translateY(-2px);
+
+  box-shadow:
+    0 0 10px #1184ca,
+    0 0 10px #844ec0,
+    0 0 5px #ca3785;
+}
+
+/* animasi gradasi */
+@keyframes etamhub-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
 }
