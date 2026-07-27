@@ -49,7 +49,6 @@ export default function AdminSidebar() {
     <aside
       className={`
         relative
-        z-1002
         sticky
         top-0
         flex
