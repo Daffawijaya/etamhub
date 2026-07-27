@@ -20,8 +20,6 @@ async function getUmkm(id: string) {
   }
 
   return res.json();
-
-  console.log(result.data);
 }
 
 export default async function UmkmPage({ params }: Props) {
