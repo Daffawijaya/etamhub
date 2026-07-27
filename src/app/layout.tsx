@@ -5,7 +5,7 @@ import Providers from "./provider";
 import ScrollTop from "@/components/ScrollTop";
 import "leaflet/dist/leaflet.css";
 import TopLoader from "@/components/TopLoader";
-import RouteLoader from "@/components/RouteLoader";
+import GlobalLoader from "@/components/GlobalLoader";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="id" suppressHydrationWarning>
       <body className={`${outfit.className} min-h-full flex flex-col`}>
         <TopLoader />
-        <RouteLoader />
+        <GlobalLoader />
         <Providers>
           <ScrollTop />
           {children}

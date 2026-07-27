@@ -97,11 +97,7 @@ body::-webkit-scrollbar,
 
 /* EtamHub Loading Bar */
 #nprogress .bar {
-  background: linear-gradient(
-    to right,
-    #844ec0,
-    #ca3785
-  ) !important;
+  background: linear-gradient(to right, #844ec0, #ca3785) !important;
 
   height: 2px !important;
 }
@@ -112,4 +108,18 @@ body::-webkit-scrollbar,
 
 #nprogress .spinner {
   display: none !important;
+}
+
+@keyframes loading {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(250%);
+  }
+}
+
+.animate-loading {
+  animation: loading 1s infinite ease-in-out;
 }
