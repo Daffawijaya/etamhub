@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
-import DaftarModal from "../DaftarModal";
+import DaftarModal from "../modal/DaftarModal";
 import { IoIosMoon, IoIosSunny } from "react-icons/io";
 import { navigation } from "@/data/navigation";
 

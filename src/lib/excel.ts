@@ -1,6 +1,8 @@
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 
+import { exportFields } from "./export-fields";
+
 export const excelHeaders = [
   "Nama UMKM",
   "Pemilik",
@@ -35,33 +37,38 @@ export function downloadUmkmTemplate() {
   saveAs(new Blob([buffer]), "template-import-umkm.xlsx");
 }
 
-export async function exportUmkmExcel() {
-  const res = await fetch("/api/umkm");
+export async function exportUmkmExcel(selectedFields: string[]) {
+  const res = await fetch("/api/umkm/export");
 
   const result = await res.json();
-
+  console.log("Export API Result:", result);
   if (!res.ok) {
     throw new Error(result.message || "Gagal export data");
   }
 
-  const rows = result.map((item: any) => ({
-    "Nama UMKM": item.nama,
-    Pemilik: item.pemilik,
-    Kategori: item.kategori,
-    Subkategori: item.subkategori ?? "",
-    "Deskripsi usaha": item.deskripsi,
-    "Foto usaha/produk": Array.isArray(item.gambar)
-      ? item.gambar.join(", ")
-      : (item.gambar ?? ""),
-    Kecamatan: item.kecamatan,
-    "Alamat lengkap": item.alamat,
-    Latitude: item.lat,
-    Longitude: item.lng,
-    whatsapp: item.whatsapp,
-    instagram: item.instagram,
-    "facebook url": item.facebook,
-    tiktok: item.tiktok,
-  }));
+  const rows = result.map((item: Record<string, unknown>) => {
+    const row: Record<string, unknown> = {};
+
+    exportFields.forEach((field) => {
+      if (!selectedFields.includes(field.key)) {
+        return;
+      }
+
+      let value = item[field.key];
+
+      if (Array.isArray(value)) {
+        value = value.join(", ");
+      }
+
+      if (field.key === "published") {
+        value = value ? "Ya" : "Tidak";
+      }
+
+      row[field.label] = value ?? "";
+    });
+
+    return row;
+  });
 
   const worksheet = XLSX.utils.json_to_sheet(rows);
 
@@ -87,7 +94,7 @@ export async function importUmkmExcel(file: File) {
 
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
 
-  const rows = XLSX.utils.sheet_to_json<Record<string, any>>(sheet);
+  const rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet);
 
   if (rows.length === 0) {
     throw new Error("File Excel tidak memiliki data.");

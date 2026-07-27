@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import DaftarModal from "../DaftarModal";
+import DaftarModal from "../modal/DaftarModal";
 import MobileNavbar from "./MobileNavbar";
 import { navigation } from "@/data/navigation";
 import ThemeToggle from "../ThemeToggle";

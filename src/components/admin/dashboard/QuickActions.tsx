@@ -1,14 +1,12 @@
 "use client";
 
 import { Download, FileSpreadsheet, Plus, Upload } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import {
-  downloadUmkmTemplate,
-  exportUmkmExcel,
-  importUmkmExcel,
-} from "@/lib/excel";
+import { downloadUmkmTemplate, importUmkmExcel } from "@/lib/excel";
+
+import ExportModal from "@/components/modal/ExportModal";
 
 const actions = [
   {
@@ -35,7 +33,10 @@ const actions = [
 
 export default function QuickActions() {
   const router = useRouter();
+
   const fileRef = useRef<HTMLInputElement>(null);
+
+  const [exportOpen, setExportOpen] = useState(false);
 
   async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
@@ -55,7 +56,7 @@ export default function QuickActions() {
     e.target.value = "";
   }
 
-  async function handleClick(type: string) {
+  function handleClick(type: string) {
     switch (type) {
       case "add":
         router.push("/admin/tambah");
@@ -66,7 +67,7 @@ export default function QuickActions() {
         break;
 
       case "export":
-        await exportUmkmExcel();
+        setExportOpen(true);
         break;
 
       case "template":
@@ -76,84 +77,88 @@ export default function QuickActions() {
   }
 
   return (
-    <div
-      className="
-        rounded-2xl
-        bg-white
-        dark:bg-dark-card
-        p-6
-        transition-colors
-        duration-300
-      "
-    >
-      <input
-        ref={fileRef}
-        type="file"
-        accept=".xlsx,.xls"
-        hidden
-        onChange={handleImport}
-      />
+    <>
+      <ExportModal open={exportOpen} onClose={() => setExportOpen(false)} />
 
-      <h2
+      <div
         className="
-          mb-5
-          text-lg
-          font-semibold
-          text-slate-900
-          dark:text-white
+          rounded-2xl
+          bg-white
+          dark:bg-dark-card
+          p-6
           transition-colors
           duration-300
         "
       >
-        Quick Actions
-      </h2>
+        <input
+          ref={fileRef}
+          type="file"
+          accept=".xlsx,.xls"
+          hidden
+          onChange={handleImport}
+        />
 
-      <div className="grid grid-cols-2 gap-4">
-        {actions.map((action) => {
-          const Icon = action.icon;
+        <h2
+          className="
+            mb-5
+            text-lg
+            font-semibold
+            text-slate-900
+            dark:text-white
+            transition-colors
+            duration-300
+          "
+        >
+          Quick Actions
+        </h2>
 
-          return (
-            <button
-              key={action.label}
-              type="button"
-              onClick={() => handleClick(action.type)}
-              className="
-                rounded-2xl
-                p-5
-                transition
-                duration-300
-                hover:bg-slate-50
-                dark:hover:bg-dark
-              "
-            >
-              <Icon
-                size={24}
+        <div className="grid grid-cols-2 gap-4">
+          {actions.map((action) => {
+            const Icon = action.icon;
+
+            return (
+              <button
+                key={action.label}
+                type="button"
+                onClick={() => handleClick(action.type)}
                 className="
-                  mx-auto
-                  mb-3
-                  text-slate-700
-                  dark:text-slate-200
-                  transition-colors
+                  rounded-2xl
+                  p-5
+                  transition
                   duration-300
-                "
-              />
-
-              <p
-                className="
-                  text-sm
-                  font-medium
-                  text-slate-900
-                  dark:text-white
-                  transition-colors
-                  duration-300
+                  hover:bg-slate-50
+                  dark:hover:bg-dark
                 "
               >
-                {action.label}
-              </p>
-            </button>
-          );
-        })}
+                <Icon
+                  size={24}
+                  className="
+                    mx-auto
+                    mb-3
+                    text-slate-700
+                    dark:text-slate-200
+                    transition-colors
+                    duration-300
+                  "
+                />
+
+                <p
+                  className="
+                    text-sm
+                    font-medium
+                    text-slate-900
+                    dark:text-white
+                    transition-colors
+                    duration-300
+                  "
+                >
+                  {action.label}
+                </p>
+              </button>
+            );
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

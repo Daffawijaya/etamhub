@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import DaftarModal from "../DaftarModal";
+import DaftarModal from "../modal/DaftarModal";
 import { usePathname } from "next/navigation";
 import SmallChevronButton from "../button/SmallChevronButton";
 import { navigation } from "@/data/navigation";

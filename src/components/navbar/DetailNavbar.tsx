@@ -5,7 +5,7 @@ import { IoIosSunny, IoIosMoon } from "react-icons/io";
 import Link from "next/link";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import DaftarModal from "../DaftarModal";
+import DaftarModal from "../modal/DaftarModal";
 import { navigation } from "@/data/navigation";
 
 export default function DetailNavbar() {
