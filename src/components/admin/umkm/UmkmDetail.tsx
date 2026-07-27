@@ -87,8 +87,8 @@ export default function UmkmDetail({ data }: Props) {
                 className="relative aspect-square rounded-xl overflow-hidden"
               >
                 <Image
-                  src={getUmkmImage(data.gambar)}
-                  alt={data.nama}
+                  src={getUmkmImage(img)}
+                  alt={`${data.nama} ${i + 1}`}
                   fill
                   className="object-cover"
                 />

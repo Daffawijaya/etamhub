@@ -97,11 +97,14 @@ export default function UmkmForm({ mode, data }: Props) {
   );
 
   const [images, setImages] = useState<ImageItem[]>(
+    
     data?.gambar?.map((img: string) => ({
+      
       type: "old",
 
       url: img,
     })) ?? [],
+  
   );
 
   const [loading, setLoading] = useState(false);
