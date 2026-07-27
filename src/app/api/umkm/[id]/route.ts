@@ -157,6 +157,41 @@ export async function PUT(
     .eq("id", id)
     .single();
 
+// =========================
+// DELETE REMOVED IMAGES
+// =========================
+
+const oldImages = Array.isArray(oldData.gambar) ? oldData.gambar : [];
+const newImages = Array.isArray(body.gambar) ? body.gambar : [];
+
+// gambar yang sudah tidak dipakai lagi
+const removedImages = oldImages.filter(
+  (img: string) => !newImages.includes(img)
+);
+
+if (removedImages.length > 0) {
+  const imagePaths = removedImages
+    .map((url: string) => {
+      const marker = "/umkm-images/";
+      const index = url.indexOf(marker);
+
+      if (index === -1) return null;
+
+      return url.substring(index + marker.length);
+    })
+    .filter(Boolean);
+
+  if (imagePaths.length > 0) {
+    const { error: storageError } = await supabase.storage
+      .from("umkm-images")
+      .remove(imagePaths as string[]);
+
+    if (storageError) {
+      console.error("STORAGE DELETE ERROR:", storageError);
+    }
+  }
+}
+
   if (findError || !oldData) {
     return NextResponse.json(
       {

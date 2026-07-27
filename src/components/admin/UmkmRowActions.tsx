@@ -114,7 +114,7 @@ export default function UmkmRowActions({
       }
 
       setOpen(false);
-      router.refresh();
+      onStatusChanged?.();
     } catch (error) {
       console.error(error);
       alert("Gagal menghapus UMKM");
