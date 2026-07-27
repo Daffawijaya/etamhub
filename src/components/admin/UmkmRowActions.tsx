@@ -3,7 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
-import { Eye, EyeOff, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import {
+  Eye,
+  EyeOff,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
+  ExternalLink,
+} from "lucide-react";
 
 interface Props {
   id: string | number;
@@ -174,6 +181,27 @@ export default function UmkmRowActions({
               transition-all duration-300
             "
           >
+            <button
+              onClick={() => {
+                router.push(`/admin/umkm/${id}`);
+                setOpen(false);
+              }}
+              className="
+    flex w-full items-center gap-3
+    px-4 py-3
+    text-sm font-medium
+
+    text-slate-700
+    transition-colors duration-300
+    hover:bg-slate-50
+
+    dark:text-slate-200
+    dark:hover:bg-white/10
+  "
+            >
+              <ExternalLink size={16} />
+              Detail UMKM
+            </button>
             <button
               onClick={() => {
                 if (onEdit) {
