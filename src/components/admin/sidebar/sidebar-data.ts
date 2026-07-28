@@ -1,9 +1,16 @@
-import { LayoutDashboard, Store, MapPinned, Plus } from "lucide-react";
+import {
+  LayoutDashboard,
+  Store,
+  MapPinned,
+  Plus,
+  UsersRound,
+} from "lucide-react";
 
 export interface SidebarMenu {
   label: string;
   href: string;
   icon: any;
+  roles?: string[];
 }
 
 export const menus: SidebarMenu[] = [
@@ -21,6 +28,12 @@ export const menus: SidebarMenu[] = [
     label: "Tambah UMKM",
     href: "/admin/tambah",
     icon: Plus,
+  },
+  {
+    label: "Kelola Akun",
+    href: "/admin/akun",
+    icon: UsersRound,
+    roles: ["super_admin"],
   },
   {
     label: "Peta",

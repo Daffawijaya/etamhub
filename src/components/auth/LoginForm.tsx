@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function LoginForm() {
-  const [username, setUsername] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
@@ -14,17 +14,27 @@ export default function LoginForm() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username,
+        login,
         password,
       }),
     });
 
-    if (res.ok) {
+    const data = await res.json();
+
+    console.log("LOGIN RESPONSE:", data);
+
+    if (!res.ok) {
+      alert(data.message);
+      return;
+    }
+
+    if (data.role === "super_admin" || data.role === "admin_kecamatan") {
       window.location.href = "/admin";
-    } else {
-      alert("Username atau password salah");
+    } else if (data.role === "user") {
+      window.location.href = "/dashboard";
     }
   };
+
   return (
     <section className="relative flex items-center justify-center px-6 py-12">
       <Link
@@ -38,24 +48,24 @@ export default function LoginForm() {
         <div className="space-y-4">
           <div>
             <h1 className="text-3xl font-bold text-black dark:text-white">
-              Login Admin
+              Login
             </h1>
 
             <p className="mt-2 text-sm text-neutral-500">
-              Masuk untuk mengelola data UMKM.
+              Masuk untuk mengakses EtamHub.
             </p>
           </div>
 
           <div>
             <label className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
-              Username
+              Username / NIK
             </label>
 
             <input
               type="text"
-              placeholder="Masukkan username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Masukkan username atau NIK"
+              value={login}
+              onChange={(e) => setLogin(e.target.value)}
               className="
                 w-full rounded-xl
                 border border-neutral-300
@@ -102,14 +112,14 @@ export default function LoginForm() {
             <button
               onClick={handleLogin}
               className="
-              w-full rounded-full
-              bg-violet-500
-              py-4
-              font-semibold
-              text-white
-              transition
-              hover:opacity-90
-            "
+                w-full rounded-full
+                bg-violet-500
+                py-4
+                font-semibold
+                text-white
+                transition
+                hover:opacity-90
+              "
             >
               Masuk
             </button>

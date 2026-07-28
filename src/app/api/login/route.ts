@@ -1,27 +1,39 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: Request) {
   try {
-    const { username, password } = await req.json();
+    const { login, password } = await req.json();
 
-    console.log("LOGIN USERNAME:", username);
+    console.log("LOGIN:", login);
 
-    const { data: admin, error } = await supabase
-      .from("admins")
-      .select("id, username, password")
-      .eq("username", username)
+    const { data: user, error } = await supabaseAdmin
+      .from("users")
+      .select(
+        `
+        id,
+        username,
+        nik,
+        password,
+        nama,
+        roles (
+          name
+        )
+      `,
+      )
+
+      .or(`username.eq.${login},nik.eq.${login}`)
       .single();
 
-    console.log("ADMIN DATA:", admin);
+    console.log("USER DATA:", user);
     console.log("SUPABASE ERROR:", error);
 
-    if (error || !admin) {
+    if (error || !user) {
       return NextResponse.json(
         {
           success: false,
-          message: "Username atau password salah",
+          message: "Username/NIK atau password salah",
         },
         {
           status: 401,
@@ -29,16 +41,32 @@ export async function POST(req: Request) {
       );
     }
 
-    if (admin.password !== password) {
-      console.log("PASSWORD TIDAK COCOK");
-
+    if (user.password !== password) {
       return NextResponse.json(
         {
           success: false,
-          message: "Username atau password salah",
+          message: "Username/NIK atau password salah",
         },
         {
           status: 401,
+        },
+      );
+    }
+
+    console.log("USER:", user);
+    console.log("ROLES:", user.roles);
+
+    // karena relasi roles terbaca array
+    const role = (user.roles as unknown as { name: string })?.name;
+
+    if (!role) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Role user tidak ditemukan",
+        },
+        {
+          status: 403,
         },
       );
     }
@@ -47,9 +75,14 @@ export async function POST(req: Request) {
 
     const response = NextResponse.json({
       success: true,
+      role,
+      user: {
+        id: user.id,
+        nama: user.nama,
+      },
     });
 
-    response.cookies.set("admin", token, {
+    response.cookies.set("auth", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
@@ -57,7 +90,23 @@ export async function POST(req: Request) {
       maxAge: 60 * 60,
     });
 
-    console.log("LOGIN BERHASIL:", username);
+    response.cookies.set("role", role, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
+    response.cookies.set("user_id", user.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60,
+    });
+
+    console.log("LOGIN BERHASIL:", user.nama, role);
 
     return response;
   } catch (error) {

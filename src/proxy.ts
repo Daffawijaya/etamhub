@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(req: NextRequest) {
-  const admin = req.cookies.get("admin")?.value;
+  const auth = req.cookies.get("auth")?.value;
+  const role = req.cookies.get("role")?.value;
 
-  if (!admin) {
+  if (!auth) {
     return NextResponse.redirect(new URL("/login", req.url));
+  }
+
+  if (role !== "super_admin" && role !== "admin_kecamatan") {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
   return NextResponse.next();

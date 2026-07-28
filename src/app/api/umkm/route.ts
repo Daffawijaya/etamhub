@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { cookies } from "next/headers";
@@ -15,9 +16,9 @@ import {
 
 export async function GET(req: Request) {
   try {
-    const cookieStore = await cookies();
+    const user = await getCurrentUser();
 
-    const isAdmin = !!cookieStore.get("admin");
+    console.log("CURRENT USER:", user);
 
     const { searchParams } = new URL(req.url);
 
@@ -45,8 +46,20 @@ export async function GET(req: Request) {
     let umkmQuery = supabaseAdmin.from("umkm").select("*", { count: "exact" });
 
     // hanya request admin dashboard yang boleh lihat semua data
-    if (!(isAdmin && mode === "admin")) {
+    if (!user) {
       umkmQuery = umkmQuery.eq("published", true);
+    }
+
+    if (user?.role === "super_admin" && mode === "admin") {
+      // boleh lihat semua
+    }
+
+    if (user?.role === "admin_kecamatan") {
+      umkmQuery = umkmQuery.in("kecamatan_id", user.kecamatanIds);
+    }
+
+    if (user?.role === "user") {
+      umkmQuery = umkmQuery.eq("owner_id", user.id);
     }
 
     // Filter kecamatan

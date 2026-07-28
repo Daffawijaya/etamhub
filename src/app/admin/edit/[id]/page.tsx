@@ -16,9 +16,7 @@ export default function EditUmkmPage({
     async function load() {
       const { id } = await params;
 
-      const res = await fetch(
-        `/api/umkm/${id}`
-      );
+      const res = await fetch(`/api/umkm/${id}`);
 
       const data = await res.json();
 
@@ -28,9 +26,7 @@ export default function EditUmkmPage({
     load();
   }, [params]);
 
-  async function handleSubmit(
-    e: React.FormEvent
-  ) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     const { id } = await params;
@@ -38,8 +34,7 @@ export default function EditUmkmPage({
     await fetch(`/api/umkm/${id}`, {
       method: "PUT",
       headers: {
-        "Content-Type":
-          "application/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(form),
     });
@@ -52,13 +47,8 @@ export default function EditUmkmPage({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 max-w-3xl"
-    >
-      <h1 className="text-2xl font-bold">
-        Edit UMKM
-      </h1>
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-3xl">
+      <h1 className="text-2xl font-bold">Edit UMKM</h1>
 
       <input
         className="w-full border p-3 rounded"
@@ -93,9 +83,7 @@ export default function EditUmkmPage({
         }
       />
 
-      <button
-        className="bg-blue-600 text-white px-4 py-2 rounded"
-      >
+      <button className="bg-blue-600 text-white px-4 py-2 rounded">
         Simpan Perubahan
       </button>
     </form>
