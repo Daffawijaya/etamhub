@@ -1,16 +1,17 @@
 "use client";
 
 import Select from "../../Select";
-import { KECAMATAN_KUKAR } from "@/app/constants/kecamatanKukar";
 
 interface Props {
   value: string;
+  options?: string[];
   required?: boolean;
   onChange: (value: string) => void;
 }
 
 export default function KecamatanSelect({
   value,
+  options,
   onChange,
   required = false,
 }: Props) {
@@ -19,7 +20,7 @@ export default function KecamatanSelect({
       name="kecamatan"
       placeholder="Pilih Kecamatan*"
       value={value}
-      options={KECAMATAN_KUKAR}
+      options={options ?? []}
       required={required}
       onChange={onChange}
     />

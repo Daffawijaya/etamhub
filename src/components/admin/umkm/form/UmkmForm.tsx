@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { initialForm } from "./constants";
 import { UmkmFormData, ImageItem } from "./types";
@@ -33,8 +33,39 @@ interface Props {
 }
 
 export default function UmkmForm({ mode, data }: Props) {
+  console.log("UMKM FORM RENDER");
   const router = useRouter();
+  const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
 
+  useEffect(() => {
+    console.log("LOAD KECAMATAN START");
+
+    async function loadKecamatan() {
+      try {
+        const res = await fetch("/api/auth/me");
+
+        console.log("RESPONSE:", res.status);
+
+        const text = await res.text();
+
+        console.log("RAW RESPONSE:", text);
+
+        const user = JSON.parse(text);
+
+        console.log("USER LOGIN:", user);
+
+        if (user.role === "admin_kecamatan") {
+          setKecamatanOptions(
+            user.kecamatan.map((item: { nama: string }) => item.nama),
+          );
+        }
+      } catch (error) {
+        console.error("LOAD KECAMATAN ERROR:", error);
+      }
+    }
+
+    loadKecamatan();
+  }, []);
   const [form, setForm] = useState<UmkmFormData>(
     data
       ? {
@@ -97,14 +128,11 @@ export default function UmkmForm({ mode, data }: Props) {
   );
 
   const [images, setImages] = useState<ImageItem[]>(
-    
     data?.gambar?.map((img: string) => ({
-      
       type: "old",
 
       url: img,
     })) ?? [],
-  
   );
 
   const [loading, setLoading] = useState(false);
@@ -287,7 +315,11 @@ space-y-8
 
         <BusinessSection form={form} setForm={setForm} />
 
-        <LocationSection form={form} setForm={setForm} />
+        <LocationSection
+          form={form}
+          setForm={setForm}
+          kecamatanOptions={kecamatanOptions}
+        />
 
         <SocialSection form={form} setForm={setForm} />
 

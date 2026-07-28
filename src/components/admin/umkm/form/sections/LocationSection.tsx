@@ -3,16 +3,26 @@
 import FormField from "../ui/FormField";
 import FormSection from "../ui/FormSection";
 import KecamatanSelect from "../KecamatanSelect";
-import LocationPicker from "../map/LocationPicker";
-
+import dynamic from "next/dynamic";
 import { UmkmFormData } from "../types";
+const LocationPicker = dynamic(
+  () => import("../map/LocationPicker"),
+  {
+    ssr: false,
+  },
+);
 
 interface Props {
   form: UmkmFormData;
   setForm: React.Dispatch<React.SetStateAction<UmkmFormData>>;
+  kecamatanOptions: string[];
 }
 
-export default function LocationSection({ form, setForm }: Props) {
+export default function LocationSection({
+  form,
+  setForm,
+  kecamatanOptions,
+}: Props) {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setForm((prev) => ({
       ...prev,
@@ -25,6 +35,7 @@ export default function LocationSection({ form, setForm }: Props) {
       <div className="grid md:grid-cols-2 gap-4">
         <KecamatanSelect
           required
+          options={kecamatanOptions}
           value={form.kecamatan}
           onChange={(value) =>
             setForm((prev) => ({

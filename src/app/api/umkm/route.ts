@@ -1,7 +1,6 @@
 import { getCurrentUser } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { cookies } from "next/headers";
 import {
   isValidEmail,
   isValidFacebookUrl,
@@ -64,7 +63,15 @@ export async function GET(req: Request) {
 
     // Filter kecamatan
     if (kecamatan) {
-      umkmQuery = umkmQuery.eq("kecamatan", kecamatan);
+      const { data: kecamatanData } = await supabaseAdmin
+        .from("kecamatan")
+        .select("id")
+        .eq("nama", kecamatan)
+        .single();
+
+      if (kecamatanData) {
+        umkmQuery = umkmQuery.eq("kecamatan_id", kecamatanData.id);
+      }
     }
 
     // Filter kategori
@@ -92,9 +99,13 @@ export async function GET(req: Request) {
 
     umkmQuery = umkmQuery.range(from, to);
 
-    const { data: filtersData } = await supabaseAdmin
-      .from("umkm")
-      .select("kecamatan, kategori");
+    let filtersQuery = supabaseAdmin.from("umkm").select("kecamatan, kategori");
+
+    if (user?.role === "admin_kecamatan") {
+      filtersQuery = filtersQuery.in("kecamatan_id", user.kecamatanIds);
+    }
+
+    const { data: filtersData } = await filtersQuery;
 
     const kecamatanOptions = [
       ...new Set(filtersData?.map((item) => item.kecamatan).filter(Boolean)),
@@ -134,6 +145,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
+    const user = await getCurrentUser();
     const body = await req.json();
     body.kbli = Array.isArray(body.kbli)
       ? body.kbli.map((item: string) => item.trim()).filter(Boolean)
@@ -221,7 +233,40 @@ export async function POST(req: Request) {
     }
 
     const now = new Date().toISOString();
+    if (body.kecamatan) {
+      const { data: kecamatanData, error: kecamatanError } = await supabaseAdmin
+        .from("kecamatan")
+        .select("id")
+        .eq("nama", body.kecamatan)
+        .single();
 
+      if (kecamatanError || !kecamatanData) {
+        return NextResponse.json(
+          {
+            message: "Kecamatan tidak ditemukan",
+          },
+          {
+            status: 400,
+          },
+        );
+      }
+
+      if (
+        user?.role === "admin_kecamatan" &&
+        !user.kecamatanIds.includes(kecamatanData.id)
+      ) {
+        return NextResponse.json(
+          {
+            message: "Tidak memiliki akses kecamatan ini",
+          },
+          {
+            status: 403,
+          },
+        );
+      }
+
+      body.kecamatan_id = kecamatanData.id;
+    }
     const { data, error } = await supabaseAdmin
       .from("umkm")
       .insert({
