@@ -38,26 +38,28 @@ export default function UmkmForm({ mode, data }: Props) {
   const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
 
   useEffect(() => {
-    console.log("LOAD KECAMATAN START");
-
     async function loadKecamatan() {
       try {
         const res = await fetch("/api/auth/me");
 
-        console.log("RESPONSE:", res.status);
-
-        const text = await res.text();
-
-        console.log("RAW RESPONSE:", text);
-
-        const user = JSON.parse(text);
+        const user = await res.json();
 
         console.log("USER LOGIN:", user);
 
+        // admin kecamatan hanya lihat kecamatan miliknya
         if (user.role === "admin_kecamatan") {
           setKecamatanOptions(
-            user.kecamatan.map((item: { nama: string }) => item.nama),
+            user.kecamatan?.map((item: { nama: string }) => item.nama) ?? [],
           );
+        }
+
+        // super admin lihat semua kecamatan
+        if (user.role === "super_admin") {
+          const resKecamatan = await fetch("/api/kecamatan");
+
+          const data = await resKecamatan.json();
+
+          setKecamatanOptions(data.map((item: { nama: string }) => item.nama));
         }
       } catch (error) {
         console.error("LOAD KECAMATAN ERROR:", error);
@@ -66,6 +68,7 @@ export default function UmkmForm({ mode, data }: Props) {
 
     loadKecamatan();
   }, []);
+
   const [form, setForm] = useState<UmkmFormData>(
     data
       ? {
