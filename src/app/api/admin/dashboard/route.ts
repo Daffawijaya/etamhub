@@ -1,23 +1,58 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getCurrentUser } from "@/lib/session";
 
 export async function GET() {
   try {
-    const { data: umkms, error } = await supabaseAdmin
-      .from("umkm")
-      .select("*")
-      .order("created_at", {
-        ascending: false,
-      });
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json(
+        {
+          message: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    let query = supabaseAdmin.from("umkm").select("*").order("created_at", {
+      ascending: false,
+    });
+
+    // ADMIN KECAMATAN FILTER DATA
+    if (user.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
+      query = query.in("kecamatan_id", user.kecamatanIds);
+    }
+
+    const { data: umkms, error } = await query;
 
     if (error) throw error;
 
-    const totalUmkm = umkms.length;
+    const dataUmkm = umkms ?? [];
 
-    const kategoriMap = umkms.reduce((acc: any, item) => {
-      acc[item.kategori] = (acc[item.kategori] || 0) + 1;
+    const totalUmkm = dataUmkm.length;
+
+    const kategoriMap = dataUmkm.reduce((acc: any, item) => {
+      const kategori = item.kategori || "Lainnya";
+
+      acc[kategori] = (acc[kategori] || 0) + 1;
+
       return acc;
     }, {});
+
+    const kecamatanMap = dataUmkm.reduce((acc: any, item) => {
+      const kecamatan = item.kecamatan || "Tidak diketahui";
+
+      acc[kecamatan] = (acc[kecamatan] || 0) + 1;
+
+      return acc;
+    }, {});
+
+    const subkategoriSet = new Set(
+      dataUmkm.map((item) => item.subkategori).filter(Boolean),
+    );
 
     const { data: activities, error: activityError } = await supabaseAdmin
       .from("notifications")
@@ -28,14 +63,6 @@ export async function GET() {
       .limit(5);
 
     if (activityError) throw activityError;
-    const kecamatanMap = umkms.reduce((acc: any, item) => {
-      acc[item.kecamatan] = (acc[item.kecamatan] || 0) + 1;
-      return acc;
-    }, {});
-
-    const subkategoriSet = new Set(
-      umkms.map((item) => item.subkategori).filter(Boolean),
-    );
 
     const kategoriChart = Object.entries(kategoriMap).map(([name, value]) => ({
       name,
@@ -49,26 +76,29 @@ export async function GET() {
       }),
     );
 
-    const latest = umkms.slice(0, 5);
-
     return NextResponse.json({
       stats: {
         totalUmkm,
+
         totalKategori: kategoriChart.length,
+
         totalKecamatan: kecamatanChart.length,
+
         totalSubkategori: subkategoriSet.size,
       },
 
-      latest,
+      latest: dataUmkm.slice(0, 5),
 
       kategoriChart,
 
       kecamatanChart,
-      activities,
-      map: umkms,
+
+      activities: activities ?? [],
+
+      map: dataUmkm,
     });
   } catch (error: any) {
-    console.error(error);
+    console.error("DASHBOARD ERROR:", error);
 
     return NextResponse.json(
       {
