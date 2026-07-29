@@ -53,7 +53,6 @@ function getRelativeTime(dateString?: string) {
 }
 
 export default function ActivityLogs({ activities }: Props) {
-
   return (
     <div
       className="
@@ -90,7 +89,7 @@ export default function ActivityLogs({ activities }: Props) {
       ) : (
         <div className="space-y-4">
           {activities.map((item) => {
-            const Icon = icons[item.type];
+            const Icon = icons[item.type] ?? Plus;
 
             return (
               <div

@@ -155,7 +155,7 @@ export default function AdminNotification() {
           ) : (
             <div className="max-h-96 overflow-y-auto">
               {notifications.map((item) => {
-                const Icon = icons[item.type];
+                const Icon = icons[item.type] ?? Plus;
 
                 return (
                   <div
