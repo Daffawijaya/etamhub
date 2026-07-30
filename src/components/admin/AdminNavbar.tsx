@@ -14,7 +14,7 @@ export default function AdminNavbar({ title = "Dashboard" }: AdminNavbarProps) {
   const isMapPage = pathname === "/admin/peta";
 
   const handleLogout = async () => {
-    await fetch("/api/logout", {
+    await fetch("/api/auth/logout", {
       method: "POST",
     });
 
