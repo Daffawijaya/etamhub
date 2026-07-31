@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import crypto from "crypto";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
   isValidEmail,
   isValidFacebookUrl,
@@ -32,11 +33,23 @@ export async function GET(
 ) {
   const { id } = await context.params;
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin 
     .from("umkm")
     .select("*")
     .eq("id", id)
     .single();
+
+  const { data: owner, error: ownerError } = await supabaseAdmin 
+    .from("users")
+    .select("email, nik")
+    .eq("id", data.owner_id)
+    .maybeSingle();
+
+  console.log({
+    ownerId: data.owner_id,
+    owner,
+    ownerError,
+  });
 
   if (error || !data) {
     return NextResponse.json(
@@ -47,6 +60,19 @@ export async function GET(
         status: 404,
       },
     );
+  }
+
+  if (data.owner_id) {
+    const { data: owner } = await supabaseAdmin 
+      .from("users")
+      .select("email, nik")
+      .eq("id", data.owner_id)
+      .maybeSingle();
+
+    if (owner) {
+      data.email = owner.email;
+      data.nik = owner.nik;
+    }
   }
 
   return NextResponse.json(data);
@@ -81,25 +107,53 @@ export async function PUT(
     body[field] = normalizeNullable(body[field]);
   });
 
+  const { data: oldData, error: findError } = await supabaseAdmin 
+    .from("umkm")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (findError || !oldData) {
+    return NextResponse.json(
+      {
+        message: "UMKM tidak ditemukan",
+      },
+      {
+        status: 404,
+      },
+    );
+  }
+
   if (body.nik) {
-    const { data: existingNik, error: nikError } = await supabase
-      .from("umkm")
+    const { data: existingNik, error: nikError } = await supabaseAdmin 
+      .from("users")
       .select("id")
       .eq("nik", body.nik)
-      .neq("id", id)
+      .neq("id", oldData.owner_id)
       .maybeSingle();
 
     if (nikError) throw nikError;
 
     if (existingNik) {
       return NextResponse.json(
-        { message: "NIK sudah terdaftar." },
-        { status: 409 },
+        {
+          message: "NIK sudah terdaftar.",
+        },
+        {
+          status: 409,
+        },
       );
     }
   }
+
+  const { data: owner } = await supabaseAdmin 
+    .from("users")
+    .select("id")
+    .eq("id", oldData.owner_id)
+    .maybeSingle();
+
   if (body.nib) {
-    const { data: existingNib, error: nibError } = await supabase
+    const { data: existingNib, error: nibError } = await supabaseAdmin 
       .from("umkm")
       .select("id")
       .eq("nib", body.nib)
@@ -151,68 +205,93 @@ export async function PUT(
       { status: 400 },
     );
   }
-  const { data: oldData, error: findError } = await supabase
-    .from("umkm")
-    .select("*")
-    .eq("id", id)
-    .single();
 
-// =========================
-// DELETE REMOVED IMAGES
-// =========================
+  if (owner) {
+    const { data: existingEmail } = await supabaseAdmin 
+      .from("users")
+      .select("id")
+      .eq("email", body.email)
+      .neq("id", owner.id)
+      .maybeSingle();
 
-const oldImages = Array.isArray(oldData.gambar) ? oldData.gambar : [];
-const newImages = Array.isArray(body.gambar) ? body.gambar : [];
+    if (existingEmail) {
+      return NextResponse.json(
+        {
+          message: "Email sudah digunakan.",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
 
-// gambar yang sudah tidak dipakai lagi
-const removedImages = oldImages.filter(
-  (img: string) => !newImages.includes(img)
-);
+    const { error: userError } = await supabaseAdmin 
+      .from("users")
+      .update({
+        email: body.email,
+        nik: body.nik,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", owner.id);
 
-if (removedImages.length > 0) {
-  const imagePaths = removedImages
-    .map((url: string) => {
-      const marker = "/umkm-images/";
-      const index = url.indexOf(marker);
-
-      if (index === -1) return null;
-
-      return url.substring(index + marker.length);
-    })
-    .filter(Boolean);
-
-  if (imagePaths.length > 0) {
-    const { error: storageError } = await supabase.storage
-      .from("umkm-images")
-      .remove(imagePaths as string[]);
-
-    if (storageError) {
-      console.error("STORAGE DELETE ERROR:", storageError);
+    if (userError) {
+      return NextResponse.json(
+        {
+          message: userError.message,
+        },
+        {
+          status: 500,
+        },
+      );
     }
   }
-}
+  // =========================
+  // DELETE REMOVED IMAGES
+  // =========================
 
-  if (findError || !oldData) {
-    return NextResponse.json(
-      {
-        message: "UMKM tidak ditemukan",
-      },
-      {
-        status: 404,
-      },
-    );
+  const oldImages = Array.isArray(oldData.gambar) ? oldData.gambar : [];
+  const newImages = Array.isArray(body.gambar) ? body.gambar : [];
+
+  // gambar yang sudah tidak dipakai lagi
+  const removedImages = oldImages.filter(
+    (img: string) => !newImages.includes(img),
+  );
+
+  if (removedImages.length > 0) {
+    const imagePaths = removedImages
+      .map((url: string) => {
+        const marker = "/umkm-images/";
+        const index = url.indexOf(marker);
+
+        if (index === -1) return null;
+
+        return url.substring(index + marker.length);
+      })
+      .filter(Boolean);
+
+    if (imagePaths.length > 0) {
+      const { error: storageError } = await supabaseAdmin .storage
+        .from("umkm-images")
+        .remove(imagePaths as string[]);
+
+      if (storageError) {
+        console.error("STORAGE DELETE ERROR:", storageError);
+      }
+    }
   }
 
   const now = new Date().toISOString();
 
+  const { email, nik, ...umkmData } = body;
+
   const updated = {
-    ...body,
+    ...umkmData,
     id: oldData.id,
     created_at: oldData.created_at,
     updated_at: now,
   };
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin 
     .from("umkm")
     .update(updated)
     .eq("id", id)
@@ -230,7 +309,7 @@ if (removedImages.length > 0) {
     );
   }
 
-  const { error: notifError } = await supabase.from("notifications").insert({
+  const { error: notifError } = await supabaseAdmin .from("notifications").insert({
     id: crypto.randomUUID(),
     type: "update",
     title: `Update UMKM ${updated.nama}`,
@@ -258,7 +337,7 @@ export async function DELETE(
 ) {
   const { id } = await context.params;
 
-  const { data: target, error: findError } = await supabase
+  const { data: target, error: findError } = await supabaseAdmin 
     .from("umkm")
     .select("*")
     .eq("id", id)
@@ -293,7 +372,7 @@ export async function DELETE(
       .filter(Boolean);
 
     if (imagePaths.length > 0) {
-      const { error: storageError } = await supabase.storage
+      const { error: storageError } = await supabaseAdmin .storage
         .from("umkm-images")
         .remove(imagePaths as string[]);
 
@@ -307,7 +386,7 @@ export async function DELETE(
   // DELETE DATABASE DATA
   // =========================
 
-  const { error } = await supabase.from("umkm").delete().eq("id", id);
+  const { error } = await supabaseAdmin .from("umkm").delete().eq("id", id);
 
   if (error) {
     return NextResponse.json(
@@ -326,7 +405,7 @@ export async function DELETE(
 
   const now = new Date().toISOString();
 
-  const { error: notifError } = await supabase.from("notifications").insert({
+  const { error: notifError } = await supabaseAdmin .from("notifications").insert({
     id: crypto.randomUUID(),
     type: "delete",
     title: `Hapus UMKM ${target.nama}`,

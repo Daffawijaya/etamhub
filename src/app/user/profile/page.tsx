@@ -17,13 +17,15 @@ export default async function UserProfilePage() {
     .from("users")
     .select(
       `
-      id,
-      nama,
-      nik,
-      email,
-      whatsapp,
-      avatar_url
-      `,
+    id,
+    nik,
+    email,
+    avatar_url,
+    umkm (
+      pemilik,
+      whatsapp
+    )
+  `,
     )
     .eq("id", userId)
     .single();
@@ -53,7 +55,7 @@ export default async function UserProfilePage() {
 
             <div>
               <h2 className="text-xl font-semibold text-dark dark:text-light">
-                {user.nama}
+                {user.umkm?.[0]?.pemilik ?? "-"}
               </h2>
 
               <p className="text-sm text-gray-500">Pemilik UMKM</p>
@@ -90,7 +92,7 @@ export default async function UserProfilePage() {
               </div>
 
               <p className="mt-2 font-medium text-dark dark:text-light">
-                {user.whatsapp ?? "-"}
+                {user.umkm?.[0]?.whatsapp ?? "-"}
               </p>
             </div>
           </div>

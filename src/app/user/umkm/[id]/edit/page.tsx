@@ -32,9 +32,23 @@ export default async function UserEditUmkmPage({ params }: Props) {
     redirect("/user/umkm");
   }
 
+  const { data: owner } = await supabaseAdmin
+    .from("users")
+    .select("email, nik")
+    .eq("id", umkm.owner_id)
+    .maybeSingle();
+
   return (
     <main className="min-h-screen bg-light px-6 pb-6 dark:bg-dark">
-      <UmkmForm mode="edit" data={umkm} role="user" />
+      <UmkmForm
+        mode="edit"
+        role="user"
+        data={{
+          ...umkm,
+          email: owner?.email ?? "",
+          nik: owner?.nik ?? "",
+        }}
+      />
     </main>
   );
 }

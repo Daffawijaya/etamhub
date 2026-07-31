@@ -185,7 +185,7 @@ export async function POST(req: Request) {
     });
 
     const { data: existingNik } = await supabaseAdmin
-      .from("umkm")
+      .from("users")
       .select("id")
       .eq("nik", body.nik)
       .maybeSingle();
@@ -246,6 +246,23 @@ export async function POST(req: Request) {
       );
     }
 
+    const { data: existingEmail } = await supabaseAdmin
+      .from("users")
+      .select("id")
+      .eq("email", body.email)
+      .maybeSingle();
+
+    if (existingEmail) {
+      return NextResponse.json(
+        {
+          message: "Email sudah digunakan.",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
+
     if (!isValidFacebookUrl(body.facebook)) {
       return NextResponse.json(
         {
@@ -302,11 +319,35 @@ export async function POST(req: Request) {
 
     const now = new Date().toISOString();
 
+    if (user) {
+      const { error: userError } = await supabaseAdmin
+        .from("users")
+        .update({
+          email: body.email,
+          nik: body.nik,
+          updated_at: now,
+        })
+        .eq("id", user.id);
+
+      if (userError) {
+        return NextResponse.json(
+          {
+            message: userError.message,
+          },
+          {
+            status: 500,
+          },
+        );
+      }
+    }
+
+    const { email, nik, ...umkmData } = body;
+
     const { data, error } = await supabaseAdmin
       .from("umkm")
       .insert({
         id: crypto.randomUUID(),
-        ...body,
+        ...umkmData,
         owner_id: user?.id ?? null,
         created_at: now,
         updated_at: now,
