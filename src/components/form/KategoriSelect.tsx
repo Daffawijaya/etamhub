@@ -1,4 +1,4 @@
-import Select from "../../Select";
+import Select from "../admin/Select";
 import { UMKM_CATEGORIES } from "@/app/constants/umkmCategories";
 
 interface Props {

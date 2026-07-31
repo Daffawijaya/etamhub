@@ -56,7 +56,7 @@ export default function AuthCallbackPage() {
       ) {
         router.replace("/admin");
       } else {
-        router.replace("/dashboard");
+        router.replace("/user");
       }
     };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import Select from "../../Select";
+import Select from "../admin/Select";
 
 interface Props {
   value: string;

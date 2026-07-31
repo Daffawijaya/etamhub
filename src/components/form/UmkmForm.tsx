@@ -28,99 +28,45 @@ import {
 
 interface Props {
   mode: "create" | "edit";
-
   data?: any;
+  role?: "admin" | "user";
 }
 
-export default function UmkmForm({ mode, data }: Props) {
-  console.log("UMKM FORM RENDER");
+export default function UmkmForm({ mode, data, role = "admin" }: Props) {
   const router = useRouter();
+
   const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
-
-  useEffect(() => {
-    async function loadKecamatan() {
-      try {
-        const res = await fetch("/api/auth/me");
-
-        const user = await res.json();
-
-        console.log("USER LOGIN:", user);
-
-        // admin kecamatan hanya lihat kecamatan miliknya
-        if (user.role === "admin_kecamatan") {
-          setKecamatanOptions(
-            user.kecamatan?.map((item: { nama: string }) => item.nama) ?? [],
-          );
-        }
-
-        // super admin lihat semua kecamatan
-        if (user.role === "super_admin") {
-          const resKecamatan = await fetch("/api/kecamatan");
-
-          const data = await resKecamatan.json();
-
-          setKecamatanOptions(data.map((item: { nama: string }) => item.nama));
-        }
-      } catch (error) {
-        console.error("LOAD KECAMATAN ERROR:", error);
-      }
-    }
-
-    loadKecamatan();
-  }, []);
 
   const [form, setForm] = useState<UmkmFormData>(
     data
       ? {
           ...initialForm,
-
           nama: data.nama ?? "",
-
           pemilik: data.pemilik ?? "",
-
           kategori: data.kategori ?? "",
-
           subkategori: data.subkategori ?? "",
-
           deskripsi: data.deskripsi ?? "",
-
           kecamatan: data.kecamatan ?? "",
-
           alamat: data.alamat ?? "",
-
           lat: String(data.lat ?? ""),
-
           lng: String(data.lng ?? ""),
-
           whatsapp: data.whatsapp ?? "",
-
           instagram: data.instagram ?? "",
-
           facebook: data.facebook ?? "",
-
           tiktok: data.tiktok ?? "",
-
           nik: data.nik ?? "",
-
           jenis_kelamin: data.jenis_kelamin ?? "",
-
           email: data.email ?? "",
-
           nib: data.nib ?? "",
           kbli: Array.isArray(data.kbli)
             ? data.kbli
             : data.kbli
               ? [data.kbli]
               : [],
-
           npwp: data.npwp ?? "",
-
           halal: data.halal ?? "",
-
           pirt: data.pirt ?? "",
-
           haki: data.haki ?? "",
-
           published: data.published ?? false,
         }
       : initialForm,
@@ -133,12 +79,31 @@ export default function UmkmForm({ mode, data }: Props) {
   const [images, setImages] = useState<ImageItem[]>(
     data?.gambar?.map((img: string) => ({
       type: "old",
-
       url: img,
     })) ?? [],
   );
 
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    async function loadKecamatan() {
+      if (role === "user") {
+        const res = await fetch("/api/kecamatan");
+        const data = await res.json();
+
+        setKecamatanOptions(data.map((item: { nama: string }) => item.nama));
+
+        return;
+      }
+
+      const res = await fetch("/api/kecamatan");
+      const data = await res.json();
+
+      setKecamatanOptions(data.map((item: { nama: string }) => item.nama));
+    }
+
+    loadKecamatan();
+  }, [role]);
 
   async function uploadFile(file: File) {
     const formData = new FormData();
@@ -147,7 +112,6 @@ export default function UmkmForm({ mode, data }: Props) {
 
     const res = await fetch("/api/upload", {
       method: "POST",
-
       body: formData,
     });
 
@@ -167,10 +131,12 @@ export default function UmkmForm({ mode, data }: Props) {
       alert("NIK harus berupa 16 angka");
       return;
     }
+
     if (!isValidNib(form.nib)) {
       alert("NIB harus berupa 13 angka");
       return;
     }
+
     if (!isValidFacebookUrl(form.facebook)) {
       alert("URL Facebook tidak valid");
       return;
@@ -195,12 +161,14 @@ export default function UmkmForm({ mode, data }: Props) {
       alert("Email tidak valid");
       return;
     }
+
     if (images.length === 0) {
       alert("Gambar UMKM wajib diupload");
       return;
     }
 
     setLoading(true);
+
     try {
       const uploadedImages: string[] = [];
 
@@ -210,9 +178,7 @@ export default function UmkmForm({ mode, data }: Props) {
         }
 
         if (image.type === "new" && image.file) {
-          const url = await uploadFile(image.file);
-
-          uploadedImages.push(url);
+          uploadedImages.push(await uploadFile(image.file));
         }
       }
 
@@ -225,12 +191,15 @@ export default function UmkmForm({ mode, data }: Props) {
           form.subkategori === "Lainnya"
             ? subkategoriLainnya
             : form.subkategori,
-
         gambar: uploadedImages,
-
         lat: form.lat ? Number(form.lat) : null,
-
         lng: form.lng ? Number(form.lng) : null,
+
+        // user selalu pending
+        ...(role === "user" && {
+          published: false,
+          approval_status: "pending",
+        }),
       };
 
       const url = mode === "create" ? "/api/umkm" : `/api/umkm/${data.id}`;
@@ -239,11 +208,9 @@ export default function UmkmForm({ mode, data }: Props) {
 
       const response = await fetch(url, {
         method,
-
         headers: {
           "Content-Type": "application/json",
         },
-
         body: JSON.stringify(payload),
       });
 
@@ -253,12 +220,14 @@ export default function UmkmForm({ mode, data }: Props) {
         throw new Error(result.message || "Gagal menyimpan UMKM");
       }
 
-      router.push("/admin/umkm");
+      if (role === "user") {
+        router.push("/user/umkm");
+      } else {
+        router.push("/admin/umkm");
+      }
 
       router.refresh();
     } catch (error: any) {
-      console.error(error);
-
       alert(error.message);
     } finally {
       setLoading(false);
@@ -266,54 +235,29 @@ export default function UmkmForm({ mode, data }: Props) {
   }
 
   return (
-    <div
-      className="
-bg-white
-dark:bg-dark-card
-rounded-2xl
-px-6
-py-5
-"
-    >
+    <div className="bg-white dark:bg-dark-card rounded-2xl px-6 py-5">
       <div className="mb-8">
-        <h1
-          className="
-text-2xl
-font-bold
-text-slate-900
-dark:text-white
-"
-        >
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           {mode === "create" ? "Tambah UMKM" : "Edit UMKM"}
         </h1>
 
-        <p
-          className="
-text-sm
-text-slate-500
-dark:text-slate-400
-mt-1
-"
-        >
-          {mode === "create"
-            ? "Tambahkan data UMKM baru ke katalog."
-            : "Perbarui data UMKM yang sudah ada."}
+        <p className="mt-1 text-sm text-slate-500">
+          {role === "user"
+            ? "Data akan dikirim untuk proses persetujuan admin."
+            : "Kelola data UMKM."}
         </p>
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-        className="
-space-y-8
-"
-      >
+      <form onSubmit={handleSubmit} className="space-y-8">
         <BasicSection
           form={form}
           setForm={setForm}
           subkategoriLainnya={subkategoriLainnya}
           setSubkategoriLainnya={setSubkategoriLainnya}
         />
+
         <ImageSection images={images} required setImages={setImages} />
+
         <OwnerSection form={form} setForm={setForm} />
 
         <BusinessSection form={form} setForm={setForm} />
@@ -326,23 +270,20 @@ space-y-8
 
         <SocialSection form={form} setForm={setForm} />
 
-        <PublishSection form={form} setForm={setForm} />
+        {role === "admin" && <PublishSection form={form} setForm={setForm} />}
 
         <button
           disabled={loading}
           className="
-dark:bg-success
-bg-gre
-transition
-duration-300
-text-white
-px-4
-py-2
-rounded-lg
-font-medium
-hover:opacity-90
-disabled:opacity-50
-"
+          bg-primary
+          text-white
+          px-4
+          py-2
+          rounded-lg
+          font-medium
+          hover:opacity-90
+          disabled:opacity-50
+          "
         >
           {loading
             ? "Menyimpan..."

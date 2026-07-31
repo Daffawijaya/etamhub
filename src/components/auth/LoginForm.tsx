@@ -11,6 +11,7 @@ export default function LoginForm() {
   const handleLogin = async () => {
     const res = await fetch("/api/auth/login", {
       method: "POST",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },
@@ -35,11 +36,11 @@ export default function LoginForm() {
     }
 
     if (data.role === "user_umkm") {
-      window.location.href = "/dashboard";
+      window.location.href = "/user";
       return;
     }
 
-    window.location.href = "/dashboard";
+    window.location.href = "/";
   };
 
   const handleGoogleLogin = async () => {
@@ -87,17 +88,10 @@ export default function LoginForm() {
               value={login}
               onChange={(e) => setLogin(e.target.value)}
               className="
-                w-full rounded-xl
-                border border-neutral-300
-                bg-white
-                px-4 py-3
-                text-black
-                outline-none
-                transition
-                focus:border-primary
-                dark:border-neutral-700
-                dark:bg-neutral-900
-                dark:text-white
+                w-full rounded-xl border border-neutral-300
+                bg-white px-4 py-3 text-black outline-none
+                transition focus:border-primary
+                dark:border-neutral-700 dark:bg-neutral-900 dark:text-white
               "
             />
           </div>
@@ -113,32 +107,20 @@ export default function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="
-                w-full rounded-xl
-                border border-neutral-300
-                bg-white
-                px-4 py-3
-                text-black
-                outline-none
-                transition
-                focus:border-violet-500
-                dark:border-neutral-700
-                dark:bg-neutral-900
-                dark:text-white
+                w-full rounded-xl border border-neutral-300
+                bg-white px-4 py-3 text-black outline-none
+                transition focus:border-violet-500
+                dark:border-neutral-700 dark:bg-neutral-900 dark:text-white
               "
             />
           </div>
 
-          <div className="pt-4 space-y-3">
+          <div className="space-y-3 pt-4">
             <button
               onClick={handleLogin}
               className="
-                w-full rounded-full
-                bg-violet-500
-                py-4
-                font-semibold
-                text-white
-                transition
-                hover:opacity-90
+                w-full rounded-full bg-violet-500 py-4
+                font-semibold text-white transition hover:opacity-90
               "
             >
               Masuk
@@ -148,18 +130,11 @@ export default function LoginForm() {
               type="button"
               onClick={handleGoogleLogin}
               className="
-                w-full rounded-full
-                border border-neutral-300
-                bg-white
-                py-4
-                font-semibold
-                text-black
-                transition
-                hover:bg-neutral-100
-                dark:border-neutral-700
-                dark:bg-neutral-900
-                dark:text-white
-                dark:hover:bg-neutral-800
+                w-full rounded-full border border-neutral-300
+                bg-white py-4 font-semibold text-black
+                transition hover:bg-neutral-100
+                dark:border-neutral-700 dark:bg-neutral-900
+                dark:text-white dark:hover:bg-neutral-800
               "
             >
               Masuk dengan Google

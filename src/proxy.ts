@@ -9,7 +9,7 @@ export function proxy(req: NextRequest) {
   }
 
   if (role !== "super_admin" && role !== "admin_kecamatan") {
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/user", req.url));
   }
 
   return NextResponse.next();

@@ -1,6 +1,6 @@
 "use client";
 
-import UmkmForm from "./form/UmkmForm";
+import UmkmForm from "@/components/form/UmkmForm";
 
 export default function TambahUmkmForm() {
   console.log("TAMBAH UMKM FORM RENDER");

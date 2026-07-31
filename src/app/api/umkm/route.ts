@@ -49,12 +49,12 @@ export async function GET(req: Request) {
     }
 
     // Super Admin bisa lihat semua saat mode admin
-    if (user?.role === "superadmin" && mode === "admin") {
+    if (user?.role === "super_admin" && mode === "admin") {
       // no filter
     }
 
     // User hanya melihat UMKM miliknya
-    if (user?.role === "user") {
+    if (user?.role === "user_umkm") {
       umkmQuery = umkmQuery.eq("owner_id", user.id);
     }
 
@@ -140,6 +140,30 @@ export async function POST(req: Request) {
     const user = await getCurrentUser();
 
     const body = await req.json();
+
+    const isUserUmkm = user?.role === "user_umkm";
+
+    if (isUserUmkm) {
+      const { data: existingUserUmkm } = await supabaseAdmin
+        .from("umkm")
+        .select("id")
+        .eq("owner_id", user.id)
+        .maybeSingle();
+
+      if (existingUserUmkm) {
+        return NextResponse.json(
+          {
+            message: "Akun ini sudah memiliki UMKM.",
+          },
+          {
+            status: 409,
+          },
+        );
+      }
+
+      body.published = false;
+      body.approval_status = "pending";
+    }
 
     body.kbli = Array.isArray(body.kbli)
       ? body.kbli.map((item: string) => item.trim()).filter(Boolean)

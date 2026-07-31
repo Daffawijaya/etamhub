@@ -6,9 +6,12 @@ export async function POST(req: Request) {
   try {
     const { login, password } = await req.json();
 
-    let user: any = null;
+    let user: {
+      id: string;
+      nama: string;
+    } | null = null;
+
     let role: string | null = null;
-    let role_id: string | null = null;
 
     // =========================
     // CEK ADMIN
@@ -56,12 +59,10 @@ export async function POST(req: Request) {
         id: admin.id,
         nama: admin.nama,
       };
-
-      role_id = admin.role_id;
     }
 
     // =========================
-    // CEK USER
+    // CEK USER UMKM
     // =========================
     if (!user) {
       const { data: normalUser } = await supabaseAdmin
@@ -71,11 +72,7 @@ export async function POST(req: Request) {
           id,
           nik,
           password,
-          nama,
-          role_id,
-          roles (
-            name
-          )
+          nama
         `,
         )
         .eq("nik", login)
@@ -105,24 +102,15 @@ export async function POST(req: Request) {
         );
       }
 
-      const roleData = normalUser.roles as
-        | { name: string }
-        | { name: string }[]
-        | null;
-
-      role = Array.isArray(roleData)
-        ? (roleData[0]?.name ?? null)
-        : (roleData?.name ?? null);
+      role = "user_umkm";
 
       user = {
         id: normalUser.id,
         nama: normalUser.nama,
       };
-
-      role_id = normalUser.role_id;
     }
 
-    if (!role) {
+    if (!role || !user) {
       return NextResponse.json(
         {
           success: false,
@@ -139,7 +127,6 @@ export async function POST(req: Request) {
     const response = NextResponse.json({
       success: true,
       role,
-      role_id,
       user,
     });
 
@@ -153,7 +140,6 @@ export async function POST(req: Request) {
 
     response.cookies.set("auth", token, cookieOptions);
     response.cookies.set("user_id", user.id, cookieOptions);
-    response.cookies.set("role_id", role_id ?? "", cookieOptions);
     response.cookies.set("role", role, cookieOptions);
 
     console.log("LOGIN BERHASIL:", user.nama, role);

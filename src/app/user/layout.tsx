@@ -2,10 +2,10 @@
 
 import { usePathname } from "next/navigation";
 
-import AdminSidebar from "@/components/admin/sidebar/AdminSidebar";
+import UserSidebar from "@/components/user/sidebar/UserSidebar";
 import DashboardNavbar from "@/components/DashboardNavbar";
 
-export default function AdminLayout({
+export default function UserLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -13,33 +13,37 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   const getTitle = () => {
-    if (pathname === "/admin") {
+    if (pathname === "/user") {
       return "Dashboard";
     }
 
-    if (pathname === "/admin/umkm") {
-      return "UMKM";
+    if (pathname === "/user/umkm") {
+      return "UMKM Saya";
     }
 
-    if (pathname === "/admin/tambah") {
+    if (pathname === "/user/tambah") {
       return "Tambah UMKM";
     }
 
-    if (pathname.match(/^\/admin\/umkm\/[^/]+\/edit$/)) {
+    if (pathname.match(/^\/user\/umkm\/[^/]+\/edit$/)) {
       return "Edit UMKM";
     }
 
-    if (pathname.match(/^\/admin\/umkm\/[^/]/)) {
+    if (pathname.match(/^\/user\/umkm\/[^/]+$/)) {
       return "Detail UMKM";
     }
 
-    return "Admin";
+    if (pathname === "/user/profil") {
+      return "Profil";
+    }
+
+    return "User";
   };
 
   return (
     <main className="min-h-screen bg-light-bg">
       <div className="flex">
-        <AdminSidebar />
+        <UserSidebar />
 
         <div className="flex-1 bg-light dark:bg-dark">
           <DashboardNavbar title={getTitle()} />

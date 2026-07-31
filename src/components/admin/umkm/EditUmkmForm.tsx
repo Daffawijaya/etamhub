@@ -1,6 +1,6 @@
 "use client";
 
-import UmkmForm from "./form/UmkmForm";
+import UmkmForm from "@/components/form/UmkmForm";
 
 interface Props {
   data: any;
