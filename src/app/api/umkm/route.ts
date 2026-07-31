@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import { getCurrentUser } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
@@ -22,90 +23,81 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
 
     const mode = searchParams.get("mode");
-
     const search = searchParams.get("search");
     const status = searchParams.get("status");
     const kecamatan = searchParams.get("kecamatan");
     const kategori = searchParams.get("kategori");
 
     const allowedSort = ["nama", "created_at"];
-
     const sortParam = searchParams.get("sort");
 
     const sort = allowedSort.includes(sortParam ?? "")
       ? sortParam!
       : "created_at";
+
     const order = searchParams.get("order") === "asc";
 
     const page = Number(searchParams.get("page") || 1);
     const requestedLimit = Number(searchParams.get("limit") || 10);
-
     const limit = Math.min(requestedLimit, 1000);
 
     let umkmQuery = supabaseAdmin.from("umkm").select("*", { count: "exact" });
 
-    // hanya request admin dashboard yang boleh lihat semua data
+    // Public
     if (!user) {
       umkmQuery = umkmQuery.eq("published", true);
     }
 
-    if (user?.role === "super_admin" && mode === "admin") {
-      // boleh lihat semua
+    // Super Admin bisa lihat semua saat mode admin
+    if (user?.role === "superadmin" && mode === "admin") {
+      // no filter
     }
 
-    if (user?.role === "admin_kecamatan") {
-      umkmQuery = umkmQuery.in("kecamatan_id", user.kecamatanIds);
-    }
-
+    // User hanya melihat UMKM miliknya
     if (user?.role === "user") {
       umkmQuery = umkmQuery.eq("owner_id", user.id);
     }
 
-    // Filter kecamatan
     if (kecamatan) {
       const { data: kecamatanData } = await supabaseAdmin
         .from("kecamatan")
         .select("id")
         .eq("nama", kecamatan)
-        .single();
+        .maybeSingle();
 
       if (kecamatanData) {
         umkmQuery = umkmQuery.eq("kecamatan_id", kecamatanData.id);
       }
     }
 
-    // Filter kategori
     if (kategori) {
       umkmQuery = umkmQuery.eq("kategori", kategori);
     }
+
     if (status === "public") {
       umkmQuery = umkmQuery.eq("published", true);
-    } else if (status === "private") {
+    }
+
+    if (status === "private") {
       umkmQuery = umkmQuery.eq("published", false);
     }
-    // Search nama
+
     if (search) {
       umkmQuery = umkmQuery.ilike("nama", `%${search}%`);
     }
 
-    // Sorting
     umkmQuery = umkmQuery.order(sort, {
       ascending: order,
     });
 
-    // Pagination
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
     umkmQuery = umkmQuery.range(from, to);
 
-    let filtersQuery = supabaseAdmin.from("umkm").select("kecamatan, kategori");
-
-    if (user?.role === "admin_kecamatan") {
-      filtersQuery = filtersQuery.in("kecamatan_id", user.kecamatanIds);
-    }
-
-    const { data: filtersData } = await filtersQuery;
+    const { data: filtersData } = await supabaseAdmin
+      .from("umkm")
+      .select("kecamatan, kategori");
 
     const kecamatanOptions = [
       ...new Set(filtersData?.map((item) => item.kecamatan).filter(Boolean)),
@@ -146,12 +138,15 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const user = await getCurrentUser();
+
     const body = await req.json();
+
     body.kbli = Array.isArray(body.kbli)
       ? body.kbli.map((item: string) => item.trim()).filter(Boolean)
       : body.kbli
         ? [body.kbli.trim()]
         : [];
+
     [
       "nib",
       "pirt",
@@ -164,83 +159,110 @@ export async function POST(req: Request) {
     ].forEach((field) => {
       body[field] = normalizeNullable(body[field]);
     });
-    const { data: existingNik, error: nikError } = await supabaseAdmin
+
+    const { data: existingNik } = await supabaseAdmin
       .from("umkm")
       .select("id")
       .eq("nik", body.nik)
       .maybeSingle();
 
-    if (nikError) throw nikError;
-
     if (existingNik) {
       return NextResponse.json(
-        { message: "NIK sudah terdaftar." },
-        { status: 409 },
+        {
+          message: "NIK sudah terdaftar.",
+        },
+        {
+          status: 409,
+        },
       );
     }
 
     if (body.nib) {
-      const { data: existingNib, error: nibError } = await supabaseAdmin
+      const { data: existingNib } = await supabaseAdmin
         .from("umkm")
         .select("id")
         .eq("nib", body.nib)
         .maybeSingle();
 
-      if (nibError) throw nibError;
-
       if (existingNib) {
         return NextResponse.json(
-          { message: "NIB sudah terdaftar." },
-          { status: 409 },
+          {
+            message: "NIB sudah terdaftar.",
+          },
+          {
+            status: 409,
+          },
         );
       }
     }
+
     body.whatsapp = normalizeWhatsapp(body.whatsapp);
     body.instagram = normalizeInstagramUsername(body.instagram);
     body.tiktok = normalizeTiktokUsername(body.tiktok);
 
     if (!isValidWhatsapp(body.whatsapp)) {
       return NextResponse.json(
-        { message: "Nomor WhatsApp tidak valid." },
-        { status: 400 },
+        {
+          message: "Nomor WhatsApp tidak valid.",
+        },
+        {
+          status: 400,
+        },
       );
     }
+
     if (!isValidEmail(body.email)) {
       return NextResponse.json(
-        { message: "Email tidak valid." },
-        { status: 400 },
+        {
+          message: "Email tidak valid.",
+        },
+        {
+          status: 400,
+        },
       );
     }
+
     if (!isValidFacebookUrl(body.facebook)) {
       return NextResponse.json(
-        { message: "URL Facebook tidak valid." },
-        { status: 400 },
+        {
+          message: "URL Facebook tidak valid.",
+        },
+        {
+          status: 400,
+        },
       );
     }
 
     if (!isValidInstagramUsername(body.instagram)) {
       return NextResponse.json(
-        { message: "Username Instagram tidak valid." },
-        { status: 400 },
+        {
+          message: "Username Instagram tidak valid.",
+        },
+        {
+          status: 400,
+        },
       );
     }
 
     if (!isValidTiktokUsername(body.tiktok)) {
       return NextResponse.json(
-        { message: "Username TikTok tidak valid." },
-        { status: 400 },
+        {
+          message: "Username TikTok tidak valid.",
+        },
+        {
+          status: 400,
+        },
       );
     }
 
-    const now = new Date().toISOString();
     if (body.kecamatan) {
-      const { data: kecamatanData, error: kecamatanError } = await supabaseAdmin
+      const { data: kecamatanData, error } = await supabaseAdmin
         .from("kecamatan")
         .select("id")
         .eq("nama", body.kecamatan)
-        .single();
+        .maybeSingle();
 
-      if (kecamatanError || !kecamatanData) {
+      if (error || !kecamatanData) {
         return NextResponse.json(
           {
             message: "Kecamatan tidak ditemukan",
@@ -251,27 +273,17 @@ export async function POST(req: Request) {
         );
       }
 
-      if (
-        user?.role === "admin_kecamatan" &&
-        !user.kecamatanIds.includes(kecamatanData.id)
-      ) {
-        return NextResponse.json(
-          {
-            message: "Tidak memiliki akses kecamatan ini",
-          },
-          {
-            status: 403,
-          },
-        );
-      }
-
       body.kecamatan_id = kecamatanData.id;
     }
+
+    const now = new Date().toISOString();
+
     const { data, error } = await supabaseAdmin
       .from("umkm")
       .insert({
         id: crypto.randomUUID(),
         ...body,
+        owner_id: user?.id ?? null,
         created_at: now,
         updated_at: now,
       })
