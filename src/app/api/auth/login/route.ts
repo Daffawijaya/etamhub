@@ -6,15 +6,19 @@ export async function POST(req: Request) {
   try {
     const { login, password } = await req.json();
 
-    console.log("LOGIN:", login);
+    let user: any = null;
+    let role: string | null = null;
+    let role_id: string | null = null;
 
-    const { data: user, error } = await supabaseAdmin
-      .from("users")
+    // =========================
+    // CEK ADMIN
+    // =========================
+    const { data: admin } = await supabaseAdmin
+      .from("admins")
       .select(
         `
         id,
         username,
-        nik,
         password,
         nama,
         role_id,
@@ -23,42 +27,100 @@ export async function POST(req: Request) {
         )
       `,
       )
-      .or(`username.eq.${login},nik.eq.${login}`)
-      .single();
+      .eq("username", login)
+      .maybeSingle();
 
-    console.log("USER DATA:", user);
-    console.log("SUPABASE ERROR:", error);
+    if (admin) {
+      if (admin.password !== password) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Username/NIK atau password salah",
+          },
+          {
+            status: 401,
+          },
+        );
+      }
 
-    if (error || !user) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Username/NIK atau password salah",
-        },
-        {
-          status: 401,
-        },
-      );
+      const roleData = admin.roles as
+        | { name: string }
+        | { name: string }[]
+        | null;
+
+      role = Array.isArray(roleData)
+        ? (roleData[0]?.name ?? null)
+        : (roleData?.name ?? null);
+
+      user = {
+        id: admin.id,
+        nama: admin.nama,
+      };
+
+      role_id = admin.role_id;
     }
 
-    if (user.password !== password) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Username/NIK atau password salah",
-        },
-        {
-          status: 401,
-        },
-      );
+    // =========================
+    // CEK USER
+    // =========================
+    if (!user) {
+      const { data: normalUser } = await supabaseAdmin
+        .from("users")
+        .select(
+          `
+          id,
+          nik,
+          password,
+          nama,
+          role_id,
+          roles (
+            name
+          )
+        `,
+        )
+        .eq("nik", login)
+        .maybeSingle();
+
+      if (!normalUser) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Username/NIK atau password salah",
+          },
+          {
+            status: 401,
+          },
+        );
+      }
+
+      if (normalUser.password !== password) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Username/NIK atau password salah",
+          },
+          {
+            status: 401,
+          },
+        );
+      }
+
+      const roleData = normalUser.roles as
+        | { name: string }
+        | { name: string }[]
+        | null;
+
+      role = Array.isArray(roleData)
+        ? (roleData[0]?.name ?? null)
+        : (roleData?.name ?? null);
+
+      user = {
+        id: normalUser.id,
+        nama: normalUser.nama,
+      };
+
+      role_id = normalUser.role_id;
     }
-
-    const roleData = user.roles as unknown as
-      | { name: string }
-      | { name: string }[]
-      | null;
-
-    const role = Array.isArray(roleData) ? roleData[0]?.name : roleData?.name;
 
     if (!role) {
       return NextResponse.json(
@@ -77,44 +139,22 @@ export async function POST(req: Request) {
     const response = NextResponse.json({
       success: true,
       role,
-      role_id: user.role_id,
-      user: {
-        id: user.id,
-        nama: user.nama,
-      },
+      role_id,
+      user,
     });
 
-    response.cookies.set("auth", token, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "lax" as const,
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
-    });
+    };
 
-    response.cookies.set("user_id", user.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
-    response.cookies.set("role_id", user.role_id ?? "", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
-    response.cookies.set("role", role, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-    });
+    response.cookies.set("auth", token, cookieOptions);
+    response.cookies.set("user_id", user.id, cookieOptions);
+    response.cookies.set("role_id", role_id ?? "", cookieOptions);
+    response.cookies.set("role", role, cookieOptions);
 
     console.log("LOGIN BERHASIL:", user.nama, role);
 

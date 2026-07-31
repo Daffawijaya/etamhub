@@ -5,54 +5,89 @@ export async function getCurrentUser() {
   const cookieStore = await cookies();
 
   const userId = cookieStore.get("user_id")?.value;
+  const cookieRole = cookieStore.get("role")?.value;
 
   if (!userId) {
     return null;
   }
 
-  const { data: user, error } = await supabaseAdmin
+  // =========================
+  // CEK USERS
+  // =========================
+  const { data: user } = await supabaseAdmin
     .from("users")
     .select(
       `
       id,
       nama,
-      username,
       nik,
+      email,
+      whatsapp,
+      avatar_url
+    `,
+    )
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (user) {
+    return {
+      id: user.id,
+      nama: user.nama,
+      username: null,
+      nik: user.nik,
+      email: user.email,
+
+      role: cookieRole ?? "user",
+
+      roleId: null,
+
+      kecamatanIds: [],
+      kecamatan: [],
+    };
+  }
+
+  // =========================
+  // CEK ADMINS (SUPER ADMIN)
+  // =========================
+  const { data: admin } = await supabaseAdmin
+    .from("admins")
+    .select(
+      `
+      id,
+      nama,
+      username,
       role_id,
       roles (
         name
-      ),
-      user_kecamatan (
-        kecamatan_id,
-        kecamatan (
-          id,
-          nama
-        )
       )
-      `,
+    `,
     )
     .eq("id", userId)
-    .single();
+    .maybeSingle();
 
-  if (error || !user) {
-    console.error(error);
-    return null;
+  if (admin) {
+    const roleData = admin.roles as
+      | { name: string }
+      | { name: string }[]
+      | null;
+
+    return {
+      id: admin.id,
+      nama: admin.nama,
+      username: admin.username,
+      nik: null,
+      email: null,
+
+      role:
+        cookieRole ??
+        (Array.isArray(roleData) ? roleData[0]?.name : roleData?.name),
+
+      roleId: admin.role_id,
+
+      kecamatanIds: [],
+      kecamatan: [],
+    };
   }
 
-  return {
-    id: user.id,
-    nama: user.nama,
-    username: user.username,
-    nik: user.nik,
-
-    role: Array.isArray(user.roles)
-      ? (user.roles[0] as { name: string })?.name
-      : (user.roles as { name: string })?.name,
-
-    roleId: user.role_id,
-
-    kecamatanIds: user.user_kecamatan?.map((item) => item.kecamatan_id) || [],
-
-    kecamatan: user.user_kecamatan?.map((item) => item.kecamatan) || [],
-  };
+  return null;
 }

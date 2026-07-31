@@ -2,25 +2,12 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-interface AuthUser {
-  id: string;
-  nama: string;
-  roles: {
-    name: string;
-  } | null;
-  user_kecamatan: {
-    kecamatan: {
-      id: string;
-      nama: string;
-    } | null;
-  }[];
-}
-
 export async function GET() {
   try {
     const cookieStore = await cookies();
 
     const userId = cookieStore.get("user_id")?.value;
+    const cookieRole = cookieStore.get("role")?.value;
 
     if (!userId) {
       return NextResponse.json(
@@ -33,41 +20,77 @@ export async function GET() {
       );
     }
 
-    const { data, error } = await supabaseAdmin
+    // =========================
+    // CEK USER
+    // =========================
+    const { data: user } = await supabaseAdmin
       .from("users")
+      .select(
+        `
+        id,
+        nama,
+        nik,
+        email,
+        whatsapp,
+        avatar_url
+        `,
+      )
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (user) {
+      return NextResponse.json({
+        id: user.id,
+        nama: user.nama,
+        role: cookieRole ?? "user",
+        kecamatan: [],
+      });
+    }
+
+    // =========================
+    // CEK ADMIN
+    // =========================
+    const { data: admin, error } = await supabaseAdmin
+      .from("admins")
       .select(
         `
         id,
         nama,
         roles (
           name
-        ),
-        user_kecamatan (
-          kecamatan (
-            id,
-            nama
-          )
         )
         `,
       )
       .eq("id", userId)
-      .single();
+      .maybeSingle();
 
     if (error) {
       throw error;
     }
 
-    const user = data as unknown as AuthUser;
+    if (!admin) {
+      return NextResponse.json(
+        {
+          message: "User tidak ditemukan",
+        },
+        {
+          status: 404,
+        },
+      );
+    }
 
-    console.log("USER RAW:", JSON.stringify(user, null, 2));
+    const roleData = admin.roles as
+      | { name: string }
+      | { name: string }[]
+      | null;
+
+    const role = Array.isArray(roleData) ? roleData[0]?.name : roleData?.name;
 
     return NextResponse.json({
-      id: user.id,
-      nama: user.nama,
-      role: user.roles?.name ?? null,
-      kecamatan:
-        user.user_kecamatan?.map((item) => item.kecamatan).filter(Boolean) ??
-        [],
+      id: admin.id,
+      nama: admin.nama,
+      role: cookieRole ?? role ?? null,
+      kecamatan: [],
     });
   } catch (error: any) {
     console.error("AUTH ME ERROR:", error);
