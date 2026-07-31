@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function LoginForm() {
   const [login, setLogin] = useState("");
@@ -30,8 +31,27 @@ export default function LoginForm() {
 
     if (data.role === "super_admin" || data.role === "admin_kecamatan") {
       window.location.href = "/admin";
-    } else if (data.role === "user") {
+      return;
+    }
+
+    if (data.role === "user_umkm") {
       window.location.href = "/dashboard";
+      return;
+    }
+
+    window.location.href = "/dashboard";
+  };
+
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      alert(error.message);
     }
   };
 
@@ -108,7 +128,7 @@ export default function LoginForm() {
             />
           </div>
 
-          <div className="pt-4">
+          <div className="pt-4 space-y-3">
             <button
               onClick={handleLogin}
               className="
@@ -122,6 +142,27 @@ export default function LoginForm() {
               "
             >
               Masuk
+            </button>
+
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="
+                w-full rounded-full
+                border border-neutral-300
+                bg-white
+                py-4
+                font-semibold
+                text-black
+                transition
+                hover:bg-neutral-100
+                dark:border-neutral-700
+                dark:bg-neutral-900
+                dark:text-white
+                dark:hover:bg-neutral-800
+              "
+            >
+              Masuk dengan Google
             </button>
           </div>
         </div>

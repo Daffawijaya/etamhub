@@ -17,12 +17,12 @@ export async function POST(req: Request) {
         nik,
         password,
         nama,
+        role_id,
         roles (
           name
         )
       `,
       )
-
       .or(`username.eq.${login},nik.eq.${login}`)
       .single();
 
@@ -53,11 +53,12 @@ export async function POST(req: Request) {
       );
     }
 
-    console.log("USER:", user);
-    console.log("ROLES:", user.roles);
+    const roleData = user.roles as unknown as
+      | { name: string }
+      | { name: string }[]
+      | null;
 
-    // karena relasi roles terbaca array
-    const role = (user.roles as unknown as { name: string })?.name;
+    const role = Array.isArray(roleData) ? roleData[0]?.name : roleData?.name;
 
     if (!role) {
       return NextResponse.json(
@@ -76,6 +77,7 @@ export async function POST(req: Request) {
     const response = NextResponse.json({
       success: true,
       role,
+      role_id: user.role_id,
       user: {
         id: user.id,
         nama: user.nama,
@@ -87,15 +89,7 @@ export async function POST(req: Request) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60,
-    });
-
-    response.cookies.set("role", role, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      path: "/",
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     response.cookies.set("user_id", user.id, {
@@ -103,7 +97,23 @@ export async function POST(req: Request) {
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       path: "/",
-      maxAge: 60 * 60,
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    response.cookies.set("role_id", user.role_id ?? "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    });
+
+    response.cookies.set("role", role, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
     });
 
     console.log("LOGIN BERHASIL:", user.nama, role);

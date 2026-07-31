@@ -18,6 +18,7 @@ export async function getCurrentUser() {
       nama,
       username,
       nik,
+      role_id,
       roles (
         name
       ),
@@ -47,6 +48,8 @@ export async function getCurrentUser() {
     role: Array.isArray(user.roles)
       ? (user.roles[0] as { name: string })?.name
       : (user.roles as { name: string })?.name,
+
+    roleId: user.role_id,
 
     kecamatanIds: user.user_kecamatan?.map((item) => item.kecamatan_id) || [],
 
