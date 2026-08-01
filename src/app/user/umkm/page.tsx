@@ -75,7 +75,7 @@ export default async function UserUmkmPage() {
             </Link>
           </div>
         ) : (
-          <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-gray-900">
+          <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-dark-card">
             <div className="flex flex-col gap-5 md:flex-row">
               <div className="h-40 w-full overflow-hidden rounded-xl md:w-56">
                 {umkm.gambar?.[0] ? (
@@ -145,9 +145,23 @@ export default async function UserUmkmPage() {
                   )}
 
                   {umkm.approval_status === "rejected" && (
-                    <div className="flex items-center gap-2 text-red-600">
-                      <XCircle size={18} />
-                      UMKM ditolak
+                    <div className="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/20">
+                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+                        <XCircle size={18} />
+                        <span className="font-medium">UMKM ditolak</span>
+                      </div>
+
+                      {umkm.rejected_reason && (
+                        <div className="mt-3">
+                          <p className="text-sm font-medium text-red-700 dark:text-red-300">
+                            Alasan Penolakan
+                          </p>
+
+                          <p className="mt-1 whitespace-pre-wrap text-sm text-red-700 dark:text-red-300">
+                            {umkm.rejected_reason}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>

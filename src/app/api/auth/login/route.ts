@@ -64,51 +64,59 @@ export async function POST(req: Request) {
     // =========================
     // CEK USER UMKM
     // =========================
-    if (!user) {
-      const { data: normalUser } = await supabaseAdmin
-        .from("users")
-        .select(
-          `
-          id,
-          nik,
-          password,
-          nama
-        `,
-        )
-        .eq("nik", login)
-        .maybeSingle();
+    const { data: normalUser, error } = await supabaseAdmin
+      .from("users")
+      .select(
+        `
+    id,
+    nik,
+    password,
+    email
+    `,
+      )
+      .eq("nik", login)
+      .maybeSingle();
 
-      if (!normalUser) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Username/NIK atau password salah",
-          },
-          {
-            status: 401,
-          },
-        );
-      }
+    console.log({
+      login,
+      normalUser,
+      error,
+    });
 
-      if (normalUser.password !== password) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Username/NIK atau password salah",
-          },
-          {
-            status: 401,
-          },
-        );
-      }
-
-      role = "user_umkm";
-
-      user = {
-        id: normalUser.id,
-        nama: normalUser.nama,
-      };
+    if (error) {
+      throw error;
     }
+
+    if (!normalUser) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Username/NIK atau password salah",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    if (normalUser.password !== password) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Username/NIK atau password salah",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
+    role = "user_umkm";
+
+    user = {
+      id: normalUser.id,
+      nama: normalUser.email,
+    };
 
     if (!role || !user) {
       return NextResponse.json(

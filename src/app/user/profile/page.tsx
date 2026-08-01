@@ -47,7 +47,7 @@ export default async function UserProfilePage() {
           </p>
         </div>
 
-        <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-gray-900">
+        <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-dark-card">
           <div className="flex items-center gap-4">
             <div className="rounded-full bg-primary/10 p-4">
               <UserRound className="text-primary" size={32} />

@@ -399,11 +399,9 @@ function RequestDetailContent({ item }: RequestDetailProps) {
 
 function LoadingState() {
   return (
-    <div className="p-6">
-      <div className="mx-auto max-w-6xl">
-        <div className="h-7 w-40 animate-pulse rounded bg-gray-200 dark:bg-neutral-800" />
-
-        <div className="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-neutral-800 dark:bg-dark-card">
+    <div className="px-6 pb-6">
+      <div>
+        <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
           {[1, 2, 3].map((item) => (
             <div
               key={item}
@@ -505,7 +503,7 @@ export default function RequestsPage() {
         {/* Header */}
 
         {/* Main Card */}
-        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-neutral-800 dark:bg-dark-card">
+        <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
           {/* Card Header */}
           <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
             <div>
@@ -529,10 +527,11 @@ export default function RequestsPage() {
                 text-slate-500
                 dark:text-slate-400
                 transition-colors
-                duration-300
+                duration-300 capitalize
               "
               >
-                {requests.length} request
+                {requests.filter((item) => item.status === "pending").length}{" "}
+                request belum dikonfirmasi
               </p>
             </div>
           </div>
