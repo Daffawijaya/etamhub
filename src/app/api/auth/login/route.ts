@@ -6,17 +6,10 @@ export async function POST(req: Request) {
   try {
     const { login, password } = await req.json();
 
-    let user: {
-      id: string;
-      nama: string;
-    } | null = null;
-
-    let role: string | null = null;
-
     // =========================
     // CEK ADMIN
     // =========================
-    const { data: admin } = await supabaseAdmin
+    const { data: admin, error: adminError } = await supabaseAdmin
       .from("admins")
       .select(
         `
@@ -25,20 +18,44 @@ export async function POST(req: Request) {
         password,
         nama,
         role_id,
+        is_active,
         roles (
           name
         )
-      `,
+        `,
       )
       .eq("username", login)
       .maybeSingle();
 
+    if (adminError) {
+      throw adminError;
+    }
+
+    // Jika username ditemukan di tabel admins
     if (admin) {
+      // =========================
+      // CEK STATUS ADMIN
+      // =========================
+      if (!admin.is_active) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Akun admin tidak aktif",
+          },
+          {
+            status: 403,
+          },
+        );
+      }
+
+      // =========================
+      // CEK PASSWORD ADMIN
+      // =========================
       if (admin.password !== password) {
         return NextResponse.json(
           {
             success: false,
-            message: "Username/NIK atau password salah",
+            message: "Username atau password salah",
           },
           {
             status: 401,
@@ -46,47 +63,97 @@ export async function POST(req: Request) {
         );
       }
 
+      // =========================
+      // AMBIL ROLE ADMIN
+      // =========================
       const roleData = admin.roles as
         | { name: string }
         | { name: string }[]
         | null;
 
-      role = Array.isArray(roleData)
+      const role = Array.isArray(roleData)
         ? (roleData[0]?.name ?? null)
         : (roleData?.name ?? null);
 
-      user = {
+      if (!role) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Role admin tidak ditemukan",
+          },
+          {
+            status: 403,
+          },
+        );
+      }
+
+      const user = {
         id: admin.id,
         nama: admin.nama,
       };
+
+      // =========================
+      // BUAT TOKEN ADMIN
+      // =========================
+      const token = crypto.randomBytes(32).toString("hex");
+
+      const response = NextResponse.json({
+        success: true,
+        role,
+        user,
+      });
+
+      const cookieOptions = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax" as const,
+        path: "/",
+        maxAge: 60 * 60 * 24 * 7,
+      };
+
+      response.cookies.set("auth", token, cookieOptions);
+      response.cookies.set("user_id", user.id, cookieOptions);
+      response.cookies.set("role", role, cookieOptions);
+
+      console.log("LOGIN ADMIN BERHASIL:", {
+        id: user.id,
+        nama: user.nama,
+        role,
+      });
+
+      // PENTING:
+      // Admin berhasil → langsung return.
+      // Jangan lanjut ke tabel users.
+      return response;
     }
 
     // =========================
     // CEK USER UMKM
     // =========================
-    const { data: normalUser, error } = await supabaseAdmin
+    const { data: normalUser, error: userError } = await supabaseAdmin
       .from("users")
       .select(
         `
-    id,
-    nik,
-    password,
-    email
-    `,
+        id,
+        nik,
+        password,
+        email
+        `,
       )
-      .eq("nik", login)
+      .or(`nik.eq.${login},email.eq.${login}`)
       .maybeSingle();
 
-    console.log({
+    console.log("CEK USER UMKM:", {
       login,
       normalUser,
-      error,
+      error: userError,
     });
 
-    if (error) {
-      throw error;
+    if (userError) {
+      throw userError;
     }
 
+    // User tidak ditemukan
     if (!normalUser) {
       return NextResponse.json(
         {
@@ -99,6 +166,9 @@ export async function POST(req: Request) {
       );
     }
 
+    // =========================
+    // CEK PASSWORD USER UMKM
+    // =========================
     if (normalUser.password !== password) {
       return NextResponse.json(
         {
@@ -111,25 +181,19 @@ export async function POST(req: Request) {
       );
     }
 
-    role = "user_umkm";
+    // =========================
+    // ROLE USER UMKM
+    // =========================
+    const role = "user_umkm";
 
-    user = {
+    const user = {
       id: normalUser.id,
       nama: normalUser.email,
     };
 
-    if (!role || !user) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Role user tidak ditemukan",
-        },
-        {
-          status: 403,
-        },
-      );
-    }
-
+    // =========================
+    // BUAT TOKEN USER
+    // =========================
     const token = crypto.randomBytes(32).toString("hex");
 
     const response = NextResponse.json({
@@ -150,7 +214,11 @@ export async function POST(req: Request) {
     response.cookies.set("user_id", user.id, cookieOptions);
     response.cookies.set("role", role, cookieOptions);
 
-    console.log("LOGIN BERHASIL:", user.nama, role);
+    console.log("LOGIN USER UMKM BERHASIL:", {
+      id: user.id,
+      nama: user.nama,
+      role,
+    });
 
     return response;
   } catch (error) {
