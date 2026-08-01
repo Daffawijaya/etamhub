@@ -9,18 +9,18 @@ export type TeamMember = {
 };
 
 export const teamMembers: TeamMember[] = [
-     {
-    gambar: "/tim/reza.png",
-    nama: "Muhammad Reza, S.T, M.Si",
-    bidang: "Pimpinan",
-    desc: "PLT Kepala Dinas Koperasi dan UKM Kukar",
-  },
-  {
-    gambar: "/tim/santi.png",
-    nama: "Santi Effendi, S.E",
-    bidang: "Pimpinan",
-    desc: "Kepala Bidang Pemberdayaan Usaha Mikro",
-  },
+  // {
+  //   gambar: "/tim/reza.png",
+  //   nama: "Muhammad Reza, S.T, M.Si",
+  //   bidang: "Pimpinan",
+  //   desc: "PLT Kepala Dinas Koperasi dan UKM Kukar",
+  // },
+  // {
+  //   gambar: "/tim/santi.png",
+  //   nama: "Santi Effendi, S.E",
+  //   bidang: "Pimpinan",
+  //   desc: "Kepala Bidang Pemberdayaan Usaha Mikro",
+  // },
   {
     gambar: "/tim/daffa2.png",
     nama: "Dafa Yan Wijaya",

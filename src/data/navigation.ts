@@ -3,6 +3,10 @@ export const navigation = [
     label: "Beranda",
     href: "/",
   },
+    {
+    label: "Kecamatan",
+    href: "/#kecamatan",
+  },
   {
     label: "Peta UMKM",
     href: "/peta",
@@ -10,9 +14,5 @@ export const navigation = [
   {
     label: "Tentang",
     href: "/about",
-  },
-  {
-    label: "Login",
-    href: "/login",
   },
 ];

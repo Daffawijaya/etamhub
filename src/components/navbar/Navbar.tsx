@@ -7,10 +7,11 @@ import DaftarModal from "../modal/DaftarModal";
 import MobileNavbar from "./MobileNavbar";
 import { navigation } from "@/data/navigation";
 import ThemeToggle from "../ThemeToggle";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
-
+  const router = useRouter();
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
   const [showNavbar, setShowNavbar] = useState(
@@ -66,10 +67,10 @@ export default function Navbar() {
 
             {/* Button */}
             <button
-              onClick={() => setOpenDaftarModal(true)}
+              onClick={() => router.push("/login")}
               className="bg-white text-black px-3 py-2 rounded-md text-xs font-medium hover:bg-zinc-200 transition-colors"
             >
-              Daftar UMKM
+              Masuk
             </button>
           </div>
         </div>

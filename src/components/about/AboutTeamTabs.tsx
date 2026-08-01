@@ -16,7 +16,6 @@ const kewirausahaan = getTeamByBidang("Kewirausahaan");
 const lapangan = getTeamByBidang("Pendamping Lapangan");
 
 const tabs = [
-  "Pimpinan",
   "TI & Digitalisasi",
   "Kewirausahaan",
   "Basis Data",

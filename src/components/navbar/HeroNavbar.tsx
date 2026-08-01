@@ -1,16 +1,14 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import DaftarModal from "../modal/DaftarModal";
 import { usePathname } from "next/navigation";
 import SmallChevronButton from "../button/SmallChevronButton";
 import { navigation } from "@/data/navigation";
+import { useRouter } from "next/navigation";
 
 export default function HeroNavbar() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const pathname = usePathname();
-
+  const router = useRouter();
   const isHome = pathname === "/";
 
   return (
@@ -51,15 +49,10 @@ export default function HeroNavbar() {
           {/* Right Button */}
           <div className="flex justify-end items-start">
             <SmallChevronButton
-              title="Daftar UMKM"
-              onClick={() => setIsModalOpen(true)}
+              title="Masuk"
+              onClick={() => router.push("/login")}
             />
           </div>
-
-          <DaftarModal
-            open={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-          />
         </div>
       </div>
     </header>

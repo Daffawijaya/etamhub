@@ -338,18 +338,6 @@ function RequestDetailContent({ item }: RequestDetailProps) {
 
   const changedFields = getChangedFields(item.payload);
 
-  if (!before || !after) {
-    return (
-      <div className="border-t border-gray-100 px-5 py-4 dark:border-neutral-800">
-        <p className="mb-2 text-sm font-medium">Data perubahan</p>
-
-        <pre className="max-h-80 overflow-auto rounded-lg bg-gray-50 p-4 text-xs dark:bg-neutral-900">
-          {JSON.stringify(item.payload, null, 2)}
-        </pre>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="border-t border-gray-100 px-5 py-3 dark:border-neutral-800">

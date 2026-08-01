@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
-
+  const router = useRouter();
   const handleLogin = async () => {
     const res = await fetch("/api/auth/login", {
       method: "POST",
@@ -44,16 +45,20 @@ export default function LoginForm() {
   };
 
   const handleGoogleLogin = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
+    const redirectTo = `${window.location.origin}/auth/callback`;
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo,
+        queryParams: {
+          prompt: "select_account",
+        },
       },
     });
 
-    if (error) {
-      alert(error.message);
-    }
+    console.log("OAuth data:", data);
+    console.log("OAuth error:", error);
   };
 
   return (
@@ -139,6 +144,16 @@ export default function LoginForm() {
             >
               Masuk dengan Google
             </button>
+            <div className="pt-2 text-center text-sm text-neutral-500">
+              Belum punya akun?{" "}
+              <button
+                type="button"
+                onClick={() => router.push("/register")}
+                className="font-semibold text-primary hover:underline"
+              >
+                Buat akun
+              </button>
+            </div>
           </div>
         </div>
       </div>

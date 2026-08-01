@@ -36,18 +36,8 @@ export default async function UserUmkmPage() {
   return (
     <main className="min-h-screen px-6 pb-6 bg-light dark:bg-dark">
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-dark dark:text-light">
-            UMKM Saya
-          </h1>
-
-          <p className="text-sm text-gray-500">
-            Kelola satu data UMKM yang terhubung dengan akun Anda.
-          </p>
-        </div>
-
         {!umkm ? (
-          <div className="rounded-2xl bg-white p-8 text-center shadow-sm dark:bg-gray-900">
+          <div className="rounded-2xl bg-white p-8 text-center dark:bg-dark-card">
             <Building2 size={48} className="mx-auto text-primary" />
 
             <h2 className="mt-4 text-xl font-semibold text-dark dark:text-light">
@@ -67,7 +57,8 @@ export default async function UserUmkmPage() {
               bg-primary
               px-5
               py-3
-              text-white
+              text-black
+              dark:text-white
               font-medium
               "
             >
@@ -75,9 +66,9 @@ export default async function UserUmkmPage() {
             </Link>
           </div>
         ) : (
-          <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-dark-card">
-            <div className="flex flex-col gap-5 md:flex-row">
-              <div className="h-40 w-full overflow-hidden rounded-xl md:w-56">
+          <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+            <div className="flex flex-col gap-5 md:flex-row flex items-center">
+              <div className="h-40 w-full overflow-hidden rounded-xl md:w-56 flex items-center justify-center">
                 {umkm.gambar?.[0] ? (
                   <img
                     src={umkm.gambar[0]}
@@ -85,7 +76,7 @@ export default async function UserUmkmPage() {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center bg-gray-200 dark:bg-gray-800">
+                  <div className="flex h-full items-center justify-center bg-white dark:bg-dark-card">
                     <Building2 />
                   </div>
                 )}
@@ -111,8 +102,8 @@ export default async function UserUmkmPage() {
                     bg-primary
                     px-4
                     py-2
-                    text-sm
-                    text-white
+                    text-sm text-black
+                    dark:text-white
                     "
                   >
                     <Pencil size={16} />
@@ -131,7 +122,7 @@ export default async function UserUmkmPage() {
 
                 <div className="mt-6">
                   {umkm.approval_status === "pending" && (
-                    <div className="flex items-center gap-2 text-yellow-600">
+                    <div className="flex items-center gap-2 text-yellow-600 justify-start">
                       <Clock3 size={18} />
                       Menunggu persetujuan admin
                     </div>
@@ -140,16 +131,16 @@ export default async function UserUmkmPage() {
                   {umkm.approval_status === "approved" && (
                     <div className="flex items-center gap-2 text-green-600">
                       <CheckCircle2 size={18} />
-                      UMKM sudah disetujui
+                      Update UMKM sudah disetujui
                     </div>
                   )}
 
                   {umkm.approval_status === "rejected" && (
-                    <div className="rounded-xl border border-red-200 bg-red-50 p-4 dark:border-red-900 dark:bg-red-950/20">
-                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400">
+                    
+                      <div className="flex items-center flex justify-start items-start gap-2 text-red-600 dark:text-red-400">
                         <XCircle size={18} />
-                        <span className="font-medium">UMKM ditolak</span>
-                      </div>
+                        <span className="font-medium">Update UMKM ditolak</span>
+                  
 
                       {umkm.rejected_reason && (
                         <div className="mt-3">

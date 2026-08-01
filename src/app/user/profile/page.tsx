@@ -35,63 +35,65 @@ export default async function UserProfilePage() {
   }
 
   return (
-    <main className="min-h-screen px-6 pb-6 bg-light dark:bg-dark">
+    <main className="min-h-screen bg-light px-6 pb-6 dark:bg-dark">
       <div className="space-y-6">
-        <div>
-          <h1 className="text-2xl font-bold text-dark dark:text-light">
-            Profil Saya
-          </h1>
-
-          <p className="text-sm text-gray-500">
-            Informasi akun pengguna dan data identitas.
-          </p>
-        </div>
-
         <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-dark-card">
-          <div className="flex items-center gap-4">
-            <div className="rounded-full bg-primary/10 p-4">
-              <UserRound className="text-primary" size={32} />
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 transition-colors duration-300 dark:text-white">
+              Profil Saya
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-500 transition-colors duration-300 dark:text-slate-400">
+              Informasi akun pengguna dan data identitas.
+            </p>
+          </div>
+
+          <div className="mt-8 flex items-center gap-5 rounded-2xl border border-slate-200 p-5 dark:border-slate-700">
+            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+              <UserRound className="text-primary" size={38} />
             </div>
 
-            <div>
-              <h2 className="text-xl font-semibold text-dark dark:text-light">
+            <div className="min-w-0 flex-1">
+              <h3 className="truncate text-2xl font-semibold text-dark dark:text-light">
                 {user.umkm?.[0]?.pemilik ?? "-"}
-              </h2>
+              </h3>
 
-              <p className="text-sm text-gray-500">Pemilik UMKM</p>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Pemilik UMKM
+              </p>
             </div>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2">
-            <div className="rounded-xl bg-light-bg p-4 dark:bg-gray-800">
-              <div className="flex items-center gap-2 text-sm text-gray-500">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="rounded-xl border border-slate-200 p-5 transition-colors dark:border-slate-700">
+              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                 <CreditCard size={16} />
-                NIK
+                <span>NIK</span>
               </div>
 
-              <p className="mt-2 font-medium text-dark dark:text-light">
-                {user.nik}
+              <p className="mt-3 break-all text-base font-medium text-dark dark:text-light">
+                {user.nik ?? "-"}
               </p>
             </div>
 
-            <div className="rounded-xl bg-light-bg p-4 dark:bg-gray-800">
-              <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="rounded-xl border border-slate-200 p-5 transition-colors dark:border-slate-700">
+              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                 <Mail size={16} />
-                Email
+                <span>Email</span>
               </div>
 
-              <p className="mt-2 font-medium text-dark dark:text-light">
+              <p className="mt-3 break-all text-base font-medium text-dark dark:text-light">
                 {user.email ?? "-"}
               </p>
             </div>
 
-            <div className="rounded-xl bg-light-bg p-4 dark:bg-gray-800">
-              <div className="flex items-center gap-2 text-sm text-gray-500">
+            <div className="rounded-xl border border-slate-200 p-5 transition-colors dark:border-slate-700">
+              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
                 <Phone size={16} />
-                WhatsApp
+                <span>WhatsApp</span>
               </div>
 
-              <p className="mt-2 font-medium text-dark dark:text-light">
+              <p className="mt-3 text-base font-medium text-dark dark:text-light">
                 {user.umkm?.[0]?.whatsapp ?? "-"}
               </p>
             </div>

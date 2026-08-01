@@ -1,21 +1,15 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { IoIosSunny, IoIosMoon } from "react-icons/io";
 import Link from "next/link";
 import { useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import DaftarModal from "../modal/DaftarModal";
 import { navigation } from "@/data/navigation";
+import { useRouter } from "next/navigation";
+import ThemeToggle from "../ThemeToggle";
 
 export default function DetailNavbar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { resolvedTheme, setTheme } = useTheme();
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
 
   return (
     <>
@@ -51,21 +45,10 @@ export default function DetailNavbar() {
 
           {/* Desktop Button */}
           <div className="hidden lg:flex items-center gap-3">
-            <button
-              onClick={() =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
-              className="text-lg cursor-pointer pr-3"
-            >
-              {resolvedTheme === "dark" ? (
-                <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
-              ) : (
-                <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
-              )}
-            </button>
+            <ThemeToggle />
 
             <button
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => router.push("/login")}
               className="
       h-10 px-5 rounded-md
       bg-white text-black
@@ -73,7 +56,7 @@ export default function DetailNavbar() {
       transition hover:opacity-90
     "
             >
-              Daftar UMKM
+              Masuk
             </button>
           </div>
 
@@ -107,18 +90,7 @@ export default function DetailNavbar() {
           </Link>
 
           <div className="flex items-center gap-1">
-            <button
-              onClick={() =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
-              className="text-lg cursor-pointer pr-3"
-            >
-              {resolvedTheme === "dark" ? (
-                <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
-              ) : (
-                <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
-              )}
-            </button>
+            <ThemeToggle />
 
             <button
               onClick={() => setOpen(false)}
@@ -146,10 +118,7 @@ export default function DetailNavbar() {
         {/* Button */}
         <div className="absolute bottom-6 left-0 w-full px-6">
           <button
-            onClick={() => {
-              setOpen(false);
-              setIsModalOpen(true);
-            }}
+            onClick={() => router.push("/login")}
             className="
               w-full h-11 rounded-lg
               flex items-center justify-center
@@ -159,12 +128,10 @@ export default function DetailNavbar() {
               transition-colors
             "
           >
-            Daftar UMKM
+            Masuk
           </button>
         </div>
       </div>
-
-      <DaftarModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }

@@ -70,29 +70,11 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
       <div className="px-6 py-5">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h2
-              className="
-                text-2xl
-                font-bold
-                text-slate-900
-                dark:text-white
-                transition-colors
-                duration-300
-              "
-            >
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
               Data UMKM
             </h2>
 
-            <p
-              className="
-                mt-1
-                text-sm
-                text-slate-500
-                dark:text-slate-400
-                transition-colors
-                duration-300
-              "
-            >
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
               Kelola data UMKM terdaftar
             </p>
           </div>

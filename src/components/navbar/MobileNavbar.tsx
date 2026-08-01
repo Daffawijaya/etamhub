@@ -1,6 +1,5 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
@@ -8,21 +7,14 @@ import { FiMenu, FiX } from "react-icons/fi";
 import DaftarModal from "../modal/DaftarModal";
 import { IoIosMoon, IoIosSunny } from "react-icons/io";
 import { navigation } from "@/data/navigation";
+import { useRouter } from "next/navigation";
+import ThemeToggle from "../ThemeToggle";
 
 export default function MobileNavbar() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-  const { resolvedTheme, setTheme } = useTheme();
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
 
   const pathname = usePathname();
 
@@ -102,19 +94,7 @@ export default function MobileNavbar() {
           </Link>
 
           <div className="flex items-center gap-1">
-            <button
-              onClick={() =>
-                setTheme(resolvedTheme === "dark" ? "light" : "dark")
-              }
-              className="text-lg cursor-pointer pr-3"
-            >
-              {mounted &&
-                (resolvedTheme === "dark" ? (
-                  <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />
-                ) : (
-                  <IoIosMoon className="text-black hover:text-zinc-700 duration-200" />
-                ))}
-            </button>
+            <ThemeToggle />
 
             <button
               onClick={() => setOpen(false)}
@@ -142,10 +122,7 @@ export default function MobileNavbar() {
         {/* Button */}
         <div className="absolute bottom-6 left-0 w-full px-6">
           <button
-            onClick={() => {
-              setOpen(false);
-              setIsModalOpen(true);
-            }}
+            onClick={() => router.push("/login")}
             className="
               w-full h-11 rounded-lg
               flex items-center justify-center
@@ -155,7 +132,7 @@ export default function MobileNavbar() {
               transition-colors
             "
           >
-            Daftar UMKM
+            Masuk
           </button>
         </div>
       </div>

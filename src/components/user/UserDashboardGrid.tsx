@@ -32,16 +32,6 @@ export default function UserDashboardGrid() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-dark dark:text-light">
-          Dashboard UMKM
-        </h1>
-
-        <p className="text-sm text-gray-500">
-          Kelola satu data UMKM yang terhubung dengan akun dan NIK Anda.
-        </p>
-      </div>
-
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
         {stats.map((item) => {
           const Icon = item.icon;

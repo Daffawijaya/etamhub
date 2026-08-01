@@ -72,6 +72,7 @@ export default function KecamatanPage({ params }: Props) {
 
         const params = new URLSearchParams({
           kecamatan: districtName,
+          status: "public",
           page: String(currentPage),
           limit: String(limit),
         });
@@ -178,7 +179,7 @@ export default function KecamatanPage({ params }: Props) {
 
         <DistrictHero
           districtName={districtName}
-            totalUmkm={total}
+          totalUmkm={total}
           totalSubkategori={totalSubkategori}
           urutTerdekat={urutTerdekat}
         />
