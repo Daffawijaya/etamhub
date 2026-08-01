@@ -4,6 +4,7 @@ import {
   MapPinned,
   Plus,
   UsersRound,
+  ClipboardList,
 } from "lucide-react";
 
 export interface SidebarMenu {
@@ -25,16 +26,21 @@ export const menus: SidebarMenu[] = [
     icon: Store,
   },
   {
+    label: "Requests",
+    href: "/admin/requests",
+    icon: ClipboardList,
+  },
+  {
     label: "Tambah UMKM",
     href: "/admin/tambah",
     icon: Plus,
   },
-  {
-    label: "Kelola Akun",
-    href: "/admin/akun",
-    icon: UsersRound,
-    roles: ["super_admin"],
-  },
+  // {
+  //   label: "Kelola Akun",
+  //   href: "/admin/akun",
+  //   icon: UsersRound,
+  //   roles: ["super_admin"],
+  // },
   {
     label: "Peta",
     href: "/admin/peta",

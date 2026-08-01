@@ -10,8 +10,6 @@ import {
   Pencil,
 } from "lucide-react";
 
-import { supabaseAdmin } from "@/lib/supabaseAdmin";
-
 export default async function UserUmkmPage() {
   const cookieStore = await cookies();
 
@@ -22,28 +20,18 @@ export default async function UserUmkmPage() {
     redirect("/");
   }
 
-  const { data: umkm, error } = await supabaseAdmin
-    .from("umkm")
-    .select(
-      `
-    id,
-    nama,
-    kategori,
-    kecamatan,
-    alamat,
-    gambar,
-    approval_status,
-    published,
-    created_at
-    `,
-    )
-    .eq("owner_id", userId)
-    .maybeSingle();
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/user/umkm`, {
+    cache: "no-store",
+    headers: {
+      Cookie: cookieStore.toString(),
+    },
+  });
 
-  console.log("USER ID COOKIE:", userId);
-  console.log("ROLE COOKIE:", role);
-  console.log("UMKM DATA:", umkm);
-  console.log("UMKM ERROR:", error);
+  if (!res.ok && res.status !== 404) {
+    throw new Error("Gagal mengambil data UMKM");
+  }
+
+  const umkm = res.ok ? await res.json() : null;
 
   return (
     <main className="min-h-screen px-6 pb-6 bg-light dark:bg-dark">

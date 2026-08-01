@@ -223,6 +223,25 @@ export async function PUT(
     updated_at: now,
   };
 
+  const { error: approvalError } = await supabaseAdmin
+    .from("umkm")
+    .update({
+      approval_status: "pending",
+      updated_at: now,
+    })
+    .eq("id", id);
+
+  if (approvalError) {
+    return NextResponse.json(
+      {
+        message: approvalError.message,
+      },
+      {
+        status: 500,
+      },
+    );
+  }
+
   const { error: requestError } = await supabaseAdmin
     .from("umkm_requests")
     .insert({
@@ -323,6 +342,25 @@ export async function DELETE(
     created_at: now,
     updated_at: now,
   });
+
+  const { error: approvalError } = await supabaseAdmin
+    .from("umkm")
+    .update({
+      approval_status: "pending",
+      updated_at: now,
+    })
+    .eq("id", id);
+
+  if (approvalError) {
+    return NextResponse.json(
+      {
+        message: approvalError.message,
+      },
+      {
+        status: 500,
+      },
+    );
+  }
 
   if (error) {
     return NextResponse.json(

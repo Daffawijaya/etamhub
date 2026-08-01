@@ -53,6 +53,14 @@ export async function PUT(
 
   if (action === "reject") {
     await supabaseAdmin
+      .from("umkm")
+      .update({
+        approval_status: "rejected",
+        updated_at: now,
+      })
+      .eq("id", request.umkm_id);
+
+    await supabaseAdmin
       .from("umkm_requests")
       .update({
         status: "rejected",
@@ -81,6 +89,7 @@ export async function PUT(
       .from("umkm")
       .update({
         ...umkmData,
+        approval_status: "approved",
         updated_at: now,
       })
       .eq("id", request.umkm_id);
