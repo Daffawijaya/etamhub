@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
+import crypto from "crypto";
 
 export async function PUT(
   req: Request,
@@ -81,7 +82,10 @@ export async function PUT(
   // =========================
 
   if (request.action === "update") {
-    const payload = request.payload;
+    const payload =
+      request.payload?.after && typeof request.payload.after === "object"
+        ? request.payload.after
+        : request.payload;
 
     const { email, nik, ...umkmData } = payload;
 

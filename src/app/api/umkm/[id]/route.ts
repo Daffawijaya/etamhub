@@ -248,7 +248,10 @@ export async function PUT(
       id: crypto.randomUUID(),
       umkm_id: id,
       action: "update",
-      payload: updated,
+      payload: {
+        before: oldData,
+        after: updated,
+      },
       user_id: currentUser.id,
       status: "pending",
       created_at: now,
