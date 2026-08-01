@@ -202,7 +202,9 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         }),
       };
 
-      const url = mode === "create" ? "/api/umkm" : `/api/umkm/${data.id}`;
+      const baseUrl = role === "admin" ? "/api/admin/umkm" : "/api/umkm";
+
+      const url = mode === "create" ? baseUrl : `${baseUrl}/${data.id}`;
 
       const method = mode === "create" ? "POST" : "PUT";
 

@@ -81,7 +81,7 @@ export default function UmkmRowActions({
     try {
       setPublishLoading(true);
 
-      const res = await fetch(`/api/umkm/${id}/publish`, {
+      const res = await fetch(`/api/admin/umkm/${id}/publish`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -112,7 +112,7 @@ export default function UmkmRowActions({
     try {
       setDeleteLoading(true);
 
-      const res = await fetch(`/api/umkm/${id}`, {
+      const res = await fetch(`/api/admin/umkm/${id}`, {
         method: "DELETE",
       });
 

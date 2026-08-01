@@ -14,28 +14,19 @@ export async function getCurrentUser() {
   // =========================
   // CEK USERS
   // =========================
-  const { data: user } = await supabaseAdmin
+  const { data: user, error: userError } = await supabaseAdmin
     .from("users")
-    .select(
-      `
-      id,
-      nama,
-      nik,
-      email,
-      whatsapp,
-      avatar_url
-    `,
-    )
+    .select("*")
     .eq("id", userId)
     .maybeSingle();
 
   if (user) {
     return {
       id: user.id,
-      nama: user.nama,
+      nama: user.nama ?? null,
       username: null,
-      nik: user.nik,
-      email: user.email,
+      nik: user.nik ?? null,
+      email: user.email ?? null,
 
       role: cookieRole ?? "user",
 

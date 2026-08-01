@@ -31,7 +31,7 @@ export default function EditUmkmPage({
 
     const { id } = await params;
 
-    await fetch(`/api/umkm/${id}`, {
+    await fetch(`/api/admin/umkm/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
