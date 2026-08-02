@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -87,28 +87,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <section className="relative flex min-h-screen items-center justify-center px-6 py-12">
-      <Link
-        href="/"
-        className="absolute left-8 top-5 text-3xl font-extrabold text-black dark:text-white"
-      >
-        etamhub.
-      </Link>
+    <section className="flex min-h-screen items-center justify-center bg-white px-8 dark:bg-dark">
+      <div className="w-full max-w-sm">
+        <div className="mb-10">
+          <h1 className="text-[30px] font-semibold tracking-tight text-[#111827] dark:text-white">
+            Sign up
+          </h1>
 
-      <div className="w-full max-w-md">
+          <p className="mt-2 text-sm text-[#6B7280] dark:text-neutral-400">
+            Buat akun baru untuk mengakses etamhub.
+          </p>
+        </div>
+
         <div className="space-y-5">
           <div>
-            <h1 className="text-3xl font-bold text-black dark:text-white">
-              Buat Akun
-            </h1>
-
-            <p className="mt-2 text-sm text-neutral-500">
-              Daftarkan akun untuk mengakses EtamHub.
-            </p>
-          </div>
-
-          <div>
-            <label className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
               NIK
             </label>
 
@@ -121,16 +114,26 @@ export default function RegisterPage() {
               maxLength={16}
               pattern="[0-9]{16}"
               className="
-                w-full rounded-xl border border-neutral-300
-                bg-white px-4 py-3 text-black outline-none
-                transition focus:border-primary
-                dark:border-neutral-700 dark:bg-neutral-900 dark:text-white
+                h-11 w-full rounded-md
+                border border-[#D1D5DB]
+                bg-white
+                px-4
+                text-sm text-[#111827]
+                outline-none
+                transition
+                placeholder:text-[#9CA3AF]
+                focus:border-[#111827]
+                dark:border-neutral-700
+                dark:bg-neutral-900
+                dark:text-white
+                dark:placeholder:text-neutral-500
+                dark:focus:border-white
               "
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
               Email
             </label>
 
@@ -140,16 +143,26 @@ export default function RegisterPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="contoh@gmail.com"
               className="
-                w-full rounded-xl border border-neutral-300
-                bg-white px-4 py-3 text-black outline-none
-                transition focus:border-primary
-                dark:border-neutral-700 dark:bg-neutral-900 dark:text-white
+                h-11 w-full rounded-md
+                border border-[#D1D5DB]
+                bg-white
+                px-4
+                text-sm text-[#111827]
+                outline-none
+                transition
+                placeholder:text-[#9CA3AF]
+                focus:border-[#111827]
+                dark:border-neutral-700
+                dark:bg-neutral-900
+                dark:text-white
+                dark:placeholder:text-neutral-500
+                dark:focus:border-white
               "
             />
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
               Password
             </label>
 
@@ -158,27 +171,45 @@ export default function RegisterPage() {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Masukkan Password"
+                placeholder="Masukkan password"
                 className="
-                  w-full rounded-xl border border-neutral-300
-                  bg-white px-4 py-3 pr-12 text-black outline-none
-                  transition focus:border-primary
-                  dark:border-neutral-700 dark:bg-neutral-900 dark:text-white
+                  h-11 w-full rounded-md
+                  border border-[#D1D5DB]
+                  bg-white
+                  px-4 pr-11
+                  text-sm text-[#111827]
+                  outline-none
+                  transition
+                  placeholder:text-[#9CA3AF]
+                  focus:border-[#111827]
+                  dark:border-neutral-700
+                  dark:bg-neutral-900
+                  dark:text-white
+                  dark:placeholder:text-neutral-500
+                  dark:focus:border-white
                 "
               />
 
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500"
+                className="
+                  absolute right-3 top-1/2
+                  -translate-y-1/2
+                  text-[#6B7280]
+                  transition
+                  hover:text-black
+                  dark:text-neutral-400
+                  dark:hover:text-white
+                "
               >
-                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
 
           <div>
-            <label className="mb-2 block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
               Konfirmasi Password
             </label>
 
@@ -187,46 +218,76 @@ export default function RegisterPage() {
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Ulangi Password"
+                placeholder="Ulangi password"
                 className="
-                  w-full rounded-xl border border-neutral-300
-                  bg-white px-4 py-3 pr-12 text-black outline-none
-                  transition focus:border-primary
-                  dark:border-neutral-700 dark:bg-neutral-900 dark:text-white
+                  h-11 w-full rounded-md
+                  border border-[#D1D5DB]
+                  bg-white
+                  px-4 pr-11
+                  text-sm text-[#111827]
+                  outline-none
+                  transition
+                  placeholder:text-[#9CA3AF]
+                  focus:border-[#111827]
+                  dark:border-neutral-700
+                  dark:bg-neutral-900
+                  dark:text-white
+                  dark:placeholder:text-neutral-500
+                  dark:focus:border-white
                 "
               />
 
               <button
                 type="button"
-                onClick={() => setShowConfirmPassword((v) => !v)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500"
+                onClick={() => setShowConfirmPassword((value) => !value)}
+                className="
+                  absolute right-3 top-1/2
+                  -translate-y-1/2
+                  text-[#6B7280]
+                  transition
+                  hover:text-black
+                  dark:text-neutral-400
+                  dark:hover:text-white
+                "
               >
-                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
               </button>
             </div>
           </div>
-
           <button
             onClick={handleRegister}
             disabled={loading}
             className="
-              w-full rounded-full bg-violet-500 py-4
-              font-semibold text-white transition
-              hover:opacity-90 disabled:cursor-not-allowed
+              h-11 w-full rounded-md
+              bg-[#111827]
+              text-sm font-medium
+              text-white
+              transition
+              hover:opacity-90
+              disabled:cursor-not-allowed
               disabled:opacity-70
+              dark:bg-white
+              dark:text-black
             "
           >
             {loading ? "Membuat akun..." : "Buat Akun"}
-          </button>
+          </button> 
 
-          <p className="text-center text-sm text-neutral-500">
-            Sudah punya akun?{" "}
-            <Link
-              href="/login"
-              className="font-semibold text-primary hover:underline"
+          <p className="pt-2 text-center text-sm text-[#6B7280] dark:text-neutral-400">
+            Sudah Punya Akun?{" "}
+            <button
+              type="button"
+              onClick={() => router.push("/login")}
+              className="
+                font-medium
+                text-[#111827]
+                transition
+                hover:underline
+                dark:text-white
+              "
             >
-              Masuk
-            </Link>
+              Sign in
+            </button>
           </p>
         </div>
       </div>

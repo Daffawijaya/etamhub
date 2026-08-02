@@ -1,46 +1,40 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginHero() {
   return (
-    <section className="hidden p-4 lg:block">
-      <div className="relative h-full overflow-hidden rounded-3xl">
+    <section className="hidden h-screen p-4 lg:block">
+      <div className="relative h-full overflow-hidden rounded-[18px]">
         <Image
-          src="/bglogin.jpg"
+          src="/bgrr.png"
           alt="EtamHub Login"
           fill
           priority
           className="object-cover"
         />
 
-        {/* overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: `
-      linear-gradient(
-        to bottom,
-        rgba(18,19,19,1) 0%,
-        rgba(18,19,19,0.80) 15%,
-        rgba(18,19,19,0.40) 35%,
-        rgba(18,19,19,0.0) 55%,
-        rgba(18,19,19,0.0) 75%,
-        rgba(18,19,19,0.00) 100%
-      )
-    `,
-          }}
-        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/55" />
 
-        {/* text */}
-        <div className="absolute inset-0 flex items-start justify-center pt-24">
-          <div className="max-w-lg px-6 text-center">
-            <h2 className="text-4xl font-bold text-white">
-              Jelajahi Seluruh UMKM
+        {/* Logo */}
+        <div className="absolute left-7 top-7 z-10">
+          <Link
+            href="/"
+            className="text-sm font-semibold tracking-wide text-white"
+          >
+            etamhub.
+          </Link>
+        </div>
+
+        {/* Bottom Content */}
+        <div className="absolute inset-x-0 bottom-0 z-10 p-8">
+          <div className="max-w-xs">
+            <h2 className="text-[34px] font-semibold leading-[1.3] tracking-tight text-white">
+              Jelajahi UMKM
               <br />
-              Kutai Kartanegara
+              di Kukar.
             </h2>
-
-            <p className="mt-4 text-white/80">
-              Platform digital UMKM Kabupaten Kutai Kartanegara.
+            <p className="mt-4 text-sm leading-6 text-white/70">
+              Temukan produk lokal dan dukung UMKM Kabupaten Kutai Kartanegara.
             </p>
           </div>
         </div>

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function GoogleRegisterPage() {
   const router = useRouter();
@@ -70,89 +70,180 @@ export default function GoogleRegisterPage() {
   }
 
   return (
-    <section className="flex min-h-screen items-center justify-center px-6">
-      <div className="w-full max-w-md space-y-5">
-        <div>
-          <h1 className="text-3xl font-bold">Lengkapi Akun</h1>
+    <section className="flex min-h-screen items-center justify-center bg-white px-8 dark:bg-dark">
+      <div className="w-full max-w-sm">
+        <div className="mb-10">
+          <h1 className="text-[30px] font-semibold tracking-tight text-[#111827] dark:text-white">
+            Lengkapi Akun
+          </h1>
 
-          <p className="mt-2 text-sm text-neutral-500">
+          <p className="mt-2 text-sm text-[#6B7280] dark:text-neutral-400">
             Masukkan NIK dan password untuk menyelesaikan pendaftaran.
           </p>
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium">NIK</label>
+        <div className="space-y-5">
+          <div>
+            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
+              NIK
+            </label>
 
-          <input
-            type="text"
-            value={nik}
-            onChange={(e) => handleNikChange(e.target.value)}
-            placeholder="Masukkan NIK"
-            inputMode="numeric"
-            maxLength={16}
-            pattern="[0-9]{16}"
+            <input
+              type="text"
+              value={nik}
+              onChange={(e) => handleNikChange(e.target.value)}
+              placeholder="Masukkan NIK"
+              inputMode="numeric"
+              maxLength={16}
+              pattern="[0-9]{16}"
+              className="
+                h-11 w-full rounded-md
+                border border-[#D1D5DB]
+                bg-white
+                px-4
+                text-sm text-[#111827]
+                outline-none
+                transition
+                placeholder:text-[#9CA3AF]
+                focus:border-[#111827]
+                dark:border-neutral-700
+                dark:bg-neutral-900
+                dark:text-white
+                dark:placeholder:text-neutral-500
+                dark:focus:border-white
+              "
+            />
+          </div>
+
+          <div>
+            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
+              Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Masukkan password"
+                className="
+                  h-11 w-full rounded-md
+                  border border-[#D1D5DB]
+                  bg-white
+                  px-4 pr-11
+                  text-sm text-[#111827]
+                  outline-none
+                  transition
+                  placeholder:text-[#9CA3AF]
+                  focus:border-[#111827]
+                  dark:border-neutral-700
+                  dark:bg-neutral-900
+                  dark:text-white
+                  dark:placeholder:text-neutral-500
+                  dark:focus:border-white
+                "
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                className="
+                  absolute right-3 top-1/2
+                  -translate-y-1/2
+                  text-[#6B7280]
+                  transition
+                  hover:text-black
+                  dark:text-neutral-400
+                  dark:hover:text-white
+                "
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
+              Konfirmasi Password
+            </label>
+
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Ulangi password"
+                className="
+                  h-11 w-full rounded-md
+                  border border-[#D1D5DB]
+                  bg-white
+                  px-4 pr-11
+                  text-sm text-[#111827]
+                  outline-none
+                  transition
+                  placeholder:text-[#9CA3AF]
+                  focus:border-[#111827]
+                  dark:border-neutral-700
+                  dark:bg-neutral-900
+                  dark:text-white
+                  dark:placeholder:text-neutral-500
+                  dark:focus:border-white
+                "
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((value) => !value)}
+                className="
+                  absolute right-3 top-1/2
+                  -translate-y-1/2
+                  text-[#6B7280]
+                  transition
+                  hover:text-black
+                  dark:text-neutral-400
+                  dark:hover:text-white
+                "
+              >
+                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          </div>
+          <button
+            onClick={handleRegister}
+            disabled={loading}
             className="
-              w-full rounded-xl border border-neutral-300
-              bg-white px-4 py-3 text-black outline-none
-              transition focus:border-primary
-              dark:border-neutral-700 dark:bg-neutral-900 dark:text-white
+              h-11 w-full rounded-md
+              bg-[#111827]
+              text-sm font-medium
+              text-white
+              transition
+              hover:opacity-90
+              disabled:cursor-not-allowed
+              disabled:opacity-70
+              dark:bg-white
+              dark:text-black
             "
-          />
-        </div>
+          >
+            {loading ? "Menyimpan..." : "Buat Akun"}
+          </button>
 
-        <div>
-          <label className="mb-2 block text-sm font-medium">Password</label>
-
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Masukkan password"
-              className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 pr-12 text-black outline-none transition focus:border-primary dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
-            />
-
+          <p className="pt-2 text-center text-sm text-[#6B7280] dark:text-neutral-400">
+            Sudah Punya Akun?{" "}
             <button
               type="button"
-              onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500"
+              onClick={() => router.push("/login")}
+              className="
+                font-medium
+                text-[#111827]
+                transition
+                hover:underline
+                dark:text-white
+              "
             >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              Sign in
             </button>
-          </div>
+          </p>
         </div>
-
-        <div>
-          <label className="mb-2 block text-sm font-medium">
-            Konfirmasi Password
-          </label>
-
-          <div className="relative">
-            <input
-              type={showConfirmPassword ? "text" : "password"}
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Ulangi password"
-              className="w-full rounded-xl border border-neutral-300 bg-white px-4 py-3 pr-12 text-black outline-none transition focus:border-primary dark:border-neutral-700 dark:bg-neutral-900 dark:text-white"
-            />
-
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword((v) => !v)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-neutral-500"
-            >
-              {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          </div>
-        </div>
-
-        <button
-          onClick={handleRegister}
-          disabled={loading}
-          className="w-full rounded-full bg-violet-500 py-4 font-semibold text-white disabled:cursor-not-allowed disabled:opacity-70"
-        >
-          {loading ? "Menyimpan..." : "Buat Akun"}
-        </button>
       </div>
     </section>
   );
