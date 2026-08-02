@@ -81,9 +81,7 @@ export default function RegisterPage() {
       return;
     }
 
-    alert("Akun berhasil dibuat.");
-
-    router.replace("/login");
+    router.push(`/verify-otp?email=${encodeURIComponent(normalizedEmail)}`);
   }
 
   return (
@@ -271,7 +269,7 @@ export default function RegisterPage() {
             "
           >
             {loading ? "Membuat akun..." : "Buat Akun"}
-          </button> 
+          </button>
 
           <p className="pt-2 text-center text-sm text-[#6B7280] dark:text-neutral-400">
             Sudah Punya Akun?{" "}

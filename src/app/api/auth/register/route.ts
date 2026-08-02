@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { supabase } from "@/lib/supabase";
 
 export async function POST(req: Request) {
   try {
@@ -120,26 +121,44 @@ export async function POST(req: Request) {
       );
     }
 
-    const { data: user, error: insertError } = await supabaseAdmin
-      .from("users")
+    await supabaseAdmin
+      .from("pending_users")
+      .delete()
+      .eq("email", normalizedEmail);
+
+    const { error: pendingError } = await supabaseAdmin
+      .from("pending_users")
       .insert({
-        id: crypto.randomUUID(),
         nik,
         email: normalizedEmail,
         password,
-        provider: "manual",
-        is_active: true,
-      })
-      .select("id")
-      .single();
+      });
 
-    if (insertError) {
-      console.error(insertError);
+    if (pendingError) {
+      console.error(pendingError);
 
       return NextResponse.json(
         {
           success: false,
-          message: insertError.message,
+          message: pendingError.message,
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+
+    const { error: otpError } = await supabase.auth.signInWithOtp({
+      email: normalizedEmail,
+    });
+
+    if (otpError) {
+      console.error(otpError);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: otpError.message,
         },
         {
           status: 500,
@@ -149,8 +168,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Registrasi berhasil",
-      user_id: user.id,
+      message: "Kode OTP telah dikirim ke email Anda.",
     });
   } catch (error) {
     console.error("REGISTER ERROR:", error);
