@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { FiMenu, FiX } from "react-icons/fi";
 import DaftarModal from "../modal/DaftarModal";
-import { IoIosMoon, IoIosSunny } from "react-icons/io";
 import { navigation } from "@/data/navigation";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "../ThemeToggle";
@@ -122,7 +121,7 @@ export default function MobileNavbar() {
         {/* Button */}
         <div className="absolute bottom-6 left-0 w-full px-6">
           <button
-            onClick={() => router.push("/login")}
+            onClick={() => router.push("/auth/login")}
             className="
               w-full h-11 rounded-lg
               flex items-center justify-center

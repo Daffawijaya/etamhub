@@ -67,7 +67,7 @@ export default function Navbar() {
 
             {/* Button */}
             <button
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/auth/login")}
               className="bg-white text-black px-3 py-2 rounded-md text-xs font-medium hover:bg-zinc-200 transition-colors"
             >
               Masuk

@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function RegisterPage() {
+export default function GoogleRegisterPage() {
   const router = useRouter();
 
   const [nik, setNik] = useState("");
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -23,18 +21,6 @@ export default function RegisterPage() {
   async function handleRegister() {
     if (nik.length !== 16) {
       alert("NIK harus terdiri dari 16 digit.");
-      return;
-    }
-
-    const normalizedEmail = email.trim().toLowerCase();
-
-    if (!normalizedEmail) {
-      alert("Email wajib diisi.");
-      return;
-    }
-
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(normalizedEmail)) {
-      alert("Email harus menggunakan akun @gmail.com.");
       return;
     }
 
@@ -60,14 +46,13 @@ export default function RegisterPage() {
 
     setLoading(true);
 
-    const res = await fetch("/api/auth/register", {
+    const res = await fetch("/api/auth/google/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         nik,
-        email: normalizedEmail,
         password,
       }),
     });
@@ -81,7 +66,7 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push(`/verify-otp?email=${encodeURIComponent(normalizedEmail)}`);
+    router.replace("/dashboard");
   }
 
   return (
@@ -89,11 +74,11 @@ export default function RegisterPage() {
       <div className="w-full max-w-sm">
         <div className="mb-10">
           <h1 className="text-[30px] font-semibold tracking-tight text-[#111827] dark:text-white">
-            Sign up
+            Lengkapi Akun
           </h1>
 
           <p className="mt-2 text-sm text-[#6B7280] dark:text-neutral-400">
-            Buat akun baru untuk mengakses etamhub.
+            Masukkan NIK dan password untuk menyelesaikan pendaftaran.
           </p>
         </div>
 
@@ -111,35 +96,6 @@ export default function RegisterPage() {
               inputMode="numeric"
               maxLength={16}
               pattern="[0-9]{16}"
-              className="
-                h-11 w-full rounded-md
-                border border-[#D1D5DB]
-                bg-white
-                px-4
-                text-sm text-[#111827]
-                outline-none
-                transition
-                placeholder:text-[#9CA3AF]
-                focus:border-[#111827]
-                dark:border-neutral-700
-                dark:bg-neutral-900
-                dark:text-white
-                dark:placeholder:text-neutral-500
-                dark:focus:border-white
-              "
-            />
-          </div>
-
-          <div>
-            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
-              Email
-            </label>
-
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="contoh@gmail.com"
               className="
                 h-11 w-full rounded-md
                 border border-[#D1D5DB]
@@ -268,14 +224,14 @@ export default function RegisterPage() {
               dark:text-black
             "
           >
-            {loading ? "Membuat akun..." : "Buat Akun"}
+            {loading ? "Menyimpan..." : "Buat Akun"}
           </button>
 
           <p className="pt-2 text-center text-sm text-[#6B7280] dark:text-neutral-400">
             Sudah Punya Akun?{" "}
             <button
               type="button"
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/auth/login")}
               className="
                 font-medium
                 text-[#111827]

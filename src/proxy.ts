@@ -4,17 +4,27 @@ export function proxy(req: NextRequest) {
   const auth = req.cookies.get("auth")?.value;
   const role = req.cookies.get("role")?.value;
 
-  if (!auth) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  const pathname = req.nextUrl.pathname;
+
+  if (!auth || !role) {
+    return NextResponse.redirect(new URL("/auth/login", req.url));
   }
 
-  if (role !== "super_admin" && role !== "admin_kecamatan") {
-    return NextResponse.redirect(new URL("/user", req.url));
+  if (pathname.startsWith("/admin")) {
+    if (role !== "super_admin" && role !== "admin_kecamatan") {
+      return NextResponse.redirect(new URL("/user", req.url));
+    }
+  }
+
+  if (pathname.startsWith("/user")) {
+    if (role !== "user_umkm") {
+      return NextResponse.redirect(new URL("/admin", req.url));
+    }
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/user/:path*"],
 };

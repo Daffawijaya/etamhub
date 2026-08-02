@@ -50,7 +50,7 @@ export default function HeroNavbar() {
           <div className="flex justify-end items-start">
             <SmallChevronButton
               title="Masuk"
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/auth/login")}
             />
           </div>
         </div>

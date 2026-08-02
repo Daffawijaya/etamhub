@@ -262,7 +262,7 @@ export default function LoginForm() {
             Belum Punya Akun?{" "}
             <button
               type="button"
-              onClick={() => router.push("/register")}
+              onClick={() => router.push("/auth/register")}
               className="
                 font-medium
                 text-[#111827]

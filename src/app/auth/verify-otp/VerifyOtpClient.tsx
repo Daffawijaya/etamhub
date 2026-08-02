@@ -43,7 +43,7 @@ export default function VerifyOtpPage() {
 
     alert("Email berhasil diverifikasi.");
 
-    router.replace("/login");
+    router.replace("/auth/login");
   }
 
   async function handleResend() {
@@ -166,7 +166,7 @@ export default function VerifyOtpPage() {
             Sudah Punya Akun?{" "}
             <button
               type="button"
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/auth/login")}
               className="
                 font-medium
                 text-[#111827]

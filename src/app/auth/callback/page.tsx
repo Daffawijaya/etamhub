@@ -19,7 +19,7 @@ export default function AuthCallbackPage() {
       } = await supabase.auth.getSession();
 
       if (error || !session) {
-        router.replace("/login");
+        router.replace("/auth/login");
         return;
       }
 
@@ -41,12 +41,12 @@ export default function AuthCallbackPage() {
       const data = await response.json();
 
       if (data.register_required) {
-        router.replace("/register/google");
+        router.replace("auth/register/google");
         return;
       }
 
       if (!response.ok) {
-        router.replace("/login");
+        router.replace("auth/login");
         return;
       }
 

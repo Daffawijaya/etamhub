@@ -48,7 +48,7 @@ export default function DetailNavbar() {
             <ThemeToggle />
 
             <button
-              onClick={() => router.push("/login")}
+              onClick={() => router.push("/auth/login")}
               className="
       h-10 px-5 rounded-md
       bg-white text-black
@@ -118,7 +118,7 @@ export default function DetailNavbar() {
         {/* Button */}
         <div className="absolute bottom-6 left-0 w-full px-6">
           <button
-            onClick={() => router.push("/login")}
+            onClick={() => router.push("/auth/login")}
             className="
               w-full h-11 rounded-lg
               flex items-center justify-center
