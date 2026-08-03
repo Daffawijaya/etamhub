@@ -66,7 +66,7 @@ export default function GoogleRegisterPage() {
       return;
     }
 
-    router.replace("/dashboard");
+    router.replace("/user");
   }
 
   return (

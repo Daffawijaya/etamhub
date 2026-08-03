@@ -29,8 +29,6 @@ export default function LoginForm() {
 
     const data = await res.json();
 
-    console.log("LOGIN RESPONSE:", data);
-
     if (!res.ok) {
       alert(data.message);
       return;
@@ -52,7 +50,7 @@ export default function LoginForm() {
   const handleGoogleLogin = async () => {
     const redirectTo = `${window.location.origin}/auth/callback`;
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
         redirectTo,
@@ -62,8 +60,9 @@ export default function LoginForm() {
       },
     });
 
-    console.log("OAuth data:", data);
-    console.log("OAuth error:", error);
+    if (error) {
+      alert(error.message);
+    }
   };
 
   return (

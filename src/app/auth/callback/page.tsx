@@ -4,10 +4,6 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
-const SUPER_ADMIN_ROLE_ID = "258979bc-1ec6-4549-9fa0-1ba7b577383e";
-
-const ADMIN_KECAMATAN_ROLE_ID = "ff4193d3-af5f-4f52-afc3-73e6a11d3f3c";
-
 export default function AuthCallbackPage() {
   const router = useRouter();
 
@@ -41,23 +37,26 @@ export default function AuthCallbackPage() {
       const data = await response.json();
 
       if (data.register_required) {
-        router.replace("auth/register/google");
+        router.replace("/auth/register/google");
         return;
       }
 
       if (!response.ok) {
-        router.replace("auth/login");
+        router.replace("/auth/login");
         return;
       }
 
-      if (
-        data.role_id === SUPER_ADMIN_ROLE_ID ||
-        data.role_id === ADMIN_KECAMATAN_ROLE_ID
-      ) {
+      if (data.role === "super_admin" || data.role === "admin_kecamatan") {
         router.replace("/admin");
-      } else {
-        router.replace("/user");
+        return;
       }
+
+      if (data.role === "user_umkm") {
+        router.replace("/user");
+        return;
+      }
+
+      router.replace("/auth/login");
     };
 
     handleCallback();

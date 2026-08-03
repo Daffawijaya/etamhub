@@ -3,16 +3,27 @@ import { cookies } from "next/headers";
 import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-const USER_ROLE_ID = "4cf1951b-f2b5-42b3-a1d1-dc3810ad4da3";
-
 export async function POST(req: Request) {
   try {
     const { nik, password } = await req.json();
 
-    if (!nik || !password) {
+    if (!nik || nik.length !== 16) {
       return NextResponse.json(
         {
-          message: "NIK dan password wajib diisi",
+          success: false,
+          message: "NIK harus terdiri dari 16 digit.",
+        },
+        {
+          status: 400,
+        },
+      );
+    }
+
+    if (!password || password.length < 6) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Password minimal 6 karakter.",
         },
         {
           status: 400,
@@ -22,97 +33,127 @@ export async function POST(req: Request) {
 
     const cookieStore = await cookies();
 
-    const googleData = cookieStore.get("google_register")?.value;
+    const googleRegister = cookieStore.get("google_register");
 
-    if (!googleData) {
+    if (!googleRegister) {
       return NextResponse.json(
         {
-          message: "Data Google tidak ditemukan",
+          success: false,
+          message: "Sesi Google telah berakhir. Silakan login kembali.",
         },
         {
-          status: 400,
+          status: 401,
         },
       );
     }
 
-    const google = JSON.parse(decodeURIComponent(googleData));
+    const { email } = JSON.parse(googleRegister.value) as {
+      email: string;
+    };
 
-    const { data: existingNik } = await supabaseAdmin
+    // =========================
+    // CEK EMAIL
+    // =========================
+    const { data: emailExists, error: emailError } = await supabaseAdmin
+      .from("users")
+      .select("id")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (emailError) {
+      throw emailError;
+    }
+
+    if (emailExists) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Email sudah terdaftar.",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
+
+    // =========================
+    // CEK NIK
+    // =========================
+    const { data: nikExists, error: nikError } = await supabaseAdmin
       .from("users")
       .select("id")
       .eq("nik", nik)
       .maybeSingle();
 
-    if (existingNik) {
+    if (nikError) {
+      throw nikError;
+    }
+
+    if (nikExists) {
       return NextResponse.json(
         {
-          message: "NIK sudah terdaftar",
+          success: false,
+          message: "NIK sudah terdaftar.",
         },
         {
-          status: 400,
+          status: 409,
         },
       );
     }
 
-    const { data: user, error } = await supabaseAdmin
+    // =========================
+    // INSERT USER
+    // =========================
+    const { data: user, error: insertError } = await supabaseAdmin
       .from("users")
       .insert({
-        id: crypto.randomUUID(),
         nik,
+        email,
         password,
-        email: google.email,
-        nama: google.name,
-        avatar_url: google.avatar,
-        provider: "google",
-        role_id: USER_ROLE_ID,
-        is_active: true,
-        supabase_auth_id: google.id,
-        email_verified_at: new Date().toISOString(),
       })
-      .select("*")
+      .select("id,email")
       .single();
 
-    if (error) {
-      console.error("GOOGLE REGISTER ERROR:", error);
-
-      return NextResponse.json(
-        {
-          message: error.message,
-        },
-        {
-          status: 400,
-        },
-      );
+    if (insertError) {
+      throw insertError;
     }
 
-    cookieStore.set("user_id", user.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    });
+    // =========================
+    // LOGIN OTOMATIS
+    // =========================
+    const token = crypto.randomBytes(32).toString("hex");
 
-    cookieStore.set("role_id", user.role_id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    });
-
-    cookieStore.delete("google_register");
-
-    return NextResponse.json({
+    const response = NextResponse.json({
       success: true,
-      role_id: user.role_id,
+      role: "user_umkm",
+      user: {
+        id: user.id,
+        nama: user.email,
+      },
     });
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax" as const,
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
+    };
+
+    response.cookies.set("auth", token, cookieOptions);
+    response.cookies.set("user_id", user.id, cookieOptions);
+    response.cookies.set("role", "user_umkm", cookieOptions);
+
+    response.cookies.delete("google_register");
+
+    return response;
   } catch (error) {
     console.error("GOOGLE REGISTER ERROR:", error);
 
     return NextResponse.json(
       {
-        message: "Registrasi Google gagal",
+        success: false,
+        message: "Registrasi Google gagal.",
       },
       {
         status: 500,

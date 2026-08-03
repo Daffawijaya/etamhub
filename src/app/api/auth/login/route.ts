@@ -31,11 +31,7 @@ export async function POST(req: Request) {
       throw adminError;
     }
 
-    // Jika username ditemukan di tabel admins
     if (admin) {
-      // =========================
-      // CEK STATUS ADMIN
-      // =========================
       if (!admin.is_active) {
         return NextResponse.json(
           {
@@ -48,9 +44,6 @@ export async function POST(req: Request) {
         );
       }
 
-      // =========================
-      // CEK PASSWORD ADMIN
-      // =========================
       if (admin.password !== password) {
         return NextResponse.json(
           {
@@ -63,9 +56,6 @@ export async function POST(req: Request) {
         );
       }
 
-      // =========================
-      // AMBIL ROLE ADMIN
-      // =========================
       const roleData = admin.roles as
         | { name: string }
         | { name: string }[]
@@ -87,20 +77,15 @@ export async function POST(req: Request) {
         );
       }
 
-      const user = {
-        id: admin.id,
-        nama: admin.nama,
-      };
-
-      // =========================
-      // BUAT TOKEN ADMIN
-      // =========================
       const token = crypto.randomBytes(32).toString("hex");
 
       const response = NextResponse.json({
         success: true,
         role,
-        user,
+        user: {
+          id: admin.id,
+          nama: admin.nama,
+        },
       });
 
       const cookieOptions = {
@@ -112,18 +97,9 @@ export async function POST(req: Request) {
       };
 
       response.cookies.set("auth", token, cookieOptions);
-      response.cookies.set("user_id", user.id, cookieOptions);
+      response.cookies.set("user_id", admin.id, cookieOptions);
       response.cookies.set("role", role, cookieOptions);
 
-      console.log("LOGIN ADMIN BERHASIL:", {
-        id: user.id,
-        nama: user.nama,
-        role,
-      });
-
-      // PENTING:
-      // Admin berhasil → langsung return.
-      // Jangan lanjut ke tabel users.
       return response;
     }
 
@@ -136,29 +112,22 @@ export async function POST(req: Request) {
         `
         id,
         nik,
-        password,
-        email
+        email,
+        password
         `,
       )
       .or(`nik.eq.${login},email.eq.${login}`)
       .maybeSingle();
 
-    console.log("CEK USER UMKM:", {
-      login,
-      normalUser,
-      error: userError,
-    });
-
     if (userError) {
       throw userError;
     }
 
-    // User tidak ditemukan
     if (!normalUser) {
       return NextResponse.json(
         {
           success: false,
-          message: "Username/NIK atau password salah",
+          message: "Email/NIK atau password salah",
         },
         {
           status: 401,
@@ -166,14 +135,11 @@ export async function POST(req: Request) {
       );
     }
 
-    // =========================
-    // CEK PASSWORD USER UMKM
-    // =========================
     if (normalUser.password !== password) {
       return NextResponse.json(
         {
           success: false,
-          message: "Username/NIK atau password salah",
+          message: "Email/NIK atau password salah",
         },
         {
           status: 401,
@@ -181,25 +147,15 @@ export async function POST(req: Request) {
       );
     }
 
-    // =========================
-    // ROLE USER UMKM
-    // =========================
-    const role = "user_umkm";
-
-    const user = {
-      id: normalUser.id,
-      nama: normalUser.email,
-    };
-
-    // =========================
-    // BUAT TOKEN USER
-    // =========================
     const token = crypto.randomBytes(32).toString("hex");
 
     const response = NextResponse.json({
       success: true,
-      role,
-      user,
+      role: "user_umkm",
+      user: {
+        id: normalUser.id,
+        nama: normalUser.email,
+      },
     });
 
     const cookieOptions = {
@@ -211,14 +167,8 @@ export async function POST(req: Request) {
     };
 
     response.cookies.set("auth", token, cookieOptions);
-    response.cookies.set("user_id", user.id, cookieOptions);
-    response.cookies.set("role", role, cookieOptions);
-
-    console.log("LOGIN USER UMKM BERHASIL:", {
-      id: user.id,
-      nama: user.nama,
-      role,
-    });
+    response.cookies.set("user_id", normalUser.id, cookieOptions);
+    response.cookies.set("role", "user_umkm", cookieOptions);
 
     return response;
   } catch (error) {
