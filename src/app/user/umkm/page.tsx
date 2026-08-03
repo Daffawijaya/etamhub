@@ -136,11 +136,9 @@ export default async function UserUmkmPage() {
                   )}
 
                   {umkm.approval_status === "rejected" && (
-                    
-                      <div className="flex items-center flex justify-start items-start gap-2 text-red-600 dark:text-red-400">
-                        <XCircle size={18} />
-                        <span className="font-medium">Update UMKM ditolak</span>
-                  
+                    <div className="flex items-center flex justify-start items-start gap-2 text-red-600 dark:text-red-400">
+                      <XCircle size={18} />
+                      <span className="font-medium">Update UMKM ditolak</span>
 
                       {umkm.rejected_reason && (
                         <div className="mt-3">

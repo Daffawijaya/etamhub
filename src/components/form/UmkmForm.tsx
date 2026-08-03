@@ -105,6 +105,45 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
     loadKecamatan();
   }, [role]);
 
+  useEffect(() => {
+    async function loadProfile() {
+      console.log("loadProfile");
+
+      if (role !== "user" || mode !== "create") {
+        console.log("skip", { role, mode });
+        return;
+      }
+
+      try {
+        console.log("fetch profile");
+
+        const res = await fetch("/api/user/profile");
+
+        console.log("status", res.status);
+
+        if (!res.ok) {
+          const text = await res.text();
+          console.log(text);
+          return;
+        }
+
+        const user = await res.json();
+
+        console.log(user);
+
+        setForm((prev) => ({
+          ...prev,
+          nik: user.nik ?? "",
+          email: user.email ?? "",
+        }));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadProfile();
+  }, [role, mode]);
+
   async function uploadFile(file: File) {
     const formData = new FormData();
 

@@ -20,7 +20,6 @@ export default async function UserProfilePage() {
     id,
     nik,
     email,
-    avatar_url,
     umkm (
       pemilik,
       whatsapp
@@ -29,7 +28,8 @@ export default async function UserProfilePage() {
     )
     .eq("id", userId)
     .single();
-
+  console.log(error);
+  console.log(user);
   if (error || !user) {
     redirect("/");
   }

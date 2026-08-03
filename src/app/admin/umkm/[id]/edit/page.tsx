@@ -13,6 +13,8 @@ export default async function EditUmkmPage({ params }: Props) {
     cache: "no-store",
   });
 
+  
+
   if (!res.ok) {
     return <div className="p-6">Data UMKM tidak ditemukan</div>;
   }
