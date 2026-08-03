@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
   try {
@@ -102,6 +103,11 @@ export async function POST(req: Request) {
     }
 
     // =========================
+    // HASH PASSWORD
+    // =========================
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    // =========================
     // INSERT USER
     // =========================
     const { data: user, error: insertError } = await supabaseAdmin
@@ -109,7 +115,7 @@ export async function POST(req: Request) {
       .insert({
         nik,
         email,
-        password,
+        password: passwordHash,
       })
       .select("id,email")
       .single();

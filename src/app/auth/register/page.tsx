@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 
 export default function RegisterPage() {
@@ -10,10 +8,6 @@ export default function RegisterPage() {
 
   const [nik, setNik] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleNikChange = (value: string) => {
@@ -38,50 +32,44 @@ export default function RegisterPage() {
       return;
     }
 
-    if (!password) {
-      alert("Password wajib diisi.");
-      return;
-    }
-
-    if (password.length < 6) {
-      alert("Password minimal 6 karakter.");
-      return;
-    }
-
-    if (!confirmPassword) {
-      alert("Konfirmasi password wajib diisi.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      alert("Konfirmasi password tidak sama.");
-      return;
-    }
-
     setLoading(true);
 
-    const res = await fetch("/api/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        nik,
-        email: normalizedEmail,
-        password,
-      }),
-    });
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nik,
+          email: normalizedEmail,
+        }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    setLoading(false);
+      if (!res.ok) {
+        console.error("REGISTER ERROR:", data);
 
-    if (!res.ok) {
-      alert(data.message);
-      return;
+        alert(
+          typeof data?.message === "string"
+            ? data.message
+            : "Terjadi kesalahan.",
+        );
+
+        return;
+      }
+
+      sessionStorage.setItem("register_email", normalizedEmail);
+
+      sessionStorage.setItem("register_nik", nik);
+
+      router.push("/auth/register/verify-otp");
+    } catch {
+      alert("Terjadi kesalahan server.");
+    } finally {
+      setLoading(false);
     }
-
-    router.push(`/verify-otp?email=${encodeURIComponent(normalizedEmail)}`);
   }
 
   return (
@@ -110,7 +98,6 @@ export default function RegisterPage() {
               placeholder="Masukkan NIK"
               inputMode="numeric"
               maxLength={16}
-              pattern="[0-9]{16}"
               className="
                 h-11 w-full rounded-md
                 border border-[#D1D5DB]
@@ -159,99 +146,6 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div>
-            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
-              Password
-            </label>
-
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Masukkan password"
-                className="
-                  h-11 w-full rounded-md
-                  border border-[#D1D5DB]
-                  bg-white
-                  px-4 pr-11
-                  text-sm text-[#111827]
-                  outline-none
-                  transition
-                  placeholder:text-[#9CA3AF]
-                  focus:border-[#111827]
-                  dark:border-neutral-700
-                  dark:bg-neutral-900
-                  dark:text-white
-                  dark:placeholder:text-neutral-500
-                  dark:focus:border-white
-                "
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowPassword((v) => !v)}
-                className="
-                  absolute right-3 top-1/2
-                  -translate-y-1/2
-                  text-[#6B7280]
-                  transition
-                  hover:text-black
-                  dark:text-neutral-400
-                  dark:hover:text-white
-                "
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <label className="mb-2 block text-[13px] font-medium text-[#374151] dark:text-neutral-300">
-              Konfirmasi Password
-            </label>
-
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="Ulangi password"
-                className="
-                  h-11 w-full rounded-md
-                  border border-[#D1D5DB]
-                  bg-white
-                  px-4 pr-11
-                  text-sm text-[#111827]
-                  outline-none
-                  transition
-                  placeholder:text-[#9CA3AF]
-                  focus:border-[#111827]
-                  dark:border-neutral-700
-                  dark:bg-neutral-900
-                  dark:text-white
-                  dark:placeholder:text-neutral-500
-                  dark:focus:border-white
-                "
-              />
-
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword((value) => !value)}
-                className="
-                  absolute right-3 top-1/2
-                  -translate-y-1/2
-                  text-[#6B7280]
-                  transition
-                  hover:text-black
-                  dark:text-neutral-400
-                  dark:hover:text-white
-                "
-              >
-                {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-          </div>
           <button
             onClick={handleRegister}
             disabled={loading}
@@ -268,7 +162,7 @@ export default function RegisterPage() {
               dark:text-black
             "
           >
-            {loading ? "Membuat akun..." : "Buat Akun"}
+            {loading ? "Mengirim OTP..." : "Kirim OTP"}
           </button>
 
           <p className="pt-2 text-center text-sm text-[#6B7280] dark:text-neutral-400">

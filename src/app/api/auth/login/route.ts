@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: Request) {
@@ -135,7 +136,9 @@ export async function POST(req: Request) {
       );
     }
 
-    if (normalUser.password !== password) {
+    const passwordValid = await bcrypt.compare(password, normalUser.password);
+
+    if (!passwordValid) {
       return NextResponse.json(
         {
           success: false,

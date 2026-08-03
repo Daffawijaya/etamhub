@@ -1,17 +1,17 @@
 import { NextResponse } from "next/server";
-import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { supabase } from "@/lib/supabase";
 
 export async function POST(req: Request) {
   try {
-    const { nik, email, password } = await req.json();
+    const { nik, email } = await req.json();
 
-    if (!nik || !email || !password) {
+    const normalizedEmail = email?.trim().toLowerCase();
+
+    if (!nik || nik.length !== 16) {
       return NextResponse.json(
         {
-          success: false,
-          message: "NIK, email, dan password wajib diisi",
+          message: "NIK harus 16 digit",
         },
         {
           status: 400,
@@ -19,11 +19,10 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!/^\d{16}$/.test(nik)) {
+    if (!normalizedEmail) {
       return NextResponse.json(
         {
-          success: false,
-          message: "NIK harus terdiri dari 16 digit",
+          message: "Email wajib diisi",
         },
         {
           status: 400,
@@ -31,56 +30,16 @@ export async function POST(req: Request) {
       );
     }
 
-    const normalizedEmail = String(email).trim().toLowerCase();
-
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(normalizedEmail)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Email harus menggunakan akun @gmail.com",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (password.length < 6) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Password minimal 6 karakter",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    const { data: existingNik, error: nikError } = await supabaseAdmin
+    // Cek NIK sudah ada
+    const { data: existingNik } = await supabaseAdmin
       .from("users")
       .select("id")
       .eq("nik", nik)
       .maybeSingle();
 
-    if (nikError) {
-      console.error(nikError);
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: nikError.message,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
-
     if (existingNik) {
       return NextResponse.json(
         {
-          success: false,
           message: "NIK sudah terdaftar",
         },
         {
@@ -89,30 +48,16 @@ export async function POST(req: Request) {
       );
     }
 
-    const { data: existingEmail, error: emailError } = await supabaseAdmin
+    // Cek email sudah ada
+    const { data: existingEmail } = await supabaseAdmin
       .from("users")
       .select("id")
       .eq("email", normalizedEmail)
       .maybeSingle();
 
-    if (emailError) {
-      console.error(emailError);
-
-      return NextResponse.json(
-        {
-          success: false,
-          message: emailError.message,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
-
     if (existingEmail) {
       return NextResponse.json(
         {
-          success: false,
           message: "Email sudah terdaftar",
         },
         {
@@ -121,25 +66,24 @@ export async function POST(req: Request) {
       );
     }
 
-    await supabaseAdmin
-      .from("pending_users")
-      .delete()
-      .eq("email", normalizedEmail);
-
+    // Simpan pending register
     const { error: pendingError } = await supabaseAdmin
       .from("pending_users")
-      .insert({
-        nik,
-        email: normalizedEmail,
-        password,
-      });
+      .upsert(
+        {
+          nik,
+          email: normalizedEmail,
+          status: "pending",
+          otp_verified: false,
+        },
+        {
+          onConflict: "email",
+        },
+      );
 
     if (pendingError) {
-      console.error(pendingError);
-
       return NextResponse.json(
         {
-          success: false,
           message: pendingError.message,
         },
         {
@@ -148,17 +92,21 @@ export async function POST(req: Request) {
       );
     }
 
+    // Kirim OTP melalui Supabase Auth + Resend
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email: normalizedEmail,
+      options: {
+        shouldCreateUser: true,
+      },
     });
 
     if (otpError) {
-      console.error(otpError);
-
+      console.error("OTP ERROR:", JSON.stringify(otpError, null, 2));
+      console.dir(otpError, { depth: null });
       return NextResponse.json(
         {
-          success: false,
           message: otpError.message,
+          error: otpError,
         },
         {
           status: 500,
@@ -168,15 +116,15 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
-      message: "Kode OTP telah dikirim ke email Anda.",
+      message: "OTP berhasil dikirim",
     });
   } catch (error) {
     console.error("REGISTER ERROR:", error);
-
+    console.dir(error, { depth: null });
     return NextResponse.json(
       {
-        success: false,
-        message: error instanceof Error ? error.message : "Registrasi gagal",
+        message:
+          error instanceof Error ? error.message : "Terjadi kesalahan server",
       },
       {
         status: 500,
