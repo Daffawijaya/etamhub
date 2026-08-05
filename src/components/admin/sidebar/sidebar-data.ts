@@ -30,11 +30,11 @@ export const menus: SidebarMenu[] = [
     href: "/admin/requests",
     icon: ClipboardList,
   },
-  {
-    label: "Tambah UMKM",
-    href: "/admin/tambah",
-    icon: Plus,
-  },
+  // {
+  //   label: "Tambah UMKM",
+  //   href: "/admin/tambah",
+  //   icon: Plus,
+  // },
   // {
   //   label: "Kelola Akun",
   //   href: "/admin/akun",

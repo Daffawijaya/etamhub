@@ -190,7 +190,7 @@ export async function POST(req: Request) {
       .eq("nik", body.nik)
       .maybeSingle();
 
-    if (existingNik) {
+    if (existingNik && existingNik.id !== user?.id) {
       return NextResponse.json(
         {
           message: "NIK sudah terdaftar.",
@@ -252,7 +252,7 @@ export async function POST(req: Request) {
       .eq("email", body.email)
       .maybeSingle();
 
-    if (existingEmail) {
+    if (existingEmail && existingEmail.id !== user?.id) {
       return NextResponse.json(
         {
           message: "Email sudah digunakan.",
@@ -349,6 +349,8 @@ export async function POST(req: Request) {
         id: crypto.randomUUID(),
         ...umkmData,
         owner_id: user?.id ?? null,
+        published: isUserUmkm ? false : body.published,
+        approval_status: isUserUmkm ? "pending" : "approved",
         created_at: now,
         updated_at: now,
       })
@@ -357,10 +359,31 @@ export async function POST(req: Request) {
 
     if (error) throw error;
 
+    if (isUserUmkm) {
+      const { error: requestError } = await supabaseAdmin
+        .from("umkm_requests")
+        .insert({
+          id: crypto.randomUUID(),
+          umkm_id: data.id,
+          user_id: user.id,
+          action: "create",
+          payload: data,
+          status: "pending",
+          created_at: now,
+          updated_at: now,
+        });
+
+      if (requestError) {
+        throw requestError;
+      }
+    }
+
     await supabaseAdmin.from("notifications").insert({
       id: crypto.randomUUID(),
-      type: "create",
-      title: `Menambahkan UMKM ${data.nama}`,
+      type: isUserUmkm ? "request" : "create",
+      title: isUserUmkm
+        ? `Permintaan tambah UMKM ${data.nama}`
+        : `Menambahkan UMKM ${data.nama}`,
       created_at: now,
       read: false,
     });

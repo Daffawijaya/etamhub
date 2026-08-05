@@ -78,6 +78,32 @@ export async function PUT(
   }
 
   // =========================
+  // APPROVE CREATE
+  // =========================
+
+  if (request.action === "create") {
+    const { error: createError } = await supabaseAdmin
+      .from("umkm")
+      .update({
+        approval_status: "approved",
+        published: true,
+        updated_at: now,
+      })
+      .eq("id", request.umkm_id);
+
+    if (createError) {
+      return NextResponse.json(
+        {
+          message: createError.message,
+        },
+        {
+          status: 500,
+        },
+      );
+    }
+  }
+
+  // =========================
   // APPROVE UPDATE
   // =========================
 

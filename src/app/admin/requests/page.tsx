@@ -433,13 +433,15 @@ export default function RequestsPage() {
     try {
       const response = await fetch("/api/admin/umkm-requests");
 
+      const result = await response.json();
+
+      console.log("API Response:", result);
+
       if (!response.ok) {
-        throw new Error("Gagal mengambil data request");
+        throw new Error(result.message);
       }
 
-      const data = await response.json();
-
-      setRequests(data);
+      setRequests(result);
     } catch (error) {
       console.error("Failed to load requests:", error);
     } finally {
