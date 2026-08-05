@@ -16,7 +16,6 @@ export async function PUT(
   }
 
   const body = await req.json();
-
   const { action } = body;
 
   if (!["approve", "reject"].includes(action)) {
@@ -53,13 +52,21 @@ export async function PUT(
   // =========================
 
   if (action === "reject") {
-    await supabaseAdmin
+    const { error: rejectError } = await supabaseAdmin
       .from("umkm")
       .update({
         approval_status: "rejected",
+        rejected_reason: body.reason ?? null,
         updated_at: now,
       })
       .eq("id", request.umkm_id);
+
+    if (rejectError) {
+      return NextResponse.json(
+        { message: rejectError.message },
+        { status: 500 },
+      );
+    }
 
     await supabaseAdmin
       .from("umkm_requests")
@@ -71,36 +78,18 @@ export async function PUT(
       })
       .eq("id", id);
 
+    await supabaseAdmin.from("notifications").insert({
+      id: crypto.randomUUID(),
+      type: "request",
+      title: `Request UMKM ${request.action} ditolak`,
+      created_at: now,
+      read: false,
+    });
+
     return NextResponse.json({
       success: true,
       message: "Request ditolak",
     });
-  }
-
-  // =========================
-  // APPROVE CREATE
-  // =========================
-
-  if (request.action === "create") {
-    const { error: createError } = await supabaseAdmin
-      .from("umkm")
-      .update({
-        approval_status: "approved",
-        published: true,
-        updated_at: now,
-      })
-      .eq("id", request.umkm_id);
-
-    if (createError) {
-      return NextResponse.json(
-        {
-          message: createError.message,
-        },
-        {
-          status: 500,
-        },
-      );
-    }
   }
 
   // =========================
@@ -120,6 +109,7 @@ export async function PUT(
       .update({
         ...umkmData,
         approval_status: "approved",
+        rejected_reason: null,
         updated_at: now,
       })
       .eq("id", request.umkm_id);

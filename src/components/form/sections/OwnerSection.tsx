@@ -25,13 +25,11 @@ export default function OwnerSection({ form, setForm }: Props) {
           name="nik"
           placeholder="NIK*"
           value={form.nik}
+          readOnly
           required
           pattern="[0-9]{16}"
           maxLength={16}
           inputMode="numeric"
-          onChange={(e) =>
-            handleChange("nik", e.target.value.replace(/\D/g, "").slice(0, 16))
-          }
         />
 
         <FormSelect
@@ -48,7 +46,7 @@ export default function OwnerSection({ form, setForm }: Props) {
           placeholder="Email"
           type="email"
           value={form.email}
-          onChange={(e) => handleChange("email", e.target.value)}
+          readOnly
         />
       </div>
     </FormSection>

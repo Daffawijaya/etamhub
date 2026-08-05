@@ -28,7 +28,8 @@ export async function GET() {
       gambar,
       approval_status,
       published,
-      created_at
+      created_at,
+      rejected_reason
     `,
     )
     .eq("owner_id", currentUser.id)
