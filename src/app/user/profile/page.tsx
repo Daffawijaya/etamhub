@@ -1,12 +1,11 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { UserRound, Mail, CreditCard, Phone } from "lucide-react";
+import { UserRound, Mail, CreditCard, Phone, ShieldCheck } from "lucide-react";
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export default async function UserProfilePage() {
   const cookieStore = await cookies();
-
   const userId = cookieStore.get("user_id")?.value;
 
   if (!userId) {
@@ -17,85 +16,108 @@ export default async function UserProfilePage() {
     .from("users")
     .select(
       `
-    id,
-    nik,
-    email,
-    umkm (
-      pemilik,
-      whatsapp
-    )
-  `,
+      id,
+      nik,
+      email,
+      umkm (
+        pemilik,
+        whatsapp
+      )
+    `,
     )
     .eq("id", userId)
     .single();
-  console.log(error);
-  console.log(user);
+
   if (error || !user) {
     redirect("/");
   }
 
-  return (
-    <main className="min-h-screen bg-light px-6 pb-6 dark:bg-dark">
-      <div className="space-y-6">
-        <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-dark-card">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 transition-colors duration-300 dark:text-white">
-              Profil Saya
-            </h2>
+  const umkm = Array.isArray(user.umkm) ? user.umkm[0] : user.umkm;
 
-            <p className="mt-1 text-sm text-slate-500 transition-colors duration-300 dark:text-slate-400">
-              Informasi akun pengguna dan data identitas.
+  return (
+    <main className="min-h-screen px-6 pb-6">
+      <div className="">
+        {/* Single Main Card (Semua konten di dalam sini) */}
+        <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
+          {/* Header Section */}
+          <div className="mb-8">
+            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 sm:text-3xl">
+              Profil Pengguna
+            </h1>
+            <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+              Kelola informasi identitas dan detail kontak UMKM Anda.
             </p>
           </div>
 
-          <div className="mt-8 flex items-center gap-5 rounded-2xl border border-slate-200 p-5 dark:border-slate-700">
-            <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-              <UserRound className="text-primary" size={38} />
+          {/* User Profile Summary */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex items-center gap-4">
+              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <UserRound size={32} strokeWidth={1.5} />
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50 sm:text-2xl">
+                  {umkm?.pemilik ?? "Nama Tidak Tersedia"}
+                </h2>
+                <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                  Pemilik UMKM
+                </p>
+              </div>
             </div>
 
-            <div className="min-w-0 flex-1">
-              <h3 className="truncate text-2xl font-semibold text-dark dark:text-light">
-                {user.umkm?.[0]?.pemilik ?? "-"}
-              </h3>
-
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Pemilik UMKM
-              </p>
+            <div className="inline-flex w-fit items-center gap-1.5 rounded-full bg-zinc-100 px-3 py-1 text-xs font-medium text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+              <ShieldCheck size={14} />
+              Terverifikasi
             </div>
           </div>
 
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="rounded-xl border border-slate-200 p-5 transition-colors dark:border-slate-700">
-              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                <CreditCard size={16} />
-                <span>NIK</span>
-              </div>
+          <hr className="my-8 border-zinc-100 dark:border-zinc-800/60" />
 
-              <p className="mt-3 break-all text-base font-medium text-dark dark:text-light">
-                {user.nik ?? "-"}
-              </p>
+          {/* Details Section */}
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            {/* NIK Item */}
+            <div className="flex items-start gap-3.5">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <CreditCard size={18} strokeWidth={1.75} />
+              </div>
+              <div>
+                <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  Nomor Induk Kependudukan
+                </p>
+                <p className="mt-1 font-semibold tracking-wide text-zinc-900 dark:text-zinc-100">
+                  {user.nik ?? "-"}
+                </p>
+              </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 p-5 transition-colors dark:border-slate-700">
-              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                <Mail size={16} />
-                <span>Email</span>
+            {/* Email Item */}
+            <div className="flex items-start gap-3.5">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <Mail size={18} strokeWidth={1.75} />
               </div>
-
-              <p className="mt-3 break-all text-base font-medium text-dark dark:text-light">
-                {user.email ?? "-"}
-              </p>
+              <div className="min-w-0 flex-1">
+                <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  Alamat Email
+                </p>
+                <p className="mt-1 truncate font-semibold text-zinc-900 dark:text-zinc-100">
+                  {user.email ?? "-"}
+                </p>
+              </div>
             </div>
 
-            <div className="rounded-xl border border-slate-200 p-5 transition-colors dark:border-slate-700">
-              <div className="flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
-                <Phone size={16} />
-                <span>WhatsApp</span>
+            {/* WhatsApp Item */}
+            <div className="flex items-start gap-3.5 sm:col-span-2">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
+                <Phone size={18} strokeWidth={1.75} />
               </div>
-
-              <p className="mt-3 text-base font-medium text-dark dark:text-light">
-                {user.umkm?.[0]?.whatsapp ?? "-"}
-              </p>
+              <div>
+                <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">
+                  WhatsApp UMKM
+                </p>
+                <p className="mt-1 font-semibold text-zinc-900 dark:text-zinc-100">
+                  {umkm?.whatsapp ?? "-"}
+                </p>
+              </div>
             </div>
           </div>
         </div>

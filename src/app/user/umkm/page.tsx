@@ -35,13 +35,13 @@ export default async function UserUmkmPage() {
   const isPending = umkm?.approval_status === "pending";
 
   return (
-    <main className="min-h-screen bg-light px-6 pb-6 dark:bg-dark">
-      <div className="space-y-6">
+    <main className="min-h-screen bg-light px-6 pb-8 dark:bg-dark">
+      <div className="mx-auto space-y-6">
         {!umkm ? (
-          <div className="rounded-2xl bg-white p-8 text-center dark:bg-dark-card">
-            <Building2 size={48} className="mx-auto text-primary" />
+          <div className="rounded-2xl bg-white p-10 text-center dark:bg-dark-card">
+            <Building2 size={42} className="mx-auto text-primary" />
 
-            <h2 className="mt-4 text-xl font-semibold text-dark dark:text-light">
+            <h2 className="mt-4 text-lg font-semibold text-dark dark:text-light">
               Belum memiliki UMKM
             </h2>
 
@@ -51,15 +51,15 @@ export default async function UserUmkmPage() {
 
             <Link
               href="/user/tambah"
-              className="mt-6 inline-flex rounded-xl bg-primary px-5 py-3 font-medium text-black dark:text-white"
+              className="mt-6 inline-flex rounded-xl bg-primary px-5 py-2.5 text-sm font-medium text-black dark:text-white"
             >
               Tambah UMKM
             </Link>
           </div>
         ) : (
-          <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
-            <div className="flex flex-col items-center gap-5 md:flex-row">
-              <div className="flex h-40 w-full items-center justify-center overflow-hidden rounded-xl md:w-56">
+          <div className="overflow-hidden rounded-2xl bg-white dark:bg-dark-card">
+            <div className="flex flex-col gap-6 p-6 md:flex-row">
+              <div className="h-44 w-full overflow-hidden rounded-xl bg-gray-100 md:h-40 md:w-52 dark:bg-gray-800">
                 {umkm.gambar?.[0] ? (
                   <img
                     src={umkm.gambar[0]}
@@ -67,102 +67,94 @@ export default async function UserUmkmPage() {
                     className="h-full w-full object-cover"
                   />
                 ) : (
-                  <div className="flex h-full w-full items-center justify-center bg-white dark:bg-dark-card">
-                    <Building2 />
+                  <div className="flex h-full items-center justify-center text-gray-400">
+                    <Building2 size={36} />
                   </div>
                 )}
               </div>
 
               <div className="flex-1">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                   <div>
                     <h2 className="text-xl font-bold text-dark dark:text-light">
                       {umkm.nama}
                     </h2>
 
-                    <p className="text-sm text-gray-500">{umkm.kategori}</p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {umkm.kategori}
+                    </p>
                   </div>
 
                   {isPending ? (
-                    <button
-                      disabled
-                      className="flex cursor-not-allowed items-center gap-2 rounded-xl bg-gray-300 px-4 py-2 text-sm text-gray-500 dark:bg-gray-700 dark:text-gray-400"
-                    >
-                      <Pencil size={16} />
-                      Edit Menunggu Persetujuan
-                    </button>
+                    <span className="inline-flex w-fit items-center gap-2 rounded-full bg-yellow-100 px-3 py-1.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                      <Clock3 size={14} />
+                      Menunggu Persetujuan
+                    </span>
                   ) : (
                     <Link
                       href={`/user/umkm/${umkm.id}/edit`}
-                      className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm text-black dark:text-white"
+                      className="inline-flex w-fit items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-black dark:text-white"
                     >
-                      <Pencil size={16} />
+                      <Pencil size={15} />
                       Edit
                     </Link>
                   )}
                 </div>
 
-                <div className="mt-5 space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                <div className="mt-5 space-y-2 text-sm text-gray-600 dark:text-gray-400">
                   <p className="flex items-center gap-2">
-                    <MapPin size={16} />
+                    <MapPin size={15} />
                     {umkm.kecamatan}
                   </p>
 
                   <p>{umkm.alamat}</p>
                 </div>
 
-                <div className="mt-6 space-y-3">
-                  {!umkm.published && (
-                    <div className="flex items-center gap-2 text-yellow-600">
-                      <Clock3 size={18} />
-                      <span>UMKM belum dipublikasikan.</span>
-                    </div>
-                  )}
-
-                  {umkm.published && (
-                    <div className="flex items-center gap-2 text-green-600">
-                      <CheckCircle2 size={18} />
-                      <span>UMKM sudah dipublikasikan.</span>
-                    </div>
-                  )}
-
-                  {umkm.approval_status === "pending" && (
-                    <div className="flex items-center gap-2 text-yellow-600">
-                      <Clock3 size={18} />
-                      <span>
-                        Perubahan data sedang menunggu persetujuan admin.
-                      </span>
-                    </div>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {umkm.published ? (
+                    <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                      <CheckCircle2 size={14} />
+                      Publik
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1.5 text-xs font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+                      <Clock3 size={14} />
+                      Belum Dipublikasikan
+                    </span>
                   )}
 
                   {umkm.approval_status === "approved" && (
-                    <div className="flex items-center gap-2 text-green-600">
-                      <CheckCircle2 size={18} />
-                      <span>UMKM telah disetujui.</span>
-                    </div>
+                    <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                      <CheckCircle2 size={14} />
+                      Disetujui
+                    </span>
+                  )}
+
+                  {umkm.approval_status === "pending" && (
+                    <span className="inline-flex items-center gap-2 rounded-full bg-yellow-100 px-3 py-1.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
+                      <Clock3 size={14} />
+                      Pending
+                    </span>
                   )}
 
                   {umkm.approval_status === "rejected" && (
-                    <div className="space-y-2 text-red-600 dark:text-red-400">
-                      <div className="flex items-center gap-2">
-                        <XCircle size={18} />
-                        <span>Perubahan data UMKM ditolak.</span>
-                      </div>
-
-                      {umkm.rejected_reason && (
-                        <div className="rounded-lg border border-red-200 bg-red-50 p-3 dark:border-red-900 dark:bg-red-950/30">
-                          <p className="text-sm font-medium">
-                            Alasan Penolakan
-                          </p>
-
-                          <p className="mt-1 whitespace-pre-wrap text-sm">
-                            {umkm.rejected_reason}
-                          </p>
-                        </div>
-                      )}
-                    </div>
+                    <span className="inline-flex items-center gap-2 rounded-full bg-red-100 px-3 py-1.5 text-xs font-medium text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                      <XCircle size={14} />
+                      Ditolak
+                    </span>
                   )}
                 </div>
+
+                {umkm.approval_status === "rejected" &&
+                  umkm.rejected_reason && (
+                    <div className="mt-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-400">
+                      <p className="font-medium">Alasan Penolakan</p>
+
+                      <p className="mt-1 whitespace-pre-wrap">
+                        {umkm.rejected_reason}
+                      </p>
+                    </div>
+                  )}
               </div>
             </div>
           </div>
