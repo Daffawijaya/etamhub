@@ -32,13 +32,24 @@ export default function UmkmDescriptionTab({ deskripsi }: Props) {
     };
   }, [deskripsi]);
 
+  useEffect(() => {
+    setExpanded(false);
+
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: 0,
+      });
+    }
+  }, [deskripsi]);
+
   return (
-    <>
+    <div className="flex h-full min-h-0 flex-col">
       <div
         ref={containerRef}
         className={`
           relative
-          h-[26.1vh]
+          min-h-0
+          flex-1
           ${
             expanded
               ? `
@@ -84,41 +95,42 @@ export default function UmkmDescriptionTab({ deskripsi }: Props) {
         )}
       </div>
 
-      {showButton && (
-        <button
-          type="button"
-          onClick={() => {
-            if (expanded) {
-              containerRef.current?.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }
+      <div className="mt-6 h-10">
+        {showButton && (
+          <button
+            type="button"
+            onClick={() => {
+              if (expanded) {
+                containerRef.current?.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }
 
-            setExpanded((prev) => !prev);
-          }}
-          className="
-            mt-6
-            rounded-xl
-            border
-            border-violet-500/20
-            bg-violet-500/10
-            px-4
-            py-2
-            text-sm
-            font-medium
-            text-violet-600
-            transition-all
-            duration-300
-            hover:bg-violet-500/15
-            hover:text-zinc-900
-            dark:text-violet-300
-            dark:hover:text-white
-          "
-        >
-          {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}
-        </button>
-      )}
-    </>
+              setExpanded((prev) => !prev);
+            }}
+            className="
+              rounded-xl
+              border
+              border-violet-500/20
+              bg-violet-500/10
+              px-4
+              py-2
+              text-sm
+              font-medium
+              text-violet-600
+              transition-all
+              duration-300
+              hover:bg-violet-500/15
+              hover:text-zinc-900
+              dark:text-violet-300
+              dark:hover:text-white
+            "
+          >
+            {expanded ? "Lihat Lebih Sedikit" : "Baca Selengkapnya"}
+          </button>
+        )}
+      </div>
+    </div>
   );
 }

@@ -59,17 +59,20 @@ export default function UmkmInfo({
   return (
     <div
       className="
-        group
-        relative
-        overflow-hidden
-        rounded-xl
-        border
-        border-white
-        bg-light
-        p-6
-        dark:border-white/10
-        dark:bg-[#161616]
-      "
+    group
+    relative
+    flex
+    h-[500px]
+    flex-col
+    overflow-hidden
+    rounded-xl
+    border
+    border-white
+    bg-light
+    p-6
+    dark:border-white/10
+    dark:bg-[#161616]
+  "
     >
       {/* Background */}
       <div
@@ -82,7 +85,7 @@ export default function UmkmInfo({
         "
       />
 
-      <div className="relative z-10">
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col">
         {/* Header */}
         <h1 className="text-3xl font-semibold leading-tight text-zinc-900 dark:text-white md:text-4xl">
           {nama}
@@ -141,7 +144,7 @@ export default function UmkmInfo({
         </div>
 
         {/* Content */}
-        <div className="mt-6">
+        <div className="mt-6 min-h-0 flex-1 overflow-hidden">
           {activeTab === "deskripsi" && (
             <UmkmDescriptionTab deskripsi={deskripsi} />
           )}

@@ -64,7 +64,7 @@ export default function UmkmLegalityTab({ data }: Props) {
       <div
         className="
           flex
-          h-[34.5vh]
+          h-full
           items-center
           justify-center
           rounded-2xl

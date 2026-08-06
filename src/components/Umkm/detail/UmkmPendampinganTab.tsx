@@ -97,7 +97,7 @@ export default function UmkmPendampinganTab({ data }: Props) {
   }
 
   return (
-    <div className="h-[34.5vh] overflow-y-auto pr-2">
+    <div className="h-full overflow-y-auto pr-2">
       <ul>
         {pendampingan.map((item) => (
           <li key={item.label} className="py-3">
