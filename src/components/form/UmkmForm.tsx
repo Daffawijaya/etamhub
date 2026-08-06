@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useMemo } from "react";
-
+import { useModal } from "@/components/ui/modal";
 import { initialForm } from "./constants";
 import { UmkmFormData, ImageItem } from "./types";
 
@@ -34,7 +34,7 @@ interface Props {
 
 export default function UmkmForm({ mode, data, role = "admin" }: Props) {
   const router = useRouter();
-
+  const modal = useModal();
   const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
 
   const [form, setForm] = useState<UmkmFormData>(
@@ -207,42 +207,84 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
     e.preventDefault();
 
     if (!/^\d{16}$/.test(form.nik)) {
-      alert("NIK harus berupa 16 angka");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "NIK harus berupa 16 angka.",
+      });
       return;
     }
 
     if (!isValidNib(form.nib)) {
-      alert("NIB harus berupa 13 angka");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "NIB harus berupa 13 angka.",
+      });
       return;
     }
 
     if (!isValidFacebookUrl(form.facebook)) {
-      alert("URL Facebook tidak valid");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "URL Facebook tidak valid.",
+      });
       return;
     }
-
     if (!isValidWhatsapp(form.whatsapp)) {
-      alert("Nomor WhatsApp tidak valid");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "Nomor WhatsApp tidak valid.",
+      });
+
       return;
     }
 
     if (!isValidInstagramUsername(form.instagram)) {
-      alert("Username Instagram tidak valid");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "Username Instagram tidak valid.",
+      });
+
       return;
     }
 
     if (!isValidTiktokUsername(form.tiktok)) {
-      alert("Username TikTok tidak valid");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "Username TikTok tidak valid.",
+      });
+
       return;
     }
 
     if (!isValidEmail(form.email)) {
-      alert("Email tidak valid");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "Email tidak valid.",
+      });
+
       return;
     }
 
     if (images.length === 0) {
-      alert("Gambar UMKM wajib diupload");
+      modal.error({
+        title: "Validasi Gagal",
+        description: "Gambar UMKM wajib diupload.",
+      });
+
+      return;
+    }
+
+    const confirmed = await modal.confirm({
+      title: mode === "create" ? "Simpan UMKM?" : "Update UMKM?",
+      description:
+        mode === "create"
+          ? "Data UMKM akan disimpan."
+          : "Perubahan data UMKM akan diperbarui.",
+      confirmText: mode === "create" ? "Simpan" : "Update",
+      cancelText: "Batal",
+    });
+
+    if (!confirmed) {
       return;
     }
 
@@ -309,7 +351,10 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
 
       router.refresh();
     } catch (error: any) {
-      alert(error.message);
+      modal.error({
+        title: "Gagal Menyimpan",
+        description: error.message || "Terjadi kesalahan saat menyimpan data.",
+      });
     } finally {
       setLoading(false);
     }

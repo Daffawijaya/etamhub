@@ -6,6 +6,7 @@ import ScrollTop from "@/components/ScrollTop";
 import "leaflet/dist/leaflet.css";
 import TopLoader from "@/components/TopLoader";
 import GlobalLoader from "@/components/GlobalLoader";
+import { ModalProvider } from "@/components/ui/modal";
 
 const outfit = Outfit({
   subsets: ["latin"],
@@ -29,9 +30,12 @@ export default function RootLayout({
       <body className={`${outfit.className} min-h-full flex flex-col`}>
         <TopLoader />
         <GlobalLoader />
+
         <Providers>
-          <ScrollTop />
-          {children}
+          <ModalProvider>
+            <ScrollTop />
+            {children}
+          </ModalProvider>
         </Providers>
       </body>
     </html>

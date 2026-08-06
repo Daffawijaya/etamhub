@@ -27,6 +27,7 @@
     "react-leaflet": "^5.0.0",
     "react-qr-code": "^2.2.0",
     "sharp": "^0.35.3",
+    "tailwindcss-animate": "^1.0.7",
     "uuid": "^14.0.1",
     "xlsx": "^0.18.5"
   },
