@@ -77,7 +77,9 @@ export default function KecamatanPage({ params }: Props) {
           limit: String(limit),
         });
 
-        const res = await fetch(`/api/umkm?${params}`);
+        const res = await fetch(`/api/public/umkm?${params}`, {
+          cache: "no-store",
+        });
 
         const result = await res.json();
 
