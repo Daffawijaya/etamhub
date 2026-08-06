@@ -1,5 +1,7 @@
 "use client";
 
+import { CheckCircle2, XCircle } from "lucide-react";
+
 type Props = {
   data: {
     nib?: string | null;
@@ -17,31 +19,37 @@ export default function UmkmLegalityTab({ data }: Props) {
       label: "NPWP",
       value: data.npwp,
       isArray: false,
+      isSensitive: true,
     },
     {
       label: "NIB",
       value: data.nib,
       isArray: false,
+      isSensitive: false,
     },
     {
       label: "PIRT",
       value: data.pirt,
       isArray: false,
+      isSensitive: false,
     },
     {
       label: "Halal",
       value: data.halal,
       isArray: false,
+      isSensitive: false,
     },
     {
       label: "HAKI",
       value: data.haki,
       isArray: false,
+      isSensitive: false,
     },
     {
       label: "KBLI",
       value: data.kbli?.filter(Boolean) ?? [],
       isArray: true,
+      isSensitive: false,
     },
   ].filter((item) =>
     item.isArray
@@ -74,7 +82,7 @@ export default function UmkmLegalityTab({ data }: Props) {
 
   return (
     <div className="h-[34.5vh] overflow-y-auto pr-2">
-      <ul className="">
+      <ul>
         {legalitas.map((item) => (
           <li key={item.label} className="py-2">
             <p className="text-xs font-medium uppercase tracking-wide text-zinc-500 dark:text-zinc-400">
@@ -100,6 +108,16 @@ export default function UmkmLegalityTab({ data }: Props) {
                     {value}
                   </span>
                 ))}
+              </div>
+            ) : item.isSensitive ? (
+              <div className="mt-2 flex items-center gap-2">
+                <CheckCircle2
+                  size={18}
+                  className="text-emerald-600 dark:text-emerald-400"
+                />
+                <span className="text-sm font-semibold text-zinc-900 dark:text-white">
+                  Terdaftar
+                </span>
               </div>
             ) : (
               <p className="mt-2 break-words text-sm font-semibold text-zinc-900 dark:text-white">

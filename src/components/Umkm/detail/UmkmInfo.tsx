@@ -5,6 +5,7 @@ import { useState } from "react";
 import UmkmDescriptionTab from "./UmkmDescriptionTab";
 import UmkmLegalityTab from "./UmkmLegalityTab";
 import UmkmTabs from "./UmkmTabs";
+import UmkmPendampinganTab from "./UmkmPendampinganTab";
 
 type Props = {
   nama: string;
@@ -12,6 +13,17 @@ type Props = {
   subkategori: string;
   kecamatan: string;
   deskripsi: string;
+
+  gambar?: string[] | null;
+
+  whatsapp?: string | null;
+  instagram?: string | null;
+  facebook?: string | null;
+  tiktok?: string | null;
+
+  lat?: number | null;
+  lng?: number | null;
+
   nib?: string | null;
   npwp?: string | null;
   halal?: string | null;
@@ -32,10 +44,17 @@ export default function UmkmInfo({
   pirt,
   haki,
   kbli,
+  gambar,
+  whatsapp,
+  instagram,
+  facebook,
+  tiktok,
+  lat,
+  lng,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<"deskripsi" | "legalitas">(
-    "deskripsi",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "deskripsi" | "legalitas" | "pendampingan"
+  >("deskripsi");
 
   return (
     <div
@@ -123,11 +142,35 @@ export default function UmkmInfo({
 
         {/* Content */}
         <div className="mt-6">
-          {activeTab === "deskripsi" ? (
+          {activeTab === "deskripsi" && (
             <UmkmDescriptionTab deskripsi={deskripsi} />
-          ) : (
+          )}
+
+          {activeTab === "legalitas" && (
             <UmkmLegalityTab
               data={{
+                nib,
+                npwp,
+                halal,
+                pirt,
+                haki,
+                kbli,
+              }}
+            />
+          )}
+
+          {activeTab === "pendampingan" && (
+            <UmkmPendampinganTab
+              data={{
+                nama,
+                deskripsi,
+                gambar,
+                whatsapp,
+                instagram,
+                facebook,
+                tiktok,
+                lat,
+                lng,
                 nib,
                 npwp,
                 halal,

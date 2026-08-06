@@ -84,6 +84,13 @@ export default function UmkmDetail({
               subkategori={subkategori}
               kecamatan={kecamatan}
               deskripsi={deskripsi}
+              gambar={gambar}
+              whatsapp={whatsapp}
+              instagram={instagram}
+              facebook={facebook}
+              tiktok={tiktok}
+              lat={lat}
+              lng={lng}
               npwp={npwp}
               nib={nib}
               halal={halal}
