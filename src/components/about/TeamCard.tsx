@@ -23,7 +23,7 @@ export default function TeamCard({
         max-w-[260px]
         sm:max-w-none
         overflow-hidden
-        rounded-3xl
+        rounded-xl
         p-[1px]
         transition-all
         duration-500
@@ -35,7 +35,7 @@ export default function TeamCard({
         className={`
           absolute
           inset-0
-          rounded-3xl
+          rounded-xl
           transition-opacity
           duration-500
           ${featured ? "opacity-100" : "opacity-0 group-hover:opacity-100"}
@@ -64,7 +64,7 @@ export default function TeamCard({
           flex
           h-full
           flex-col
-          rounded-[23px]
+          rounded-xl
           backdrop-blur-xl
           transition-all
           duration-500
@@ -102,7 +102,7 @@ export default function TeamCard({
               className="
                 absolute
                 inset-0
-                rounded-[23px]
+                rounded-xl
                 opacity-0
                 transition-opacity
                 duration-500
@@ -147,7 +147,7 @@ export default function TeamCard({
           className="
             absolute
             inset-0
-            rounded-[23px]
+            rounded-xl
             opacity-0
             transition-opacity
             duration-500

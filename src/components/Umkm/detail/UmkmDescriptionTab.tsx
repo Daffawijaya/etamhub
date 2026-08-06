@@ -38,7 +38,7 @@ export default function UmkmDescriptionTab({ deskripsi }: Props) {
         ref={containerRef}
         className={`
           relative
-          h-[35vh]
+          h-[26.1vh]
           ${
             expanded
               ? `

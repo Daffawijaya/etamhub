@@ -113,7 +113,7 @@ export default function VisiManfaat() {
                         dark:border-white/10
                         bg-light
                         dark:bg-white/[0.03]
-                        rounded-2xl
+                        rounded-xl
                         p-3
                         sm:p-4
                         md:p-6

@@ -18,7 +18,7 @@ export default function DistrictHero({
           group
           relative
           overflow-hidden
-          rounded-3xl
+          rounded-xl
           border
           border-white
           bg-light-bg
@@ -71,7 +71,7 @@ export default function DistrictHero({
 
           {/* Right */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-xl border border-white bg-light px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]">
+            <div className="flex items-center justify-between rounded-lg border border-white bg-light px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]">
               <span className="text-sm text-zinc-500 dark:text-zinc-400">
                 Total UMKM
               </span>
@@ -81,7 +81,7 @@ export default function DistrictHero({
               </span>
             </div>
 
-            <div className="flex items-center justify-between rounded-xl border border-white bg-light px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]">
+            <div className="flex items-center justify-between rounded-lg border border-white bg-light px-4 py-3 dark:border-white/10 dark:bg-white/[0.03]">
               <span className="text-sm text-zinc-500 dark:text-zinc-400">
                 Subkategori
               </span>
@@ -96,7 +96,7 @@ export default function DistrictHero({
                 flex
                 items-center
                 justify-between
-                rounded-xl
+                rounded-lg
                 border
                 px-4
                 py-3

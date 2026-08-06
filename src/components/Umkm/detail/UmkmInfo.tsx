@@ -12,6 +12,12 @@ type Props = {
   subkategori: string;
   kecamatan: string;
   deskripsi: string;
+  nib?: string | null;
+  npwp?: string | null;
+  halal?: string | null;
+  pirt?: string | null;
+  haki?: string | null;
+  kbli?: string[] | null;
 };
 
 export default function UmkmInfo({
@@ -20,6 +26,12 @@ export default function UmkmInfo({
   subkategori,
   kecamatan,
   deskripsi,
+  nib,
+  npwp,
+  halal,
+  pirt,
+  haki,
+  kbli,
 }: Props) {
   const [activeTab, setActiveTab] = useState<"deskripsi" | "legalitas">(
     "deskripsi",
@@ -114,7 +126,16 @@ export default function UmkmInfo({
           {activeTab === "deskripsi" ? (
             <UmkmDescriptionTab deskripsi={deskripsi} />
           ) : (
-            <UmkmLegalityTab />
+            <UmkmLegalityTab
+              data={{
+                nib,
+                npwp,
+                halal,
+                pirt,
+                haki,
+                kbli,
+              }}
+            />
           )}
         </div>
       </div>

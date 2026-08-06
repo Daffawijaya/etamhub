@@ -78,7 +78,7 @@ export default async function UmkmTerbaruSection() {
                 border
                 border-white
                 dark:border-zinc-800
-                rounded-2xl
+                rounded-xl
                 dark:hover:border-zinc-700
                 transition-all
                 duration-300
@@ -90,7 +90,7 @@ export default async function UmkmTerbaruSection() {
                   relative
                   aspect-[4/3]
                   overflow-hidden
-                  rounded-t-2xl
+                  rounded-t-xl
                   bg-zinc-200
                   dark:bg-zinc-900
                 "

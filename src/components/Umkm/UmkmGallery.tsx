@@ -24,7 +24,7 @@ export default function UmkmGallery({
           group
           relative
           overflow-hidden
-          rounded-3xl
+          rounded-xl
           border
           border-white
           bg-light

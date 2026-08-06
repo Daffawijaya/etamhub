@@ -130,7 +130,7 @@ export default async function DistrictSection() {
                   group
                   relative
                   overflow-hidden
-                  rounded-2xl                 
+                  rounded-xl                 
                   border
                   border-white
                   dark:border-white/10
@@ -216,7 +216,7 @@ export default async function DistrictSection() {
                       h-9
                       sm:w-11
                       sm:h-11
-                      rounded-xl
+                      rounded-lg
                       border
                       border-black/10
                       dark:border-white/10

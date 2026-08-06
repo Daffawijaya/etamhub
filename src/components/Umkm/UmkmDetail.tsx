@@ -21,6 +21,12 @@ type Props = {
   tiktok?: string;
   lat: number;
   lng: number;
+  nib?: string | null;
+  npwp?: string | null;
+  halal?: string | null;
+  pirt?: string | null;
+  haki?: string | null;
+  kbli?: string[] | null;
 };
 
 export default function UmkmDetail({
@@ -38,6 +44,12 @@ export default function UmkmDetail({
   tiktok,
   lat,
   lng,
+  nib,
+  npwp,
+  halal,
+  pirt,
+  haki,
+  kbli,
 }: Props) {
   const [activeImage, setActiveImage] = useState(gambar[0]);
 
@@ -72,6 +84,12 @@ export default function UmkmDetail({
               subkategori={subkategori}
               kecamatan={kecamatan}
               deskripsi={deskripsi}
+              npwp={npwp}
+              nib={nib}
+              halal={halal}
+              pirt={pirt}
+              haki={haki}
+              kbli={kbli}
             />
           </div>
 

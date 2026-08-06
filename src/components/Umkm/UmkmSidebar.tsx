@@ -49,7 +49,7 @@ export default function UmkmSidebar({
         group
         relative
         overflow-hidden
-        rounded-3xl
+        rounded-xl
         border
         border-white
         bg-light
@@ -58,7 +58,6 @@ export default function UmkmSidebar({
         dark:bg-[#161616]
       "
     >
-      {/* Glow */}
       <div
         className="
           absolute
@@ -77,7 +76,18 @@ export default function UmkmSidebar({
           Informasi UMKM
         </h3>
 
-        <div className="mt-6 space-y-5">
+        <div
+          className="
+            mt-6
+            max-h-[52vh]
+            space-y-5
+            overflow-y-auto
+            pr-2
+            scrollbar-thin
+            scrollbar-thumb-zinc-300
+            dark:scrollbar-thumb-zinc-700
+          "
+        >
           {/* Owner */}
           <div>
             <p className="text-xs uppercase tracking-wide text-zinc-500">
@@ -99,180 +109,179 @@ export default function UmkmSidebar({
               {alamat}
             </p>
           </div>
-        </div>
 
-        {/* Location */}
-        <button
-          onClick={() =>
-            window.open(
-              `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
-              "_blank",
-            )
-          }
-          className="
-            mt-6
-            w-full
-            rounded-xl
-            border
-            border-violet-500/20
-            bg-violet-500/10
-            px-4
-            py-3
-            text-sm
-            font-medium
-            text-violet-600
-            transition-all
-            duration-300
-            hover:bg-violet-500/15
-            hover:text-zinc-900
-            dark:text-violet-300
-            dark:hover:text-white
-          "
-        >
-          Lihat Lokasi
-        </button>
+          {/* Location */}
+          <button
+            onClick={() =>
+              window.open(
+                `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`,
+                "_blank",
+              )
+            }
+            className="
+              w-full
+              rounded-xl
+              border
+              border-violet-500/20
+              bg-violet-500/10
+              px-4
+              py-3
+              text-sm
+              font-medium
+              text-violet-600
+              transition-all
+              duration-300
+              hover:bg-violet-500/15
+              hover:text-zinc-900
+              dark:text-violet-300
+              dark:hover:text-white
+            "
+          >
+            Lihat Lokasi
+          </button>
 
-        {(whatsappNumber ||
-          instagram?.trim() ||
-          facebook?.trim() ||
-          tiktok?.trim()) && (
-          <div className="mt-6 border-t border-white pt-5 dark:border-white/10">
-            <h4 className="text-sm font-semibold text-zinc-900 dark:text-white">
-              Hubungi UMKM
-            </h4>
+          {(whatsappNumber ||
+            instagram?.trim() ||
+            facebook?.trim() ||
+            tiktok?.trim()) && (
+            <div className="border-t border-white pt-5 dark:border-white/10">
+              <h4 className="text-sm font-semibold text-zinc-900 dark:text-white">
+                Hubungi UMKM
+              </h4>
 
-            <div className="mt-4 flex flex-col gap-2">
-              {whatsappNumber && (
-                <button
-                  onClick={() =>
-                    window.open(`https://wa.me/${whatsappNumber}`, "_blank")
-                  }
-                  className="
-                    w-full
-                    rounded-xl
-                    border
-                    border-violet-500/20
-                    bg-violet-500/10
-                    px-4
-                    py-2.5
-                    text-sm
-                    font-medium
-                    text-violet-600
-                    transition-all
-                    duration-300
-                    hover:bg-violet-500/15
-                    hover:text-zinc-900
-                    dark:text-violet-300
-                    dark:hover:text-white
-                  "
-                >
-                  Chat WhatsApp
-                </button>
-              )}
+              <div className="mt-4 flex flex-col gap-2">
+                {whatsappNumber && (
+                  <button
+                    onClick={() =>
+                      window.open(`https://wa.me/${whatsappNumber}`, "_blank")
+                    }
+                    className="
+                      w-full
+                      rounded-xl
+                      border
+                      border-violet-500/20
+                      bg-violet-500/10
+                      px-4
+                      py-2.5
+                      text-sm
+                      font-medium
+                      text-violet-600
+                      transition-all
+                      duration-300
+                      hover:bg-violet-500/15
+                      hover:text-zinc-900
+                      dark:text-violet-300
+                      dark:hover:text-white
+                    "
+                  >
+                    Chat WhatsApp
+                  </button>
+                )}
 
-              {instagram?.trim() && (
-                <button
-                  onClick={() =>
-                    window.open(
-                      `https://instagram.com/${instagram.replace("@", "")}`,
-                      "_blank",
-                    )
-                  }
-                  className="
-                    w-full
-                    rounded-xl
-                    border
-                    border-white
-                    bg-light-bg
-                    px-4
-                    py-2.5
-                    text-sm
-                    font-medium
-                    text-zinc-600
-                    transition-all
-                    duration-300
-                    hover:border-violet-500/20
-                    hover:bg-violet-500/10
-                    hover:text-zinc-900
-                    dark:border-white/10
-                    dark:bg-white/[0.03]
-                    dark:text-zinc-300
-                    dark:hover:text-white
-                  "
-                >
-                  Instagram
-                </button>
-              )}
+                {instagram?.trim() && (
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `https://instagram.com/${instagram.replace("@", "")}`,
+                        "_blank",
+                      )
+                    }
+                    className="
+                      w-full
+                      rounded-xl
+                      border
+                      border-white
+                      bg-light-bg
+                      px-4
+                      py-2.5
+                      text-sm
+                      font-medium
+                      text-zinc-600
+                      transition-all
+                      duration-300
+                      hover:border-violet-500/20
+                      hover:bg-violet-500/10
+                      hover:text-zinc-900
+                      dark:border-white/10
+                      dark:bg-white/[0.03]
+                      dark:text-zinc-300
+                      dark:hover:text-white
+                    "
+                  >
+                    Instagram
+                  </button>
+                )}
 
-              {tiktok?.trim() && (
-                <button
-                  onClick={() =>
-                    window.open(
-                      `https://www.tiktok.com/${
-                        tiktok.startsWith("@") ? tiktok : `@${tiktok}`
-                      }`,
-                      "_blank",
-                    )
-                  }
-                  className="
-                    w-full
-                    rounded-xl
-                    border
-                    border-white
-                    bg-light-bg
-                    px-4
-                    py-2.5
-                    text-sm
-                    font-medium
-                    text-zinc-600
-                    transition-all
-                    duration-300
-                    hover:border-violet-500/20
-                    hover:bg-violet-500/10
-                    hover:text-zinc-900
-                    dark:border-white/10
-                    dark:bg-white/[0.03]
-                    dark:text-zinc-300
-                    dark:hover:text-white
-                  "
-                >
-                  TikTok
-                </button>
-              )}
+                {tiktok?.trim() && (
+                  <button
+                    onClick={() =>
+                      window.open(
+                        `https://www.tiktok.com/${
+                          tiktok.startsWith("@") ? tiktok : `@${tiktok}`
+                        }`,
+                        "_blank",
+                      )
+                    }
+                    className="
+                      w-full
+                      rounded-xl
+                      border
+                      border-white
+                      bg-light-bg
+                      px-4
+                      py-2.5
+                      text-sm
+                      font-medium
+                      text-zinc-600
+                      transition-all
+                      duration-300
+                      hover:border-violet-500/20
+                      hover:bg-violet-500/10
+                      hover:text-zinc-900
+                      dark:border-white/10
+                      dark:bg-white/[0.03]
+                      dark:text-zinc-300
+                      dark:hover:text-white
+                    "
+                  >
+                    TikTok
+                  </button>
+                )}
 
-              {facebook?.trim() && (
-                <button
-                  onClick={() =>
-                    window.open(getFacebookUrl(facebook), "_blank")
-                  }
-                  className="
-                    w-full
-                    rounded-xl
-                    border
-                    border-white
-                    bg-light-bg
-                    px-4
-                    py-2.5
-                    text-sm
-                    font-medium
-                    text-zinc-600
-                    transition-all
-                    duration-300
-                    hover:border-violet-500/20
-                    hover:bg-violet-500/10
-                    hover:text-zinc-900
-                    dark:border-white/10
-                    dark:bg-white/[0.03]
-                    dark:text-zinc-300
-                    dark:hover:text-white
-                  "
-                >
-                  Facebook
-                </button>
-              )}
+                {facebook?.trim() && (
+                  <button
+                    onClick={() =>
+                      window.open(getFacebookUrl(facebook), "_blank")
+                    }
+                    className="
+                      w-full
+                      rounded-xl
+                      border
+                      border-white
+                      bg-light-bg
+                      px-4
+                      py-2.5
+                      text-sm
+                      font-medium
+                      text-zinc-600
+                      transition-all
+                      duration-300
+                      hover:border-violet-500/20
+                      hover:bg-violet-500/10
+                      hover:text-zinc-900
+                      dark:border-white/10
+                      dark:bg-white/[0.03]
+                      dark:text-zinc-300
+                      dark:hover:text-white
+                    "
+                  >
+                    Facebook
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

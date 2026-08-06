@@ -22,7 +22,7 @@ export default function KategoriFilter({
       className="
         relative
         overflow-hidden
-        rounded-3xl
+        rounded-lg
         border
         border-white
         bg-light-bg
@@ -51,7 +51,7 @@ export default function KategoriFilter({
             border
             border-white
             backdrop-blur-xl
-            rounded-xl
+            rounded-lg
             p-1
             gap-1
             overflow-x-auto
@@ -110,7 +110,7 @@ export default function KategoriFilter({
               md:flex
               items-center
               gap-2
-              rounded-xl
+              rounded-lg
               border
               border-white
               bg-light
@@ -130,7 +130,7 @@ export default function KategoriFilter({
           <button
             onClick={() => setUrutTerdekat(!urutTerdekat)}
             className={`
-              rounded-xl
+              rounded-lg
               px-4
               py-2
               text-sm

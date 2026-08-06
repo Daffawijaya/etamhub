@@ -36,7 +36,7 @@ export default function AboutPlatformSection() {
                 border-white
                 dark:border-zinc-800
                 dark:hover:border-zinc-700
-                rounded-2xl
+                rounded-xl
                 transition-all
                 duration-300
                 p-5

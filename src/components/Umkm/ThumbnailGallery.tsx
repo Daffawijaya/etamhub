@@ -140,7 +140,7 @@ export default function ThumbnailGallery({
               w-16
               shrink-0
               overflow-hidden
-              rounded-xl
+              rounded-lg
               border
               transition-all
               duration-300

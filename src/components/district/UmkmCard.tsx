@@ -37,7 +37,7 @@ export default function UmkmCard({
         flex-col
         h-full
         overflow-hidden
-        rounded-3xl
+        rounded-xl
         bg-light
         border
         border-white
@@ -56,7 +56,7 @@ export default function UmkmCard({
           relative
           aspect-[4/3]
           overflow-hidden
-          rounded-t-3xl
+          rounded-t-xl
           bg-light-bg
           dark:bg-zinc-900
         "

@@ -4445,6 +4445,10 @@ export const kbliData: KBLI[] = [
     nama: "Aktivitas Penyediaan Infrastruktur Komputasi, Hosting, dan Aktivitas Terkait",
   },
   {
+    kode: "63122",
+    nama: "Portal	Web	Dan/Atau Platform	Digital	Dengan Tujuan	Komersial",
+  },
+  {
     kode: "63900",
     nama: "Aktivitas Jasa Portal Pencarian Web dan Informasi Lainnya",
   },
@@ -5077,8 +5081,12 @@ export const kbliData: KBLI[] = [
     nama: "Aktivitas Desain Industri Lainnya",
   },
   {
-    kode: "74191",
-    nama: "Aktivitas Desain Interior",
+    kode: "74119",
+    nama: "Aktivitas Desain Industri Lainnya",
+  },
+  {
+    kode: "74130",
+    nama: "Aktivitas Desain Komunikasi Visual/Desain Grafis",
   },
   {
     kode: "74192",
@@ -5245,6 +5253,10 @@ export const kbliData: KBLI[] = [
     nama: "Aktivitas Penyediaan Tenaga Kerja Sementara dan Penyediaan Sumber Daya Manusia Lainnya",
   },
   {
+    kode: "78300",
+    nama: "Penyediaan	Sumber Daya	Manusia	dan Manajemen	Fungsi Sumber	Daya Manusia",
+  },
+  {
     kode: "79110",
     nama: "Aktivitas Agen Perjalanan",
   },
@@ -5305,9 +5317,14 @@ export const kbliData: KBLI[] = [
     nama: "Aktivitas Administrasi Kantor dan Penunjang Kantor",
   },
   {
+    kode: "82110",
+    nama: "Aktivitas	Penyedia Gabungan	Jasa Administrasi	Kantor",
+  },
+  {
     kode: "82200",
     nama: "Aktivitas Pusat Panggilan (Call Center)",
   },
+
   {
     kode: "82300",
     nama: "Penyelenggaraan Konvensi dan Pameran Bisnis",
