@@ -10,11 +10,11 @@ export async function PUT(
   const { id } = await context.params;
 
   const currentUser = await getCurrentUser();
-
+console.log("CURRENT USER:", currentUser);
   if (!currentUser) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
-
+ 
   const body = await req.json();
   const { action } = body;
 
@@ -68,7 +68,7 @@ export async function PUT(
       );
     }
 
-    await supabaseAdmin
+    const { error: rejectRequestError } = await supabaseAdmin
       .from("umkm_requests")
       .update({
         status: "rejected",
@@ -77,6 +77,13 @@ export async function PUT(
         reason: body.reason ?? null,
       })
       .eq("id", id);
+
+    if (rejectRequestError) {
+      return NextResponse.json(
+        { message: rejectRequestError.message },
+        { status: 500 },
+      );
+    }
 
     await supabaseAdmin.from("notifications").insert({
       id: crypto.randomUUID(),
@@ -159,7 +166,7 @@ export async function PUT(
     }
   }
 
-  await supabaseAdmin
+  const { error: approveRequestError } = await supabaseAdmin
     .from("umkm_requests")
     .update({
       status: "approved",
@@ -167,6 +174,13 @@ export async function PUT(
       reviewed_at: now,
     })
     .eq("id", id);
+
+  if (approveRequestError) {
+    return NextResponse.json(
+      { message: approveRequestError.message },
+      { status: 500 },
+    );
+  }
 
   await supabaseAdmin.from("notifications").insert({
     id: crypto.randomUUID(),

@@ -51,14 +51,18 @@ export default function RequestsPage() {
         }),
       });
 
+      const result = await response.json();
+
       if (!response.ok) {
-        throw new Error("Gagal memproses request");
+        throw new Error(result.message || "Gagal memproses request");
       }
 
       await loadRequests();
     } catch (error) {
       console.error(error);
-      alert("Gagal memproses request.");
+      alert(
+        error instanceof Error ? error.message : "Gagal memproses request.",
+      );
     }
   }
 

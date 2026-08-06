@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import UmkmGallery from "./UmkmGallery";
-import UmkmInfo from "./UmkmInfo";
+import UmkmInfo from "./detail/UmkmInfo";
 import UmkmSidebar from "./UmkmSidebar";
 
 type Props = {
