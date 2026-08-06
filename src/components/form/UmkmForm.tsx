@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import { initialForm } from "./constants";
 import { UmkmFormData, ImageItem } from "./types";
@@ -84,7 +84,47 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
   );
 
   const [loading, setLoading] = useState(false);
+  const initialSnapshot = useMemo(
+    () =>
+      JSON.stringify({
+        form,
+        subkategoriLainnya,
+        images: images.map((image) =>
+          image.type === "old"
+            ? {
+                type: image.type,
+                url: image.url,
+              }
+            : {
+                type: image.type,
+                name: image.file?.name,
+                size: image.file?.size,
+                lastModified: image.file?.lastModified,
+              },
+        ),
+      }),
+    [],
+  );
 
+  const currentSnapshot = JSON.stringify({
+    form,
+    subkategoriLainnya,
+    images: images.map((image) =>
+      image.type === "old"
+        ? {
+            type: image.type,
+            url: image.url,
+          }
+        : {
+            type: image.type,
+            name: image.file?.name,
+            size: image.file?.size,
+            lastModified: image.file?.lastModified,
+          },
+    ),
+  });
+
+  const hasChanges = mode === "create" || currentSnapshot !== initialSnapshot;
   useEffect(() => {
     async function loadKecamatan() {
       if (role === "user") {
@@ -312,26 +352,48 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         <SocialSection form={form} setForm={setForm} />
 
         {role === "admin" && <PublishSection form={form} setForm={setForm} />}
-
-        <button
-          disabled={loading}
-          className="
-          bg-primary
-          text-white
-          px-4
-          py-2
-          rounded-lg
-          font-medium
-          hover:opacity-90
-          disabled:opacity-50
-          "
-        >
-          {loading
-            ? "Menyimpan..."
-            : mode === "create"
-              ? "Simpan UMKM"
-              : "Update UMKM"}
-        </button>
+        <div className="mt-8 flex justify-end border-t border-slate-200 pt-6 dark:border-slate-700">
+          <button
+            type="submit"
+            disabled={loading || !hasChanges}
+            className="
+    inline-flex
+    items-center
+    justify-center
+    rounded-lg
+    bg-emerald-600
+    px-4
+    py-2
+    text-sm
+    font-medium
+    text-white
+    transition-all
+    duration-200
+    hover:bg-emerald-700
+    active:scale-[0.98]
+    focus:outline-none
+    focus:ring-2
+    focus:ring-emerald-500
+    focus:ring-offset-2
+    focus:ring-offset-white
+    dark:bg-emerald-500
+    dark:hover:bg-emerald-400
+    dark:focus:ring-emerald-400
+    dark:focus:ring-offset-slate-900
+    disabled:cursor-not-allowed
+    disabled:bg-emerald-300
+    dark:disabled:bg-emerald-900
+    disabled:text-white/80
+    dark:disabled:text-white/50
+  "
+          >
+            {loading
+              ? "Menyimpan..."
+              : mode === "create"
+                ? "Simpan UMKM"
+                : "Update UMKM"}
+          </button>
+        </div>
       </form>
     </div>
   );
