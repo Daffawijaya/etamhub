@@ -217,9 +217,14 @@ export async function PUT(
   }
 
   const updated = {
+    ...oldData,
     ...umkmData,
     id: oldData.id,
     created_at: oldData.created_at,
+    published: oldData.published,
+    approval_status: oldData.approval_status,
+    approved_by: oldData.approved_by,
+    approved_at: oldData.approved_at,
     updated_at: now,
   };
 

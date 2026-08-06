@@ -32,6 +32,8 @@ export default async function UserUmkmPage() {
 
   const umkm = res.ok ? await res.json() : null;
 
+  const isPending = umkm?.approval_status === "pending";
+
   return (
     <main className="min-h-screen bg-light px-6 pb-6 dark:bg-dark">
       <div className="space-y-6">
@@ -81,13 +83,23 @@ export default async function UserUmkmPage() {
                     <p className="text-sm text-gray-500">{umkm.kategori}</p>
                   </div>
 
-                  <Link
-                    href={`/user/umkm/${umkm.id}/edit`}
-                    className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm text-black dark:text-white"
-                  >
-                    <Pencil size={16} />
-                    Edit
-                  </Link>
+                  {isPending ? (
+                    <button
+                      disabled
+                      className="flex cursor-not-allowed items-center gap-2 rounded-xl bg-gray-300 px-4 py-2 text-sm text-gray-500 dark:bg-gray-700 dark:text-gray-400"
+                    >
+                      <Pencil size={16} />
+                      Edit Menunggu Persetujuan
+                    </button>
+                  ) : (
+                    <Link
+                      href={`/user/umkm/${umkm.id}/edit`}
+                      className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm text-black dark:text-white"
+                    >
+                      <Pencil size={16} />
+                      Edit
+                    </Link>
+                  )}
                 </div>
 
                 <div className="mt-5 space-y-3 text-sm text-gray-600 dark:text-gray-400">
