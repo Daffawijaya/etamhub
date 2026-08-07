@@ -3,7 +3,7 @@ import FooterBrand from "@/components/FooterBrand";
 import HeroBackground from "@/components/news/HeroNews";
 import NewsList from "@/components/news/NewsList";
 import Pagination from "@/components/news/Pagination";
-import NewsPopular from "@/components/news/NewsForm";
+import NewsPopular from "@/components/news/NewsPopular";
 import { getNews, getTrendingNews } from "@/lib/news/news.service";
 
 type Props = {
