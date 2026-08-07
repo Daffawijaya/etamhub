@@ -15,12 +15,20 @@ export default function Navbar() {
 
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
-  const [showNavbar, setShowNavbar] = useState(pathname === "/peta");
+  const [showNavbar, setShowNavbar] = useState(
+    pathname === "/peta" || pathname.startsWith("/berita/"),
+  );
 
   useEffect(() => {
     const isMapPage = pathname === "/peta";
+    const isNewsDetailPage = pathname.startsWith("/berita/");
 
     if (isMapPage) {
+      setShowNavbar(true);
+      return;
+    }
+
+    if (isMapPage || isNewsDetailPage) {
       setShowNavbar(true);
       return;
     }

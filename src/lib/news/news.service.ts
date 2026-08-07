@@ -229,3 +229,13 @@ export async function deleteNews(id: string) {
 
   return true;
 }
+
+export async function incrementNewsView(id: string) {
+  const { error } = await supabaseAdmin.rpc("increment_news_view", {
+    news_id: id,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}

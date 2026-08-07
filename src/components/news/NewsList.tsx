@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import type { News } from "@/types/news";
 
@@ -6,107 +7,200 @@ type Props = {
   data: News[];
 };
 
+const formatDate = (date: string, short = false) =>
+  new Date(date).toLocaleDateString("id-ID", {
+    day: "numeric",
+    month: short ? "short" : "long",
+    year: "numeric",
+  });
+
 export default function NewsList({ data }: Props) {
   if (!data.length) {
-    return (
-      <div className="rounded-2xl border border-gray-100 bg-white py-16 text-center text-gray-500 shadow-sm dark:border-gray-800 dark:bg-dark-card">
-        Belum ada berita.
-      </div>
-    );
+    return <div>Belum ada berita.</div>;
   }
 
-  const [latestNews, ...otherNews] = data;
+  const trendingNews = [...data]
+    .sort((a, b) => (b.view_count ?? 0) - (a.view_count ?? 0))
+    .slice(0, 3);
+
+  const trendingIds = new Set(trendingNews.map((news) => news.id));
+
+  const latestNews = data
+    .filter((news) => !trendingIds.has(news.id))
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
 
   return (
-    <div className="space-y-10">
-      {/* Berita Terbaru */}
+    <div className="space-y-12">
+      {/* Trending */}
       <section>
-        <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-            Berita Terbaru
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+            Trending
           </h2>
+
+          <p className="mt-1 text-gray-500 dark:text-gray-400">
+            Berita yang paling banyak dilihat oleh pengunjung etamhub.
+          </p>
         </div>
 
-        <article className="group overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition hover:shadow-xl dark:border-gray-800 dark:bg-dark-card">
-          <div className="relative aspect-[16/7] overflow-hidden">
-            <Image
-              src={latestNews.gambar || "/images/news-placeholder.jpg"}
-              alt={latestNews.title}
-              fill
-              className="object-cover transition duration-500 group-hover:scale-105"
-            />
-
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-
-            <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-              <div className="mb-3 flex items-center gap-3 text-sm text-white/80">
-                <span className="rounded-full bg-white/20 px-3 py-1 backdrop-blur">
-                  {latestNews.category}
-                </span>
-
-                <span>
-                  {new Date(latestNews.created_at).toLocaleDateString("id-ID", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
-                  })}
-                </span>
-              </div>
-
-              <h1 className="max-w-3xl text-2xl font-bold leading-tight text-white md:text-4xl">
-                {latestNews.title}
-              </h1>
-            </div>
-          </div>
-        </article>
-      </section>
-
-      {/* List Berita */}
-      {otherNews.length > 0 && (
-        <section>
-          <div className="mb-5 flex items-center justify-between">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              Berita Lainnya
-            </h2>
-          </div>
-
-          <div className="space-y-4">
-            {otherNews.map((news) => (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {trendingNews.map((news) => (
+            <Link key={news.id} href={`/berita/${news.slug}`}>
               <article
-                key={news.id}
-                className="group flex gap-5 rounded-2xl border border-gray-100 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg dark:border-gray-800 dark:bg-dark-card"
+                className="
+                  group
+                  overflow-hidden
+                  bg-light
+                  dark:bg-[#1b1b1b]
+                  border
+                  border-white
+                  dark:border-zinc-800
+                  dark:hover:border-zinc-700
+                  rounded-xl
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:shadow-lg
+                "
               >
-                <div className="relative h-28 w-40 shrink-0 overflow-hidden rounded-xl">
+                <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
                     src={news.gambar || "/images/news-placeholder.jpg"}
                     alt={news.title}
                     fill
-                    className="object-cover transition duration-500 group-hover:scale-105"
+                    className="object-cover transition duration-500 group-hover:scale-110"
                   />
+
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+
+                  {news.category && (
+                    <div className="absolute bottom-0 left-0 p-5">
+                      <span className="inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur">
+                        {news.category}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex flex-col justify-center">
-                  <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-gray-900 transition group-hover:text-primary dark:text-white">
-                    {news.title}
-                  </h3>
-
-                  <div className="mt-3 flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="rounded-full text-primary">
-                      {news.category}
-                    </span>
+                <div className="p-5">
+                  <div className="mb-3 flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                    <span>{formatDate(news.created_at)}</span>
 
                     <span className="h-1 w-1 rounded-full bg-gray-400" />
 
-                    <span>
-                      {new Date(news.created_at).toLocaleDateString("id-ID", {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </span>
+                    <span>{news.view_count ?? 0} dilihat</span>
                   </div>
+
+                  <h3 className="line-clamp-2 text-xl font-bold leading-snug text-gray-900 transition group-hover:text-primary dark:text-white">
+                    {news.title}
+                  </h3>
                 </div>
               </article>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Berita Terbaru */}
+      {latestNews.length > 0 && (
+        <section>
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Berita Terbaru
+            </h2>
+
+            <p className="mt-1 text-gray-500 dark:text-gray-400">
+              Informasi terbaru seputar UMKM dan kegiatan etamhub.
+            </p>
+          </div>
+
+          <div
+            className="
+              overflow-hidden
+              rounded-xl
+              border
+              border-white
+              bg-light
+              dark:bg-[#1b1b1b]
+              dark:border-zinc-800
+              divide-y
+              divide-white
+              dark:divide-zinc-800
+            "
+          >
+            {latestNews.map((news) => (
+              <Link
+                key={news.id}
+                href={`/berita/${news.slug}`}
+                className="block"
+              >
+                <article
+                  className="
+                    group
+                    flex
+                    gap-5
+                    p-5
+                    transition-all
+                    duration-300
+                    hover:bg-zinc-50
+                    dark:hover:bg-[#222]
+                  "
+                >
+                  <div
+                    className="
+                      relative
+                      h-24
+                      w-32
+                      shrink-0
+                      overflow-hidden
+                      rounded-lg
+                      sm:h-24
+                      sm:w-32
+                    "
+                  >
+                    <Image
+                      src={news.gambar || "/images/news-placeholder.jpg"}
+                      alt={news.title}
+                      fill
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+
+                  <div className="flex flex-col justify-center">
+                    <div className="mb-3 flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
+                      {news.category && (
+                        <span className="font-medium text-primary">
+                          {news.category}
+                        </span>
+                      )}
+
+                      {news.category && (
+                        <span className="h-1 w-1 rounded-full bg-gray-400" />
+                      )}
+
+                      <span>{formatDate(news.created_at, true)}</span>
+                    </div>
+
+                    <h3
+                      className="
+                        line-clamp-2
+                        text-xl
+                        font-bold
+                        leading-snug
+                        text-gray-900
+                        transition
+                        group-hover:text-primary
+                        dark:text-white
+                      "
+                    >
+                      {news.title}
+                    </h3>
+                  </div>
+                </article>
+              </Link>
             ))}
           </div>
         </section>

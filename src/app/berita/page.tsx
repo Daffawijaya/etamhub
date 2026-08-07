@@ -16,14 +16,12 @@ export default async function BeritaPage() {
 
       <main className="bg-light-bg dark:bg-dark overflow-hidden transition-colors">
         <HeroBackground />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
           <NewsList data={publishedNews} />
         </div>
 
         <Footer
-          title={
-            <>Bersama etamhub, dukung UMKM lokal untuk tumbuh dan berkembang</>
-          }
+          title={<>Informasi terbaru UMKM Kutai Kartanegara bersama etamhub.</>}
         />
 
         <FooterBrand />
