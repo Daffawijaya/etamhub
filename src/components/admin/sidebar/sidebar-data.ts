@@ -1,10 +1,9 @@
 import {
-  LayoutDashboard,
-  Store,
-  MapPinned,
-  Plus,
-  UsersRound,
   ClipboardList,
+  LayoutDashboard,
+  MapPinned,
+  Newspaper,
+  Store,
 } from "lucide-react";
 
 export interface SidebarMenu {
@@ -26,21 +25,15 @@ export const menus: SidebarMenu[] = [
     icon: Store,
   },
   {
+    label: "Berita",
+    href: "/admin/berita",
+    icon: Newspaper,
+  },
+  {
     label: "Requests",
     href: "/admin/requests",
     icon: ClipboardList,
   },
-  // {
-  //   label: "Tambah UMKM",
-  //   href: "/admin/tambah",
-  //   icon: Plus,
-  // },
-  // {
-  //   label: "Kelola Akun",
-  //   href: "/admin/akun",
-  //   icon: UsersRound,
-  //   roles: ["super_admin"],
-  // },
   {
     label: "Peta",
     href: "/admin/peta",
