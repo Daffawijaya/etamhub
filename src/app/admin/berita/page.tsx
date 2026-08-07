@@ -1,57 +1,69 @@
 import Link from "next/link";
+import { Plus } from "lucide-react";
 
 import { getNews } from "@/lib/news/news.service";
+import NewsTable from "@/components/admin/berita/NewsTable";
 
-export default async function AdminBeritaPage() {
-  const news = await getNews();
+interface AdminBeritaPageProps {
+  searchParams: Promise<{
+    search?: string;
+  }>;
+}
+
+export default async function AdminBeritaPage({
+  searchParams,
+}: AdminBeritaPageProps) {
+  const params = await searchParams;
+  const search = params.search ?? "";
+
+  const news = await getNews(search);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Berita</h1>
+    <div className="px-6 pb-6">
+      <div className="rounded-2xl bg-white dark:bg-dark-card">
+        <div className="flex flex-col gap-4 px-6 pt-5 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 transition-colors duration-300 dark:text-white">
+              Daftar Berita
+            </h2>
 
-        <Link
-          href="/admin/berita/tambah"
-          className="rounded-lg bg-primary px-4 py-2 text-white"
-        >
-          Tambah Berita
-        </Link>
-      </div>
+            <p className="mt-1 text-sm text-slate-500 transition-colors duration-300 dark:text-slate-400">
+              {news.length} berita tersedia
+            </p>
+          </div>
 
-      <div className="overflow-hidden rounded-xl border">
-        <table className="w-full">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="p-3 text-left">Judul</th>
-              <th className="p-3 text-left">Kategori</th>
-              <th className="p-3 text-left">Status</th>
-              <th className="p-3 text-left">Aksi</th>
-            </tr>
-          </thead>
+          <Link
+            href="/admin/berita/tambah"
+            className="
+              inline-flex
+              items-center
+              justify-center
+              gap-2
+              rounded-lg
+              bg-emerald-600
+              px-4
+              py-2
+              text-sm
+              font-medium
+              text-white
+              transition-all
+              duration-200
+              hover:bg-emerald-700
+              active:scale-[0.98]
+              focus:outline-none
+              focus:ring-2
+              focus:ring-emerald-500
+              focus:ring-offset-2
+              dark:bg-emerald-500
+              dark:hover:bg-emerald-400
+            "
+          >
+            <Plus size={17} />
+            Tambah Berita
+          </Link>
+        </div>
 
-          <tbody>
-            {news.map((item) => (
-              <tr key={item.id} className="border-t">
-                <td className="p-3">{item.title}</td>
-
-                <td className="p-3">{item.category ?? "-"}</td>
-
-                <td className="p-3">
-                  {item.published ? "Published" : "Draft"}
-                </td>
-
-                <td className="space-x-3 p-3">
-                  <Link
-                    href={`/admin/berita/edit/${item.id}`}
-                    className="text-primary"
-                  >
-                    Edit
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <NewsTable data={news} />
       </div>
     </div>
   );

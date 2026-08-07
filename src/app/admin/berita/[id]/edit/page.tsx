@@ -16,9 +16,7 @@ export default async function EditBeritaPage({ params }: Props) {
     const news = await getNewsById(id);
 
     return (
-      <div className="mx-auto max-w-4xl space-y-6">
-        <h1 className="text-2xl font-bold">Edit Berita</h1>
-
+      <div className="space-y-6 px-6 pb-6">
         <NewsForm initialData={news} />
       </div>
     );

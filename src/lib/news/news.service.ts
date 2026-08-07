@@ -63,12 +63,22 @@ async function deleteNewsImage(publicUrl: string | null) {
   }
 }
 
-export async function getNews() {
-  const { data, error } = await supabaseAdmin
-    .from("news")
-    .select("*")
-    .is("deleted_at", null)
-    .order("created_at", { ascending: false });
+export async function getNews(search?: string) {
+  let query = supabaseAdmin.from("news").select("*").is("deleted_at", null);
+
+  const keyword = search?.trim();
+
+  if (keyword) {
+    const escapedKeyword = keyword.replace(/[%_]/g, "\\$&");
+
+    query = query.or(
+      `title.ilike.%${escapedKeyword}%,category.ilike.%${escapedKeyword}%,excerpt.ilike.%${escapedKeyword}%`,
+    );
+  }
+
+  const { data, error } = await query.order("created_at", {
+    ascending: false,
+  });
 
   if (error) {
     throw new Error(error.message);
@@ -127,7 +137,7 @@ export async function createNews(payload: NewsInput) {
     slug: payload.slug || generateSlug(payload.title!),
     excerpt: payload.excerpt ?? null,
     content: payload.content,
-    gambar: gambarlUrl,
+    gambar: gambarUrl,
     category: payload.category ?? null,
     published: isPublished,
     published_at: isPublished ? new Date().toISOString() : null,

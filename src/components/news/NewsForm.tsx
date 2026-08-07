@@ -67,128 +67,294 @@ export default function NewsForm({ initialData }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-600">
-          {error}
-        </div>
-      )}
+    <div className="rounded-2xl bg-white px-6 py-5 dark:bg-dark-card">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+          {initialData ? "Edit Berita" : "Tambah Berita"}
+        </h1>
 
-      <div>
-        <label className="mb-2 block font-medium">Judul</label>
-
-        <input
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full rounded-lg border p-3"
-          placeholder="Masukkan judul berita"
-          required
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">Ringkasan</label>
-
-        <textarea
-          value={excerpt}
-          onChange={(e) => setExcerpt(e.target.value)}
-          rows={3}
-          className="w-full rounded-lg border p-3"
-          placeholder="Masukkan ringkasan berita"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">Kategori</label>
-
-        <input
-          type="text"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full rounded-lg border p-3"
-          placeholder="Masukkan kategori berita"
-        />
-      </div>
-
-      <div>
-        <label className="mb-2 block font-medium">Gambar</label>
-
-        <input
-          type="file"
-          accept="image/jpeg,image/png,image/webp"
-          onChange={(e) => {
-            setGambar(e.target.files?.[0] ?? null);
-          }}
-          className="w-full rounded-lg border p-3"
-        />
-
-        <p className="mt-2 text-xs text-gray-500">
-          Maksimal 1 gambar. JPG, PNG, atau WebP. Gambar akan otomatis
-          dikonversi ke WebP.
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          {initialData
+            ? "Kelola dan perbarui data berita."
+            : "Tambahkan berita baru ke EtamHub."}
         </p>
+      </div>
 
-        {initialData?.gambar && !gambar && (
-          <div className="mt-3">
-            <p className="text-sm text-gray-500">
-              Gambar saat ini sudah tersedia.
-            </p>
-
-            <img
-              src={initialData.gambar}
-              alt="gambar saat ini"
-              className="mt-2 h-32 w-52 rounded-lg object-cover"
-            />
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {error && (
+          <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/30 dark:text-red-400">
+            {error}
           </div>
         )}
 
-        {gambar && (
-          <div className="mt-3">
-            <p className="text-sm text-gray-500">{gambar.name}</p>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+            Judul
+          </label>
 
-            <img
-              src={URL.createObjectURL(gambar)}
-              alt="Preview gambar"
-              className="mt-2 h-32 w-52 rounded-lg object-cover"
-            />
-          </div>
-        )}
-      </div>
+          <input
+            name="title"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Masukkan judul berita"
+            required
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              placeholder:text-slate-400
+              focus:border-primary
+              dark:border-slate-800
+              dark:bg-dark
+              dark:text-white
+              dark:placeholder:text-slate-500
+            "
+          />
+        </div>
 
-      <div>
-        <label className="mb-2 block font-medium">Isi Berita</label>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+            Ringkasan
+          </label>
 
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows={12}
-          className="w-full rounded-lg border p-3"
-          placeholder="Masukkan isi berita"
-          required
-        />
-      </div>
+          <textarea
+            name="excerpt"
+            value={excerpt}
+            onChange={(e) => setExcerpt(e.target.value)}
+            rows={3}
+            placeholder="Masukkan ringkasan berita"
+            className="
+              w-full
+              resize-none
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              placeholder:text-slate-400
+              focus:border-primary
+              dark:border-slate-800
+              dark:bg-dark
+              dark:text-white
+              dark:placeholder:text-slate-500
+            "
+          />
+        </div>
 
-      <label className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          checked={published}
-          onChange={(e) => setPublished(e.target.checked)}
-        />
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+            Kategori
+          </label>
 
-        <span>Publikasikan</span>
-      </label>
+          <input
+            name="category"
+            type="text"
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            placeholder="Masukkan kategori berita"
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              placeholder:text-slate-400
+              focus:border-primary
+              dark:border-slate-800
+              dark:bg-dark
+              dark:text-white
+              dark:placeholder:text-slate-500
+            "
+          />
+        </div>
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-lg bg-primary px-6 py-3 text-white disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {loading
-          ? "Menyimpan..."
-          : initialData
-            ? "Update Berita"
-            : "Simpan Berita"}
-      </button>
-    </form>
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+            Gambar
+          </label>
+
+          <input
+            name="gambar"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            onChange={(e) => {
+              setGambar(e.target.files?.[0] ?? null);
+            }}
+            className="
+              w-full
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              file:mr-4
+              file:rounded-lg
+              file:border-0
+              file:bg-primary
+              file:px-4
+              file:py-2
+              file:text-sm
+              file:font-medium
+              file:text-white
+              focus:border-primary
+              dark:border-slate-800
+              dark:bg-dark
+              dark:text-white
+            "
+          />
+
+          <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+            Maksimal 1 gambar. JPG, PNG, atau WebP. Gambar otomatis dikonversi
+            ke WebP.
+          </p>
+
+          {initialData?.gambar && !gambar && (
+            <div className="mt-4">
+              <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+                Gambar saat ini
+              </p>
+
+              <img
+                src={initialData.gambar}
+                alt="Gambar berita saat ini"
+                className="h-40 w-64 rounded-xl object-cover"
+              />
+            </div>
+          )}
+
+          {gambar && (
+            <div className="mt-4">
+              <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
+                Preview gambar
+              </p>
+
+              <img
+                src={URL.createObjectURL(gambar)}
+                alt="Preview gambar"
+                className="h-40 w-64 rounded-xl object-cover"
+              />
+
+              <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
+                {gambar.name}
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-200">
+            Isi Berita
+          </label>
+
+          <textarea
+            name="content"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            rows={12}
+            placeholder="Masukkan isi berita"
+            required
+            className="
+              w-full
+              resize-y
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              placeholder:text-slate-400
+              focus:border-primary
+              dark:border-slate-800
+              dark:bg-dark
+              dark:text-white
+              dark:placeholder:text-slate-500
+            "
+          />
+        </div>
+
+        <label className="flex cursor-pointer items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
+          <input
+            type="checkbox"
+            checked={published}
+            onChange={(e) => setPublished(e.target.checked)}
+            className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
+          />
+
+          <span>Publikasikan berita</span>
+        </label>
+
+        <div className="mt-8 flex justify-end border-t border-slate-200 pt-6 dark:border-slate-700">
+          <button
+            type="submit"
+            disabled={loading}
+            className="
+              inline-flex
+              items-center
+              justify-center
+              rounded-lg
+              bg-emerald-600
+              px-4
+              py-2
+              text-sm
+              font-medium
+              text-white
+              transition-all
+              duration-200
+              hover:bg-emerald-700
+              active:scale-[0.98]
+              focus:outline-none
+              focus:ring-2
+              focus:ring-emerald-500
+              focus:ring-offset-2
+              focus:ring-offset-white
+              dark:bg-emerald-500
+              dark:hover:bg-emerald-400
+              dark:focus:ring-emerald-400
+              dark:focus:ring-offset-slate-900
+              disabled:cursor-not-allowed
+              disabled:bg-emerald-300
+              dark:disabled:bg-emerald-900
+              disabled:text-white/80
+              dark:disabled:text-white/50
+            "
+          >
+            {loading
+              ? "Menyimpan..."
+              : initialData
+                ? "Update Berita"
+                : "Simpan Berita"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

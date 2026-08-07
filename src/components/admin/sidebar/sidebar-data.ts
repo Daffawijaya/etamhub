@@ -25,14 +25,14 @@ export const menus: SidebarMenu[] = [
     icon: Store,
   },
   {
-    label: "Berita",
-    href: "/admin/berita",
-    icon: Newspaper,
-  },
-  {
     label: "Requests",
     href: "/admin/requests",
     icon: ClipboardList,
+  },
+  {
+    label: "Berita",
+    href: "/admin/berita",
+    icon: Newspaper,
   },
   {
     label: "Peta",
