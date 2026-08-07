@@ -9,6 +9,7 @@ export const NEWS_CATEGORIES = [
   "Informasi",
   "Inovasi UMKM",
   "Kisah Inspiratif",
+  "Kolom",
   "Legalitas UMKM",
   "Pelatihan & Pendampingan",
   "Peluang Usaha",
