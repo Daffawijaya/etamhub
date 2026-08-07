@@ -26,13 +26,9 @@ export default function NewsList({ data }: Props) {
   return (
     <section>
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
           Berita Terbaru
         </h2>
-
-        <p className="mt-1 text-gray-500 dark:text-gray-400">
-          Informasi terbaru seputar UMKM dan kegiatan etamhub.
-        </p>
       </div>
 
       <div
@@ -102,7 +98,7 @@ export default function NewsList({ data }: Props) {
                   className="
                     line-clamp-2
                     text-xl
-                    font-bold
+                    font-semibold
                     leading-snug
                     text-gray-900
                     transition

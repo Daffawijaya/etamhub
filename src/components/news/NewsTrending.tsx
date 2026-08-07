@@ -72,10 +72,6 @@ export default function NewsTrending({ data, currentNewsId }: Props) {
             Terpopuler
           </span>
         </div>
-
-        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
-          Berita yang paling banyak dilihat.
-        </p>
       </div>
 
       <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">

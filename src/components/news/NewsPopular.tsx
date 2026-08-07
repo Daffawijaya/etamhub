@@ -20,13 +20,9 @@ export default function NewsPopular({ data }: Props) {
   return (
     <section className="mb-12">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
           Berita Terpopuler
         </h2>
-
-        <p className="mt-1 text-gray-500 dark:text-gray-400">
-          Berita yang paling banyak dilihat oleh pengunjung etamhub.
-        </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -93,7 +89,7 @@ export default function NewsPopular({ data }: Props) {
                   className="
                     line-clamp-2
                     text-xl
-                    font-bold
+                    font-semibold
                     leading-snug
                     text-gray-900
                     transition
