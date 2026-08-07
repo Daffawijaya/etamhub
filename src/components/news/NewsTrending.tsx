@@ -42,43 +42,43 @@ export default function NewsTrending({ data, currentNewsId }: Props) {
         overflow-hidden
         rounded-xl
         border
-        border-amber-200
-        bg-amber-50
-        dark:border-amber-500/20
-        dark:bg-[#1b1b1b]
+        border-zinc-200
+        bg-white
+        dark:border-zinc-800
+        dark:bg-[#121212]
       "
     >
-      <div className="border-b border-amber-200 px-5 py-4 dark:border-amber-500/20">
+      <div className="border-b border-zinc-200 px-5 py-4 dark:border-zinc-800">
         <div className="flex items-center gap-2">
-          <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
+          <h2 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
             Trending
           </h2>
 
           <span
             className="
-              rounded-full
-              bg-amber-100
+              rounded-md
+              bg-zinc-100
               px-2
               py-0.5
               text-[10px]
-              font-semibold
+              font-medium
               uppercase
-              tracking-wide
-              text-amber-700
-              dark:bg-amber-500/15
-              dark:text-amber-300
+              tracking-wider
+              text-zinc-600
+              dark:bg-zinc-800
+              dark:text-zinc-300
             "
           >
             Terpopuler
           </span>
         </div>
 
-        <p className="mt-1 text-xs text-amber-700/70 dark:text-amber-400/70">
+        <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
           Berita yang paling banyak dilihat.
         </p>
       </div>
 
-      <div className="divide-y divide-amber-100 dark:divide-amber-500/20">
+      <div className="divide-y divide-zinc-100 dark:divide-zinc-800/60">
         {trendingNews.map(({ news, rank }) => (
           <Link key={news.id} href={`/berita/${news.slug}`} className="block">
             <article
@@ -87,9 +87,10 @@ export default function NewsTrending({ data, currentNewsId }: Props) {
                 flex
                 gap-4
                 p-4
-                transition
-                hover:bg-amber-100/60
-                dark:hover:bg-amber-500/5
+                transition-colors
+                duration-200
+                hover:bg-zinc-50
+                dark:hover:bg-zinc-800/30
               "
             >
               <div className="relative h-20 w-24 shrink-0 overflow-hidden rounded-lg">
@@ -97,7 +98,7 @@ export default function NewsTrending({ data, currentNewsId }: Props) {
                   src={news.gambar || "/images/news-placeholder.jpg"}
                   alt={news.title}
                   fill
-                  className="object-cover transition duration-500 group-hover:scale-105"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 
                 <span
@@ -111,38 +112,40 @@ export default function NewsTrending({ data, currentNewsId }: Props) {
                     items-center
                     justify-center
                     rounded-full
-                    bg-amber-500
+                    bg-zinc-900/90
                     text-xs
                     font-bold
                     text-white
-                    shadow-sm
+                    backdrop-blur-sm
+                    dark:bg-white/90
+                    dark:text-zinc-900
                   "
                 >
                   {rank}
                 </span>
               </div>
 
-              <div className="flex min-w-0 flex-col justify-center">
+              <div className="flex min-w-0 flex-col justify-center gap-1.5">
                 <h3
                   className="
                     line-clamp-2
                     text-sm
-                    font-semibold
+                    font-medium
                     leading-snug
-                    text-zinc-900
-                    transition
-                    group-hover:text-amber-700
-                    dark:text-white
-                    dark:group-hover:text-amber-300
+                    text-zinc-800
+                    transition-colors
+                    group-hover:text-zinc-500
+                    dark:text-zinc-200
+                    dark:group-hover:text-zinc-400
                   "
                 >
                   {news.title}
                 </h3>
 
-                <div className="mt-2 flex items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+                <div className="flex items-center gap-2 text-[11px] font-medium text-zinc-400 dark:text-zinc-500">
                   <span>{formatDate(news.created_at)}</span>
 
-                  <span className="h-1 w-1 rounded-full bg-zinc-400" />
+                  <span className="h-1 w-1 rounded-full bg-zinc-300 dark:bg-zinc-600" />
 
                   <span>{news.view_count ?? 0} dilihat</span>
                 </div>
