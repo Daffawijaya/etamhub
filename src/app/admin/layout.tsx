@@ -33,19 +33,37 @@ export default function AdminLayout({
       return "Detail UMKM";
     }
 
+    if (pathname === "/admin/berita") {
+      return "Berita";
+    }
+
+    if (pathname.match(/^\/admin\/berita\/[^/]+\/edit$/)) {
+      return "Berita";
+    }
+
+    if (pathname.match(/^\/admin\/berita\/[^/]/)) {
+      return "Berita";
+    }
+
+    if (pathname === "/admin/berita/tambah") {
+      return "Tambah Berita";
+    }
+
+    if (pathname === "/admin/requests") {
+      return "Request";
+    }
+
     return "Admin";
   };
 
   return (
-    <main className="min-h-screen bg-light-bg">
-      <div className="flex">
-        <AdminSidebar />
+    <main className="flex min-h-screen">
+      <AdminSidebar />
 
-        <div className="flex-1 bg-light dark:bg-dark">
-          <DashboardNavbar title={getTitle()} />
+      <div className="flex-1 bg-light dark:bg-dark">
+        <DashboardNavbar title={getTitle()} />
 
-          <div>{children}</div>
-        </div>
+        <div>{children}</div>
       </div>
     </main>
   );

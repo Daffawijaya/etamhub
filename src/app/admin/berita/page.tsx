@@ -7,6 +7,7 @@ import NewsTable from "@/components/admin/berita/NewsTable";
 interface AdminBeritaPageProps {
   searchParams: Promise<{
     search?: string;
+    page?: string;
   }>;
 }
 
@@ -16,7 +17,13 @@ export default async function AdminBeritaPage({
   const params = await searchParams;
   const search = params.search ?? "";
 
-  const news = await getNews(search);
+  const result = await getNews({
+    search,
+    page: Number(params.page ?? 1),
+    limit: 10,
+  });
+
+  const news = result.data;
 
   return (
     <div className="px-6 pb-6">
@@ -28,7 +35,7 @@ export default async function AdminBeritaPage({
             </h2>
 
             <p className="mt-1 text-sm text-slate-500 transition-colors duration-300 dark:text-slate-400">
-              {news.length} berita tersedia
+              {result.pagination.total} berita tersedia
             </p>
           </div>
 
@@ -63,7 +70,7 @@ export default async function AdminBeritaPage({
           </Link>
         </div>
 
-        <NewsTable data={news} />
+        <NewsTable data={news} pagination={result.pagination} />
       </div>
     </div>
   );

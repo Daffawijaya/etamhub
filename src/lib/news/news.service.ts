@@ -63,10 +63,30 @@ async function deleteNewsImage(publicUrl: string | null) {
   }
 }
 
-export async function getNews(search?: string) {
-  let query = supabaseAdmin.from("news").select("*").is("deleted_at", null);
+type GetNewsParams = {
+  search?: string;
+  page?: number;
+  limit?: number;
+  excludeIds?: string[];
+  published?: boolean;
+};
 
-  const keyword = search?.trim();
+export async function getNews({
+  search = "",
+  page = 1,
+  limit = 10,
+  published,
+  excludeIds = [],
+}: GetNewsParams = {}) {
+  const from = (page - 1) * limit;
+  const to = from + limit - 1;
+
+  let query = supabaseAdmin
+    .from("news")
+    .select("*", { count: "exact" })
+    .is("deleted_at", null);
+
+  const keyword = search.trim();
 
   if (keyword) {
     const escapedKeyword = keyword.replace(/[%_]/g, "\\$&");
@@ -76,15 +96,33 @@ export async function getNews(search?: string) {
     );
   }
 
-  const { data, error } = await query.order("created_at", {
-    ascending: false,
-  });
+  if (published !== undefined) {
+    query = query.eq("published", published);
+  }
+
+  if (excludeIds.length > 0) {
+    query = query.not("id", "in", `(${excludeIds.join(",")})`);
+  }
+
+  const { data, error, count } = await query
+    .order("created_at", {
+      ascending: false,
+    })
+    .range(from, to);
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return data as News[];
+  return {
+    data: data as News[],
+    pagination: {
+      page,
+      limit,
+      total: count ?? 0,
+      totalPages: Math.ceil((count ?? 0) / limit),
+    },
+  };
 }
 
 export async function getNewsBySlug(slug: string) {
@@ -238,4 +276,22 @@ export async function incrementNewsView(id: string) {
   if (error) {
     throw new Error(error.message);
   }
+}
+
+export async function getTrendingNews(limit = 3) {
+  const { data, error } = await supabaseAdmin
+    .from("news")
+    .select("*")
+    .eq("published", true)
+    .is("deleted_at", null)
+    .order("view_count", {
+      ascending: false,
+    })
+    .limit(limit);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data as News[];
 }

@@ -5,10 +5,14 @@ import { useEffect, useState } from "react";
 
 import type { News } from "@/types/news";
 import NewsRowActions from "./NewsRowActions";
-import NewsSearch from "./NewsSearch";
+import Pagination from "./Pagination";
 
 interface NewsTableProps {
   data?: News[];
+  pagination?: {
+    page: number;
+    totalPages: number;
+  };
 }
 
 const getStatusStyle = (published: boolean | null) => {
@@ -27,7 +31,7 @@ const formatDate = (date: string | null) => {
   });
 };
 
-export default function NewsTable({ data = [] }: NewsTableProps) {
+export default function NewsTable({ data = [], pagination }: NewsTableProps) {
   const [news, setNews] = useState(data);
 
   useEffect(() => {
@@ -52,19 +56,15 @@ export default function NewsTable({ data = [] }: NewsTableProps) {
   };
 
   return (
-    <div>
-      <div className="mb-4 px-6">
-        <NewsSearch />
-      </div>
-
-      <div className="w-full">
-        {news.length === 0 ? (
-          <div className="flex min-h-48 items-center justify-center">
-            <p className="text-sm text-slate-400 dark:text-slate-500">
-              Belum ada berita atau berita tidak ditemukan.
-            </p>
-          </div>
-        ) : (
+    <div className="w-full">
+      {news.length === 0 ? (
+        <div className="flex min-h-48 items-center justify-center">
+          <p className="text-sm text-slate-400 dark:text-slate-500">
+            Belum ada berita atau berita tidak ditemukan.
+          </p>
+        </div>
+      ) : (
+        <>
           <div className="w-full overflow-x-auto">
             <div className="min-w-[1050px] md:min-w-[1050px] lg:min-w-0">
               <div className="divide-y divide-slate-100 dark:divide-white/10">
@@ -72,18 +72,18 @@ export default function NewsTable({ data = [] }: NewsTableProps) {
                   <div
                     key={item.id}
                     className="
-                    grid
-                    grid-cols-[minmax(0,1fr)_150px_110px_120px_44px]
-                    items-center
-                    gap-4
-                    px-6
-                    py-3
-                    transition-colors
-                    duration-300
-                    hover:bg-slate-50/70
-                    dark:hover:bg-white/[0.03]
-                    max-md:px-4
-                  "
+                      grid
+                      grid-cols-[minmax(0,1fr)_150px_110px_120px_44px]
+                      items-center
+                      gap-4
+                      px-6
+                      py-3
+                      transition-colors
+                      duration-300
+                      hover:bg-slate-50/70
+                      dark:hover:bg-white/[0.03]
+                      max-md:px-4
+                    "
                   >
                     <div className="flex min-w-0 items-center gap-3">
                       <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
@@ -118,16 +118,16 @@ export default function NewsTable({ data = [] }: NewsTableProps) {
                     <div>
                       <span
                         className={`
-                        inline-flex
-                        min-w-[76px]
-                        justify-center
-                        rounded-full
-                        px-3
-                        py-1.5
-                        text-sm
-                        font-medium
-                        ${getStatusStyle(item.published)}
-                      `}
+                          inline-flex
+                          min-w-[76px]
+                          justify-center
+                          rounded-full
+                          px-3
+                          py-1.5
+                          text-sm
+                          font-medium
+                          ${getStatusStyle(item.published)}
+                        `}
                       >
                         {item.published ? "Publik" : "Privat"}
                       </span>
@@ -152,8 +152,17 @@ export default function NewsTable({ data = [] }: NewsTableProps) {
               </div>
             </div>
           </div>
-        )}
-      </div>
+
+          {pagination && (
+            <div className="">
+              <Pagination
+                page={pagination.page}
+                totalPages={pagination.totalPages}
+              />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

@@ -29,7 +29,12 @@ export default async function BeritaDetailPage({ params }: Props) {
 
     await incrementNewsView(news.id);
 
-    const allNews = await getNews();
+    const newsResult = await getNews({
+      page: 1,
+      limit: 100,
+    });
+
+    const allNews = newsResult.data;
 
     const trendingIds = [...allNews]
       .filter((item) => item.id !== news.id)

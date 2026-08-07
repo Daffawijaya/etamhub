@@ -1,23 +1,49 @@
 import Footer from "@/components/Footer";
 import FooterBrand from "@/components/FooterBrand";
-import Navbar from "@/components/navbar/Navbar";
 import HeroBackground from "@/components/news/HeroNews";
 import NewsList from "@/components/news/NewsList";
-import { getNews } from "@/lib/news/news.service";
+import Pagination from "@/components/news/Pagination";
+import NewsPopular from "@/components/news/NewsForm";
+import { getNews, getTrendingNews } from "@/lib/news/news.service";
 
-export default async function BeritaPage() {
-  const news = await getNews();
+type Props = {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+};
 
-  const publishedNews = news.filter((item) => item.published);
+export default async function BeritaPage({ searchParams }: Props) {
+  const params = await searchParams;
+
+  const page = Number(params.page ?? 1);
+
+  const trending = await getTrendingNews(3);
+
+  const result = await getNews({
+    limit: 10,
+    page,
+    published: true,
+    excludeIds: trending.map((item) => item.id),
+  });
 
   return (
     <>
-      <Navbar />
-
-      <main className="bg-light-bg dark:bg-dark overflow-hidden transition-colors">
+      <main className="overflow-hidden bg-light-bg transition-colors dark:bg-dark">
         <HeroBackground />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-          <NewsList data={publishedNews} />
+
+        <div className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+          <NewsPopular data={trending} />
+
+          <div className="mt-12">
+            <NewsList data={result.data} />
+          </div>
+
+          <div className="flex justify-center">
+            <Pagination
+              page={result.pagination.page}
+              totalPages={result.pagination.totalPages}
+            />
+          </div>
         </div>
 
         <Footer
