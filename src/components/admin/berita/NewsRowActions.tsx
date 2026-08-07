@@ -108,7 +108,7 @@ export default function NewsRowActions({
 
   const handleDelete = async () => {
     const confirmed = window.confirm(
-      "Yakin ingin menghapus berita ini? Berita akan dipindahkan ke arsip.",
+      "Yakin ingin menghapus berita ini?",
     );
 
     if (!confirmed) {

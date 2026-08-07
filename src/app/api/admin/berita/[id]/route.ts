@@ -8,12 +8,7 @@ export async function DELETE(
   try {
     const { id } = await params;
 
-    const { error } = await supabaseAdmin
-      .from("news")
-      .update({
-        deleted_at: new Date().toISOString(),
-      })
-      .eq("id", id);
+    const { error } = await supabaseAdmin.from("news").delete().eq("id", id);
 
     if (error) {
       throw error;
