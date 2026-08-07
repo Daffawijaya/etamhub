@@ -313,7 +313,6 @@ export default function NewsForm({ initialData }: Props) {
         <label className="flex cursor-pointer items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
           <input
             type="checkbox"
-            required
             checked={published}
             onChange={(e) => setPublished(e.target.checked)}
             className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
