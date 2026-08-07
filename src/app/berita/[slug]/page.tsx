@@ -31,8 +31,14 @@ export default async function BeritaDetailPage({ params }: Props) {
 
     const allNews = await getNews();
 
-    const sidebarNews = allNews
+    const trendingIds = [...allNews]
       .filter((item) => item.id !== news.id)
+      .sort((a, b) => (b.view_count ?? 0) - (a.view_count ?? 0))
+      .slice(0, 3)
+      .map((item) => item.id);
+
+    const sidebarNews = allNews
+      .filter((item) => item.id !== news.id && !trendingIds.includes(item.id))
       .slice(0, 5);
 
     return (
@@ -50,14 +56,16 @@ export default async function BeritaDetailPage({ params }: Props) {
               max-w-7xl
               px-4
               pb-24
-              pt-30 px-6
+              pt-30
+              sm:px-6
+              lg:px-8
             "
           >
             <div className="grid gap-6 lg:grid-cols-[1fr_350px]">
               <NewsDetail news={news} />
 
               <div className="space-y-6">
-                <NewsTrending data={sidebarNews} />
+                <NewsTrending data={allNews} currentNewsId={news.id} />
 
                 <NewsSidebar data={sidebarNews} />
               </div>

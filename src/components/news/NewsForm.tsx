@@ -132,6 +132,7 @@ export default function NewsForm({ initialData }: Props) {
             value={excerpt}
             onChange={(e) => setExcerpt(e.target.value)}
             rows={3}
+            required
             placeholder="Masukkan ringkasan berita"
             className="
               w-full
@@ -204,6 +205,7 @@ export default function NewsForm({ initialData }: Props) {
           <input
             name="gambar"
             type="file"
+            required
             accept="image/jpeg,image/png,image/webp"
             onChange={(e) => {
               setGambar(e.target.files?.[0] ?? null);
@@ -287,6 +289,7 @@ export default function NewsForm({ initialData }: Props) {
             placeholder="Masukkan isi berita"
             required
             className="
+              required
               w-full
               resize-y
               rounded-xl
@@ -312,6 +315,7 @@ export default function NewsForm({ initialData }: Props) {
         <label className="flex cursor-pointer items-center gap-3 text-sm text-slate-700 dark:text-slate-200">
           <input
             type="checkbox"
+            required
             checked={published}
             onChange={(e) => setPublished(e.target.checked)}
             className="h-4 w-4 rounded border-slate-300 text-primary focus:ring-primary"
