@@ -1,0 +1,15 @@
+export const NEWS_CATEGORIES = [
+  "Berita UMKM",
+  "Digitalisasi",
+  "Ekonomi Daerah",
+  "Event & Kegiatan",
+  "Info Pasar",
+  "Informasi",
+  "Inovasi UMKM",
+  "Kisah Inspiratif",
+  "Pelatihan & Pendampingan",
+  "Peluang Usaha",
+  "Program & Kebijakan",
+  "Promosi UMKM",
+  "Sosialisasi",
+] as const;

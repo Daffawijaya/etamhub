@@ -2,26 +2,25 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+
 import DaftarModal from "../modal/DaftarModal";
 import MobileNavbar from "./MobileNavbar";
 import { navigation } from "@/data/navigation";
 import ThemeToggle from "../ThemeToggle";
-import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
-  const [showNavbar, setShowNavbar] = useState(
-    pathname !== "/" && pathname !== "/about",
-  );
+  const [showNavbar, setShowNavbar] = useState(pathname === "/peta");
 
   useEffect(() => {
-    const isHeroPage = pathname === "/" || pathname === "/about";
+    const isMapPage = pathname === "/peta";
 
-    if (!isHeroPage) {
+    if (isMapPage) {
       setShowNavbar(true);
       return;
     }
@@ -33,7 +32,10 @@ export default function Navbar() {
     handleScroll();
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, [pathname]);
 
   return (
@@ -47,14 +49,12 @@ export default function Navbar() {
       >
         <div className="rounded-lg border border-white bg-light dark:border-zinc-700 dark:bg-dark/40 backdrop-blur-xl">
           <div className="md:flex items-center gap-8 pl-[15px] pr-[8px] h-[50px]">
-            {/* Brand */}
             <Link href="/">
               <span className="text-black dark:text-white text-2xl font-semibold tracking-tight inline-block -translate-y-[2.4px]">
                 e.
               </span>
             </Link>
 
-            {/* Menu */}
             <div className="flex items-center gap-6">
               {navigation.map((item) => (
                 <NavLink key={item.href} href={item.href}>
@@ -65,7 +65,6 @@ export default function Navbar() {
 
             <ThemeToggle />
 
-            {/* Button */}
             <button
               onClick={() => router.push("/auth/login")}
               className="bg-white text-black px-3 py-2 rounded-md text-xs font-medium hover:bg-zinc-200 transition-colors"

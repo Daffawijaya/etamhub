@@ -1,3 +1,7 @@
+import Footer from "@/components/Footer";
+import FooterBrand from "@/components/FooterBrand";
+import Navbar from "@/components/navbar/Navbar";
+import HeroBackground from "@/components/news/HeroNews";
 import NewsList from "@/components/news/NewsList";
 import { getNews } from "@/lib/news/news.service";
 
@@ -7,16 +11,23 @@ export default async function BeritaPage() {
   const publishedNews = news.filter((item) => item.published);
 
   return (
-    <main className="container mx-auto px-4 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Berita</h1>
+    <>
+      <Navbar />
 
-        <p className="mt-2 text-gray-600">
-          Informasi terbaru seputar UMKM dan kegiatan daerah.
-        </p>
-      </div>
+      <main className="bg-light-bg dark:bg-dark overflow-hidden transition-colors">
+        <HeroBackground />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <NewsList data={publishedNews} />
+        </div>
 
-      <NewsList data={publishedNews} />
-    </main>
+        <Footer
+          title={
+            <>Bersama etamhub, dukung UMKM lokal untuk tumbuh dan berkembang</>
+          }
+        />
+
+        <FooterBrand />
+      </main>
+    </>
   );
 }

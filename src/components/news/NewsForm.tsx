@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { NEWS_CATEGORIES } from "@/data/news";
 
 import type { News } from "@/types/news";
 
@@ -109,7 +110,7 @@ export default function NewsForm({ initialData }: Props) {
               py-3
               text-sm
               text-slate-900
-              outline-none
+              outline-none 
               transition
               placeholder:text-slate-400
               focus:border-primary
@@ -160,32 +161,39 @@ export default function NewsForm({ initialData }: Props) {
             Kategori
           </label>
 
-          <input
+          <select
             name="category"
-            type="text"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            placeholder="Masukkan kategori berita"
+            required
             className="
-              w-full
-              rounded-xl
-              border
-              border-slate-200
-              bg-white
-              px-4
-              py-3
-              text-sm
-              text-slate-900
-              outline-none
-              transition
-              placeholder:text-slate-400
-              focus:border-primary
-              dark:border-slate-800
-              dark:bg-dark
-              dark:text-white
-              dark:placeholder:text-slate-500
-            "
-          />
+      w-full
+      rounded-xl
+      border
+      border-slate-200
+      bg-white
+      px-4
+      py-3
+      text-sm
+      text-slate-900
+      outline-none
+      transition
+      focus:border-primary
+      dark:border-slate-800
+      dark:bg-dark
+      dark:text-white
+    "
+          >
+            <option value="" disabled>
+              Pilih kategori berita
+            </option>
+
+            {NEWS_CATEGORIES.map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div>
