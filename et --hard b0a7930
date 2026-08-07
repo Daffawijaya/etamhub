@@ -1,0 +1,10 @@
+[33m07a321a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m test
+[33mb0a7930[m not wajib cekbox publis berita
+[33m8a2fb20[m fix: resolve news form props type error
+[33m9ff5fce[m feat: separate popular news and paginated latest news
+[33m52e7733[m feat: update news categories
+[33m471bc6b[m feat: add rich text news content rendering
+[33m6f19e91[m fix: handle news image update and disable unchanged update
+[33m2a2532b[m fix: disable update berita when no changes
+[33m7cec881[m feat: update news management
+[33m9e283ae[m feat: update news layout and content

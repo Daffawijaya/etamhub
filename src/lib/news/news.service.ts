@@ -13,17 +13,25 @@ async function uploadNewsImage(file: File) {
   const fileName = `${crypto.randomUUID()}.webp`;
   const filePath = `news/${fileName}`;
 
-  const buffer = Buffer.from(await file.arrayBuffer());
+  const inputBuffer = Buffer.from(await file.arrayBuffer());
 
-  const webpBuffer = await sharp(buffer)
+  const webpBuffer = await sharp(inputBuffer)
+    .rotate()
+    .resize({
+      width: 1920,
+      withoutEnlargement: true,
+    })
     .webp({
       quality: 80,
+      effort: 6,
     })
     .toBuffer();
 
+  const uploadData = new Uint8Array(webpBuffer);
+
   const { error } = await supabaseAdmin.storage
     .from("news-images")
-    .upload(filePath, webpBuffer, {
+    .upload(filePath, uploadData, {
       contentType: "image/webp",
       upsert: false,
     });
