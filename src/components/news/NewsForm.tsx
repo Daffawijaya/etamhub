@@ -23,10 +23,23 @@ export default function NewsForm({ initialData }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  const hasChanges = initialData
+    ? title !== (initialData.title ?? "") ||
+      excerpt !== (initialData.excerpt ?? "") ||
+      category !== (initialData.category ?? "") ||
+      content !== (initialData.content ?? "") ||
+      published !== (initialData.published ?? false) ||
+      gambar !== null
+    : true;
+
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
     if (loading) return;
+
+    if (initialData && !hasChanges) {
+      return;
+    }
 
     try {
       setLoading(true);
@@ -68,9 +81,9 @@ export default function NewsForm({ initialData }: Props) {
   }
 
   return (
-    <div className="rounded-2xl bg-white px-6 py-5 dark:bg-dark-card">
+    <div>
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-white">
           {initialData ? "Edit Berita" : "Tambah Berita"}
         </h1>
 
@@ -110,7 +123,7 @@ export default function NewsForm({ initialData }: Props) {
               py-3
               text-sm
               text-slate-900
-              outline-none 
+              outline-none
               transition
               placeholder:text-slate-400
               focus:border-primary
@@ -168,22 +181,22 @@ export default function NewsForm({ initialData }: Props) {
             onChange={(e) => setCategory(e.target.value)}
             required
             className="
-      w-full
-      rounded-xl
-      border
-      border-slate-200
-      bg-white
-      px-4
-      py-3
-      text-sm
-      text-slate-900
-      outline-none
-      transition
-      focus:border-primary
-      dark:border-slate-800
-      dark:bg-dark
-      dark:text-white
-    "
+              w-full
+              rounded-xl
+              border
+              border-slate-200
+              bg-white
+              px-4
+              py-3
+              text-sm
+              text-slate-900
+              outline-none
+              transition
+              focus:border-primary
+              dark:border-slate-800
+              dark:bg-dark
+              dark:text-white
+            "
           >
             <option value="" disabled>
               Pilih kategori berita
@@ -205,7 +218,7 @@ export default function NewsForm({ initialData }: Props) {
           <input
             name="gambar"
             type="file"
-            required
+            required={!initialData?.gambar}
             accept="image/jpeg,image/png,image/webp"
             onChange={(e) => {
               setGambar(e.target.files?.[0] ?? null);
@@ -239,8 +252,9 @@ export default function NewsForm({ initialData }: Props) {
           />
 
           <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
-            Maksimal 1 gambar. JPG, PNG, atau WebP. Gambar otomatis dikonversi
-            ke WebP.
+            {initialData?.gambar
+              ? "Kosongkan jika tidak ingin mengganti gambar. JPG, PNG, atau WebP. Gambar otomatis dikonversi ke WebP."
+              : "Maksimal 1 gambar. JPG, PNG, atau WebP. Gambar otomatis dikonversi ke WebP."}
           </p>
 
           {initialData?.gambar && !gambar && (
@@ -260,12 +274,12 @@ export default function NewsForm({ initialData }: Props) {
           {gambar && (
             <div className="mt-4">
               <p className="mb-2 text-sm text-slate-500 dark:text-slate-400">
-                Preview gambar
+                Preview gambar baru
               </p>
 
               <img
                 src={URL.createObjectURL(gambar)}
-                alt="Preview gambar"
+                alt="Preview gambar baru"
                 className="h-40 w-64 rounded-xl object-cover"
               />
 
@@ -289,7 +303,6 @@ export default function NewsForm({ initialData }: Props) {
             placeholder="Masukkan isi berita"
             required
             className="
-              required
               w-full
               resize-y
               rounded-xl
@@ -327,7 +340,7 @@ export default function NewsForm({ initialData }: Props) {
         <div className="mt-8 flex justify-end border-t border-slate-200 pt-6 dark:border-slate-700">
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || (!!initialData && !hasChanges)}
             className="
               inline-flex
               items-center
@@ -353,10 +366,10 @@ export default function NewsForm({ initialData }: Props) {
               dark:focus:ring-emerald-400
               dark:focus:ring-offset-slate-900
               disabled:cursor-not-allowed
-              disabled:bg-emerald-300
-              dark:disabled:bg-emerald-900
-              disabled:text-white/80
-              dark:disabled:text-white/50
+              disabled:bg-slate-300
+              disabled:text-slate-500
+              dark:disabled:bg-slate-800
+              dark:disabled:text-slate-500
             "
           >
             {loading
