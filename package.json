@@ -12,6 +12,8 @@
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@supabase/supabase-js": "^2.110.8",
+    "@tiptap/react": "^3.29.2",
+    "@tiptap/starter-kit": "^3.29.2",
     "bcryptjs": "^3.0.3",
     "dotenv": "^17.4.2",
     "file-saver": "^2.0.5",

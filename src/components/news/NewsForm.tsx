@@ -5,6 +5,7 @@ import { FormEvent, useState } from "react";
 import { NEWS_CATEGORIES } from "@/data/news";
 
 import type { News } from "@/types/news";
+import NewsEditor from "./NewsEditor";
 
 type Props = {
   initialData?: News;
@@ -295,34 +296,11 @@ export default function NewsForm({ initialData }: Props) {
             Isi Berita
           </label>
 
-          <textarea
-            name="content"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            rows={12}
-            placeholder="Masukkan isi berita"
-            required
-            className="
-              w-full
-              resize-y
-              rounded-xl
-              border
-              border-slate-200
-              bg-white
-              px-4
-              py-3
-              text-sm
-              text-slate-900
-              outline-none
-              transition
-              placeholder:text-slate-400
-              focus:border-primary
-              dark:border-slate-800
-              dark:bg-dark
-              dark:text-white
-              dark:placeholder:text-slate-500
-            "
-          />
+          <NewsEditor value={content} onChange={setContent} />
+
+          {!content.replace(/<[^>]*>/g, "").trim() && (
+            <p className="mt-2 text-xs text-red-500">Isi berita wajib diisi.</p>
+          )}
         </div>
 
         <label className="flex cursor-pointer items-center gap-3 text-sm text-slate-700 dark:text-slate-200">

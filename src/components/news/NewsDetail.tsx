@@ -2,6 +2,7 @@ import Image from "next/image";
 import { CalendarDays, Eye } from "lucide-react";
 
 import type { News } from "@/types/news";
+import NewsContent from "./NewsContent";
 
 type Props = {
   news: News;
@@ -121,17 +122,7 @@ export default function NewsDetail({ news }: Props) {
 
       <div className="my-8 border-t border-white dark:border-zinc-800" />
 
-      <div
-        className="
-          whitespace-pre-wrap
-          text-base
-          leading-8
-          text-slate-700
-          dark:text-slate-300
-        "
-      >
-        {news.content}
-      </div>
+      <NewsContent content={news.content} />
     </article>
   );
 }

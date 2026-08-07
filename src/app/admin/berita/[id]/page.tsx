@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, CalendarDays, Eye, Pencil } from "lucide-react";
 
 import { getNewsById } from "@/lib/news/news.service";
+import NewsContent from "@/components/news/NewsContent";
 
 type Props = {
   params: Promise<{
@@ -201,17 +202,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
 
           <div className="my-8 border-t border-white dark:border-zinc-800" />
 
-          <div
-            className="
-              whitespace-pre-wrap
-              text-base
-              leading-8
-              text-slate-700
-              dark:text-slate-300
-            "
-          >
-            {news.content}
-          </div>
+          <NewsContent content={news.content} />
         </article>
       </div>
     </div>
