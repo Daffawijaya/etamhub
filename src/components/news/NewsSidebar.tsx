@@ -120,14 +120,14 @@ export default function NewsSidebar({ data, currentNews }: Props) {
   }
 
   return (
-    <aside className="overflow-hidden rounded-xl border border-zinc-200 bg-white dark:border-zinc-800 dark:bg-[#181818]">
-      <div className="border-b border-zinc-200 px-4 py-4 dark:border-zinc-800">
+    <aside className="overflow-hidden rounded-xl border border-white bg-light dark:border-zinc-800 dark:bg-dark-card">
+      <div className="border-b border-white px-4 py-4 dark:border-zinc-800">
         <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
           Berita Terkait
         </h2>
       </div>
 
-      <div className="divide-y divide-zinc-200 dark:divide-zinc-800">
+      <div className="divide-y divide-white dark:divide-zinc-800">
         {recommendations.map((news) => (
           <Link key={news.id} href={`/berita/${news.slug}`} className="block">
             <article

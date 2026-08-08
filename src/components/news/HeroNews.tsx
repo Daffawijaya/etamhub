@@ -34,7 +34,7 @@ export default function HeroBackground() {
   };
 
   return (
-    <section className="relative transition-colors h-[61vh] flex flex-col">
+    <section className="relative transition-colors h-[445px] flex flex-col">
       {/* Background Atas - Gradien / Gambar */}
       <div
         className="
@@ -125,26 +125,30 @@ export default function HeroBackground() {
       </div>
 
       {/* Content Wrapper */}
-      <div className="relative z-30 flex-1 flex flex-col items-center justify-start mt-12 sm:mt-43 px-5 sm:px-6 w-full max-w-5xl mx-auto">
+      <div className="relative z-30 flex-1 flex flex-col items-center justify-start mt-43 sm:mt-43 px-5 sm:px-6 w-full max-w-5xl mx-auto">
         {/* Refer & Earn Pill Button */}
         <button
           className="
-            mb-8
-            inline-flex
-            items-center
-            gap-2
-            px-5 
-            py-2.5 
-            rounded-full 
-            bg-[#f1f1f7]
-            text-sm 
-            font-medium 
-            text-gray-700 
-            hover:bg-gray-50 
-            hover:shadow-md
-            transition-all
-            cursor-pointer
-          "
+    mb-8
+    inline-flex
+    items-center
+    gap-1.5
+    px-3.5
+    py-2
+    sm:gap-2
+    sm:px-5
+    sm:py-2.5
+    rounded-full
+    bg-[#f1f1f7]
+    text-xs
+    sm:text-sm
+    font-medium
+    text-gray-700
+    hover:bg-gray-50
+    hover:shadow-md
+    transition-all
+    cursor-pointer
+  "
         >
           Kabar Kukar
           <svg

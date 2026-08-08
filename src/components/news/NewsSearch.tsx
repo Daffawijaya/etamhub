@@ -10,19 +10,19 @@ type Props = {
 
 export default function NewsSearch({ value, onChange, onSearch }: Props) {
   return (
-    <div className="w-full max-w-[800px] mt-12 sm:mt-16 relative">
+    <div className="w-full max-w-[800px] mt-8 md:mt-12 xl:mt-16 relative">
       {/* Border Gradien dengan Noise */}
       <div
         className="
-             absolute
-inset-0
-rounded-2xl
-bg-gradient-to-r
-from-[#b8b8c8]
-via-[#d9b5ca]
-to-[#b8b8c8]
-shadow-[0_4px_30px_rgba(0,0,0,0.08)]
-            "
+          absolute
+          inset-0
+          rounded-2xl
+          bg-gradient-to-r
+          from-[#b8b8c8]
+          via-[#d9b5ca]
+          to-[#b8b8c8]
+          shadow-[0_4px_30px_rgba(0,0,0,0.08)]
+        "
       >
         {/* Tekstur Noise Khusus di Border Search Bar */}
         <div
@@ -36,19 +36,19 @@ shadow-[0_4px_30px_rgba(0,0,0,0.08)]
       </div>
       <div
         className="
-        relative
-        z-10
-        m-[6px]
-        flex
-        items-center
-        w-[calc(100%-12px)]
-        h-[68px]
-        bg-[#ebebf4]
-        backdrop-blur-md
-        rounded-xl
-        pr-[7px]
-        pl-6
-      "
+          relative
+          z-10
+          flex
+          items-center
+          bg-[#ebebf4]
+          backdrop-blur-md
+          rounded-xl
+          m-[4px] md:m-[6px]
+          w-[calc(100%-8px)] md:w-[calc(100%-12px)]
+          h-[56px] md:h-[68px]
+          pr-[4px] md:pr-[7px]
+          pl-4 md:pl-6
+        "
       >
         <input
           type="text"
@@ -61,15 +61,15 @@ shadow-[0_4px_30px_rgba(0,0,0,0.08)]
           }}
           placeholder="Cari berita"
           className="
-          flex-1
-          w-full
-          bg-transparent
-          border-none
-          outline-none
-          text-gray-900
-          placeholder-gray-500
-          text-lg
-        "
+            flex-1
+            w-full
+            bg-transparent
+            border-none
+            outline-none
+            text-gray-900
+            placeholder-gray-500
+            text-base md:text-lg
+          "
         />
 
         <button
@@ -77,18 +77,17 @@ shadow-[0_4px_30px_rgba(0,0,0,0.08)]
           onClick={onSearch}
           aria-label="Search"
           className="
-          flex-shrink-0
-          w-13
-          h-13
-          bg-[#111111]
-          rounded-lg
-          flex
-          items-center
-          justify-center
-          text-white
-          hover:bg-black
-          transition-colors
-        "
+            flex-shrink-0
+            bg-[#111111]
+            rounded-lg
+            flex
+            items-center
+            justify-center
+            text-white
+            hover:bg-black
+            transition-colors
+            w-10 h-10 md:w-13 md:h-13
+          "
         >
           <Search size={20} strokeWidth={2.5} aria-hidden="true" />
         </button>
