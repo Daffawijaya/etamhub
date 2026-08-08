@@ -3,13 +3,36 @@
 import Image from "next/image";
 import HeroNavbar from "../navbar/HeroNavbar";
 import NewsSearch from "./NewsSearch";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+
 export default function HeroBackground() {
-  const [search, setSearch] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const [search, setSearch] = useState(searchParams.get("search") ?? "");
+  useEffect(() => {
+    setSearch(searchParams.get("search") ?? "");
+  }, [searchParams]);
 
   const handleSearch = () => {
-    console.log("Search:", search);
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (search.trim()) {
+      params.set("search", search.trim());
+      params.delete("page");
+    } else {
+      params.delete("search");
+      params.delete("page");
+    }
+
+    const query = params.toString();
+
+    router.push(query ? `/berita?${query}` : "/berita", {
+      scroll: false,
+    });
   };
+
   return (
     <section className="relative transition-colors h-[61vh] flex flex-col">
       {/* Background Atas - Gradien / Gambar */}

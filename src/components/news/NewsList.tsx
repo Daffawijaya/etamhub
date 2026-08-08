@@ -1,10 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-
+import { useRouter } from "next/navigation";
 import type { News } from "@/types/news";
 
 type Props = {
   data: News[];
+  search?: string;
+   total?: number;
 };
 
 const formatDate = (date: string, short = false) =>
@@ -14,21 +18,51 @@ const formatDate = (date: string, short = false) =>
     year: "numeric",
   });
 
-export default function NewsList({ data }: Props) {
+export default function NewsList({ data, search = "",  total = 0, }: Props) {
+  const router = useRouter();
+  const isSearching = search.trim().length > 0;
   if (!data.length) {
     return (
-      <div className="py-20 text-center text-gray-500 dark:text-gray-400">
-        Belum ada berita.
-      </div>
+      <section>
+        <div className="flex min-h-[160px] flex-col items-center justify-center text-center">
+          <div className="flex items-center justify-center gap-1 text-center">
+            <p className="text-gray-900 dark:text-white">
+              Tidak ada berita ditemukan.
+            </p>
+
+            {isSearching && (
+              <button
+                type="button"
+                onClick={() => router.push("/berita", { scroll: false })}
+                className="
+              text-gray-900 dark:text-white
+              transition
+              underline hover:no-underline
+            "
+              >
+                Hapus pencarian
+              </button>
+            )}
+          </div>
+        </div>
+      </section>
     );
   }
 
   return (
     <section>
       <div className="mb-6">
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
-          Berita Terbaru
-        </h2>
+        {isSearching ? (
+          <div className="mb-8 text-center">
+            <p className=" text-gray-900 dark:text-white">
+              {total} berita ditemukan
+            </p>
+          </div>
+        ) : (
+          <h2 className="mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
+            Berita Terbaru
+          </h2>
+        )}
       </div>
 
       <div
