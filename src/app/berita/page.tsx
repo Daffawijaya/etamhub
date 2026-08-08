@@ -5,6 +5,7 @@ import NewsList from "@/components/news/NewsList";
 import Pagination from "@/components/news/Pagination";
 import NewsPopular from "@/components/news/NewsPopular";
 import { getNews, getTrendingNews } from "@/lib/news/news.service";
+import Navbar from "@/components/navbar/Navbar";
 
 type Props = {
   searchParams: Promise<{
@@ -28,6 +29,7 @@ export default async function BeritaPage({ searchParams }: Props) {
 
   return (
     <>
+      <Navbar />
       <main className="overflow-hidden bg-light-bg transition-colors dark:bg-dark">
         <HeroBackground />
 
