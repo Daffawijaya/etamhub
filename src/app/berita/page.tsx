@@ -33,7 +33,7 @@ export default async function BeritaPage({ searchParams }: Props) {
       <main className="overflow-hidden bg-light-bg transition-colors dark:bg-dark">
         <HeroBackground />
 
-        <div className="mx-auto max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl pt-20 px-4 pb-24 sm:px-6 lg:px-8">
           <NewsPopular data={trending} />
 
           <div className="mt-12">

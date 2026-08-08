@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 
 import { getNews } from "@/lib/news/news.service";
 import NewsTable from "@/components/admin/berita/NewsTable";
+import NewsSearch from "@/components/admin/berita/NewsSearch";
 
 interface AdminBeritaPageProps {
   searchParams: Promise<{
@@ -26,15 +27,15 @@ export default async function AdminBeritaPage({
   const news = result.data;
 
   return (
-    <div className="px-6 pb-6">
-      <div className="rounded-2xl bg-white dark:bg-dark-card">
-        <div className="flex flex-col gap-4 px-6 pt-5 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/10">
+    <div className="pb-6 px-6">
+      <div className="rounded-xl bg-white transition-colors duration-300 dark:bg-dark-card">
+        <div className="px-6 pt-5 pb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 transition-colors duration-300 dark:text-white">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
               Daftar Berita
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500 transition-colors duration-300 dark:text-slate-400">
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
               {result.pagination.total} berita tersedia
             </p>
           </div>
@@ -68,6 +69,10 @@ export default async function AdminBeritaPage({
             <Plus size={17} />
             Tambah Berita
           </Link>
+        </div>
+
+        <div className="mb-5 max-w-md px-5">
+          <NewsSearch />
         </div>
 
         <NewsTable data={news} pagination={result.pagination} />

@@ -1,0 +1,98 @@
+"use client";
+
+import { Search } from "lucide-react";
+
+type Props = {
+  value: string;
+  onChange: (value: string) => void;
+  onSearch?: () => void;
+};
+
+export default function NewsSearch({ value, onChange, onSearch }: Props) {
+  return (
+    <div className="w-full max-w-[800px] mt-12 sm:mt-16 relative">
+      {/* Border Gradien dengan Noise */}
+      <div
+        className="
+             absolute
+inset-0
+rounded-2xl
+bg-gradient-to-r
+from-[#b8b8c8]
+via-[#d9b5ca]
+to-[#b8b8c8]
+shadow-[0_4px_30px_rgba(0,0,0,0.08)]
+            "
+      >
+        {/* Tekstur Noise Khusus di Border Search Bar */}
+        <div
+          className="absolute inset-0 z-0 opacity-40 mix-blend-overlay rounded-2xl pointer-events-none"
+          style={{
+            backgroundImage: "url('/grian.png')",
+            backgroundRepeat: "repeat",
+            backgroundSize: "200px",
+          }}
+        />
+      </div>
+      <div
+        className="
+        relative
+        z-10
+        m-[6px]
+        flex
+        items-center
+        w-[calc(100%-12px)]
+        h-[68px]
+        bg-[#ebebf4]
+        backdrop-blur-md
+        rounded-xl
+        pr-[7px]
+        pl-6
+      "
+      >
+        <input
+          type="text"
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              onSearch?.();
+            }
+          }}
+          placeholder="Cari berita"
+          className="
+          flex-1
+          w-full
+          bg-transparent
+          border-none
+          outline-none
+          text-gray-900
+          placeholder-gray-500
+          text-lg
+        "
+        />
+
+        <button
+          type="button"
+          onClick={onSearch}
+          aria-label="Search"
+          className="
+          flex-shrink-0
+          w-13
+          h-13
+          bg-[#111111]
+          rounded-lg
+          flex
+          items-center
+          justify-center
+          text-white
+          hover:bg-black
+          transition-colors
+        "
+        >
+          <Search size={20} strokeWidth={2.5} aria-hidden="true" />
+        </button>
+      </div>
+    </div>
+  );
+}
