@@ -94,7 +94,7 @@ export default function Pagination({ page, totalPages, search = "" }: Props) {
               transition
               ${
                 page === item
-                  ? "bg-emerald-600 text-white dark:bg-emerald-500"
+                  ? "bg-black text-white dark:bg-white dark:text-black"
                   : "text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-zinc-800"
               }
             `}

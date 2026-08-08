@@ -87,7 +87,7 @@ export default function NewsDetail({ news }: Props) {
         <div className="flex items-center gap-2">
           <Eye size={16} />
 
-          <span>{news.view_count ?? 0} kali dilihat</span>
+          <span>{news.view_count ?? 0} dilihat</span>
         </div>
       </div>
 

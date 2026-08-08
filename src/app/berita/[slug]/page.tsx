@@ -1,19 +1,18 @@
 import { notFound } from "next/navigation";
 
-import NewsDetail from "@/components/news/NewsDetail";
-import NewsSidebar from "@/components/news/NewsSidebar";
-
-import {
-  getNewsBySlug,
-  getNews,
-  incrementNewsView,
-} from "@/lib/news/news.service";
-
 import FooterBrand from "@/components/FooterBrand";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/navbar/Navbar";
 import HeaderNews from "@/components/news/HeaderNews";
+import NewsDetail from "@/components/news/NewsDetail";
+import NewsSidebar from "@/components/news/NewsSidebar";
 import NewsTrending from "@/components/news/NewsTrending";
+
+import {
+  getNews,
+  getNewsBySlug,
+  incrementNewsView,
+} from "@/lib/news/news.service";
 
 type Props = {
   params: Promise<{
@@ -44,6 +43,18 @@ export default async function BeritaDetailPage({ params }: Props) {
 
     const sidebarNews = allNews
       .filter((item) => item.id !== news.id && !trendingIds.includes(item.id))
+      .sort((a, b) => {
+        const aRelated = a.category === news.category;
+        const bRelated = b.category === news.category;
+
+        if (aRelated !== bRelated) {
+          return aRelated ? -1 : 1;
+        }
+
+        return (
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        );
+      })
       .slice(0, 5);
 
     return (
@@ -72,7 +83,7 @@ export default async function BeritaDetailPage({ params }: Props) {
               <div className="space-y-6">
                 <NewsTrending data={allNews} currentNewsId={news.id} />
 
-                <NewsSidebar data={sidebarNews} />
+                <NewsSidebar data={sidebarNews} currentNews={news} />
               </div>
             </div>
           </div>
