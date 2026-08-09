@@ -73,30 +73,19 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
 
   if (loading) {
     return (
-      <section className="rounded-xl bg-white p-6 dark:bg-[#1b1b1b]">
-        <div className="flex min-h-40 items-center justify-center">
-          <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400">
-            <div className="h-4 w-4 animate-spin rounded-full border-2 border-gray-200 border-t-emerald-600 dark:border-gray-700 dark:border-t-emerald-400" />
-            Memuat produk...
-          </div>
-        </div>
-      </section>
+      <div className="flex min-h-48 items-center justify-center text-sm text-gray-500 dark:text-gray-400">
+        Memuat produk...
+      </div>
     );
   }
 
   return (
-    <section className="rounded-xl bg-white p-5 dark:bg-[#1b1b1b] sm:p-6">
-      <div className="flex items-center justify-between gap-4">
-        <div className="min-w-0">
-          <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
-              Produk
-            </h2>
-
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
-              Kelola produk yang dimiliki UMKM ini
-            </p>
-          </div>
+    <section>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+            Produk
+          </h2>
         </div>
 
         {onAdd && (
@@ -112,7 +101,7 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
       </div>
 
       {error && (
-        <div className="mt-5 rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/30 dark:text-red-400">
+        <div className=" rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/30 dark:text-red-400">
           {error}
         </div>
       )}
@@ -143,14 +132,14 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
           )}
         </div>
       ) : (
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
           {products.map((product) => {
             const image = product.gambar?.[0];
 
             return (
               <article
                 key={product.id}
-                className="group min-w-0 overflow-hidden rounded-xl bg-gray-50 transition-colors dark:bg-[#151515]"
+                className="group min-w-0 overflow-hidden rounded-xl bg-white dark:bg-dark-card"
               >
                 <div className="aspect-[5/4] overflow-hidden bg-gray-100 dark:bg-[#202020]">
                   {image ? (
