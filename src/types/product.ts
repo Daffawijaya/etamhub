@@ -12,6 +12,10 @@ export interface ProductUmkm {
   id: string;
   nama: string;
   owner_id: string | null;
+  halal: string | null;
+  pirt: string | null;
+  haki: string | null;
+  kbli: string[];
 }
 
 export interface Product {

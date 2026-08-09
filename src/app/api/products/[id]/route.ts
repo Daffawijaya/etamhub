@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { allowedJenis, type ProductLegalitas } from "@/lib/products/legalitas";
-import {
-  normalizeLegalitas,
-  updateProductLegalitas,
-} from "@/lib/products/legalitas-update";
 import {
   deleteProduct,
   getExistingProduct,
@@ -18,6 +13,7 @@ import {
   buildProductUpdatePayload,
   type ProductUpdateInput,
 } from "@/lib/products/update-payload";
+import type { ProductLegalitasInput } from "@/types/product";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -111,9 +107,9 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       gambar,
       is_available,
       legalitas,
-    }: ProductUpdateInput & {
-      legalitas?: ProductLegalitas[];
-    } = body;
+    } = body as ProductUpdateInput & {
+      legalitas?: ProductLegalitasInput[];
+    };
 
     const { data: existingProduct, error: existingProductError } =
       await getExistingProduct(id);
@@ -212,22 +208,32 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         );
       }
 
-      const normalizedLegalitas = normalizeLegalitas(legalitas);
-
-      const legalitasResult = await updateProductLegalitas(
-        id,
-        targetUmkmId,
-        normalizedLegalitas,
+      const normalizedLegalitas: ProductLegalitasInput[] = legalitas.filter(
+        (item): item is ProductLegalitasInput =>
+          item !== null &&
+          typeof item === "object" &&
+          ["halal", "pirt", "haki", "kbli"].includes(item.jenis),
       );
 
-      if (!legalitasResult.valid) {
+      const invalidLegalitas = legalitas.length !== normalizedLegalitas.length;
+
+      if (invalidLegalitas) {
         return NextResponse.json(
           {
             success: false,
-            message: legalitasResult.message,
-            ...(legalitasResult.error ? { error: legalitasResult.error } : {}),
+            message: "Jenis legalitas tidak valid",
           },
-          { status: legalitasResult.status },
+          { status: 400 },
+        );
+      }
+
+      if (normalizedLegalitas.some((item) => item.jenis === "kbli" && !item.kode)) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Kode KBLI wajib diisi",
+          },
+          { status: 400 },
         );
       }
     }
@@ -248,6 +254,74 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         },
         { status: 500 },
       );
+    }
+
+    if (!product) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Produk gagal diperbarui",
+        },
+        { status: 500 },
+      );
+    }
+
+    if (legalitas !== undefined) {
+      const normalizedLegalitas: ProductLegalitasInput[] = legalitas.map(
+        (item) => ({
+          jenis: item.jenis,
+          kode: item.kode ?? null,
+        }),
+      );
+
+      const { error: deleteLegalitasError } = await supabase
+        .from("product_legalitas")
+        .delete()
+        .eq("product_id", id);
+
+      if (deleteLegalitasError) {
+        console.error(
+          "Delete product legalitas error:",
+          deleteLegalitasError,
+        );
+
+        return NextResponse.json(
+          {
+            success: false,
+            message: "Gagal memperbarui legalitas produk",
+            error: deleteLegalitasError.message,
+          },
+          { status: 500 },
+        );
+      }
+
+      if (normalizedLegalitas.length > 0) {
+        const legalitasPayload = normalizedLegalitas.map((item) => ({
+          product_id: id,
+          jenis: item.jenis,
+          kode: item.kode ?? null,
+        }));
+
+        const { error: insertLegalitasError } = await supabase
+          .from("product_legalitas")
+          .insert(legalitasPayload);
+
+        if (insertLegalitasError) {
+          console.error(
+            "Insert product legalitas error:",
+            insertLegalitasError,
+          );
+
+          return NextResponse.json(
+            {
+              success: false,
+              message: "Gagal menyimpan legalitas produk",
+              error: insertLegalitasError.message,
+            },
+            { status: 500 },
+          );
+        }
+      }
     }
 
     const newImages = Array.isArray(product.gambar)

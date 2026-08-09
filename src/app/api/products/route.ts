@@ -6,7 +6,7 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!,
 );
 
-type ProductLegalitas = {
+type ProductLegalitasInput = {
   jenis: "halal" | "pirt" | "haki" | "kbli";
   kode?: string | null;
 };
@@ -36,10 +36,15 @@ export async function GET(request: NextRequest) {
           umkm:umkm_id (
             id,
             nama,
-            owner_id
+            owner_id,
+            halal,
+            pirt,
+            haki,
+            kbli
           ),
           product_legalitas (
             id,
+            product_id,
             jenis,
             kode,
             created_at
@@ -113,7 +118,7 @@ export async function POST(request: NextRequest) {
       satuan?: string | null;
       gambar?: string[];
       is_available?: boolean;
-      legalitas?: ProductLegalitas[];
+      legalitas?: ProductLegalitasInput[];
     } = body;
 
     if (!umkm_id) {
@@ -138,7 +143,7 @@ export async function POST(request: NextRequest) {
 
     const { data: umkm, error: umkmError } = await supabase
       .from("umkm")
-      .select("id, halal, pirt, haki, kbli")
+      .select("halal, pirt, haki, kbli")
       .eq("id", umkm_id)
       .maybeSingle();
 
@@ -190,81 +195,77 @@ export async function POST(request: NextRequest) {
         )
       : [];
 
-    const allowedJenis: ProductLegalitas["jenis"][] = [
-      "halal",
-      "pirt",
-      "haki",
-      "kbli",
-    ];
-
-    const normalizedLegalitas: ProductLegalitas[] = Array.isArray(legalitas)
-      ? legalitas
-          .filter(
-            (item): item is ProductLegalitas =>
-              item !== null &&
-              typeof item === "object" &&
-              allowedJenis.includes(item.jenis),
-          )
-          .map((item) => ({
-            jenis: item.jenis,
-            kode:
-              item.jenis === "kbli" && item.kode
-                ? String(item.kode).trim()
-                : null,
-          }))
+    const normalizedLegalitas = Array.isArray(legalitas)
+      ? legalitas.filter(
+          (item): item is ProductLegalitasInput =>
+            item !== null &&
+            typeof item === "object" &&
+            ["halal", "pirt", "haki", "kbli"].includes(item.jenis),
+        )
       : [];
+
+    const availableKbli = Array.isArray(umkm.kbli)
+      ? umkm.kbli.filter(
+          (item): item is string =>
+            typeof item === "string" && item.trim().length > 0,
+        )
+      : [];
+
+    for (const item of normalizedLegalitas) {
+      if (item.jenis === "halal" && !umkm.halal) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "UMKM tidak memiliki legalitas Halal",
+          },
+          { status: 400 },
+        );
+      }
+
+      if (item.jenis === "pirt" && !umkm.pirt) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "UMKM tidak memiliki legalitas PIRT",
+          },
+          { status: 400 },
+        );
+      }
+
+      if (item.jenis === "haki" && !umkm.haki) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: "UMKM tidak memiliki legalitas HAKI",
+          },
+          { status: 400 },
+        );
+      }
+
+      if (item.jenis === "kbli") {
+        if (!item.kode || !availableKbli.includes(item.kode)) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: `KBLI ${item.kode ?? ""} tidak terdaftar pada UMKM`,
+            },
+            { status: 400 },
+          );
+        }
+      }
+    }
 
     const uniqueLegalitas = Array.from(
       new Map(
         normalizedLegalitas.map((item) => [
           `${item.jenis}:${item.kode ?? ""}`,
-          item,
+          {
+            jenis: item.jenis,
+            kode: item.kode ?? null,
+          },
         ]),
       ).values(),
     );
-
-    const umkmHasLegalitas = (
-      jenis: ProductLegalitas["jenis"],
-      kode?: string | null,
-    ) => {
-      switch (jenis) {
-        case "halal":
-          return Boolean(umkm.halal);
-
-        case "pirt":
-          return Boolean(umkm.pirt);
-
-        case "haki":
-          return Boolean(umkm.haki);
-
-        case "kbli":
-          return (
-            Boolean(kode) &&
-            Array.isArray(umkm.kbli) &&
-            umkm.kbli.some(
-              (item: string) => String(item).trim() === String(kode).trim(),
-            )
-          );
-
-        default:
-          return false;
-      }
-    };
-
-    for (const item of uniqueLegalitas) {
-      if (!umkmHasLegalitas(item.jenis, item.kode)) {
-        return NextResponse.json(
-          {
-            success: false,
-            message:
-              item.jenis === "kbli"
-                ? `KBLI ${item.kode} tidak terdaftar pada UMKM`
-                : `Legalitas ${item.jenis.toUpperCase()} belum terdaftar pada UMKM`,
-          },
-          { status: 400 },
-        );
-      }
-    }
 
     const productPayload = {
       umkm_id,
@@ -316,7 +317,7 @@ export async function POST(request: NextRequest) {
       const legalitasPayload = uniqueLegalitas.map((item) => ({
         product_id: product.id,
         jenis: item.jenis,
-        kode: item.jenis === "kbli" ? item.kode : null,
+        kode: item.kode,
       }));
 
       const { error: legalitasError } = await supabase
@@ -353,8 +354,18 @@ export async function POST(request: NextRequest) {
           is_available,
           created_at,
           updated_at,
+          umkm:umkm_id (
+            id,
+            nama,
+            owner_id,
+            halal,
+            pirt,
+            haki,
+            kbli
+          ),
           product_legalitas (
             id,
+            product_id,
             jenis,
             kode,
             created_at
@@ -367,11 +378,14 @@ export async function POST(request: NextRequest) {
     if (resultError) {
       console.error("Get created product error:", resultError);
 
-      return NextResponse.json({
-        success: true,
-        message: "Produk berhasil ditambahkan",
-        data: product,
-      });
+      return NextResponse.json(
+        {
+          success: true,
+          message: "Produk berhasil ditambahkan",
+          data: product,
+        },
+        { status: 201 },
+      );
     }
 
     return NextResponse.json(

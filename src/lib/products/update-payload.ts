@@ -6,6 +6,10 @@ export type ProductUpdateInput = {
   satuan?: string | null;
   gambar?: string[];
   is_available?: boolean;
+  legalitas?: {
+    jenis: "halal" | "pirt" | "haki" | "kbli";
+    kode?: string | null;
+  }[];
 };
 
 export function buildProductUpdatePayload(

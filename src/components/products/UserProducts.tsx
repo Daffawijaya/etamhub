@@ -18,6 +18,7 @@ type Props = {
 };
 
 export default function UserProducts({ umkmId, legalitas }: Props) {
+    console.log("USER PRODUCTS LEGALITAS:", legalitas);
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);

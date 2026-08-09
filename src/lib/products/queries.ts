@@ -17,12 +17,14 @@ export const PRODUCT_DETAIL_SELECT = `
   created_at,
   updated_at,
   umkm:umkm_id (
-    id,
-    nama,
-    owner_id
+    halal,
+    pirt,
+    haki,
+    kbli
   ),
   product_legalitas (
     id,
+    product_id,
     jenis,
     kode,
     created_at
@@ -54,7 +56,11 @@ export async function getProductBasicById(id: string) {
 }
 
 export async function getUmkmById(id: string) {
-  return await supabase.from("umkm").select("id").eq("id", id).maybeSingle();
+  return await supabase
+    .from("umkm")
+    .select("id, halal, pirt, haki, kbli")
+    .eq("id", id)
+    .maybeSingle();
 }
 
 export async function updateProduct(

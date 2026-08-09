@@ -20,22 +20,28 @@ export async function GET() {
     .from("umkm")
     .select(
       `
-      id,
-      nama,
-      kategori,
-      kecamatan,
-      alamat,
-      gambar,
-      approval_status,
-      published,
-      created_at,
-      rejected_reason
-    `,
+        id,
+        nama,
+        kategori,
+        kecamatan,
+        alamat,
+        gambar,
+        halal,
+        pirt,
+        haki,
+        kbli,
+        approval_status,
+        published,
+        created_at,
+        rejected_reason
+      `,
     )
     .eq("owner_id", currentUser.id)
     .maybeSingle();
 
   if (error) {
+    console.error("GET /api/user/umkm error:", error);
+
     return NextResponse.json(
       {
         message: error.message,

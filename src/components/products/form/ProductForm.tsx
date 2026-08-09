@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import type {
   CreateProductPayload,
   Product,
@@ -12,7 +12,7 @@ import ProductBasicFields from "./ProductBasicFields";
 import ProductImageUpload, {
   type ProductImageItem,
 } from "./ProductImageUpload";
-import ProductLegalitas from "./ProductLegalitas";
+import ProductLegalitas, { type SelectedLegalitas } from "./ProductLegalitas";
 
 type UmkmLegalitas = {
   halal?: string | null;
@@ -54,8 +54,47 @@ const normalizeImages = (gambar?: string[] | null) =>
       )
     : [];
 
+const normalizeKbli = (kbli?: string[] | null) =>
+  Array.isArray(kbli)
+    ? kbli.filter(
+        (item): item is string =>
+          typeof item === "string" && item.trim().length > 0,
+      )
+    : [];
+
 const createImageId = () =>
   `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+
+const getInitialLegalitas = (
+  legalitas: UmkmLegalitas,
+  product?: Product,
+): SelectedLegalitas => {
+  const availableKbli = normalizeKbli(legalitas.kbli);
+  const selectedProductLegalitas = product?.product_legalitas ?? [];
+
+  return {
+    halal:
+      selectedProductLegalitas.some((item) => item.jenis === "halal") &&
+      Boolean(legalitas.halal),
+
+    pirt:
+      selectedProductLegalitas.some((item) => item.jenis === "pirt") &&
+      Boolean(legalitas.pirt),
+
+    haki:
+      selectedProductLegalitas.some((item) => item.jenis === "haki") &&
+      Boolean(legalitas.haki),
+
+    kbli: selectedProductLegalitas
+      .filter(
+        (item) =>
+          item.jenis === "kbli" &&
+          typeof item.kode === "string" &&
+          availableKbli.includes(item.kode),
+      )
+      .map((item) => item.kode as string),
+  };
+};
 
 export default function ProductForm({
   umkmId,
@@ -66,18 +105,10 @@ export default function ProductForm({
 }: Props) {
   const isEdit = Boolean(product);
 
-  const initialLegalitas = useMemo(() => {
-    const selected = product?.product_legalitas ?? [];
-
-    return {
-      halal: selected.some((item) => item.jenis === "halal"),
-      pirt: selected.some((item) => item.jenis === "pirt"),
-      haki: selected.some((item) => item.jenis === "haki"),
-      kbli: selected
-        .filter((item) => item.jenis === "kbli" && item.kode)
-        .map((item) => item.kode as string),
-    };
-  }, [product]);
+  const initialLegalitas = useMemo(
+    () => getInitialLegalitas(legalitas, product),
+    [legalitas, product],
+  );
 
   const initialImages = useMemo<ProductImageItem[]>(() => {
     return normalizeImages(product?.gambar).map((url) => ({
@@ -93,13 +124,25 @@ export default function ProductForm({
   const [satuan, setSatuan] = useState(product?.satuan ?? "");
   const [isAvailable, setIsAvailable] = useState(product?.is_available ?? true);
 
-  const [selectedLegalitas, setSelectedLegalitas] = useState(initialLegalitas);
+  const [selectedLegalitas, setSelectedLegalitas] =
+    useState<SelectedLegalitas>(initialLegalitas);
 
   const [images, setImages] = useState<ProductImageItem[]>(initialImages);
 
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setNama(product?.nama ?? "");
+    setDeskripsi(product?.deskripsi ?? "");
+    setHarga(formatPrice(product?.harga));
+    setSatuan(product?.satuan ?? "");
+    setIsAvailable(product?.is_available ?? true);
+    setSelectedLegalitas(getInitialLegalitas(legalitas, product));
+    setImages(initialImages);
+    setError("");
+  }, [product, legalitas, initialImages]);
 
   const toggleLegalitas = (jenis: ProductLegalitasJenis) => {
     setSelectedLegalitas((current) => {
@@ -129,12 +172,16 @@ export default function ProductForm({
   };
 
   const toggleKbli = (kode: string) => {
-    setSelectedLegalitas((current) => ({
-      ...current,
-      kbli: current.kbli.includes(kode)
-        ? current.kbli.filter((item) => item !== kode)
-        : [...current.kbli, kode],
-    }));
+    setSelectedLegalitas((current) => {
+      const exists = current.kbli.includes(kode);
+
+      return {
+        ...current,
+        kbli: exists
+          ? current.kbli.filter((item) => item !== kode)
+          : [...current.kbli, kode],
+      };
+    });
   };
 
   const getLegalitasPayload = (): NonNullable<
@@ -145,21 +192,21 @@ export default function ProductForm({
     if (selectedLegalitas.halal && legalitas.halal) {
       result.push({
         jenis: "halal",
-        kode: null,
+        kode: legalitas.halal,
       });
     }
 
     if (selectedLegalitas.pirt && legalitas.pirt) {
       result.push({
         jenis: "pirt",
-        kode: null,
+        kode: legalitas.pirt,
       });
     }
 
     if (selectedLegalitas.haki && legalitas.haki) {
       result.push({
         jenis: "haki",
-        kode: null,
+        kode: legalitas.haki,
       });
     }
 
