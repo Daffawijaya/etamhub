@@ -3,6 +3,7 @@ import UmkmDetail from "@/components/Umkm/UmkmDetail";
 import Footer from "@/components/Footer";
 import Breadcrumb from "@/components/Breadcrumb";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
+import PublicProductList from "@/components/Umkm/PublicProductList";
 
 type Props = {
   params: Promise<{
@@ -62,6 +63,7 @@ export default async function UmkmPage({ params }: Props) {
         <div className="relative z-10">
           <UmkmDetail {...umkm} />
         </div>
+        <PublicProductList umkmId={umkm.id} />
       </main>
 
       <Footer />

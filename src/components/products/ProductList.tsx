@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
+import { Eye, Pencil, Plus, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
 import type { Product } from "@/types/product";
 import { deleteProduct, getProducts } from "@/lib/api/products";
 
@@ -81,9 +82,9 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
 
   return (
     <section>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             Produk
           </h2>
         </div>
@@ -101,13 +102,13 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
       </div>
 
       {error && (
-        <div className=" rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/30 dark:text-red-400">
+        <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/30 dark:text-red-400">
           {error}
         </div>
       )}
 
       {products.length === 0 ? (
-        <div className="mt-6 flex min-h-48 flex-col items-center justify-center rounded-xl bg-gray-50 px-6 py-10 text-center dark:bg-[#151515]">
+        <div className="mt-4 flex min-h-48 flex-col items-center justify-center rounded-xl bg-gray-50 px-6 py-10 text-center dark:bg-[#151515]">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
             <Plus size={18} />
           </div>
@@ -211,14 +212,22 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
                     </div>
                   )}
 
-                  <div className="mt-3 flex gap-1.5">
+                  <div className="mt-3 grid grid-cols-3 gap-1.5">
+                    <Link
+                      href={`/user/produk/${product.id}`}
+                      title="Lihat detail produk"
+                      className="inline-flex items-center justify-center rounded-lg bg-gray-100 p-2 text-gray-600 transition-all duration-200 hover:bg-gray-200 hover:text-gray-900 active:scale-[0.98] dark:bg-[#202020] dark:text-gray-400 dark:hover:bg-[#292929] dark:hover:text-white"
+                    >
+                      <Eye size={14} />
+                    </Link>
+
                     {onEdit && (
                       <button
                         type="button"
                         onClick={() => onEdit(product)}
                         disabled={deletingId === product.id}
                         title="Edit produk"
-                        className="inline-flex flex-1 items-center justify-center rounded-lg bg-white p-2 text-gray-600 transition-all duration-200 hover:bg-gray-100 hover:text-gray-900 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#202020] dark:text-gray-400 dark:hover:bg-[#292929] dark:hover:text-white"
+                        className="inline-flex items-center justify-center rounded-lg bg-gray-100 p-2 text-gray-600 transition-all duration-200 hover:bg-gray-200 hover:text-gray-900 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-[#202020] dark:text-gray-400 dark:hover:bg-[#292929] dark:hover:text-white"
                       >
                         <Pencil size={14} />
                       </button>
@@ -229,7 +238,7 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
                       onClick={() => handleDelete(product)}
                       disabled={deletingId === product.id}
                       title="Hapus produk"
-                      className="inline-flex flex-1 items-center justify-center rounded-lg bg-red-50 p-2 text-red-600 transition-all duration-200 hover:bg-red-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-950/20 dark:text-red-400 dark:hover:bg-red-950/40"
+                      className="inline-flex items-center justify-center rounded-lg bg-red-50 p-2 text-red-600 transition-all duration-200 hover:bg-red-100 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 dark:bg-red-950/20 dark:text-red-400 dark:hover:bg-red-950/40"
                     >
                       <Trash2 size={14} />
                     </button>

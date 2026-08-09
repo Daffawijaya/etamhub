@@ -90,21 +90,27 @@ export async function POST(request: Request) {
       );
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const sourceBuffer = Buffer.from(await file.arrayBuffer());
 
-    const webpBuffer = await sharp(buffer)
+    const webpBuffer = await sharp(sourceBuffer)
       .rotate()
       .webp({
         quality: 82,
       })
       .toBuffer();
 
+    // Buat ArrayBuffer baru yang benar-benar standalone.
+    // Ini mencegah SharedArrayBuffer dari Buffer/Sharp diteruskan
+    // ke Supabase Storage.
+    const uploadBuffer = new ArrayBuffer(webpBuffer.byteLength);
+    new Uint8Array(uploadBuffer).set(webpBuffer);
+
     const fileName = `${crypto.randomUUID()}.webp`;
     const filePath = `${productId}/${fileName}`;
 
     const { error: uploadError } = await supabase.storage
       .from(BUCKET_NAME)
-      .upload(filePath, webpBuffer, {
+      .upload(filePath, uploadBuffer, {
         contentType: "image/webp",
         cacheControl: "31536000",
         upsert: false,
