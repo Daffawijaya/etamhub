@@ -216,75 +216,32 @@ export async function PUT(
     }
   }
 
-  const updated = {
-    ...oldData,
-    ...umkmData,
-    id: oldData.id,
-    created_at: oldData.created_at,
-    published: oldData.published,
-    approval_status: oldData.approval_status,
-    approved_by: oldData.approved_by,
-    approved_at: oldData.approved_at,
-    updated_at: now,
-  };
-
-  const { error: approvalError } = await supabaseAdmin
+  const { data: updatedData, error: updateError } = await supabaseAdmin
     .from("umkm")
     .update({
-      approval_status: "pending",
+      ...umkmData,
+      approval_status: "approved",
       updated_at: now,
     })
-    .eq("id", id);
+    .eq("id", id)
+    .select()
+    .single();
 
-  if (approvalError) {
+  if (updateError) {
     return NextResponse.json(
       {
-        message: approvalError.message,
+        message: updateError.message,
       },
       {
         status: 500,
       },
     );
   }
-
-  const { error: requestError } = await supabaseAdmin
-    .from("umkm_requests")
-    .insert({
-      id: crypto.randomUUID(),
-      umkm_id: id,
-      action: "update",
-      payload: {
-        before: oldData,
-        after: updated,
-      },
-      user_id: currentUser.id,
-      status: "pending",
-      created_at: now,
-      updated_at: now,
-    });
-
-  if (requestError) {
-    return NextResponse.json(
-      {
-        message: requestError.message,
-      },
-      {
-        status: 500,
-      },
-    );
-  }
-
-  await supabaseAdmin.from("notifications").insert({
-    id: crypto.randomUUID(),
-    type: "request",
-    title: `Permintaan update UMKM ${updated.nama}`,
-    created_at: now,
-    read: false,
-  });
 
   return NextResponse.json({
     success: true,
-    message: "Perubahan menunggu persetujuan admin",
+    message: "UMKM berhasil diperbarui",
+    data: updatedData,
   });
 }
 
@@ -340,35 +297,7 @@ export async function DELETE(
 
   const now = new Date().toISOString();
 
-  const { error } = await supabaseAdmin.from("umkm_requests").insert({
-    id: crypto.randomUUID(),
-    umkm_id: id,
-    action: "delete",
-    payload: target,
-    user_id: currentUser.id,
-    status: "pending",
-    created_at: now,
-    updated_at: now,
-  });
-
-  const { error: approvalError } = await supabaseAdmin
-    .from("umkm")
-    .update({
-      approval_status: "pending",
-      updated_at: now,
-    })
-    .eq("id", id);
-
-  if (approvalError) {
-    return NextResponse.json(
-      {
-        message: approvalError.message,
-      },
-      {
-        status: 500,
-      },
-    );
-  }
+  const { error } = await supabaseAdmin.from("umkm").delete().eq("id", id);
 
   if (error) {
     return NextResponse.json(
@@ -381,16 +310,8 @@ export async function DELETE(
     );
   }
 
-  await supabaseAdmin.from("notifications").insert({
-    id: crypto.randomUUID(),
-    type: "request",
-    title: `Permintaan hapus UMKM ${target.nama}`,
-    created_at: now,
-    read: false,
-  });
-
   return NextResponse.json({
     success: true,
-    message: "Permintaan hapus menunggu persetujuan admin",
+    message: "UMKM berhasil dihapus",
   });
 }

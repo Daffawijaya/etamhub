@@ -126,7 +126,7 @@ export default async function UserUmkmPage() {
                     {umkm.approval_status === "approved" && (
                       <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
                         <CheckCircle2 size={14} />
-                        Disetujui
+                        Terverifikasi
                       </span>
                     )}
 

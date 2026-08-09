@@ -84,7 +84,7 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
     <section>
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
             Produk
           </h2>
         </div>
@@ -108,7 +108,7 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
       )}
 
       {products.length === 0 ? (
-        <div className="mt-4 flex min-h-48 flex-col items-center justify-center rounded-xl bg-gray-50 px-6 py-10 text-center dark:bg-[#151515]">
+        <div className="mt-4 flex min-h-48 flex-col items-center justify-center rounded-xl bg-white px-6 py-10 text-center dark:bg-dark-card">
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
             <Plus size={18} />
           </div>

@@ -364,6 +364,8 @@ export async function POST(req: Request) {
         ...umkmData,
         owner_id: user.id,
         published: false,
+        approval_status: "approved",
+        approved_at: now,
         created_at: now,
         updated_at: now,
       })
@@ -371,14 +373,6 @@ export async function POST(req: Request) {
       .single();
 
     if (error) throw error;
-
-    await supabaseAdmin.from("notifications").insert({
-      id: crypto.randomUUID(),
-      type: "request",
-      title: `Permintaan tambah UMKM ${data.nama}`,
-      created_at: now,
-      read: false,
-    });
 
     return NextResponse.json(data);
   } catch (error: any) {
