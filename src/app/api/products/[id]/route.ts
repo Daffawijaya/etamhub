@@ -26,6 +26,19 @@ type RouteContext = {
   }>;
 };
 
+const normalizeLegalitas = (legalitas: ProductLegalitasInput[]) =>
+  Array.from(
+    new Map(
+      legalitas.map((item) => [
+        `${item.jenis}:${item.kode ?? ""}`,
+        {
+          jenis: item.jenis,
+          kode: item.kode ?? null,
+        },
+      ]),
+    ).values(),
+  );
+
 export async function GET(_request: NextRequest, context: RouteContext) {
   try {
     const { id } = await context.params;
@@ -107,9 +120,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       gambar,
       is_available,
       legalitas,
-    } = body as ProductUpdateInput & {
-      legalitas?: ProductLegalitasInput[];
-    };
+    } = body as ProductUpdateInput;
 
     const { data: existingProduct, error: existingProductError } =
       await getExistingProduct(id);
@@ -146,6 +157,32 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
 
     const targetUmkmId = umkm_id ?? existingProduct.umkm_id;
 
+    const { data: targetUmkm, error: targetUmkmError } =
+      await getUmkmById(targetUmkmId);
+
+    if (targetUmkmError) {
+      console.error("Check target UMKM error:", targetUmkmError);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Gagal memeriksa UMKM",
+          error: targetUmkmError.message,
+        },
+        { status: 500 },
+      );
+    }
+
+    if (!targetUmkm) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "UMKM tidak ditemukan",
+        },
+        { status: 404 },
+      );
+    }
+
     let updatePayload: Record<string, unknown>;
 
     try {
@@ -169,33 +206,7 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
       );
     }
 
-    if (umkm_id !== undefined) {
-      const { data: targetUmkm, error: targetUmkmError } =
-        await getUmkmById(targetUmkmId);
-
-      if (targetUmkmError) {
-        console.error("Check target UMKM error:", targetUmkmError);
-
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Gagal memeriksa UMKM",
-            error: targetUmkmError.message,
-          },
-          { status: 500 },
-        );
-      }
-
-      if (!targetUmkm) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "UMKM tidak ditemukan",
-          },
-          { status: 404 },
-        );
-      }
-    }
+    let normalizedLegalitas: ProductLegalitasInput[] = [];
 
     if (legalitas !== undefined) {
       if (!Array.isArray(legalitas)) {
@@ -208,34 +219,82 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
         );
       }
 
-      const normalizedLegalitas: ProductLegalitasInput[] = legalitas.filter(
-        (item): item is ProductLegalitasInput =>
-          item !== null &&
-          typeof item === "object" &&
-          ["halal", "pirt", "haki", "kbli"].includes(item.jenis),
-      );
+      for (const item of legalitas) {
+        if (
+          !item ||
+          typeof item !== "object" ||
+          !["halal", "pirt", "haki", "kbli"].includes(item.jenis)
+        ) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "Jenis legalitas tidak valid",
+            },
+            { status: 400 },
+          );
+        }
 
-      const invalidLegalitas = legalitas.length !== normalizedLegalitas.length;
-
-      if (invalidLegalitas) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Jenis legalitas tidak valid",
-          },
-          { status: 400 },
-        );
+        if (item.jenis === "kbli" && !item.kode) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "Kode KBLI wajib diisi",
+            },
+            { status: 400 },
+          );
+        }
       }
 
-      if (normalizedLegalitas.some((item) => item.jenis === "kbli" && !item.kode)) {
-        return NextResponse.json(
-          {
-            success: false,
-            message: "Kode KBLI wajib diisi",
-          },
-          { status: 400 },
-        );
+      const availableKbli = Array.isArray(targetUmkm.kbli)
+        ? targetUmkm.kbli.filter(
+            (item): item is string =>
+              typeof item === "string" && item.trim().length > 0,
+          )
+        : [];
+
+      for (const item of legalitas) {
+        if (item.jenis === "halal" && !targetUmkm.halal) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "UMKM tidak memiliki legalitas Halal",
+            },
+            { status: 400 },
+          );
+        }
+
+        if (item.jenis === "pirt" && !targetUmkm.pirt) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "UMKM tidak memiliki legalitas PIRT",
+            },
+            { status: 400 },
+          );
+        }
+
+        if (item.jenis === "haki" && !targetUmkm.haki) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: "UMKM tidak memiliki legalitas HAKI",
+            },
+            { status: 400 },
+          );
+        }
+
+        if (item.jenis === "kbli" && !availableKbli.includes(item.kode!)) {
+          return NextResponse.json(
+            {
+              success: false,
+              message: `KBLI ${item.kode} tidak terdaftar pada UMKM`,
+            },
+            { status: 400 },
+          );
+        }
       }
+
+      normalizedLegalitas = normalizeLegalitas(legalitas);
     }
 
     const { data: product, error: productError } = await updateProduct(
@@ -267,23 +326,13 @@ export async function PATCH(request: NextRequest, context: RouteContext) {
     }
 
     if (legalitas !== undefined) {
-      const normalizedLegalitas: ProductLegalitasInput[] = legalitas.map(
-        (item) => ({
-          jenis: item.jenis,
-          kode: item.kode ?? null,
-        }),
-      );
-
       const { error: deleteLegalitasError } = await supabase
         .from("product_legalitas")
         .delete()
         .eq("product_id", id);
 
       if (deleteLegalitasError) {
-        console.error(
-          "Delete product legalitas error:",
-          deleteLegalitasError,
-        );
+        console.error("Delete product legalitas error:", deleteLegalitasError);
 
         return NextResponse.json(
           {
@@ -409,19 +458,61 @@ export async function DELETE(_request: NextRequest, context: RouteContext) {
       );
     }
 
-    const { error } = await deleteProduct(id);
+    const { data: storageFiles, error: storageListError } =
+      await supabase.storage.from("product-images").list(id, {
+        limit: 100,
+      });
 
-    if (error) {
-      console.error("DELETE /api/products/[id] error:", error);
+    if (storageListError) {
+      console.error("List product images error:", storageListError);
+
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Gagal memeriksa gambar produk",
+          error: storageListError.message,
+        },
+        { status: 500 },
+      );
+    }
+
+    const storagePaths = (storageFiles ?? [])
+      .filter((file) => file.name)
+      .map((file) => `${id}/${file.name}`);
+
+    const { error: deleteError } = await deleteProduct(id);
+
+    if (deleteError) {
+      console.error("DELETE /api/products/[id] error:", deleteError);
 
       return NextResponse.json(
         {
           success: false,
           message: "Gagal menghapus produk",
-          error: error.message,
+          error: deleteError.message,
         },
         { status: 500 },
       );
+    }
+
+    if (storagePaths.length > 0) {
+      const { error: storageDeleteError } = await supabase.storage
+        .from("product-images")
+        .remove(storagePaths);
+
+      if (storageDeleteError) {
+        console.error(
+          "Delete product images from storage error:",
+          storageDeleteError,
+        );
+
+        return NextResponse.json({
+          success: true,
+          message:
+            "Produk berhasil dihapus, tetapi gambar produk gagal dihapus dari storage.",
+          warning: storageDeleteError.message,
+        });
+      }
     }
 
     return NextResponse.json({
