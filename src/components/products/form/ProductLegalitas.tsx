@@ -48,102 +48,150 @@ export default function ProductLegalitas({
   const hasLegalitas =
     hasHalal || hasPirt || hasHaki || availableKbli.length > 0;
 
+  const itemClassName = (checked: boolean) =>
+    `flex items-center gap-3 rounded-lg px-3 py-2.5 transition-all duration-200 ${
+      checked
+        ? "bg-emerald-50 dark:bg-emerald-950/30"
+        : "bg-white dark:bg-[#242424]"
+    } ${
+      disabled
+        ? "cursor-not-allowed opacity-60"
+        : "cursor-pointer hover:bg-zinc-100 dark:hover:bg-[#292929]"
+    }`;
+
   return (
     <div>
-      <div className="mb-3">
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
+      <div>
+        <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
           Legalitas Produk
-        </h3>
+        </p>
 
-        <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-          Pilih legalitas yang berlaku untuk produk ini.
+        <p className="mt-1 text-xs leading-5 text-zinc-500 dark:text-zinc-500">
+          Pilih legalitas yang berlaku untuk produk ini. Setiap jenis legalitas
+          berdiri sendiri dan dapat dipilih bersamaan.
         </p>
       </div>
 
-      <div className="space-y-3">
-        {hasHalal && (
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-            <input
-              type="checkbox"
-              checked={selected.halal}
-              onChange={() => onToggle("halal")}
-              disabled={disabled}
-              className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-            />
+      {hasLegalitas ? (
+        <div className="mt-4 space-y-3">
+          {(hasHalal || hasPirt || hasHaki) && (
+            <div className="rounded-lg bg-zinc-50 p-3 dark:bg-[#202020]">
+              <p className="mb-2 px-1 text-xs font-medium text-zinc-500 dark:text-zinc-500">
+                Sertifikasi / Legalitas
+              </p>
 
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
-              Halal
-            </span>
-          </label>
-        )}
+              <div className="grid gap-2 sm:grid-cols-3">
+                {hasHalal && (
+                  <label className={itemClassName(selected.halal)}>
+                    <input
+                      type="checkbox"
+                      checked={selected.halal}
+                      onChange={() => onToggle("halal")}
+                      disabled={disabled}
+                      className="h-4 w-4 rounded border-zinc-300 text-emerald-600 accent-emerald-600 focus:ring-2 focus:ring-emerald-500/30 dark:border-zinc-600 dark:bg-[#202020]"
+                    />
 
-        {hasPirt && (
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-            <input
-              type="checkbox"
-              checked={selected.pirt}
-              onChange={() => onToggle("pirt")}
-              disabled={disabled}
-              className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-            />
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                        Halal
+                      </p>
 
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
-              PIRT
-            </span>
-          </label>
-        )}
+                      <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-500">
+                        {legalitas.halal}
+                      </p>
+                    </div>
+                  </label>
+                )}
 
-        {hasHaki && (
-          <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-            <input
-              type="checkbox"
-              checked={selected.haki}
-              onChange={() => onToggle("haki")}
-              disabled={disabled}
-              className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-            />
+                {hasPirt && (
+                  <label className={itemClassName(selected.pirt)}>
+                    <input
+                      type="checkbox"
+                      checked={selected.pirt}
+                      onChange={() => onToggle("pirt")}
+                      disabled={disabled}
+                      className="h-4 w-4 rounded border-zinc-300 text-emerald-600 accent-emerald-600 focus:ring-2 focus:ring-emerald-500/30 dark:border-zinc-600 dark:bg-[#202020]"
+                    />
 
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
-              HAKI
-            </span>
-          </label>
-        )}
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                        PIRT
+                      </p>
 
-        {availableKbli.length > 0 && (
-          <div className="rounded-xl border border-gray-200 p-4 dark:border-gray-700">
-            <p className="mb-3 text-sm font-medium text-gray-900 dark:text-white">
-              KBLI
-            </p>
+                      <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-500">
+                        {legalitas.pirt}
+                      </p>
+                    </div>
+                  </label>
+                )}
 
-            <div className="space-y-2">
-              {availableKbli.map((kode) => (
-                <label
-                  key={kode}
-                  className="flex cursor-pointer items-center gap-3"
-                >
-                  <input
-                    type="checkbox"
-                    checked={selected.kbli.includes(kode)}
-                    onChange={() => onToggleKbli(kode)}
-                    disabled={disabled}
-                    className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
-                  />
+                {hasHaki && (
+                  <label className={itemClassName(selected.haki)}>
+                    <input
+                      type="checkbox"
+                      checked={selected.haki}
+                      onChange={() => onToggle("haki")}
+                      disabled={disabled}
+                      className="h-4 w-4 rounded border-zinc-300 text-emerald-600 accent-emerald-600 focus:ring-2 focus:ring-emerald-500/30 dark:border-zinc-600 dark:bg-[#202020]"
+                    />
 
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    {kode}
-                  </span>
-                </label>
-              ))}
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                        HAKI
+                      </p>
+
+                      <p className="mt-0.5 truncate text-xs text-zinc-500 dark:text-zinc-500">
+                        {legalitas.haki}
+                      </p>
+                    </div>
+                  </label>
+                )}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {!hasLegalitas && (
-          <div className="rounded-xl border border-dashed border-gray-300 p-4 text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
-            UMKM belum memiliki legalitas yang dapat digunakan untuk produk.
-          </div>
-        )}
-      </div>
+          {availableKbli.length > 0 && (
+            <div className="rounded-lg bg-zinc-50 p-3 dark:bg-[#202020]">
+              <div className="mb-2 px-1">
+                <p className="text-xs font-medium text-zinc-500 dark:text-zinc-500">
+                  KBLI
+                </p>
+
+                <p className="mt-0.5 text-xs text-zinc-400 dark:text-zinc-600">
+                  Pilih satu KBLI yang paling sesuai dengan produk.
+                </p>
+              </div>
+
+              <div className="grid gap-2 sm:grid-cols-2">
+                {availableKbli.map((kode) => {
+                  const checked = selected.kbli.includes(kode);
+
+                  return (
+                    <label key={kode} className={itemClassName(checked)}>
+                      <input
+                        type="radio"
+                        name="product-legalitas-kbli"
+                        checked={checked}
+                        onChange={() => onToggleKbli(kode)}
+                        disabled={disabled}
+                        className="h-4 w-4 border-zinc-300 text-emerald-600 accent-emerald-600 focus:ring-2 focus:ring-emerald-500/30 dark:border-zinc-600 dark:bg-[#202020]"
+                      />
+
+                      <span className="min-w-0 truncate text-sm text-zinc-700 dark:text-zinc-300">
+                        {kode}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="mt-4 rounded-lg bg-zinc-50 px-4 py-3 text-sm text-zinc-500 dark:bg-[#202020] dark:text-zinc-500">
+          UMKM belum memiliki legalitas yang dapat digunakan untuk produk.
+        </div>
+      )}
     </div>
   );
 }

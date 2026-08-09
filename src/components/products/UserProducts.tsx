@@ -18,7 +18,6 @@ type Props = {
 };
 
 export default function UserProducts({ umkmId, legalitas }: Props) {
-    console.log("USER PRODUCTS LEGALITAS:", legalitas);
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [refreshKey, setRefreshKey] = useState(0);
@@ -46,28 +45,28 @@ export default function UserProducts({ umkmId, legalitas }: Props) {
 
   if (showForm) {
     return (
-      <section className="space-y-5">
-        <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            {editingProduct ? "Edit Produk" : "Tambah Produk"}
-          </h2>
+      <section className="rounded-xl bg-white p-5 dark:bg-[#1b1b1b] sm:p-6">
+        <div className="mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
+              {editingProduct ? "Edit Produk" : "Tambah Produk"}
+            </h2>
 
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {editingProduct
-              ? "Perbarui informasi produk dan legalitasnya."
-              : "Tambahkan produk baru untuk UMKM Anda."}
-          </p>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+              {editingProduct
+                ? "Perbarui informasi produk dan legalitasnya."
+                : "Tambahkan produk baru untuk UMKM Anda."}
+            </p>
+          </div>
         </div>
 
-        <div className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-gray-900">
-          <ProductForm
-            umkmId={umkmId}
-            legalitas={legalitas}
-            product={editingProduct ?? undefined}
-            onSuccess={handleSuccess}
-            onCancel={handleCancel}
-          />
-        </div>
+        <ProductForm
+          umkmId={umkmId}
+          legalitas={legalitas}
+          product={editingProduct ?? undefined}
+          onSuccess={handleSuccess}
+          onCancel={handleCancel}
+        />
       </section>
     );
   }

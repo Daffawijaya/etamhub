@@ -145,43 +145,37 @@ export default function ProductForm({
   }, [product, legalitas, initialImages]);
 
   const toggleLegalitas = (jenis: ProductLegalitasJenis) => {
-    setSelectedLegalitas((current) => {
-      if (jenis === "halal") {
-        return {
-          ...current,
-          halal: !current.halal,
-        };
-      }
+    if (jenis === "halal") {
+      setSelectedLegalitas((current) => ({
+        ...current,
+        halal: !current.halal,
+      }));
 
-      if (jenis === "pirt") {
-        return {
-          ...current,
-          pirt: !current.pirt,
-        };
-      }
+      return;
+    }
 
-      if (jenis === "haki") {
-        return {
-          ...current,
-          haki: !current.haki,
-        };
-      }
+    if (jenis === "pirt") {
+      setSelectedLegalitas((current) => ({
+        ...current,
+        pirt: !current.pirt,
+      }));
 
-      return current;
-    });
+      return;
+    }
+
+    if (jenis === "haki") {
+      setSelectedLegalitas((current) => ({
+        ...current,
+        haki: !current.haki,
+      }));
+    }
   };
 
   const toggleKbli = (kode: string) => {
-    setSelectedLegalitas((current) => {
-      const exists = current.kbli.includes(kode);
-
-      return {
-        ...current,
-        kbli: exists
-          ? current.kbli.filter((item) => item !== kode)
-          : [...current.kbli, kode],
-      };
-    });
+    setSelectedLegalitas((current) => ({
+      ...current,
+      kbli: current.kbli.includes(kode) ? [] : [kode],
+    }));
   };
 
   const getLegalitasPayload = (): NonNullable<
@@ -396,7 +390,7 @@ export default function ProductForm({
             type="button"
             onClick={onCancel}
             disabled={isSubmitting}
-            className="rounded-xl border border-gray-300 px-5 py-3 text-sm font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+            className="inline-flex items-center justify-center rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-200 hover:bg-gray-200 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 focus:ring-offset-white disabled:cursor-not-allowed disabled:opacity-60 dark:bg-[#242424] dark:text-gray-300 dark:hover:bg-[#2c2c2c] dark:focus:ring-gray-600 dark:focus:ring-offset-[#1b1b1b]"
           >
             Batal
           </button>
@@ -405,7 +399,7 @@ export default function ProductForm({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="rounded-xl bg-green-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-green-700 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-emerald-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-white dark:bg-emerald-500 dark:hover:bg-emerald-400 dark:focus:ring-emerald-400 dark:focus:ring-offset-[#1b1b1b] disabled:cursor-not-allowed disabled:bg-emerald-300 dark:disabled:bg-emerald-900 disabled:text-white/80 dark:disabled:text-white/50"
         >
           {uploading
             ? "Mengupload gambar..."

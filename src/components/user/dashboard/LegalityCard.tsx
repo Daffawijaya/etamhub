@@ -16,13 +16,18 @@ type Props = {
 export default function LegalityCard({ legalitas }: Props) {
   const items = [
     {
+      label: "NPWP",
+      status: legalitas.npwp,
+    },
+    {
       label: "NIB",
       status: legalitas.nib,
     },
     {
-      label: "NPWP",
-      status: legalitas.npwp,
+      label: "KBLI",
+      status: legalitas.kbli,
     },
+
     {
       label: "Halal",
       status: legalitas.halal,
@@ -34,10 +39,6 @@ export default function LegalityCard({ legalitas }: Props) {
     {
       label: "HAKI",
       status: legalitas.haki,
-    },
-    {
-      label: "KBLI",
-      status: legalitas.kbli,
     },
   ];
 

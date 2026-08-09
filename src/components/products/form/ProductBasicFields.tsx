@@ -27,13 +27,16 @@ export default function ProductBasicFields({
   onSatuanChange,
   onAvailableChange,
 }: Props) {
+  const inputClassName =
+    "w-full rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-2.5 text-sm text-zinc-900 outline-none transition-all duration-200 placeholder:text-zinc-400 focus:border-emerald-500 focus:bg-white focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600 dark:focus:border-emerald-500 dark:focus:bg-zinc-900";
+
+  const labelClassName =
+    "mb-2 block text-sm font-medium text-zinc-800 dark:text-zinc-200";
+
   return (
-    <>
+    <div className="space-y-5">
       <div>
-        <label
-          htmlFor="product-name"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-        >
+        <label htmlFor="product-name" className={labelClassName}>
           Nama Produk
         </label>
 
@@ -44,15 +47,12 @@ export default function ProductBasicFields({
           onChange={(event) => onNamaChange(event.target.value)}
           placeholder="Masukkan nama produk"
           disabled={disabled}
-          className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+          className={inputClassName}
         />
       </div>
 
       <div>
-        <label
-          htmlFor="product-description"
-          className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-        >
+        <label htmlFor="product-description" className={labelClassName}>
           Deskripsi
         </label>
 
@@ -61,23 +61,20 @@ export default function ProductBasicFields({
           value={deskripsi}
           onChange={(event) => onDeskripsiChange(event.target.value)}
           placeholder="Masukkan deskripsi produk"
-          rows={4}
+          rows={3}
           disabled={disabled}
-          className="w-full resize-none rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+          className={`${inputClassName} resize-none leading-6`}
         />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label
-            htmlFor="product-price"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="product-price" className={labelClassName}>
             Harga
           </label>
 
-          <div className="flex overflow-hidden rounded-xl border border-gray-300 bg-white focus-within:border-green-500 focus-within:ring-2 focus-within:ring-green-500/20 dark:border-gray-700 dark:bg-gray-900">
-            <span className="flex items-center border-r border-gray-300 px-4 text-sm text-gray-500 dark:border-gray-700 dark:text-gray-400">
+          <div className="flex overflow-hidden rounded-lg border border-zinc-200 bg-zinc-50 transition-all duration-200 focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-2 focus-within:ring-emerald-500/20 dark:border-zinc-800 dark:bg-zinc-900 dark:focus-within:border-emerald-500 dark:focus-within:bg-zinc-900">
+            <span className="flex items-center border-r border-zinc-200 px-4 text-sm font-medium text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
               Rp
             </span>
 
@@ -95,16 +92,13 @@ export default function ProductBasicFields({
               }
               placeholder="0"
               disabled={disabled}
-              className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-gray-900 outline-none dark:text-white"
+              className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm text-zinc-900 outline-none placeholder:text-zinc-400 dark:text-zinc-100 dark:placeholder:text-zinc-600"
             />
           </div>
         </div>
 
         <div>
-          <label
-            htmlFor="product-unit"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-          >
+          <label htmlFor="product-unit" className={labelClassName}>
             Satuan
           </label>
 
@@ -115,24 +109,28 @@ export default function ProductBasicFields({
             onChange={(event) => onSatuanChange(event.target.value)}
             placeholder="Contoh: pcs, kg, botol, pack"
             disabled={disabled}
-            className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-green-500 focus:ring-2 focus:ring-green-500/20 disabled:cursor-not-allowed disabled:opacity-60 dark:border-gray-700 dark:bg-gray-900 dark:text-white"
+            className={inputClassName}
           />
         </div>
       </div>
 
-      <label className="flex cursor-pointer items-center gap-3">
+      <label
+        className={`flex w-fit items-center gap-3 ${
+          disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+        }`}
+      >
         <input
           type="checkbox"
           checked={isAvailable}
           onChange={(event) => onAvailableChange(event.target.checked)}
           disabled={disabled}
-          className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-500"
+          className="h-4 w-4 rounded border-zinc-300 text-emerald-600 accent-emerald-600 focus:ring-2 focus:ring-emerald-500/30 dark:border-zinc-700 dark:bg-zinc-900"
         />
 
-        <span className="text-sm font-medium text-gray-900 dark:text-white">
+        <span className="text-sm font-medium text-zinc-800 dark:text-zinc-200">
           Produk tersedia
         </span>
       </label>
-    </>
+    </div>
   );
 }

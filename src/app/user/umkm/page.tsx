@@ -37,7 +37,7 @@ export default async function UserUmkmPage() {
 
   return (
     <main>
-      <div className="space-y-6 px-6">
+      <div className="space-y-6 px-6 pb-6">
         {!umkm ? (
           <div className="rounded-2xl bg-white p-8 text-center dark:bg-dark-card">
             <h2 className="mt-4 text-lg font-semibold text-dark dark:text-light">
