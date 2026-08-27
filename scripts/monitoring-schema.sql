@@ -9,14 +9,14 @@ CREATE TABLE IF NOT EXISTS umkm_monitoring (
   jumlah_tenaga_kerja integer,
   omzet bigint,
 
-  -- Legalitas
+  -- Legalitas & Usaha
   halal text,
   pirt text,
   haki text,
+  nib text,
   kbli text[],
 
   -- Sosmed
-  whatsapp text,
   instagram text,
   facebook text,
   tiktok text,

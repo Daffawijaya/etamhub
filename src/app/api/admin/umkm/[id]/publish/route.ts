@@ -9,7 +9,7 @@ export async function PATCH(
   try {
     const user = await getCurrentUser();
 
-    if (!user || !["admin", "super_admin"].includes(user.role ?? "")) {
+    if (!user || !["admin", "super_admin", "admin_kecamatan"].includes(user.role ?? "")) {
       return NextResponse.json(
         {
           message: "Unauthorized",

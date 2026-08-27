@@ -8,6 +8,7 @@ import UmkmTabs from "./UmkmTabs";
 import UmkmPendampinganTab from "./UmkmPendampinganTab";
 
 type Props = {
+  umkmId: string;
   nama: string;
   kategori: string;
   subkategori: string;
@@ -33,6 +34,7 @@ type Props = {
 };
 
 export default function UmkmInfo({
+  umkmId,
   nama,
   kategori,
   subkategori,
@@ -163,25 +165,7 @@ export default function UmkmInfo({
           )}
 
           {activeTab === "pendampingan" && (
-            <UmkmPendampinganTab
-              data={{
-                nama,
-                deskripsi,
-                gambar,
-                whatsapp,
-                instagram,
-                facebook,
-                tiktok,
-                lat,
-                lng,
-                nib,
-                npwp,
-                halal,
-                pirt,
-                haki,
-                kbli,
-              }}
-            />
+            <UmkmPendampinganTab umkmId={umkmId} />
           )}
         </div>
       </div>

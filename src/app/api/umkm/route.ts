@@ -52,7 +52,9 @@ export async function GET(req: Request) {
 
     // Admin kecamatan hanya melihat UMKM di kecamatannya
     if (user?.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
-      umkmQuery = umkmQuery.in("kecamatan_id", user.kecamatanIds);
+      umkmQuery = umkmQuery.or(
+        `kecamatan_id.in.(${user.kecamatanIds.join(",")}),kecamatan.in.(${user.kecamatan.join(",")})`,
+      );
     }
 
     if (kecamatan) {
@@ -97,7 +99,9 @@ export async function GET(req: Request) {
       .select("kecamatan, kategori");
 
     if (user?.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
-      filtersQuery = filtersQuery.in("kecamatan_id", user.kecamatanIds);
+      filtersQuery = filtersQuery.or(
+        `kecamatan_id.in.(${user.kecamatanIds.join(",")}),kecamatan.in.(${user.kecamatan.join(",")})`,
+      );
     }
 
     const { data: filtersData } = await filtersQuery;
@@ -315,6 +319,28 @@ export async function POST(req: Request) {
       });
 
     if (error) throw error;
+
+    // Notify admin kecamatan who are assigned to this kecamatan
+    if (body.kecamatan_id) {
+      const { data: adminKecamatan } = await supabaseAdmin
+        .from("admin_kecamatan_kecamatan")
+        .select("admin_id")
+        .eq("kecamatan_id", body.kecamatan_id);
+
+      if (adminKecamatan && adminKecamatan.length > 0) {
+        const notifications = adminKecamatan.map((rel) => ({
+          id: crypto.randomUUID(),
+          admin_id: rel.admin_id,
+          type: "verification",
+          title: `UMKM "${body.nama}" menunggu verifikasi`,
+          link: "/admin/verifikasi",
+          created_at: now,
+          read: false,
+        }));
+
+        await supabaseAdmin.from("notifications").insert(notifications);
+      }
+    }
 
     return NextResponse.json({
       success: true,

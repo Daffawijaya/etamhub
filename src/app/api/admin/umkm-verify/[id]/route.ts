@@ -122,8 +122,10 @@ export async function PUT(
       if (payload.owner_id) {
         await supabaseAdmin.from("notifications").insert({
           id: crypto.randomUUID(),
+          user_id: payload.owner_id,
           type: "approval",
-          title: `UMKM "${payload.nama}" disetujui`,
+          title: `UMKM "${payload.nama}" disetujui dan sudah dipublikasikan`,
+          link: "/user/umkm",
           created_at: now,
           read: false,
         });
@@ -134,8 +136,10 @@ export async function PUT(
       if (payload.owner_id) {
         await supabaseAdmin.from("notifications").insert({
           id: crypto.randomUUID(),
+          user_id: payload.owner_id,
           type: "rejection",
           title: `UMKM "${payload.nama}" ditolak${reason ? `: ${reason}` : ""}`,
+          link: "/user/umkm",
           created_at: now,
           read: false,
         });

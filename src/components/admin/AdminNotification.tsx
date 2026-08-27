@@ -1,21 +1,35 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Bell, Upload, Pencil, Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  Bell,
+  Upload,
+  Pencil,
+  Plus,
+  Trash2,
+  ShieldCheck,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
 
 interface Notification {
   id: string;
-  type: "create" | "update" | "delete" | "import";
+  type: "create" | "update" | "delete" | "import" | "verification" | "approval" | "rejection";
   title: string;
+  link?: string;
   created_at: string;
   read: boolean;
 }
 
-const icons = {
+const icons: Record<string, any> = {
   create: Plus,
   update: Pencil,
   delete: Trash2,
   import: Upload,
+  verification: ShieldCheck,
+  approval: CheckCircle2,
+  rejection: XCircle,
 };
 
 function getRelativeTime(dateString: string) {
@@ -40,6 +54,7 @@ function getRelativeTime(dateString: string) {
 export default function AdminNotification() {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
+  const router = useRouter();
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +66,8 @@ export default function AdminNotification() {
         cache: "no-store",
       });
 
-      setNotifications(await res.json());
+      const data = await res.json();
+      setNotifications(Array.isArray(data) ? data : []);
     } catch (err) {
       console.error(err);
     }
@@ -110,6 +126,15 @@ export default function AdminNotification() {
     setOpen((prev) => !prev);
   };
 
+  const handleNotificationClick = async (item: Notification) => {
+    setOpen(false);
+    await markAsRead();
+
+    if (item.link) {
+      router.push(item.link);
+    }
+  };
+
   return (
     <div ref={containerRef} className="relative">
       <button
@@ -128,9 +153,10 @@ export default function AdminNotification() {
             className="
               absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center
               rounded-full bg-red-500 text-[11px] font-medium text-white
+              animate-pulse
             "
           >
-            {unreadCount}
+            {unreadCount > 99 ? "99+" : unreadCount}
           </span>
         )}
       </button>
@@ -145,9 +171,16 @@ export default function AdminNotification() {
           "
         >
           <div className="border-b border-neutral-200 px-5 py-4 dark:border-neutral-800">
-            <h3 className="font-semibold text-gray-900 dark:text-white">
-              Notifikasi
-            </h3>
+            <div className="flex items-center justify-between">
+              <h3 className="font-semibold text-gray-900 dark:text-white">
+                Notifikasi
+              </h3>
+              {unreadCount > 0 && (
+                <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-600 dark:bg-red-900/30 dark:text-red-400">
+                  {unreadCount} baru
+                </span>
+              )}
+            </div>
           </div>
 
           {notifications.length === 0 ? (
@@ -158,15 +191,32 @@ export default function AdminNotification() {
                 const Icon = icons[item.type] ?? Plus;
 
                 return (
-                  <div
+                  <button
                     key={item.id}
-                    className="
-                      flex items-center gap-3 px-5 py-4
+                    onClick={() => handleNotificationClick(item)}
+                    className={`
+                      flex w-full items-center gap-3 px-5 py-4 text-left
                       transition-colors
                       hover:bg-gray-50 dark:hover:bg-neutral-800
-                    "
+                      ${!item.read ? "bg-blue-50/50 dark:bg-blue-900/10" : ""}
+                    `}
                   >
-                    <Icon size={16} className="shrink-0 text-gray-500" />
+                    <div
+                      className={`
+                        flex h-8 w-8 shrink-0 items-center justify-center rounded-full
+                        ${
+                          item.type === "verification"
+                            ? "bg-yellow-100 text-yellow-600 dark:bg-yellow-900/30 dark:text-yellow-400"
+                            : item.type === "approval"
+                              ? "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"
+                              : item.type === "rejection"
+                                ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400"
+                                : "bg-gray-100 text-gray-500 dark:bg-neutral-700 dark:text-neutral-400"
+                        }
+                      `}
+                    >
+                      <Icon size={14} />
+                    </div>
 
                     <div className="flex min-w-0 flex-1 items-center justify-between gap-3">
                       <p
@@ -188,7 +238,11 @@ export default function AdminNotification() {
                         {getRelativeTime(item.created_at)}
                       </span>
                     </div>
-                  </div>
+
+                    {!item.read && (
+                      <span className="h-2 w-2 shrink-0 rounded-full bg-blue-500" />
+                    )}
+                  </button>
                 );
               })}
             </div>

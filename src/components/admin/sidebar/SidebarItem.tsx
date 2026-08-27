@@ -7,9 +7,10 @@ import type { SidebarMenu } from "./sidebar-data";
 interface SidebarItemProps {
   menu: SidebarMenu;
   collapsed: boolean;
+  badge?: number;
 }
 
-export default function SidebarItem({ menu, collapsed }: SidebarItemProps) {
+export default function SidebarItem({ menu, collapsed, badge }: SidebarItemProps) {
   const pathname = usePathname();
 
   const Icon = menu.icon;
@@ -137,6 +138,19 @@ export default function SidebarItem({ menu, collapsed }: SidebarItemProps) {
       >
         {menu.label}
       </span>
+
+      {/* Badge */}
+      {badge !== undefined && badge > 0 && (
+        <span
+          className={`
+            absolute z-10 flex h-5 min-w-5 items-center justify-center
+            rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white
+            ${collapsed ? "-right-1 -top-1" : "right-3"}
+          `}
+        >
+          {badge > 99 ? "99+" : badge}
+        </span>
+      )}
 
       {/* Hover Overlay */}
       {!active && (

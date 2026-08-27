@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import SidebarItem from "./SidebarItem";
 import SidebarLogo from "./SidebarLogo";
@@ -13,6 +13,17 @@ export default function AdminSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [role, setRole] = useState<string | null>(null);
+  const [badges, setBadges] = useState<Record<string, number>>({});
+
+  const fetchBadges = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/badges", { cache: "no-store" });
+      if (res.ok) {
+        setBadges(await res.json());
+      }
+    } catch {}
+  }, []);
+
   useEffect(() => {
     fetch("/api/auth/me")
       .then((res) => res.json())
@@ -20,6 +31,17 @@ export default function AdminSidebar() {
         setRole(data.role);
       });
   }, []);
+
+  // Poll badges every 10 seconds
+  useEffect(() => {
+    if (!role) return;
+
+    fetchBadges();
+    const interval = setInterval(fetchBadges, 10000);
+
+    return () => clearInterval(interval);
+  }, [role, fetchBadges]);
+
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
 
@@ -88,7 +110,12 @@ export default function AdminSidebar() {
               return menu.roles.includes(role ?? "");
             })
             .map((menu) => (
-              <SidebarItem key={menu.href} menu={menu} collapsed={collapsed} />
+              <SidebarItem
+                key={menu.href}
+                menu={menu}
+                collapsed={collapsed}
+                badge={badges[menu.badgeKey ?? ""]}
+              />
             ))}
         </div>
       </nav>

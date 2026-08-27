@@ -6,7 +6,7 @@ import Link from "next/link";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 import { getUmkmImage } from "@/lib/getUmkmImage";
-import { Eye } from "lucide-react";
+import { Eye, Award } from "lucide-react";
 
 interface UmkmMonitoring {
   id: string;
@@ -22,6 +22,13 @@ interface UmkmMonitoring {
     jumlah_tenaga_kerja: number | null;
   } | null;
   monitoringCount: number;
+  badge: {
+    level: string;
+    label: string;
+    color: string;
+    bgColor: string;
+    description: string;
+  };
 }
 
 function formatRupiah(value: number | null) {
@@ -80,9 +87,17 @@ export default function MonitoringPage() {
 
                 {/* Info */}
                 <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white capitalize">
-                    {item.nama}
-                  </h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white capitalize">
+                      {item.nama}
+                    </h3>
+                    {item.badge && item.badge.level !== "none" && (
+                      <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}>
+                        <Award size={10} />
+                        {item.badge.label}
+                      </span>
+                    )}
+                  </div>
                   <p className="truncate text-sm text-slate-500 dark:text-slate-400">
                     {item.kecamatan} · {item.kategori}
                   </p>

@@ -27,11 +27,7 @@ export default function DashboardNavbar({
   };
 
   const Notification = () => {
-    if (role === "admin") {
-      return <AdminNotification />;
-    }
-
-    return null;
+    return <AdminNotification />;
   };
 
   const LogoutButton = () => (

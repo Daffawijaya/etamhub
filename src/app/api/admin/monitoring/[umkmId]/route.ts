@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { calculateBadge } from "@/lib/monitoring/badges";
 
 // =========================
 // GET — Monitoring history for a specific UMKM
@@ -45,9 +46,39 @@ export async function GET(
 
     if (monError) throw monError;
 
+    // Build initial data from UMKM record
+    const initial = {
+      omzet: umkm.omzet ?? null,
+      jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja ?? null,
+      halal: umkm.halal ?? null,
+      pirt: umkm.pirt ?? null,
+      haki: umkm.haki ?? null,
+      instagram: umkm.instagram ?? null,
+      facebook: umkm.facebook ?? null,
+      tiktok: umkm.tiktok ?? null,
+    };
+
+    // Build latest monitoring data (use latest monitoring entry, falling back to UMKM data)
+    const latestEntry = (monitorings ?? [])[0] ?? null;
+    const latest = latestEntry
+      ? {
+          omzet: latestEntry.omzet ?? initial.omzet,
+          jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? initial.jumlah_tenaga_kerja,
+          halal: latestEntry.halal ?? initial.halal,
+          pirt: latestEntry.pirt ?? initial.pirt,
+          haki: latestEntry.haki ?? initial.haki,
+          instagram: latestEntry.instagram ?? initial.instagram,
+          facebook: latestEntry.facebook ?? initial.facebook,
+          tiktok: latestEntry.tiktok ?? initial.tiktok,
+        }
+      : initial;
+
+    const badge = calculateBadge(initial, latest, (monitorings ?? []).length);
+
     return NextResponse.json({
       umkm,
       monitorings: monitorings ?? [],
+      badge,
     });
   } catch (error: any) {
     console.error("GET MONITORING HISTORY ERROR:", error);
@@ -116,9 +147,9 @@ export async function POST(
         halal: body.halal ?? null,
         pirt: body.pirt ?? null,
         haki: body.haki ?? null,
+        nib: body.nib ?? null,
         kbli: body.kbli ?? null,
 
-        whatsapp: body.whatsapp ?? null,
         instagram: body.instagram ?? null,
         facebook: body.facebook ?? null,
         tiktok: body.tiktok ?? null,

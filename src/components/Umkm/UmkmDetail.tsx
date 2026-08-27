@@ -30,6 +30,7 @@ type Props = {
 };
 
 export default function UmkmDetail({
+  id,
   nama,
   pemilik,
   kategori,
@@ -55,8 +56,6 @@ export default function UmkmDetail({
 
   return (
     <section className="relative overflow-hidden bg-light-bg dark:bg-dark">
-      {/* Background Glow */}
-
       <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-6">
         <div
           className="
@@ -79,6 +78,7 @@ export default function UmkmDetail({
           {/* Content */}
           <div className="w-full min-w-0">
             <UmkmInfo
+              umkmId={id}
               nama={nama}
               kategori={kategori}
               subkategori={subkategori}

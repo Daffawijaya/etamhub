@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import LoadingState from "@/components/LoadingState";
-import { Plus, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, Minus, Award, ArrowRight } from "lucide-react";
+import KBLISelect from "@/components/form/ui/KBLISelect";
 
 interface UmkmData {
   id: string;
@@ -17,8 +18,8 @@ interface UmkmData {
   halal: string | null;
   pirt: string | null;
   haki: string | null;
+  nib: string | null;
   kbli: string[] | null;
-  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -32,13 +33,28 @@ interface MonitoringEntry {
   halal: string | null;
   pirt: string | null;
   haki: string | null;
+  nib: string | null;
   kbli: string[] | null;
-  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
   kebutuhan_utama: string | null;
   catatan: string | null;
+}
+
+interface Badge {
+  level: "none" | "bronze" | "silver" | "gold" | "platinum";
+  label: string;
+  color: string;
+  bgColor: string;
+  description: string;
+  criteria: {
+    omzetIncrease: number | null;
+    tkChange: number | null;
+    legalitasAdded: number;
+    sosmedCount: number;
+    monitoringCount: number;
+  };
 }
 
 function formatRupiah(value: number | null) {
@@ -56,6 +72,101 @@ function formatDate(date: string) {
     month: "short",
     year: "numeric",
   });
+}
+
+function formatPercentage(value: number | null) {
+  if (value === null) return null;
+  const sign = value > 0 ? "+" : "";
+  return `${sign}${value}%`;
+}
+
+function CompareRow({
+  label,
+  initial,
+  latest,
+  format = "text",
+  showTrend = true,
+}: {
+  label: string;
+  initial: number | null;
+  latest: number | null;
+  format?: "text" | "rupiah" | "number";
+  showTrend?: boolean;
+}) {
+  const fmt = (v: number | null) => {
+    if (v === null || v === undefined) return "-";
+    if (format === "rupiah") return formatRupiah(v);
+    return String(v);
+  };
+
+  const diff = (initial ?? 0) - (latest ?? 0);
+  const pctChange =
+    initial && initial > 0 && latest !== null
+      ? Math.round(((latest - initial) / initial) * 100)
+      : null;
+
+  return (
+    <div className="flex items-center justify-between rounded-lg bg-slate-50 p-3 dark:bg-white/5">
+      <div className="flex-1">
+        <p className="text-xs text-slate-400">{label}</p>
+        <div className="mt-1 flex items-center gap-2">
+          <span className="text-sm font-medium text-slate-700 dark:text-white">
+            {fmt(initial)}
+          </span>
+          {showTrend && latest !== null && initial !== null && initial !== latest && (
+            <>
+              <ArrowRight size={12} className="text-slate-400" />
+              <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                {fmt(latest)}
+              </span>
+            </>
+          )}
+        </div>
+        {showTrend && pctChange !== null && pctChange !== 0 && (
+          <span
+            className={`inline-flex items-center gap-0.5 text-xs font-medium ${
+              pctChange > 0
+                ? "text-green-600 dark:text-green-400"
+                : "text-red-600 dark:text-red-400"
+            }`}
+          >
+            {pctChange > 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
+            {formatPercentage(pctChange)}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CompareCheck({
+  label,
+  initial,
+  latest,
+}: {
+  label: string;
+  initial: string | null;
+  latest: string | null;
+}) {
+  const wasEmpty = !initial;
+  const isFilled = !!latest;
+  const added = wasEmpty && isFilled;
+
+  return (
+    <div className="flex items-center justify-between rounded-lg bg-slate-50 p-3 dark:bg-white/5">
+      <div>
+        <p className="text-xs text-slate-400">{label}</p>
+        <p className="mt-1 text-sm font-medium text-slate-700 dark:text-white">
+          {latest || "-"}
+        </p>
+      </div>
+      {added && (
+        <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
+          Baru
+        </span>
+      )}
+    </div>
+  );
 }
 
 function Trend({
@@ -108,6 +219,7 @@ export default function MonitoringDetailPage() {
 
   const [umkm, setUmkm] = useState<UmkmData | null>(null);
   const [monitorings, setMonitorings] = useState<MonitoringEntry[]>([]);
+  const [badge, setBadge] = useState<Badge | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -119,7 +231,8 @@ export default function MonitoringDetailPage() {
     halal: "",
     pirt: "",
     haki: "",
-    whatsapp: "",
+    nib: "",
+    kbli: [] as string[],
     instagram: "",
     facebook: "",
     tiktok: "",
@@ -136,6 +249,7 @@ export default function MonitoringDetailPage() {
 
       setUmkm(data.umkm);
       setMonitorings(data.monitorings ?? []);
+      setBadge(data.badge ?? null);
     } catch (error) {
       console.error(error);
     } finally {
@@ -158,7 +272,8 @@ export default function MonitoringDetailPage() {
       if (form.halal) payload.halal = form.halal;
       if (form.pirt) payload.pirt = form.pirt;
       if (form.haki) payload.haki = form.haki;
-      if (form.whatsapp) payload.whatsapp = form.whatsapp;
+      if (form.nib) payload.nib = form.nib;
+      if (form.kbli.length > 0) payload.kbli = form.kbli;
       if (form.instagram) payload.instagram = form.instagram;
       if (form.facebook) payload.facebook = form.facebook;
       if (form.tiktok) payload.tiktok = form.tiktok;
@@ -182,7 +297,8 @@ export default function MonitoringDetailPage() {
         halal: "",
         pirt: "",
         haki: "",
-        whatsapp: "",
+        nib: "",
+        kbli: [],
         instagram: "",
         facebook: "",
         tiktok: "",
@@ -203,18 +319,54 @@ export default function MonitoringDetailPage() {
   const latest = monitorings[0] ?? null;
   const prev = monitorings[1] ?? null;
 
+  // Build comparison data: initial (from UMKM) vs latest (from latest monitoring)
+  const initialData = {
+    omzet: umkm.omzet,
+    jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja,
+    halal: umkm.halal,
+    pirt: umkm.pirt,
+    haki: umkm.haki,
+    instagram: umkm.instagram,
+    facebook: umkm.facebook,
+    tiktok: umkm.tiktok,
+  };
+
+  const latestData = latest
+    ? {
+        omzet: latest.omzet ?? umkm.omzet,
+        jumlah_tenaga_kerja: latest.jumlah_tenaga_kerja ?? umkm.jumlah_tenaga_kerja,
+        halal: latest.halal ?? umkm.halal,
+        pirt: latest.pirt ?? umkm.pirt,
+        haki: latest.haki ?? umkm.haki,
+        instagram: latest.instagram ?? umkm.instagram,
+        facebook: latest.facebook ?? umkm.facebook,
+        tiktok: latest.tiktok ?? umkm.tiktok,
+      }
+    : initialData;
+
   return (
     <main className="px-6 pb-6 space-y-6">
-      {/* Header UMKM */}
+      {/* Header UMKM + Badge */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
         <div className="flex items-start justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white capitalize">
-              {umkm.nama}
-            </h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white capitalize">
+                {umkm.nama}
+              </h1>
+              {badge && badge.level !== "none" && (
+                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium ${badge.bgColor} ${badge.color}`}>
+                  <Award size={14} />
+                  {badge.label}
+                </span>
+              )}
+            </div>
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               {umkm.kecamatan} · {umkm.kategori} · {umkm.pemilik}
             </p>
+            {badge && badge.level !== "none" && (
+              <p className="mt-1 text-xs text-slate-400">{badge.description}</p>
+            )}
           </div>
           <button
             onClick={() => setShowForm(true)}
@@ -224,6 +376,31 @@ export default function MonitoringDetailPage() {
             Tambah Monitoring
           </button>
         </div>
+
+        {/* Badge Criteria Progress */}
+        {badge && badge.level !== "none" && (
+          <div className="mt-4 rounded-lg bg-slate-50 p-4 dark:bg-white/5">
+            <p className="text-xs font-medium text-slate-500 mb-2">Kriteria Perolehan Badge</p>
+            <div className="grid grid-cols-2 gap-2 md:grid-cols-4 text-xs">
+              <div className={`flex items-center gap-1.5 ${badge.criteria.omzetIncrease !== null && badge.criteria.omzetIncrease >= 20 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.omzetIncrease !== null && badge.criteria.omzetIncrease >= 20 ? "✅" : "⬜"}
+                Omzet {badge.criteria.omzetIncrease !== null ? `${badge.criteria.omzetIncrease > 0 ? "+" : ""}${badge.criteria.omzetIncrease}%` : "N/A"}
+              </div>
+              <div className={`flex items-center gap-1.5 ${badge.criteria.tkChange !== null && badge.criteria.tkChange > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.tkChange !== null && badge.criteria.tkChange > 0 ? "✅" : "⬜"}
+                Tenaga Kerja {badge.criteria.tkChange !== null ? (badge.criteria.tkChange > 0 ? `+${badge.criteria.tkChange}` : badge.criteria.tkChange) : "N/A"}
+              </div>
+              <div className={`flex items-center gap-1.5 ${badge.criteria.legalitasAdded > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.legalitasAdded > 0 ? "✅" : "⬜"}
+                Legalitas {badge.criteria.legalitasAdded > 0 ? `+${badge.criteria.legalitasAdded}` : "bertambah"}
+              </div>
+              <div className={`flex items-center gap-1.5 ${badge.criteria.sosmedCount >= 2 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.sosmedCount >= 2 ? "✅" : "⬜"}
+                Sosmed aktif ({badge.criteria.sosmedCount} platform)
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Data UMKM Awal */}
         <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -240,9 +417,9 @@ export default function MonitoringDetailPage() {
             </p>
           </div>
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-            <p className="text-xs text-slate-400">WhatsApp</p>
+            <p className="text-xs text-slate-400">NIB</p>
             <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {umkm.whatsapp ?? "-"}
+              {umkm.nib ?? "-"}
             </p>
           </div>
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
@@ -257,71 +434,69 @@ export default function MonitoringDetailPage() {
                 .join(", ") || "-"}
             </p>
           </div>
+          <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
+            <p className="text-xs text-slate-400">KBLI</p>
+            <p className="text-sm font-semibold text-slate-700 dark:text-white">
+              {umkm.kbli?.join(", ") || "-"}
+            </p>
+          </div>
         </div>
       </div>
 
-      {/* Perbandingan dengan Data Awal */}
-      {latest && (
+      {/* Perbandingan Sebelum vs Sesudah */}
+      {monitorings.length > 0 && (
         <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
-            Perkembangan
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
+            Perbandingan: Data Awal vs Monitoring Terakhir
           </h2>
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-            <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-              <p className="text-xs text-slate-400">Tenaga Kerja</p>
-              <p className="text-sm font-semibold text-slate-700 dark:text-white">
-                {latest.jumlah_tenaga_kerja ?? umkm.jumlah_tenaga_kerja ?? "-"}
-              </p>
-              <Trend
-                current={latest.jumlah_tenaga_kerja}
-                previous={umkm.jumlah_tenaga_kerja}
-                label="vs awal"
-              />
-            </div>
-            <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-              <p className="text-xs text-slate-400">Omzet</p>
-              <p className="text-sm font-semibold text-slate-700 dark:text-white">
-                {formatRupiah(latest.omzet ?? umkm.omzet)}
-              </p>
-              <Trend
-                current={latest.omzet}
-                previous={umkm.omzet}
-                label="vs awal"
-                format="rupiah"
-              />
-            </div>
-            <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-              <p className="text-xs text-slate-400">Legalitas</p>
-              <p className="text-sm font-semibold text-slate-700 dark:text-white">
-                {[
-                  (latest.halal || umkm.halal) && "Halal",
-                  (latest.pirt || umkm.pirt) && "PIRT",
-                  (latest.haki || umkm.haki) && "HAKI",
-                ]
-                  .filter(Boolean)
-                  .join(", ") || "-"}
-              </p>
-            </div>
-            <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-              <p className="text-xs text-slate-400">Sosmed</p>
-              <div className="space-y-0.5">
-                {[
-                  { label: "IG", val: latest.instagram || umkm.instagram },
-                  { label: "FB", val: latest.facebook || umkm.facebook },
-                  { label: "TT", val: latest.tiktok || umkm.tiktok },
-                ]
-                  .filter((s) => s.val)
-                  .map((s) => (
-                    <p key={s.label} className="text-xs text-slate-600 dark:text-slate-300">
-                      {s.label}: {s.val}
-                    </p>
-                  ))}
-                {!latest.instagram && !umkm.instagram && !latest.facebook && !umkm.facebook && (
-                  <p className="text-sm text-slate-500">-</p>
-                )}
+          <p className="text-xs text-slate-400 mb-4">
+            {monitorings.length} kali monitoring · Terakhir: {latest ? formatDate(latest.created_at) : "-"}
+          </p>
+
+          {/* Numerical comparisons */}
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+            <CompareRow
+              label="Omzet"
+              initial={initialData.omzet}
+              latest={latestData.omzet}
+              format="rupiah"
+            />
+            <CompareRow
+              label="Jumlah Tenaga Kerja"
+              initial={initialData.jumlah_tenaga_kerja}
+              latest={latestData.jumlah_tenaga_kerja}
+            />
+          </div>
+
+          {/* Legalitas & Sosmed comparisons */}
+          <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+            <CompareCheck label="Halal" initial={initialData.halal} latest={latestData.halal} />
+            <CompareCheck label="PIRT" initial={initialData.pirt} latest={latestData.pirt} />
+            <CompareCheck label="HAKI" initial={initialData.haki} latest={latestData.haki} />
+            <CompareCheck label="Instagram" initial={initialData.instagram} latest={latestData.instagram} />
+            <CompareCheck label="Facebook" initial={initialData.facebook} latest={latestData.facebook} />
+            <CompareCheck label="TikTok" initial={initialData.tiktok} latest={latestData.tiktok} />
+          </div>
+
+          {/* Trend vs previous entry */}
+          {prev && (
+            <div className="mt-4 rounded-lg bg-slate-50 p-3 dark:bg-white/5">
+              <p className="text-xs text-slate-400 mb-2">Trend Monitoring Terakhir vs Sebelumnya</p>
+              <div className="flex flex-wrap gap-4">
+                <Trend
+                  current={latest?.omzet}
+                  previous={prev.omzet}
+                  label="Omzet"
+                  format="rupiah"
+                />
+                <Trend
+                  current={latest?.jumlah_tenaga_kerja}
+                  previous={prev.jumlah_tenaga_kerja}
+                  label="TK"
+                />
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
@@ -460,6 +635,31 @@ export default function MonitoringDetailPage() {
                 </div>
               </div>
 
+              {/* NIB & KBLI */}
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  NIB
+                </label>
+                <input
+                  type="text"
+                  value={form.nib}
+                  onChange={(e) =>
+                    setForm((p) => ({ ...p, nib: e.target.value }))
+                  }
+                  placeholder={umkm.nib ?? "13 digit NIB"}
+                  className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  KBLI
+                </label>
+                <KBLISelect
+                  value={form.kbli}
+                  onChange={(val) => setForm((p) => ({ ...p, kbli: val }))}
+                />
+              </div>
+
               {/* Legalitas */}
               <div className="grid grid-cols-3 gap-3">
                 <div>
@@ -507,21 +707,7 @@ export default function MonitoringDetailPage() {
               </div>
 
               {/* Sosmed */}
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    WhatsApp
-                  </label>
-                  <input
-                    type="text"
-                    value={form.whatsapp}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, whatsapp: e.target.value }))
-                    }
-                    placeholder={umkm.whatsapp ?? "-"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
-                  />
-                </div>
+              <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
                     Instagram

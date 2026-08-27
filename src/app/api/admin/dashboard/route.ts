@@ -19,6 +19,7 @@ export async function GET() {
 
     const isAdminKecamatan = user.role === "admin_kecamatan";
     const kecamatanIds = user.kecamatanIds ?? [];
+    const kecamatanNames = user.kecamatan ?? [];
 
     // =========================
     // UMKM — filtered by kecamatan for admin kecamatan
@@ -28,7 +29,10 @@ export async function GET() {
     });
 
     if (isAdminKecamatan && kecamatanIds.length > 0) {
-      query = query.in("kecamatan_id", kecamatanIds);
+      // Filter by kecamatan_id OR kecamatan name (fallback for data without kecamatan_id)
+      query = query.or(
+        `kecamatan_id.in.(${kecamatanIds.join(",")}),kecamatan.in.(${kecamatanNames.join(",")})`,
+      );
     }
 
     const { data: umkms, error } = await query;

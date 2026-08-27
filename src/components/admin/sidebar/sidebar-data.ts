@@ -14,6 +14,7 @@ export interface SidebarMenu {
   href: string;
   icon: any;
   roles?: string[];
+  badgeKey?: string;
 }
 
 export const menus: SidebarMenu[] = [
@@ -27,6 +28,7 @@ export const menus: SidebarMenu[] = [
     href: "/admin/verifikasi",
     icon: ShieldCheck,
     roles: ["super_admin", "admin_kecamatan"],
+    badgeKey: "verifikasi",
   },
   {
     label: "UMKM",
