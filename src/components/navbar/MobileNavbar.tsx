@@ -8,9 +8,11 @@ import DaftarModal from "../modal/DaftarModal";
 import { navigation } from "@/data/navigation";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "../ThemeToggle";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function MobileNavbar() {
   const router = useRouter();
+  const { isLoggedIn, dashboardPath } = useAuth();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -121,7 +123,7 @@ export default function MobileNavbar() {
         {/* Button */}
         <div className="absolute bottom-6 left-0 w-full px-6">
           <button
-            onClick={() => router.push("/auth/login")}
+            onClick={() => router.push(isLoggedIn ? dashboardPath : "/auth/login")}
             className="
               w-full h-11 rounded-lg
               flex items-center justify-center
@@ -131,7 +133,7 @@ export default function MobileNavbar() {
               transition-colors
             "
           >
-            Masuk
+            {isLoggedIn ? "Dashboard" : "Masuk"}
           </button>
         </div>
       </div>

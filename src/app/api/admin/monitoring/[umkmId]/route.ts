@@ -73,7 +73,7 @@ export async function GET(
         }
       : initial;
 
-    const badge = calculateBadge(initial, latest, (monitorings ?? []).length);
+    const badge = await calculateBadge(initial, latest, (monitorings ?? []).length);
 
     return NextResponse.json({
       umkm,

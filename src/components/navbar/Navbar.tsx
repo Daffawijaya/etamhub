@@ -8,11 +8,13 @@ import DaftarModal from "../modal/DaftarModal";
 import MobileNavbar from "./MobileNavbar";
 import { navigation } from "@/data/navigation";
 import ThemeToggle from "../ThemeToggle";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
+  const { isLoggedIn, dashboardPath } = useAuth();
   const [openDaftarModal, setOpenDaftarModal] = useState(false);
 
   const [showNavbar, setShowNavbar] = useState(
@@ -74,10 +76,10 @@ export default function Navbar() {
             <ThemeToggle />
 
             <button
-              onClick={() => router.push("/auth/login")}
+              onClick={() => router.push(isLoggedIn ? dashboardPath : "/auth/login")}
               className="bg-white text-black px-3 py-2 rounded-md text-xs font-medium hover:bg-zinc-200 transition-colors"
             >
-              Masuk
+              {isLoggedIn ? "Dashboard" : "Masuk"}
             </button>
           </div>
         </div>

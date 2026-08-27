@@ -49,10 +49,10 @@ interface Badge {
   bgColor: string;
   description: string;
   criteria: {
-    omzetIncrease: number | null;
-    tkChange: number | null;
-    legalitasAdded: number;
-    sosmedCount: number;
+    omzet: number | null;
+    tk: number | null;
+    legalitas: number;
+    sosmed: number;
     monitoringCount: number;
   };
 }
@@ -382,21 +382,21 @@ export default function MonitoringDetailPage() {
           <div className="mt-4 rounded-lg bg-slate-50 p-4 dark:bg-white/5">
             <p className="text-xs font-medium text-slate-500 mb-2">Kriteria Perolehan Badge</p>
             <div className="grid grid-cols-2 gap-2 md:grid-cols-4 text-xs">
-              <div className={`flex items-center gap-1.5 ${badge.criteria.omzetIncrease !== null && badge.criteria.omzetIncrease >= 20 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.omzetIncrease !== null && badge.criteria.omzetIncrease >= 20 ? "✅" : "⬜"}
-                Omzet {badge.criteria.omzetIncrease !== null ? `${badge.criteria.omzetIncrease > 0 ? "+" : ""}${badge.criteria.omzetIncrease}%` : "N/A"}
+              <div className={`flex items-center gap-1.5 ${badge.criteria.omzet !== null && badge.criteria.omzet > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.omzet !== null && badge.criteria.omzet > 0 ? "✅" : "⬜"}
+                Omzet {badge.criteria.omzet !== null ? `Rp${new Intl.NumberFormat("id-ID").format(badge.criteria.omzet)}` : "N/A"}
               </div>
-              <div className={`flex items-center gap-1.5 ${badge.criteria.tkChange !== null && badge.criteria.tkChange > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.tkChange !== null && badge.criteria.tkChange > 0 ? "✅" : "⬜"}
-                Tenaga Kerja {badge.criteria.tkChange !== null ? (badge.criteria.tkChange > 0 ? `+${badge.criteria.tkChange}` : badge.criteria.tkChange) : "N/A"}
+              <div className={`flex items-center gap-1.5 ${badge.criteria.tk !== null && badge.criteria.tk > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.tk !== null && badge.criteria.tk > 0 ? "✅" : "⬜"}
+                Tenaga Kerja {badge.criteria.tk ?? "N/A"}
               </div>
-              <div className={`flex items-center gap-1.5 ${badge.criteria.legalitasAdded > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.legalitasAdded > 0 ? "✅" : "⬜"}
-                Legalitas {badge.criteria.legalitasAdded > 0 ? `+${badge.criteria.legalitasAdded}` : "bertambah"}
+              <div className={`flex items-center gap-1.5 ${badge.criteria.legalitas > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.legalitas > 0 ? "✅" : "⬜"}
+                Legalitas {badge.criteria.legalitas} jenis
               </div>
-              <div className={`flex items-center gap-1.5 ${badge.criteria.sosmedCount >= 2 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.sosmedCount >= 2 ? "✅" : "⬜"}
-                Sosmed aktif ({badge.criteria.sosmedCount} platform)
+              <div className={`flex items-center gap-1.5 ${badge.criteria.sosmed > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
+                {badge.criteria.sosmed > 0 ? "✅" : "⬜"}
+                Sosmed aktif ({badge.criteria.sosmed} platform)
               </div>
             </div>
           </div>

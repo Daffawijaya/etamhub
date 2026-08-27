@@ -69,6 +69,10 @@ export default function AdminLayout({
       return "Detail Monitoring";
     }
 
+    if (pathname === "/admin/pengaturan-badge") {
+      return "Pengaturan Badge";
+    }
+
     return "Admin";
   };
 

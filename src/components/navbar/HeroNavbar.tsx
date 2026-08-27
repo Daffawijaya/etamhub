@@ -5,10 +5,12 @@ import { usePathname } from "next/navigation";
 import SmallChevronButton from "../button/SmallChevronButton";
 import { navigation } from "@/data/navigation";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function HeroNavbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { isLoggedIn, dashboardPath } = useAuth();
   const isHome = pathname === "/";
 
   return (
@@ -49,8 +51,8 @@ export default function HeroNavbar() {
           {/* Right Button */}
           <div className="flex justify-end items-start">
             <SmallChevronButton
-              title="Masuk"
-              onClick={() => router.push("/auth/login")}
+              title={isLoggedIn ? "Dashboard" : "Masuk"}
+              onClick={() => router.push(isLoggedIn ? dashboardPath : "/auth/login")}
             />
           </div>
         </div>

@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   MapPinned,
   Newspaper,
+  Settings,
   ShieldCheck,
   Store,
   Users,
@@ -24,22 +25,16 @@ export const menus: SidebarMenu[] = [
     icon: LayoutDashboard,
   },
   {
-    label: "Verifikasi UMKM",
-    href: "/admin/verifikasi",
-    icon: ShieldCheck,
-    roles: ["super_admin", "admin_kecamatan"],
-    badgeKey: "verifikasi",
-  },
-  {
     label: "UMKM",
     href: "/admin/umkm",
     icon: Store,
   },
   {
-    label: "Requests",
-    href: "/admin/requests",
-    icon: ClipboardList,
-    roles: ["super_admin", "admin"],
+    label: "Verifikasi UMKM",
+    href: "/admin/verifikasi",
+    icon: ShieldCheck,
+    roles: ["super_admin", "admin_kecamatan"],
+    badgeKey: "verifikasi",
   },
   {
     label: "Monitoring UMKM",
@@ -54,6 +49,12 @@ export const menus: SidebarMenu[] = [
     roles: ["super_admin"],
   },
   {
+    label: "Requests",
+    href: "/admin/requests",
+    icon: ClipboardList,
+    roles: ["super_admin", "admin"],
+  },
+  {
     label: "Berita",
     href: "/admin/berita",
     icon: Newspaper,
@@ -62,5 +63,11 @@ export const menus: SidebarMenu[] = [
     label: "Peta",
     href: "/admin/peta",
     icon: MapPinned,
+  },
+  {
+    label: "Pengaturan Badge",
+    href: "/admin/pengaturan-badge",
+    icon: Settings,
+    roles: ["super_admin"],
   },
 ];

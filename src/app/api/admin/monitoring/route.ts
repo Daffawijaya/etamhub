@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
       countMap[c.umkm_id] = (countMap[c.umkm_id] || 0) + 1;
     }
 
-    const result = (umkms ?? []).map((umkm) => {
+    const result = await Promise.all((umkms ?? []).map(async (umkm) => {
       const monitoringCount = countMap[umkm.id] ?? 0;
       const latestEntry = monitoringMap[umkm.id] ?? null;
 
@@ -104,7 +104,7 @@ export async function GET(req: NextRequest) {
           }
         : initial;
 
-      const badge = calculateBadge(initial, latest, monitoringCount);
+      const badge = await calculateBadge(initial, latest, monitoringCount);
 
       return {
         id: umkm.id,
@@ -118,7 +118,7 @@ export async function GET(req: NextRequest) {
         monitoringCount,
         badge,
       };
-    });
+    }));
 
     return NextResponse.json(result);
   } catch (error: any) {

@@ -6,9 +6,11 @@ import { FiMenu, FiX } from "react-icons/fi";
 import { navigation } from "@/data/navigation";
 import { useRouter } from "next/navigation";
 import ThemeToggle from "../ThemeToggle";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function DetailNavbar() {
   const router = useRouter();
+  const { isLoggedIn, dashboardPath } = useAuth();
   const [open, setOpen] = useState(false);
 
   return (
@@ -48,7 +50,7 @@ export default function DetailNavbar() {
             <ThemeToggle />
 
             <button
-              onClick={() => router.push("/auth/login")}
+              onClick={() => router.push(isLoggedIn ? dashboardPath : "/auth/login")}
               className="
       h-10 px-5 rounded-md
       bg-white text-black
@@ -56,7 +58,7 @@ export default function DetailNavbar() {
       transition hover:opacity-90
     "
             >
-              Masuk
+              {isLoggedIn ? "Dashboard" : "Masuk"}
             </button>
           </div>
 
@@ -118,7 +120,7 @@ export default function DetailNavbar() {
         {/* Button */}
         <div className="absolute bottom-6 left-0 w-full px-6">
           <button
-            onClick={() => router.push("/auth/login")}
+            onClick={() => router.push(isLoggedIn ? dashboardPath : "/auth/login")}
             className="
               w-full h-11 rounded-lg
               flex items-center justify-center
@@ -128,7 +130,7 @@ export default function DetailNavbar() {
               transition-colors
             "
           >
-            Masuk
+            {isLoggedIn ? "Dashboard" : "Masuk"}
           </button>
         </div>
       </div>

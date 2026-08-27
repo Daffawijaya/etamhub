@@ -1,12 +1,15 @@
 /**
  * Monitoring badge system for UMKM
  *
- * Criteria for each level:
- * - Bronze: Started monitoring (at least 1 monitoring visit)
- * - Silver: Omzet naik ≥20% ATAU tenaga kerja bertambah
- * - Gold: Omzet naik ≥50% DAN legalitas bertambah (halal/pirt/haki)
- * - Platinum: Omzet naik ≥100% DAN tenaga kerja ≥2x lipat DAN sosmed aktif (≥2 platform)
+ * Criteria are configurable via badge_criteria table.
+ * Uses absolute/nominal values:
+ * - Bronze: Started monitoring (at least 1 visit)
+ * - Silver: Omzet ≥ X, TK ≥ Y, dll
+ * - Gold: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
+ * - Platinum: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
  */
+
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export interface MonitoringData {
   omzet: number | null;
@@ -19,6 +22,24 @@ export interface MonitoringData {
   tiktok: string | null;
 }
 
+export interface BadgeCriteria {
+  silver_omzet_min: number;
+  silver_tk_min: number;
+  silver_legalitas_min: number;
+  silver_sosmed_min: number;
+  gold_omzet_min: number;
+  gold_tk_min: number;
+  gold_legalitas_min: number;
+  gold_sosmed_min: number;
+  platinum_omzet_min: number;
+  platinum_tk_min: number;
+  platinum_legalitas_min: number;
+  platinum_sosmed_min: number;
+  silver_label: string;
+  gold_label: string;
+  platinum_label: string;
+}
+
 export interface BadgeResult {
   level: "none" | "bronze" | "silver" | "gold" | "platinum";
   label: string;
@@ -26,44 +47,39 @@ export interface BadgeResult {
   bgColor: string;
   description: string;
   criteria: {
-    omzetIncrease: number | null; // percentage
-    tkChange: number | null; // absolute
-    legalitasAdded: number; // count of new legalitas
-    sosmedCount: number; // active social media platforms
+    omzet: number | null;
+    tk: number | null;
+    legalitas: number;
+    sosmed: number;
     monitoringCount: number;
   };
 }
 
-const BADGE_CONFIG = {
+const BADGE_STYLES = {
   none: {
     label: "",
     color: "text-slate-400",
     bgColor: "bg-slate-100 dark:bg-slate-800",
-    description: "Belum ada monitoring",
   },
   bronze: {
     label: "🥉 Bronze",
     color: "text-amber-700 dark:text-amber-400",
     bgColor: "bg-amber-50 dark:bg-amber-900/20",
-    description: "Mulai aktif monitoring",
   },
   silver: {
     label: "🥈 Silver",
     color: "text-slate-600 dark:text-slate-300",
     bgColor: "bg-slate-100 dark:bg-slate-700/30",
-    description: "Perkembangan positif",
   },
   gold: {
     label: "🥇 Gold",
     color: "text-yellow-700 dark:text-yellow-400",
     bgColor: "bg-yellow-50 dark:bg-yellow-900/20",
-    description: "Pertumbuhan signifikan",
   },
   platinum: {
     label: "💎 Platinum",
     color: "text-purple-700 dark:text-purple-400",
     bgColor: "bg-purple-50 dark:bg-purple-900/20",
-    description: "UMKM Naik Kelas!",
   },
 } as const;
 
@@ -83,67 +99,180 @@ function countLegalitas(data: MonitoringData): number {
   return count;
 }
 
-function calcPercentageChange(initial: number | null, latest: number | null): number | null {
-  if (!initial || initial === 0 || latest === null) return null;
-  return Math.round(((latest - initial) / initial) * 100);
+const DEFAULT_CRITERIA: BadgeCriteria = {
+  silver_omzet_min: 5000000,
+  silver_tk_min: 1,
+  silver_legalitas_min: 0,
+  silver_sosmed_min: 0,
+  gold_omzet_min: 10000000,
+  gold_tk_min: 3,
+  gold_legalitas_min: 1,
+  gold_sosmed_min: 1,
+  platinum_omzet_min: 25000000,
+  platinum_tk_min: 5,
+  platinum_legalitas_min: 2,
+  platinum_sosmed_min: 2,
+  silver_label: "Perkembangan positif",
+  gold_label: "Pertumbuhan signifikan",
+  platinum_label: "UMKM Naik Kelas!",
+};
+
+// Fetch badge criteria from database
+export async function getBadgeCriteria(): Promise<BadgeCriteria> {
+  try {
+    const { data, error } = await supabaseAdmin
+      .from("badge_criteria")
+      .select("*")
+      .eq("id", "default")
+      .single();
+
+    if (error || !data) {
+      return DEFAULT_CRITERIA;
+    }
+
+    return {
+      silver_omzet_min: data.silver_omzet_min ?? DEFAULT_CRITERIA.silver_omzet_min,
+      silver_tk_min: data.silver_tk_min ?? DEFAULT_CRITERIA.silver_tk_min,
+      silver_legalitas_min: data.silver_legalitas_min ?? DEFAULT_CRITERIA.silver_legalitas_min,
+      silver_sosmed_min: data.silver_sosmed_min ?? DEFAULT_CRITERIA.silver_sosmed_min,
+      gold_omzet_min: data.gold_omzet_min ?? DEFAULT_CRITERIA.gold_omzet_min,
+      gold_tk_min: data.gold_tk_min ?? DEFAULT_CRITERIA.gold_tk_min,
+      gold_legalitas_min: data.gold_legalitas_min ?? DEFAULT_CRITERIA.gold_legalitas_min,
+      gold_sosmed_min: data.gold_sosmed_min ?? DEFAULT_CRITERIA.gold_sosmed_min,
+      platinum_omzet_min: data.platinum_omzet_min ?? DEFAULT_CRITERIA.platinum_omzet_min,
+      platinum_tk_min: data.platinum_tk_min ?? DEFAULT_CRITERIA.platinum_tk_min,
+      platinum_legalitas_min: data.platinum_legalitas_min ?? DEFAULT_CRITERIA.platinum_legalitas_min,
+      platinum_sosmed_min: data.platinum_sosmed_min ?? DEFAULT_CRITERIA.platinum_sosmed_min,
+      silver_label: data.silver_label ?? DEFAULT_CRITERIA.silver_label,
+      gold_label: data.gold_label ?? DEFAULT_CRITERIA.gold_label,
+      platinum_label: data.platinum_label ?? DEFAULT_CRITERIA.platinum_label,
+    };
+  } catch {
+    return DEFAULT_CRITERIA;
+  }
 }
 
-export function calculateBadge(
-  initial: MonitoringData,
+// Check if data meets criteria
+function meetsCriteria(
+  data: MonitoringData,
+  omzetMin: number,
+  tkMin: number,
+  legalitasMin: number,
+  sosmedMin: number,
+): boolean {
+  const omzet = data.omzet ?? 0;
+  const tk = data.jumlah_tenaga_kerja ?? 0;
+  const legalitas = countLegalitas(data);
+  const sosmed = countSosmed(data);
+
+  return (
+    omzet >= omzetMin &&
+    tk >= tkMin &&
+    legalitas >= legalitasMin &&
+    sosmed >= sosmedMin
+  );
+}
+
+// Synchronous version
+export function calculateBadgeWithCriteria(
+  _initial: MonitoringData,
   latest: MonitoringData | null,
   monitoringCount: number,
+  config: BadgeCriteria,
 ): BadgeResult {
   if (monitoringCount === 0 || !latest) {
-    return { level: "none", ...BADGE_CONFIG.none, criteria: { omzetIncrease: null, tkChange: null, legalitasAdded: 0, sosmedCount: 0, monitoringCount: 0 } };
+    return {
+      level: "none",
+      ...BADGE_STYLES.none,
+      description: "Belum ada monitoring",
+      criteria: { omzet: null, tk: null, legalitas: 0, sosmed: 0, monitoringCount: 0 },
+    };
   }
 
-  const omzetIncrease = calcPercentageChange(initial.omzet, latest.omzet);
-  const tkChange =
-    latest.jumlah_tenaga_kerja !== null && initial.jumlah_tenaga_kerja !== null
-      ? latest.jumlah_tenaga_kerja - initial.jumlah_tenaga_kerja
-      : null;
-  const legalitasAdded = Math.max(0, countLegalitas(latest) - countLegalitas(initial));
-  const sosmedCount = countSosmed(latest);
+  const currentOmzet = latest.omzet ?? 0;
+  const currentTk = latest.jumlah_tenaga_kerja ?? 0;
+  const currentLegalitas = countLegalitas(latest);
+  const currentSosmed = countSosmed(latest);
 
   const criteria = {
-    omzetIncrease,
-    tkChange,
-    legalitasAdded,
-    sosmedCount,
+    omzet: currentOmzet,
+    tk: currentTk,
+    legalitas: currentLegalitas,
+    sosmed: currentSosmed,
     monitoringCount,
   };
 
-  // Platinum: omzet ≥100% AND tk ≥2x AND sosmed ≥2
+  // Platinum: semua kriteria terpenuhi
   if (
-    omzetIncrease !== null &&
-    omzetIncrease >= 100 &&
-    tkChange !== null &&
-    initial.jumlah_tenaga_kerja !== null &&
-    tkChange >= initial.jumlah_tenaga_kerja &&
-    sosmedCount >= 2
+    meetsCriteria(
+      latest,
+      config.platinum_omzet_min,
+      config.platinum_tk_min,
+      config.platinum_legalitas_min,
+      config.platinum_sosmed_min,
+    )
   ) {
-    return { level: "platinum", ...BADGE_CONFIG.platinum, criteria };
+    return {
+      level: "platinum",
+      ...BADGE_STYLES.platinum,
+      description: config.platinum_label,
+      criteria,
+    };
   }
 
-  // Gold: omzet ≥50% AND legalitas added
+  // Gold: semua kriteria terpenuhi
   if (
-    omzetIncrease !== null &&
-    omzetIncrease >= 50 &&
-    legalitasAdded > 0
+    meetsCriteria(
+      latest,
+      config.gold_omzet_min,
+      config.gold_tk_min,
+      config.gold_legalitas_min,
+      config.gold_sosmed_min,
+    )
   ) {
-    return { level: "gold", ...BADGE_CONFIG.gold, criteria };
+    return {
+      level: "gold",
+      ...BADGE_STYLES.gold,
+      description: config.gold_label,
+      criteria,
+    };
   }
 
-  // Silver: omzet ≥20% OR tk bertambah
+  // Silver: semua kriteria terpenuhi
   if (
-    (omzetIncrease !== null && omzetIncrease >= 20) ||
-    (tkChange !== null && tkChange > 0)
+    meetsCriteria(
+      latest,
+      config.silver_omzet_min,
+      config.silver_tk_min,
+      config.silver_legalitas_min,
+      config.silver_sosmed_min,
+    )
   ) {
-    return { level: "silver", ...BADGE_CONFIG.silver, criteria };
+    return {
+      level: "silver",
+      ...BADGE_STYLES.silver,
+      description: config.silver_label,
+      criteria,
+    };
   }
 
   // Bronze: at least 1 monitoring
-  return { level: "bronze", ...BADGE_CONFIG.bronze, criteria };
+  return {
+    level: "bronze",
+    ...BADGE_STYLES.bronze,
+    description: "Mulai aktif monitoring",
+    criteria,
+  };
 }
 
-export { BADGE_CONFIG };
+// Async version
+export async function calculateBadge(
+  initial: MonitoringData,
+  latest: MonitoringData | null,
+  monitoringCount: number,
+): Promise<BadgeResult> {
+  const config = await getBadgeCriteria();
+  return calculateBadgeWithCriteria(initial, latest, monitoringCount, config);
+}
+
+export { BADGE_STYLES };
