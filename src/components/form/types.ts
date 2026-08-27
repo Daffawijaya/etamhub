@@ -29,6 +29,10 @@ export interface UmkmFormData {
   pirt: string;
   haki: string;
 
+  tahun_mulai_usaha: string;
+  jumlah_tenaga_kerja: string;
+  omzet: string;
+
   published: boolean;
 }
 

@@ -1,9 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export type ProductLegalitas = {
   jenis: "halal" | "pirt" | "haki" | "kbli";
@@ -21,7 +16,7 @@ export async function validateLegalitas(
   umkmId: string,
   legalitas: ProductLegalitas[],
 ) {
-  const { data: umkm, error } = await supabase
+  const { data: umkm, error } = await supabaseAdmin
     .from("umkm")
     .select("id, halal, pirt, haki, kbli")
     .eq("id", umkmId)

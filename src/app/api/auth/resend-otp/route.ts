@@ -21,7 +21,7 @@ export async function POST(req: Request) {
 
     const normalizedEmail = String(email).trim().toLowerCase();
 
-    if (!/^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(normalizedEmail)) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
       return NextResponse.json(
         {
           success: false,

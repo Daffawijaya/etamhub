@@ -10,6 +10,22 @@ function getMinPixelDistance(zoom: number) {
   return 60;
 }
 
+function hasOverlap(
+  point: ReturnType<Map["latLngToContainerPoint"]>,
+  visible: Umkm[],
+  map: Map,
+  minPixelDistance: number,
+) {
+  return visible.some((selected) => {
+    const selectedPoint = map.latLngToContainerPoint([
+      selected.lat,
+      selected.lng,
+    ]);
+
+    return point.distanceTo(selectedPoint) < minPixelDistance;
+  });
+}
+
 export function getVisibleUmkms(
   map: Map,
   umkms: Umkm[],
@@ -35,44 +51,10 @@ export function getVisibleUmkms(
       umkm.lng,
     ]);
 
-    const overlaps = visible.some((selected) => {
-      const selectedPoint = map.latLngToContainerPoint([
-        selected.lat,
-        selected.lng,
-      ]);
-
-      return (
-        point.distanceTo(selectedPoint) <
-        minPixelDistance
-      );
-    });
-
-    return !overlaps;
+    if (!hasOverlap(point, visible, map, minPixelDistance)) {
+      visible.push(umkm);
+    }
   }
 
-  return candidates.filter((umkm) => {
-    const point = map.latLngToContainerPoint([
-      umkm.lat,
-      umkm.lng,
-    ]);
-
-    const overlaps = visible.some((selected) => {
-      const selectedPoint = map.latLngToContainerPoint([
-        selected.lat,
-        selected.lng,
-      ]);
-
-      return (
-        point.distanceTo(selectedPoint) <
-        minPixelDistance
-      );
-    });
-
-    if (!overlaps) {
-      visible.push(umkm);
-      return true;
-    }
-
-    return false;
-  });
+  return visible;
 }

@@ -1,8 +1,23 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import crypto from "crypto";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getCurrentUser } from "@/lib/session";
 
 export async function POST(req: Request) {
   try {
+    const user = await getCurrentUser();
+
+    if (!user || user.role !== "super_admin") {
+      return NextResponse.json(
+        {
+          message: "Unauthorized",
+        },
+        {
+          status: 401,
+        },
+      );
+    }
+
     const rows = await req.json();
 
     if (!Array.isArray(rows) || rows.length === 0) {
@@ -58,13 +73,13 @@ export async function POST(req: Request) {
       };
     });
 
-    const { data, error } = await supabase.from("umkm").insert(umkms).select();
+    const { data, error } = await supabaseAdmin.from("umkm").insert(umkms).select();
 
     if (error) {
       throw error;
     }
 
-    const { error: notificationError } = await supabase
+    const { error: notificationError } = await supabaseAdmin
       .from("notifications")
       .insert({
         id: crypto.randomUUID(),

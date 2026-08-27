@@ -1,8 +1,22 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getCurrentUser } from "@/lib/session";
 
 export async function GET() {
-  const { data, error } = await supabase
+  const user = await getCurrentUser();
+
+  if (!user || user.role !== "super_admin") {
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+      },
+      {
+        status: 401,
+      },
+    );
+  }
+
+  const { data, error } = await supabaseAdmin
     .from("umkm")
     .select("*")
     .order("nama", { ascending: true });

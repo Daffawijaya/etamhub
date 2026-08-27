@@ -3,7 +3,9 @@ import {
   LayoutDashboard,
   MapPinned,
   Newspaper,
+  ShieldCheck,
   Store,
+  Users,
 } from "lucide-react";
 
 export interface SidebarMenu {
@@ -20,6 +22,12 @@ export const menus: SidebarMenu[] = [
     icon: LayoutDashboard,
   },
   {
+    label: "Verifikasi UMKM",
+    href: "/admin/verifikasi",
+    icon: ShieldCheck,
+    roles: ["super_admin", "admin_kecamatan"],
+  },
+  {
     label: "UMKM",
     href: "/admin/umkm",
     icon: Store,
@@ -28,6 +36,13 @@ export const menus: SidebarMenu[] = [
     label: "Requests",
     href: "/admin/requests",
     icon: ClipboardList,
+    roles: ["super_admin", "admin"],
+  },
+  {
+    label: "Admin Kecamatan",
+    href: "/admin/admin-kecamatan",
+    icon: Users,
+    roles: ["super_admin"],
   },
   {
     label: "Berita",

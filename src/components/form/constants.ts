@@ -31,5 +31,9 @@ export const initialForm: UmkmFormData = {
   pirt: "",
   haki: "",
 
+  tahun_mulai_usaha: "",
+  jumlah_tenaga_kerja: "",
+  omzet: "",
+
   published: false,
 };

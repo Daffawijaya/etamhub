@@ -34,6 +34,7 @@ export default async function UserUmkmPage() {
   const umkm = res.ok ? await res.json() : null;
 
   const isPending = umkm?.approval_status === "pending";
+  const isPendingRequest = umkm?.isPendingRequest === true;
 
   return (
     <main>
@@ -88,7 +89,9 @@ export default async function UserUmkmPage() {
                     {isPending ? (
                       <span className="inline-flex w-fit items-center gap-2 rounded-full bg-yellow-100 px-3 py-1.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400">
                         <Clock3 size={14} />
-                        Menunggu Persetujuan
+                        {isPendingRequest
+                          ? "Menunggu Verifikasi Admin Kecamatan"
+                          : "Menunggu Persetujuan"}
                       </span>
                     ) : (
                       <Link

@@ -45,7 +45,22 @@ export async function POST(req: Request) {
         );
       }
 
-      if (admin.password !== password) {
+      // Fallback: admin password mungkin masih plaintext (belum di-hash)
+      const isHashed = admin.password.startsWith("$2");
+      const adminPasswordValid = isHashed
+        ? await bcrypt.compare(password, admin.password)
+        : password === admin.password;
+
+      // Auto-hash plaintext password saat login berhasil
+      if (!isHashed && adminPasswordValid) {
+        const hashedPassword = await bcrypt.hash(password, 12);
+        await supabaseAdmin
+          .from("admins")
+          .update({ password: hashedPassword })
+          .eq("id", admin.id);
+      }
+
+      if (!adminPasswordValid) {
         return NextResponse.json(
           {
             success: false,

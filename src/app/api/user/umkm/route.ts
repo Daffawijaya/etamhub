@@ -16,6 +16,39 @@ export async function GET() {
     );
   }
 
+  // 1. Cek dulu di umkm_requests (pending request)
+  const { data: pendingRequest } = await supabaseAdmin
+    .from("umkm_requests")
+    .select("*")
+    .eq("user_id", currentUser.id)
+    .eq("action", "create")
+    .eq("status", "pending")
+    .maybeSingle();
+
+  if (pendingRequest) {
+    const payload = pendingRequest.payload as Record<string, any>;
+
+    return NextResponse.json({
+      id: null,
+      nama: payload?.nama ?? "",
+      kategori: payload?.kategori ?? "",
+      kecamatan: payload?.kecamatan ?? "",
+      alamat: payload?.alamat ?? "",
+      gambar: payload?.gambar ?? [],
+      halal: payload?.halal ?? null,
+      pirt: payload?.pirt ?? null,
+      haki: payload?.haki ?? null,
+      kbli: payload?.kbli ?? null,
+      approval_status: "pending",
+      published: false,
+      created_at: pendingRequest.created_at,
+      rejected_reason: null,
+      isPendingRequest: true,
+      request_id: pendingRequest.id,
+    });
+  }
+
+  // 2. Cek di umkm (sudah disetujui)
   const { data, error } = await supabaseAdmin
     .from("umkm")
     .select(

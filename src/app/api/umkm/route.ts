@@ -3,22 +3,14 @@ import { getCurrentUser } from "@/lib/session";
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
-  isValidEmail,
-  isValidFacebookUrl,
-  isValidInstagramUsername,
-  isValidTiktokUsername,
-  isValidWhatsapp,
-  normalizeInstagramUsername,
+  normalizeUmkmBody,
+  validateUmkmBody,
   normalizeNullable,
-  normalizeTiktokUsername,
-  normalizeWhatsapp,
 } from "@/lib/validation";
 
 export async function GET(req: Request) {
   try {
     const user = await getCurrentUser();
-
-    console.log("CURRENT USER:", user);
 
     const { searchParams } = new URL(req.url);
 
@@ -58,6 +50,11 @@ export async function GET(req: Request) {
       umkmQuery = umkmQuery.eq("owner_id", user.id);
     }
 
+    // Admin kecamatan hanya melihat UMKM di kecamatannya
+    if (user?.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
+      umkmQuery = umkmQuery.in("kecamatan_id", user.kecamatanIds);
+    }
+
     if (kecamatan) {
       const { data: kecamatanData } = await supabaseAdmin
         .from("kecamatan")
@@ -95,9 +92,15 @@ export async function GET(req: Request) {
 
     umkmQuery = umkmQuery.range(from, to);
 
-    const { data: filtersData } = await supabaseAdmin
+    let filtersQuery = supabaseAdmin
       .from("umkm")
       .select("kecamatan, kategori");
+
+    if (user?.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
+      filtersQuery = filtersQuery.in("kecamatan_id", user.kecamatanIds);
+    }
+
+    const { data: filtersData } = await filtersQuery;
 
     const kecamatanOptions = [
       ...new Set(filtersData?.map((item) => item.kecamatan).filter(Boolean)),
@@ -179,24 +182,7 @@ export async function POST(req: Request) {
       );
     }
 
-    body.kbli = Array.isArray(body.kbli)
-      ? body.kbli.map((item: string) => item.trim()).filter(Boolean)
-      : body.kbli
-        ? [body.kbli.trim()]
-        : [];
-
-    [
-      "nib",
-      "pirt",
-      "halal",
-      "haki",
-      "email",
-      "facebook",
-      "instagram",
-      "tiktok",
-    ].forEach((field) => {
-      body[field] = normalizeNullable(body[field]);
-    });
+    normalizeUmkmBody(body);
 
     const { data: existingNik } = await supabaseAdmin
       .from("users")
@@ -234,25 +220,11 @@ export async function POST(req: Request) {
       }
     }
 
-    body.whatsapp = normalizeWhatsapp(body.whatsapp);
-    body.instagram = normalizeInstagramUsername(body.instagram);
-    body.tiktok = normalizeTiktokUsername(body.tiktok);
-
-    if (!isValidWhatsapp(body.whatsapp)) {
+    const validationError = validateUmkmBody(body);
+    if (validationError) {
       return NextResponse.json(
         {
-          message: "Nomor WhatsApp tidak valid.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!isValidEmail(body.email)) {
-      return NextResponse.json(
-        {
-          message: "Email tidak valid.",
+          message: validationError.message,
         },
         {
           status: 400,
@@ -273,39 +245,6 @@ export async function POST(req: Request) {
         },
         {
           status: 409,
-        },
-      );
-    }
-
-    if (!isValidFacebookUrl(body.facebook)) {
-      return NextResponse.json(
-        {
-          message: "URL Facebook tidak valid.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!isValidInstagramUsername(body.instagram)) {
-      return NextResponse.json(
-        {
-          message: "Username Instagram tidak valid.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!isValidTiktokUsername(body.tiktok)) {
-      return NextResponse.json(
-        {
-          message: "Username TikTok tidak valid.",
-        },
-        {
-          status: 400,
         },
       );
     }
@@ -357,24 +296,31 @@ export async function POST(req: Request) {
 
     const { email, nik, ...umkmData } = body;
 
-    const { data, error } = await supabaseAdmin
-      .from("umkm")
+    // Simpan ke umkm_requests, bukan ke umkm langsung
+    // Admin kecamatan harus approve dulu sebelum masuk tabel umkm
+    const requestId = crypto.randomUUID();
+
+    const { error } = await supabaseAdmin
+      .from("umkm_requests")
       .insert({
-        id: crypto.randomUUID(),
-        ...umkmData,
-        owner_id: user.id,
-        published: false,
-        approval_status: "approved",
-        approved_at: now,
+        id: requestId,
+        user_id: user.id,
+        action: "create",
+        status: "pending",
+        payload: {
+          ...umkmData,
+          owner_id: user.id,
+        },
         created_at: now,
-        updated_at: now,
-      })
-      .select()
-      .single();
+      });
 
     if (error) throw error;
 
-    return NextResponse.json(data);
+    return NextResponse.json({
+      success: true,
+      message: "UMKM berhasil dikirim untuk diverifikasi admin kecamatan",
+      request_id: requestId,
+    });
   } catch (error: any) {
     console.error("POST UMKM ERROR:", error);
 

@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 type ProductLegalitasInput = {
   jenis: "halal" | "pirt" | "haki" | "kbli";
@@ -19,7 +14,7 @@ export async function GET(request: NextRequest) {
     const search = searchParams.get("search");
     const available = searchParams.get("available");
 
-    let query = supabase
+    let query = supabaseAdmin
       .from("products")
       .select(
         `
@@ -141,7 +136,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { data: umkm, error: umkmError } = await supabase
+    const { data: umkm, error: umkmError } = await supabaseAdmin
       .from("umkm")
       .select("halal, pirt, haki, kbli")
       .eq("id", umkm_id)
@@ -281,7 +276,7 @@ export async function POST(request: NextRequest) {
       is_available: typeof is_available === "boolean" ? is_available : true,
     };
 
-    const { data: product, error: productError } = await supabase
+    const { data: product, error: productError } = await supabaseAdmin
       .from("products")
       .insert(productPayload)
       .select(
@@ -320,14 +315,14 @@ export async function POST(request: NextRequest) {
         kode: item.kode,
       }));
 
-      const { error: legalitasError } = await supabase
+      const { error: legalitasError } = await supabaseAdmin
         .from("product_legalitas")
         .insert(legalitasPayload);
 
       if (legalitasError) {
         console.error("Create product legalitas error:", legalitasError);
 
-        await supabase.from("products").delete().eq("id", product.id);
+        await supabaseAdmin.from("products").delete().eq("id", product.id);
 
         return NextResponse.json(
           {
@@ -340,7 +335,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const { data: result, error: resultError } = await supabase
+    const { data: result, error: resultError } = await supabaseAdmin
       .from("products")
       .select(
         `

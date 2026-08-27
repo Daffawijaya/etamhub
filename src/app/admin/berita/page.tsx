@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 
 import { getNews } from "@/lib/news/news.service";
+import { getCurrentUser } from "@/lib/session";
 import NewsTable from "@/components/admin/berita/NewsTable";
 import NewsSearch from "@/components/admin/berita/NewsSearch";
 
@@ -18,10 +19,17 @@ export default async function AdminBeritaPage({
   const params = await searchParams;
   const search = params.search ?? "";
 
+  const user = await getCurrentUser();
+
+  // Admin kecamatan hanya lihat berita yang dia tulis
+  const authorId =
+    user?.role === "admin_kecamatan" ? user.id : undefined;
+
   const result = await getNews({
     search,
     page: Number(params.page ?? 1),
     limit: 10,
+    authorId,
   });
 
   const news = result.data;

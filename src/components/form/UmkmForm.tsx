@@ -13,6 +13,7 @@ import LocationSection from "./sections/LocationSection";
 import SocialSection from "./sections/SocialSection";
 import ImageSection from "./sections/ImageSection";
 import PublishSection from "./sections/PublishSection";
+import BusinessInfoSection from "./sections/BusinessInfoSection";
 
 import {
   isValidFacebookUrl,
@@ -67,6 +68,9 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
           halal: data.halal ?? "",
           pirt: data.pirt ?? "",
           haki: data.haki ?? "",
+          tahun_mulai_usaha: data.tahun_mulai_usaha ? String(data.tahun_mulai_usaha) : "",
+          jumlah_tenaga_kerja: data.jumlah_tenaga_kerja ? String(data.jumlah_tenaga_kerja) : "",
+          omzet: data.omzet ? String(data.omzet) : "",
           published: data.published ?? false,
         }
       : initialForm,
@@ -127,15 +131,6 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
   const hasChanges = mode === "create" || currentSnapshot !== initialSnapshot;
   useEffect(() => {
     async function loadKecamatan() {
-      if (role === "user") {
-        const res = await fetch("/api/kecamatan");
-        const data = await res.json();
-
-        setKecamatanOptions(data.map((item: { nama: string }) => item.nama));
-
-        return;
-      }
-
       const res = await fetch("/api/kecamatan");
       const data = await res.json();
 
@@ -143,33 +138,22 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
     }
 
     loadKecamatan();
-  }, [role]);
+  }, []);
 
   useEffect(() => {
     async function loadProfile() {
-      console.log("loadProfile");
-
       if (role !== "user" || mode !== "create") {
-        console.log("skip", { role, mode });
         return;
       }
 
       try {
-        console.log("fetch profile");
-
         const res = await fetch("/api/user/profile");
 
-        console.log("status", res.status);
-
         if (!res.ok) {
-          const text = await res.text();
-          console.log(text);
           return;
         }
 
         const user = await res.json();
-
-        console.log(user);
 
         setForm((prev) => ({
           ...prev,
@@ -315,6 +299,9 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         gambar: uploadedImages,
         lat: form.lat ? Number(form.lat) : null,
         lng: form.lng ? Number(form.lng) : null,
+        tahun_mulai_usaha: form.tahun_mulai_usaha ? Number(form.tahun_mulai_usaha) : null,
+        jumlah_tenaga_kerja: form.jumlah_tenaga_kerja ? Number(form.jumlah_tenaga_kerja) : null,
+        omzet: form.omzet ? Number(form.omzet) : null,
 
         // user selalu pending
         ...(role === "user" && {
@@ -385,6 +372,8 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         <ImageSection images={images} required setImages={setImages} />
 
         <OwnerSection form={form} setForm={setForm} />
+
+        <BusinessInfoSection form={form} setForm={setForm} />
 
         <BusinessSection form={form} setForm={setForm} />
 

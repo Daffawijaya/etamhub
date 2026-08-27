@@ -3,15 +3,9 @@ import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
 import {
-  isValidEmail,
-  isValidFacebookUrl,
-  isValidInstagramUsername,
-  isValidTiktokUsername,
-  isValidWhatsapp,
-  normalizeInstagramUsername,
+  normalizeUmkmBody,
+  validateUmkmBody,
   normalizeNullable,
-  normalizeTiktokUsername,
-  normalizeWhatsapp,
 } from "@/lib/validation";
 
 // =========================
@@ -74,23 +68,7 @@ export async function PUT(
   const { id } = await context.params;
 
   const body = await req.json();
-  body.kbli = Array.isArray(body.kbli)
-    ? body.kbli.map((item: string) => item.trim()).filter(Boolean)
-    : body.kbli
-      ? [body.kbli.trim()]
-      : [];
-  [
-    "nib",
-    "pirt",
-    "halal",
-    "haki",
-    "email",
-    "facebook",
-    "instagram",
-    "tiktok",
-  ].forEach((field) => {
-    body[field] = normalizeNullable(body[field]);
-  });
+  normalizeUmkmBody(body);
 
   const { data: oldData, error: findError } = await supabaseAdmin
     .from("umkm")
@@ -150,39 +128,10 @@ export async function PUT(
       );
     }
   }
-  body.whatsapp = normalizeWhatsapp(body.whatsapp);
-  body.instagram = normalizeInstagramUsername(body.instagram);
-  body.tiktok = normalizeTiktokUsername(body.tiktok);
-
-  if (!isValidWhatsapp(body.whatsapp)) {
+  const validationError = validateUmkmBody(body);
+  if (validationError) {
     return NextResponse.json(
-      { message: "Nomor WhatsApp tidak valid." },
-      { status: 400 },
-    );
-  }
-  if (!isValidEmail(body.email)) {
-    return NextResponse.json(
-      { message: "Email tidak valid." },
-      { status: 400 },
-    );
-  }
-  if (!isValidFacebookUrl(body.facebook)) {
-    return NextResponse.json(
-      { message: "URL Facebook tidak valid." },
-      { status: 400 },
-    );
-  }
-
-  if (!isValidInstagramUsername(body.instagram)) {
-    return NextResponse.json(
-      { message: "Username Instagram tidak valid." },
-      { status: 400 },
-    );
-  }
-
-  if (!isValidTiktokUsername(body.tiktok)) {
-    return NextResponse.json(
-      { message: "Username TikTok tidak valid." },
+      { message: validationError.message },
       { status: 400 },
     );
   }
@@ -252,6 +201,19 @@ export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return NextResponse.json(
+      {
+        message: "Unauthorized",
+      },
+      {
+        status: 401,
+      },
+    );
+  }
+
   const { id } = await context.params;
 
   const { data: target, error: findError } = await supabaseAdmin
@@ -271,19 +233,6 @@ export async function DELETE(
     );
   }
 
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    return NextResponse.json(
-      {
-        message: "Unauthorized",
-      },
-      {
-        status: 401,
-      },
-    );
-  }
-
   if (target.owner_id !== currentUser.id) {
     return NextResponse.json(
       {
@@ -294,8 +243,6 @@ export async function DELETE(
       },
     );
   }
-
-  const now = new Date().toISOString();
 
   const { error } = await supabaseAdmin.from("umkm").delete().eq("id", id);
 

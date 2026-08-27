@@ -1,9 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!,
-);
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export const PRODUCT_DETAIL_SELECT = `
   id,
@@ -32,7 +27,7 @@ export const PRODUCT_DETAIL_SELECT = `
 `;
 
 export async function getProductById(id: string) {
-  return await supabase
+  return await supabaseAdmin
     .from("products")
     .select(PRODUCT_DETAIL_SELECT)
     .eq("id", id)
@@ -40,7 +35,7 @@ export async function getProductById(id: string) {
 }
 
 export async function getExistingProduct(id: string) {
-  return await supabase
+  return await supabaseAdmin
     .from("products")
     .select("id, umkm_id, gambar")
     .eq("id", id)
@@ -48,7 +43,7 @@ export async function getExistingProduct(id: string) {
 }
 
 export async function getProductBasicById(id: string) {
-  return await supabase
+  return await supabaseAdmin
     .from("products")
     .select("id")
     .eq("id", id)
@@ -56,7 +51,7 @@ export async function getProductBasicById(id: string) {
 }
 
 export async function getUmkmById(id: string) {
-  return await supabase
+  return await supabaseAdmin
     .from("umkm")
     .select("id, halal, pirt, haki, kbli")
     .eq("id", id)
@@ -67,7 +62,7 @@ export async function updateProduct(
   id: string,
   updatePayload: Record<string, unknown>,
 ) {
-  return await supabase
+  return await supabaseAdmin
     .from("products")
     .update(updatePayload)
     .eq("id", id)
@@ -89,5 +84,5 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: string) {
-  return await supabase.from("products").delete().eq("id", id);
+  return await supabaseAdmin.from("products").delete().eq("id", id);
 }

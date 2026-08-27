@@ -3,15 +3,9 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import {
-  isValidEmail,
-  isValidFacebookUrl,
-  isValidInstagramUsername,
-  isValidTiktokUsername,
-  isValidWhatsapp,
-  normalizeInstagramUsername,
+  normalizeUmkmBody,
+  validateUmkmBody,
   normalizeNullable,
-  normalizeTiktokUsername,
-  normalizeWhatsapp,
 } from "@/lib/validation";
 
 export async function GET(req: Request) {
@@ -101,79 +95,13 @@ export async function POST(req: Request) {
 
     const body = await req.json();
 
-    body.kbli = Array.isArray(body.kbli)
-      ? body.kbli.map((item: string) => item.trim()).filter(Boolean)
-      : body.kbli
-        ? [body.kbli.trim()]
-        : [];
+    normalizeUmkmBody(body);
 
-    [
-      "nib",
-      "pirt",
-      "halal",
-      "haki",
-      "email",
-      "facebook",
-      "instagram",
-      "tiktok",
-    ].forEach((field) => {
-      body[field] = normalizeNullable(body[field]);
-    });
-
-    body.whatsapp = normalizeWhatsapp(body.whatsapp);
-
-    body.instagram = normalizeInstagramUsername(body.instagram);
-
-    body.tiktok = normalizeTiktokUsername(body.tiktok);
-
-    if (!isValidWhatsapp(body.whatsapp)) {
+    const validationError = validateUmkmBody(body);
+    if (validationError) {
       return NextResponse.json(
         {
-          message: "Nomor WhatsApp tidak valid.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!isValidEmail(body.email)) {
-      return NextResponse.json(
-        {
-          message: "Email tidak valid.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!isValidFacebookUrl(body.facebook)) {
-      return NextResponse.json(
-        {
-          message: "URL Facebook tidak valid.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!isValidInstagramUsername(body.instagram)) {
-      return NextResponse.json(
-        {
-          message: "Username Instagram tidak valid.",
-        },
-        {
-          status: 400,
-        },
-      );
-    }
-
-    if (!isValidTiktokUsername(body.tiktok)) {
-      return NextResponse.json(
-        {
-          message: "Username TikTok tidak valid.",
+          message: validationError.message,
         },
         {
           status: 400,

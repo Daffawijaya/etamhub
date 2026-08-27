@@ -1,7 +1,19 @@
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
-export async function getCurrentUser() {
+export type CurrentUser = {
+  id: string;
+  nama: string | null;
+  username: string | null;
+  nik: string | null;
+  email: string | null;
+  role: string | null;
+  roleId: string | null;
+  kecamatanIds: string[];
+  kecamatan: string[];
+} | null;
+
+export async function getCurrentUser(): Promise<CurrentUser> {
   const cookieStore = await cookies();
 
   const userId = cookieStore.get("user_id")?.value;
@@ -62,6 +74,31 @@ export async function getCurrentUser() {
       | { name: string }[]
       | null;
 
+    const resolvedRole: string | null =
+      cookieRole ??
+      (Array.isArray(roleData) ? roleData[0]?.name : roleData?.name) ?? null;
+
+    let kecamatanIds: string[] = [];
+    let kecamatan: string[] = [];
+
+    if (resolvedRole === "admin_kecamatan") {
+      const { data: kecRel } = await supabaseAdmin
+        .from("admin_kecamatan_kecamatan")
+        .select("kecamatan_id")
+        .eq("admin_id", admin.id);
+
+      if (kecRel && kecRel.length > 0) {
+        kecamatanIds = kecRel.map((r) => r.kecamatan_id);
+
+        const { data: kecData } = await supabaseAdmin
+          .from("kecamatan")
+          .select("id, nama")
+          .in("id", kecamatanIds);
+
+        kecamatan = (kecData ?? []).map((k) => k.nama);
+      }
+    }
+
     return {
       id: admin.id,
       nama: admin.nama,
@@ -69,14 +106,12 @@ export async function getCurrentUser() {
       nik: null,
       email: null,
 
-      role:
-        cookieRole ??
-        (Array.isArray(roleData) ? roleData[0]?.name : roleData?.name),
+      role: resolvedRole,
 
       roleId: admin.role_id,
 
-      kecamatanIds: [],
-      kecamatan: [],
+      kecamatanIds,
+      kecamatan,
     };
   }
 

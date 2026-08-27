@@ -34,6 +34,10 @@ export type Umkm = {
   kbli: string[] | null;
   gambar: string[];
 
+  tahun_mulai_usaha: number | null;
+  jumlah_tenaga_kerja: number | null;
+  omzet: number | null;
+
   created_at: string;
   updated_at: string | null;
 

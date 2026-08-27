@@ -77,6 +77,7 @@ type GetNewsParams = {
   limit?: number;
   excludeIds?: string[];
   published?: boolean;
+  authorId?: string;
 };
 
 export async function getNews({
@@ -85,6 +86,7 @@ export async function getNews({
   limit = 10,
   published,
   excludeIds = [],
+  authorId,
 }: GetNewsParams = {}) {
   const from = (page - 1) * limit;
   const to = from + limit - 1;
@@ -110,6 +112,10 @@ export async function getNews({
 
   if (excludeIds.length > 0) {
     query = query.not("id", "in", `(${excludeIds.join(",")})`);
+  }
+
+  if (authorId) {
+    query = query.eq("author_id", authorId);
   }
 
   const { data, error, count } = await query

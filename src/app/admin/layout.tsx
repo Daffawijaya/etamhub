@@ -53,6 +53,14 @@ export default function AdminLayout({
       return "Request";
     }
 
+    if (pathname === "/admin/verifikasi") {
+      return "Verifikasi UMKM";
+    }
+
+    if (pathname === "/admin/admin-kecamatan") {
+      return "Admin Kecamatan";
+    }
+
     return "Admin";
   };
 

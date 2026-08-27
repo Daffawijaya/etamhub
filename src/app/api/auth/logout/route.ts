@@ -13,14 +13,6 @@ export async function POST() {
     maxAge: 0,
   });
 
-  response.cookies.set("role_id", "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    path: "/",
-    maxAge: 0,
-  });
-
   response.cookies.set("auth", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",

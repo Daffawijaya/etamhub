@@ -81,3 +81,60 @@ export function isValidNib(value?: string | null) {
 
   return /^\d{13}$/.test(value);
 }
+
+// =========================
+// UMKM Shared Validation
+// =========================
+
+export type UmkmValidationError = { message: string } | null;
+
+export function normalizeUmkmBody(body: Record<string, any>) {
+  body.kbli = Array.isArray(body.kbli)
+    ? body.kbli.map((item: string) => item.trim()).filter(Boolean)
+    : body.kbli
+      ? [body.kbli.trim()]
+      : [];
+
+  [
+    "nib",
+    "pirt",
+    "halal",
+    "haki",
+    "email",
+    "facebook",
+    "instagram",
+    "tiktok",
+  ].forEach((field) => {
+    body[field] = normalizeNullable(body[field]);
+  });
+
+  body.whatsapp = normalizeWhatsapp(body.whatsapp);
+  body.instagram = normalizeInstagramUsername(body.instagram);
+  body.tiktok = normalizeTiktokUsername(body.tiktok);
+
+  return body;
+}
+
+export function validateUmkmBody(body: Record<string, any>): UmkmValidationError {
+  if (!isValidWhatsapp(body.whatsapp)) {
+    return { message: "Nomor WhatsApp tidak valid." };
+  }
+
+  if (!isValidEmail(body.email)) {
+    return { message: "Email tidak valid." };
+  }
+
+  if (!isValidFacebookUrl(body.facebook)) {
+    return { message: "URL Facebook tidak valid." };
+  }
+
+  if (!isValidInstagramUsername(body.instagram)) {
+    return { message: "Username Instagram tidak valid." };
+  }
+
+  if (!isValidTiktokUsername(body.tiktok)) {
+    return { message: "Username TikTok tidak valid." };
+  }
+
+  return null;
+}
