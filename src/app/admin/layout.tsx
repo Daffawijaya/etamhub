@@ -61,6 +61,14 @@ export default function AdminLayout({
       return "Admin Kecamatan";
     }
 
+    if (pathname === "/admin/monitoring") {
+      return "Monitoring UMKM";
+    }
+
+    if (pathname.match(/^\/admin\/monitoring\/[^/]/)) {
+      return "Detail Monitoring";
+    }
+
     return "Admin";
   };
 

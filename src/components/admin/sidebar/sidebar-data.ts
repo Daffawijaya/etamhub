@@ -1,4 +1,5 @@
 import {
+  BarChart3,
   ClipboardList,
   LayoutDashboard,
   MapPinned,
@@ -37,6 +38,12 @@ export const menus: SidebarMenu[] = [
     href: "/admin/requests",
     icon: ClipboardList,
     roles: ["super_admin", "admin"],
+  },
+  {
+    label: "Monitoring UMKM",
+    href: "/admin/monitoring",
+    icon: BarChart3,
+    roles: ["super_admin", "admin_kecamatan"],
   },
   {
     label: "Admin Kecamatan",
