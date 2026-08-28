@@ -98,6 +98,7 @@ export async function GET(req: NextRequest) {
       const monitoringCount = countMap[umkm.id] ?? 0;
       const latestEntry = monitoringMap[umkm.id] ?? null;
 
+      // initial = UMKM self-reported data (for reference only, NOT used for badge)
       const initial = {
         omzet: umkm.omzet ?? null,
         jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja ?? null,
@@ -109,18 +110,20 @@ export async function GET(req: NextRequest) {
         tiktok: umkm.tiktok ?? null,
       };
 
+      // latest = monitoring data ONLY (no fallback to UMKM self-reported data)
+      // Badge only counts from actual monitoring visits
       const latest = latestEntry
         ? {
-            omzet: latestEntry.omzet ?? initial.omzet,
-            jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? initial.jumlah_tenaga_kerja,
-            halal: latestEntry.halal ?? initial.halal,
-            pirt: latestEntry.pirt ?? initial.pirt,
-            haki: latestEntry.haki ?? initial.haki,
-            instagram: latestEntry.instagram ?? initial.instagram,
-            facebook: latestEntry.facebook ?? initial.facebook,
-            tiktok: latestEntry.tiktok ?? initial.tiktok,
+            omzet: latestEntry.omzet ?? null,
+            jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? null,
+            halal: latestEntry.halal ?? null,
+            pirt: latestEntry.pirt ?? null,
+            haki: latestEntry.haki ?? null,
+            instagram: latestEntry.instagram ?? null,
+            facebook: latestEntry.facebook ?? null,
+            tiktok: latestEntry.tiktok ?? null,
           }
-        : initial;
+        : null;
 
       const badge = await calculateBadge(initial, latest, monitoringCount);
 

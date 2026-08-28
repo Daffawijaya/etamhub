@@ -2,11 +2,14 @@
  * Monitoring badge system for UMKM
  *
  * Criteria are configurable via badge_criteria table.
- * Uses absolute/nominal values:
+ * Uses absolute/nominal values from MONITORING DATA ONLY:
  * - 🥉 Pemula: Started monitoring (at least 1 visit)
- * - 🥈 Berkembang: Omzet ≥ X, TK ≥ Y, dll
- * - 🥇 Berkembang Pesat: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
+ * - 🌱 Tumbuh: Omzet ≥ X, TK ≥ Y
+ * - 🥈 Berkembang: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
  * - 💎 Naik Kelas: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W (top tier)
+ *
+ * IMPORTANT: Badges only appear for UMKM that have been monitored.
+ * Self-reported UMKM data does NOT count for badge calculation.
  */
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
@@ -44,8 +47,8 @@ export interface BadgeCriteria {
 export const BADGE_LEVEL_NAMES = {
   none: "",
   bronze: "🥉 Pemula",
-  silver: "🥈 Berkembang",
-  gold: "🥇 Berkembang Pesat",
+  silver: "🌱 Tumbuh",
+  gold: "🥈 Berkembang",
   platinum: "💎 Naik Kelas",
 } as const;
 
@@ -76,14 +79,14 @@ const BADGE_STYLES = {
     bgColor: "bg-amber-50 dark:bg-amber-900/20",
   },
   silver: {
+    label: "🌱 Tumbuh",
+    color: "text-emerald-700 dark:text-emerald-400",
+    bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
+  },
+  gold: {
     label: "🥈 Berkembang",
     color: "text-slate-600 dark:text-slate-300",
     bgColor: "bg-slate-100 dark:bg-slate-700/30",
-  },
-  gold: {
-    label: "🥇 Berkembang Pesat",
-    color: "text-yellow-700 dark:text-yellow-400",
-    bgColor: "bg-yellow-50 dark:bg-yellow-900/20",
   },
   platinum: {
     label: "💎 Naik Kelas",
@@ -121,9 +124,9 @@ const DEFAULT_CRITERIA: BadgeCriteria = {
   platinum_tk_min: 5,
   platinum_legalitas_min: 2,
   platinum_sosmed_min: 2,
-  silver_label: "Berkembang",
-  gold_label: "Berkembang Pesat",
-  platinum_label: "Naik Kelas",
+  silver_label: "🌱 Tumbuh",
+  gold_label: "🥈 Berkembang",
+  platinum_label: "💎 Naik Kelas",
 };
 
 // Fetch badge criteria from database
@@ -189,6 +192,7 @@ export function calculateBadgeWithCriteria(
   monitoringCount: number,
   config: BadgeCriteria,
 ): BadgeResult {
+  // BADGE ONLY: Must have monitoring data. No monitoring = no badge.
   if (monitoringCount === 0 || !latest) {
     return {
       level: "none",
@@ -211,7 +215,7 @@ export function calculateBadgeWithCriteria(
     monitoringCount,
   };
 
-  // Platinum: semua kriteria terpenuhi
+  // 💎 Naik Kelas: semua kriteria terpenuhi (top tier)
   if (
     meetsCriteria(
       latest,
@@ -229,7 +233,7 @@ export function calculateBadgeWithCriteria(
     };
   }
 
-  // Gold: semua kriteria terpenuhi
+  // 🥈 Berkembang: semua kriteria terpenuhi
   if (
     meetsCriteria(
       latest,
@@ -247,7 +251,7 @@ export function calculateBadgeWithCriteria(
     };
   }
 
-  // Silver: semua kriteria terpenuhi
+  // 🌱 Tumbuh: semua kriteria terpenuhi
   if (
     meetsCriteria(
       latest,
@@ -265,7 +269,7 @@ export function calculateBadgeWithCriteria(
     };
   }
 
-  // Bronze: at least 1 monitoring
+  // 🥉 Pemula: minimal sudah monitoring
   return {
     level: "bronze",
     ...BADGE_STYLES.bronze,

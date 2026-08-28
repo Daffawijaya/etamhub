@@ -83,10 +83,10 @@ export default function MonitoringFilters({
           💎 Naik Kelas
         </option>
         <option className={optionClass} value="gold">
-          🥇 Berkembang Pesat
+          🥈 Berkembang
         </option>
         <option className={optionClass} value="silver">
-          🥈 Berkembang
+          🌱 Tumbuh
         </option>
         <option className={optionClass} value="bronze">
           🥉 Pemula

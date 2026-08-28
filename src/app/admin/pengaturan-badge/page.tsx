@@ -35,8 +35,8 @@ const DEFAULTS: BadgeCriteria = {
   platinum_tk_min: 5,
   platinum_legalitas_min: 2,
   platinum_sosmed_min: 2,
-  silver_label: "🥈 Berkembang",
-  gold_label: "🥇 Berkembang Pesat",
+  silver_label: "🌱 Tumbuh",
+  gold_label: "🥈 Berkembang",
   platinum_label: "💎 Naik Kelas",
 };
 
@@ -112,23 +112,23 @@ export default function PengaturanBadgePage() {
         </button>
       </div>
 
-      {/* Pemula (Bronze) — Tier 1 */}
+      {/* Pemula (Bronze) — Tier 1, auto no config */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
         <div className="flex items-center gap-3 mb-4">
           <span className="text-2xl">🥉</span>
           <div>
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Pemula</h2>
-            <p className="text-xs text-slate-400">Sudah mulai monitoring (minimal 1 kunjungan)</p>
+            <p className="text-xs text-slate-400">Sudah mulai monitoring (minimal 1 kunjungan) — otomatis</p>
           </div>
         </div>
       </div>
 
-      {/* Berkembang (Silver) — Tier 2 */}
+      {/* Tumbuh (Silver) — Tier 2 */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl">🥈</span>
+          <span className="text-2xl">🌱</span>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Berkembang</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Tumbuh</h2>
             <input
               type="text"
               value={criteria.silver_label ?? ""}
@@ -183,12 +183,12 @@ export default function PengaturanBadgePage() {
         </div>
       </div>
 
-      {/* Berkembang Pesat (Gold) — Tier 3 */}
+      {/* Berkembang (Gold) — Tier 3 */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl">🥇</span>
+          <span className="text-2xl">🥈</span>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Berkembang Pesat</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Berkembang</h2>
             <input
               type="text"
               value={criteria.gold_label ?? ""}
@@ -314,12 +314,12 @@ export default function PengaturanBadgePage() {
               🥉 Pemula
             </span>
             <p className="text-slate-600 dark:text-slate-300">
-              Sudah mulai monitoring (minimal 1 kunjungan)
+              Sudah mulai monitoring (minimal 1 kunjungan) — otomatis
             </p>
           </div>
           <div className="flex items-start gap-3">
-            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-700/30 dark:text-slate-300">
-              🥈 Berkembang
+            <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
+              🌱 Tumbuh
             </span>
             <p className="text-slate-600 dark:text-slate-300">
               Omzet ≥ Rp{formatRupiah(criteria.silver_omzet_min)}, TK ≥ {criteria.silver_tk_min}
@@ -328,8 +328,8 @@ export default function PengaturanBadgePage() {
             </p>
           </div>
           <div className="flex items-start gap-3">
-            <span className="rounded-full bg-yellow-50 px-2 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400">
-              🥇 Berkembang Pesat
+            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-700/30 dark:text-slate-300">
+              🥈 Berkembang
             </span>
             <p className="text-slate-600 dark:text-slate-300">
               Omzet ≥ Rp{formatRupiah(criteria.gold_omzet_min)}, TK ≥ {criteria.gold_tk_min}
