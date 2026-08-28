@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState, useCallback } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
@@ -19,6 +20,9 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
   const itemRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
   const [popupPos, setPopupPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => { setMounted(true); }, []);
 
   const updatePopupPos = useCallback(() => {
     if (btnRef.current) {
@@ -335,9 +339,10 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
           </div>
         )}
 
-        {/* ─── Collapsed mode: floating popup submenu ─── */}
-        {collapsed && isOpen && (
+        {/* ─── Collapsed mode: floating popup submenu (portal) ─── */}
+        {mounted && collapsed && isOpen && createPortal(
           <div
+            ref={itemRef}
             className="
               fixed z-[9999]
               w-44
@@ -364,6 +369,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
                 <Link
                   key={child.href}
                   href={child.href}
+                  onClick={() => setOpenMenu(null)}
                   className={`
                     flex w-full items-center gap-3
                     px-4 py-3
@@ -389,7 +395,8 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
                 </Link>
               );
             })}
-          </div>
+          </div>,
+          document.body
         )}
       </div>
     );
