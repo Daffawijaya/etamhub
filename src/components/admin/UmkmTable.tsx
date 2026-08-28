@@ -62,16 +62,8 @@ const getCategoryStyle = (kategori: string | null) => {
 
 const getStatusStyle = (published: boolean | null) => {
   return published
-    ? `
-        bg-green-50
-        text-green-700
-        dark:bg-green-500/20
-        dark:text-green-300
-      `
-    : `
-        bg-slate-500/10
-        text-slate-500
-      `;
+    ? "bg-blue-50 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300"
+    : "bg-slate-100 text-slate-500 dark:bg-white/10 dark:text-slate-400";
 };
 
 const formatDate = (date: string) => {
@@ -204,15 +196,7 @@ export default function UmkmTable({
           {columns.status && (
             <div className="w-[110px] flex-shrink-0">
               <span
-                className={`
-        inline-flex
-        rounded-full
-        px-3
-        py-1.5
-        text-sm
-        font-medium
-        ${getStatusStyle(item.published)}
-      `}
+                className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-medium ${getStatusStyle(item.published)}`}
               >
                 {item.published ? "Publik" : "Privat"}
               </span>
