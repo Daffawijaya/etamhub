@@ -3,10 +3,10 @@
  *
  * Criteria are configurable via badge_criteria table.
  * Uses absolute/nominal values:
- * - Bronze: Started monitoring (at least 1 visit)
- * - Silver: Omzet ≥ X, TK ≥ Y, dll
- * - Gold: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
- * - Platinum: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
+ * - Mulai Aktif: Started monitoring (at least 1 visit)
+ * - Berkembang: Omzet ≥ X, TK ≥ Y, dll
+ * - Berkembang Pesat: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
+ * - Naik Kelas: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W (top tier)
  */
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
@@ -40,6 +40,15 @@ export interface BadgeCriteria {
   platinum_label: string;
 }
 
+// Display names mapping internal levels to user-facing labels
+export const BADGE_LEVEL_NAMES = {
+  none: "",
+  bronze: "Mulai Aktif",
+  silver: "Berkembang",
+  gold: "Berkembang Pesat",
+  platinum: "Naik Kelas",
+} as const;
+
 export interface BadgeResult {
   level: "none" | "bronze" | "silver" | "gold" | "platinum";
   label: string;
@@ -62,22 +71,22 @@ const BADGE_STYLES = {
     bgColor: "bg-slate-100 dark:bg-slate-800",
   },
   bronze: {
-    label: "🥉 Bronze",
+    label: "Mulai Aktif",
     color: "text-amber-700 dark:text-amber-400",
     bgColor: "bg-amber-50 dark:bg-amber-900/20",
   },
   silver: {
-    label: "🥈 Silver",
+    label: "Berkembang",
     color: "text-slate-600 dark:text-slate-300",
     bgColor: "bg-slate-100 dark:bg-slate-700/30",
   },
   gold: {
-    label: "🥇 Gold",
+    label: "Berkembang Pesat",
     color: "text-yellow-700 dark:text-yellow-400",
     bgColor: "bg-yellow-50 dark:bg-yellow-900/20",
   },
   platinum: {
-    label: "💎 Platinum",
+    label: "Naik Kelas",
     color: "text-purple-700 dark:text-purple-400",
     bgColor: "bg-purple-50 dark:bg-purple-900/20",
   },
@@ -112,9 +121,9 @@ const DEFAULT_CRITERIA: BadgeCriteria = {
   platinum_tk_min: 5,
   platinum_legalitas_min: 2,
   platinum_sosmed_min: 2,
-  silver_label: "Perkembangan positif",
-  gold_label: "Pertumbuhan signifikan",
-  platinum_label: "UMKM Naik Kelas!",
+  silver_label: "Berkembang",
+  gold_label: "Berkembang Pesat",
+  platinum_label: "Naik Kelas",
 };
 
 // Fetch badge criteria from database

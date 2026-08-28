@@ -35,9 +35,9 @@ const DEFAULTS: BadgeCriteria = {
   platinum_tk_min: 5,
   platinum_legalitas_min: 2,
   platinum_sosmed_min: 2,
-  silver_label: "Perkembangan positif",
-  gold_label: "Pertumbuhan signifikan",
-  platinum_label: "UMKM Naik Kelas!",
+  silver_label: "Berkembang",
+  gold_label: "Berkembang Pesat",
+  platinum_label: "Naik Kelas",
 };
 
 function formatRupiah(value: number) {
@@ -112,12 +112,12 @@ export default function PengaturanBadgePage() {
         </button>
       </div>
 
-      {/* Silver Badge */}
+      {/* Berkembang (was Silver) */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl">🥈</span>
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-sm dark:bg-slate-700/30">1</span>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Silver Badge</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Berkembang</h2>
             <input
               type="text"
               value={criteria.silver_label ?? ""}
@@ -172,12 +172,12 @@ export default function PengaturanBadgePage() {
         </div>
       </div>
 
-      {/* Gold Badge */}
+      {/* Berkembang Pesat (was Gold) */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl">🥇</span>
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-yellow-50 text-sm font-medium text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400">2</span>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Gold Badge</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Berkembang Pesat</h2>
             <input
               type="text"
               value={criteria.gold_label ?? ""}
@@ -232,12 +232,12 @@ export default function PengaturanBadgePage() {
         </div>
       </div>
 
-      {/* Platinum Badge */}
-      <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
+      {/* Naik Kelas (was Platinum) — Top badge */}
+      <div className="rounded-xl bg-white p-6 dark:bg-dark-card ring-2 ring-purple-200 dark:ring-purple-900/50">
         <div className="flex items-center gap-3 mb-4">
-          <span className="text-2xl">💎</span>
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-purple-50 text-sm font-medium text-purple-700 dark:bg-purple-900/20 dark:text-purple-400">3</span>
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Platinum Badge</h2>
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Naik Kelas <span className="text-xs font-normal text-purple-500 dark:text-purple-400">(Tertinggi)</span></h2>
             <input
               type="text"
               value={criteria.platinum_label ?? ""}
@@ -300,7 +300,15 @@ export default function PengaturanBadgePage() {
         <div className="space-y-3 text-sm">
           <div className="flex items-start gap-3">
             <span className="rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
-              🥈 Silver
+              Mulai Aktif
+            </span>
+            <p className="text-slate-600 dark:text-slate-300">
+              Sudah mulai monitoring (minimal 1 kunjungan)
+            </p>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-700/30 dark:text-slate-300">
+              Berkembang
             </span>
             <p className="text-slate-600 dark:text-slate-300">
               Omzet ≥ Rp{formatRupiah(criteria.silver_omzet_min)}, TK ≥ {criteria.silver_tk_min}
@@ -310,7 +318,7 @@ export default function PengaturanBadgePage() {
           </div>
           <div className="flex items-start gap-3">
             <span className="rounded-full bg-yellow-50 px-2 py-0.5 text-xs font-medium text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400">
-              🥇 Gold
+              Berkembang Pesat
             </span>
             <p className="text-slate-600 dark:text-slate-300">
               Omzet ≥ Rp{formatRupiah(criteria.gold_omzet_min)}, TK ≥ {criteria.gold_tk_min}
@@ -320,7 +328,7 @@ export default function PengaturanBadgePage() {
           </div>
           <div className="flex items-start gap-3">
             <span className="rounded-full bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/20 dark:text-purple-400">
-              💎 Platinum
+              Naik Kelas
             </span>
             <p className="text-slate-600 dark:text-slate-300">
               Omzet ≥ Rp{formatRupiah(criteria.platinum_omzet_min)}, TK ≥ {criteria.platinum_tk_min}
