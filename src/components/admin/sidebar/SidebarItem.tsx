@@ -201,7 +201,8 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
           )}
         </button>
 
-        {/* Children — smooth slide-down, same style as parent items */}
+        {/* Children — smooth slide-down, hidden when collapsed */}
+        {!collapsed && (
         <div
           className={`
             overflow-hidden
@@ -298,6 +299,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
             })}
           </div>
         </div>
+        )}
       </div>
     );
   }
