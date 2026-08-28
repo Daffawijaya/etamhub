@@ -42,7 +42,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
   // ─── Expandable parent with children ───
   if (hasChildren) {
     return (
-      <div>
+      <div className="min-w-0">
         {/* Parent button */}
         <button
           onClick={toggleOpen}
@@ -128,7 +128,8 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
           <span
             className={`
               relative z-10
-              flex-1 whitespace-nowrap text-left font-medium
+              whitespace-nowrap text-left font-medium
+              ${collapsed ? "" : "flex-1"}
 
               transition-all
               duration-500
