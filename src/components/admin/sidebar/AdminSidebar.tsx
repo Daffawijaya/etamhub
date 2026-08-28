@@ -14,6 +14,7 @@ export default function AdminSidebar() {
   const [mounted, setMounted] = useState(false);
   const [role, setRole] = useState<string | null>(null);
   const [badges, setBadges] = useState<Record<string, number>>({});
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   const fetchBadges = useCallback(async () => {
     try {
@@ -109,6 +110,8 @@ export default function AdminSidebar() {
                 menu={menu}
                 collapsed={collapsed}
                 badges={badges}
+                openMenu={openMenu}
+                setOpenMenu={setOpenMenu}
               />
             ))}
         </div>

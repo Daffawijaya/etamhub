@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
@@ -10,11 +9,12 @@ interface SidebarItemProps {
   menu: SidebarMenu;
   collapsed: boolean;
   badges?: Record<string, number>;
+  openMenu: string | null;
+  setOpenMenu: (label: string | null) => void;
 }
 
-export default function SidebarItem({ menu, collapsed, badges }: SidebarItemProps) {
+export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpenMenu }: SidebarItemProps) {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
 
   const hasChildren = menu.children && menu.children.length > 0;
 
@@ -30,8 +30,12 @@ export default function SidebarItem({ menu, collapsed, badges }: SidebarItemProp
       : pathname.startsWith(menu.href)
     : isChildActive;
 
-  // Auto-open if child is active
-  const isOpen = hasChildren ? open || isChildActive : false;
+  // Use shared openMenu state — accordion behavior
+  const isOpen = hasChildren ? openMenu === menu.label || isChildActive : false;
+
+  function toggleOpen() {
+    setOpenMenu(openMenu === menu.label ? null : menu.label);
+  }
 
   const Icon = menu.icon;
 
@@ -41,7 +45,7 @@ export default function SidebarItem({ menu, collapsed, badges }: SidebarItemProp
       <div>
         {/* Parent button */}
         <button
-          onClick={() => setOpen((prev) => !prev)}
+          onClick={toggleOpen}
           title={collapsed ? menu.label : ""}
           className={`
             group
