@@ -197,7 +197,7 @@ export default function SidebarItem({ menu, collapsed, badges }: SidebarItemProp
           )}
         </button>
 
-        {/* Children — smooth slide-down, plain text only */}
+        {/* Children — smooth slide-down, same style as parent items */}
         <div
           className={`
             overflow-hidden
@@ -207,8 +207,9 @@ export default function SidebarItem({ menu, collapsed, badges }: SidebarItemProp
             ${isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}
           `}
         >
-          <div className={`${collapsed ? "pl-0" : "pl-10"} pt-1 pb-1`}>
+          <div className={`${collapsed ? "pl-0" : "pl-4"} space-y-0.5 pt-1 pb-1`}>
             {menu.children!.map((child) => {
+              const ChildIcon = child.icon;
               const childActive = pathname.startsWith(child.href);
 
               return (
@@ -217,33 +218,97 @@ export default function SidebarItem({ menu, collapsed, badges }: SidebarItemProp
                   href={child.href}
                   title={collapsed ? child.label : ""}
                   className={`
+                    group
+                    relative
                     flex
+                    h-11
                     items-center
-                    justify-between
-                    rounded-lg
-                    px-2
-                    py-1.5
+                    overflow-hidden
+                    rounded-xl
 
-                    transition-colors
-                    duration-200
+                    transition-all
+                    duration-300
 
-                    ${collapsed ? "justify-center" : ""}
+                    ${collapsed ? "justify-center px-0" : "justify-start gap-3 px-3"}
 
                     ${
                       childActive
-                        ? "text-[#1184CA] dark:text-sky-400 font-medium"
-                        : "text-slate-500 dark:text-neutral-400 hover:text-slate-700 dark:hover:text-neutral-200"
+                        ? `
+                          bg-slate-100
+                          text-slate-900
+                          dark:bg-neutral-800
+                          dark:text-white
+                        `
+                        : `
+                          text-slate-500
+                          dark:text-neutral-400
+
+                          hover:bg-slate-100
+                          hover:text-slate-900
+
+                          dark:hover:bg-neutral-800
+                          dark:hover:text-white
+                        `
                     }
                   `}
                 >
+                  {/* Child active indicator */}
+                  <span
+                    className={`
+                      absolute
+                      left-0
+                      top-1/2
+                      -translate-y-1/2
+
+                      h-6
+                      w-0.5
+                      rounded-full
+
+                      transition-all
+                      duration-300
+
+                      ${
+                        childActive
+                          ? "opacity-100 bg-gradient-to-b from-[#1184CA] via-[#844EC0] to-[#CA3785]"
+                          : "opacity-0"
+                      }
+                    `}
+                  />
+
+                  {/* Child Icon */}
+                  <div
+                    className={`
+                      relative z-10
+                      flex items-center justify-center
+                      transition-colors duration-300
+                      group-hover:scale-110
+                      ${childActive ? "text-dark dark:text-white" : "text-slate-400 dark:text-neutral-500"}
+                    `}
+                  >
+                    <ChildIcon size={18} strokeWidth={2.2} />
+                  </div>
+
+                  {/* Child Label */}
                   {!collapsed && (
-                    <span className="whitespace-nowrap text-[13px]">
+                    <span
+                      className={`
+                        relative z-10
+                        whitespace-nowrap
+                        text-[13px] font-medium
+
+                        transition-all
+                        duration-300
+
+                        ${childActive ? "text-slate-900 dark:text-white" : ""}
+                      `}
+                    >
                       {child.label}
                     </span>
                   )}
 
+                  {/* Child Badge */}
                   {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && !collapsed && (
-                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                    <span className="absolute right-3 z-10 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
                       {badges[child.badgeKey] > 99 ? "99+" : badges[child.badgeKey]}
                     </span>
                   )}

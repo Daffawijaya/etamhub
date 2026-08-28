@@ -12,6 +12,7 @@ import {
 export interface SidebarMenuItem {
   label: string;
   href: string;
+  icon: any;
   badgeKey?: string;
 }
 
@@ -35,9 +36,9 @@ export const menus: SidebarMenu[] = [
     icon: Store,
     roles: ["super_admin", "admin_kecamatan", "admin"],
     children: [
-      { label: "Data UMKM", href: "/admin/umkm" },
-      { label: "Monitoring UMKM", href: "/admin/monitoring" },
-      { label: "Verifikasi UMKM", href: "/admin/verifikasi", badgeKey: "verifikasi" },
+      { label: "Data UMKM", href: "/admin/umkm", icon: Store },
+      { label: "Monitoring UMKM", href: "/admin/monitoring", icon: BarChart3 },
+      { label: "Verifikasi UMKM", href: "/admin/verifikasi", icon: ShieldCheck, badgeKey: "verifikasi" },
     ],
   },
   {
@@ -51,8 +52,8 @@ export const menus: SidebarMenu[] = [
     icon: Users,
     roles: ["super_admin", "admin"],
     children: [
-      { label: "Kelola Akun", href: "/admin/admin-kecamatan" },
-      { label: "Log Aktivitas", href: "/admin/log-aktivitas" },
+      { label: "Kelola Akun", href: "/admin/admin-kecamatan", icon: Users },
+      { label: "Log Aktivitas", href: "/admin/log-aktivitas", icon: Activity },
     ],
   },
   {
