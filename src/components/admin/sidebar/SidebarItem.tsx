@@ -11,9 +11,10 @@ interface SidebarItemProps {
   badges?: Record<string, number>;
   openMenu: string | null;
   setOpenMenu: (label: string | null) => void;
+  onExpand?: () => void;
 }
 
-export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpenMenu }: SidebarItemProps) {
+export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpenMenu, onExpand }: SidebarItemProps) {
   const pathname = usePathname();
 
   const hasChildren = menu.children && menu.children.length > 0;
@@ -34,6 +35,11 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
   const isOpen = hasChildren ? openMenu === menu.label || isChildActive : false;
 
   function toggleOpen() {
+    if (collapsed && onExpand) {
+      onExpand();
+      setOpenMenu(menu.label);
+      return;
+    }
     setOpenMenu(openMenu === menu.label ? null : menu.label);
   }
 
