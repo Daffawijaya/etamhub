@@ -339,26 +339,23 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
         {collapsed && isOpen && (
           <div
             className="
-              fixed z-[200]
-              min-w-[180px]
+              fixed z-[9999]
+              w-44
+              overflow-hidden
               rounded-xl
+              border
+              shadow-xl
+
+              border-slate-200
               bg-white
-              py-1.5
-              shadow-lg shadow-black/10
-              ring-1 ring-black/5
-              dark:bg-neutral-800 dark:shadow-black/30 dark:ring-white/10
 
-              animate-in fade-in slide-in-from-left-2
+              dark:border-white/10
+              dark:bg-dark-card
+
+              transition-all duration-300
             "
-            style={{ animationDuration: "150ms", top: popupPos.top, left: popupPos.left }}
+            style={{ top: popupPos.top, left: popupPos.left }}
           >
-            {/* Parent label header */}
-            <div className="px-3 pb-1.5 mb-1 border-b border-slate-100 dark:border-white/10">
-              <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                {menu.label}
-              </span>
-            </div>
-
             {menu.children!.map((child) => {
               const ChildIcon = child.icon;
               const childActive = pathname.startsWith(child.href);
@@ -368,19 +365,20 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
                   key={child.href}
                   href={child.href}
                   className={`
-                    flex items-center gap-2.5
-                    px-3 py-2 mx-1 rounded-lg
+                    flex w-full items-center gap-3
+                    px-4 py-3
                     text-sm font-medium
-                    transition-colors duration-150
+
+                    transition-colors duration-300
 
                     ${
                       childActive
-                        ? "bg-slate-100 text-slate-900 dark:bg-neutral-700 dark:text-white"
-                        : "text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-neutral-300 dark:hover:bg-neutral-700 dark:hover:text-white"
+                        ? "bg-slate-50 text-slate-900 dark:bg-white/10 dark:text-white"
+                        : "text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-white/10"
                     }
                   `}
                 >
-                  <ChildIcon size={16} strokeWidth={2} className={childActive ? "text-[#1184CA]" : "text-slate-400 dark:text-slate-500"} />
+                  <ChildIcon size={16} />
                   <span className="whitespace-nowrap">{child.label}</span>
 
                   {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && (
