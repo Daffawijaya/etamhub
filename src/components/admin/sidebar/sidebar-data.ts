@@ -1,7 +1,6 @@
 import {
   BarChart3,
   LayoutDashboard,
-  MapPinned,
   Newspaper,
   Settings,
   ShieldCheck,
@@ -13,7 +12,6 @@ import {
 export interface SidebarMenuItem {
   label: string;
   href: string;
-  icon: any;
   badgeKey?: string;
 }
 
@@ -37,30 +35,10 @@ export const menus: SidebarMenu[] = [
     icon: Store,
     roles: ["super_admin", "admin_kecamatan", "admin"],
     children: [
-      {
-        label: "Data UMKM",
-        href: "/admin/umkm",
-        icon: Store,
-      },
-      {
-        label: "Monitoring UMKM",
-        href: "/admin/monitoring",
-        icon: BarChart3,
-      },
+      { label: "Data UMKM", href: "/admin/umkm" },
+      { label: "Monitoring UMKM", href: "/admin/monitoring" },
+      { label: "Verifikasi UMKM", href: "/admin/verifikasi", badgeKey: "verifikasi" },
     ],
-  },
-  {
-    label: "Verifikasi UMKM",
-    href: "/admin/verifikasi",
-    icon: ShieldCheck,
-    roles: ["super_admin", "admin_kecamatan", "admin"],
-    badgeKey: "verifikasi",
-  },
-  {
-    label: "Admin Kecamatan",
-    href: "/admin/admin-kecamatan",
-    icon: Users,
-    roles: ["super_admin", "admin"],
   },
   {
     label: "Berita",
@@ -69,21 +47,18 @@ export const menus: SidebarMenu[] = [
     roles: ["super_admin", "admin_kecamatan", "admin"],
   },
   {
-    label: "Peta",
-    href: "/admin/peta",
-    icon: MapPinned,
-    roles: ["super_admin", "admin_kecamatan", "admin"],
+    label: "Akun",
+    icon: Users,
+    roles: ["super_admin", "admin"],
+    children: [
+      { label: "Kelola Akun", href: "/admin/admin-kecamatan" },
+      { label: "Log Aktivitas", href: "/admin/log-aktivitas" },
+    ],
   },
   {
     label: "Pengaturan Badge",
     href: "/admin/pengaturan-badge",
     icon: Settings,
-    roles: ["super_admin", "admin"],
-  },
-  {
-    label: "Log Aktivitas",
-    href: "/admin/log-aktivitas",
-    icon: Activity,
     roles: ["super_admin", "admin"],
   },
 ];

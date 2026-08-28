@@ -108,7 +108,7 @@ export default function AdminSidebar() {
                 key={menu.label}
                 menu={menu}
                 collapsed={collapsed}
-                badge={badges[menu.badgeKey ?? ""]}
+                badges={badges}
               />
             ))}
         </div>

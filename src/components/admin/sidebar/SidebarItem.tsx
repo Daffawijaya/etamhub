@@ -9,10 +9,10 @@ import type { SidebarMenu } from "./sidebar-data";
 interface SidebarItemProps {
   menu: SidebarMenu;
   collapsed: boolean;
-  badge?: number;
+  badges?: Record<string, number>;
 }
 
-export default function SidebarItem({ menu, collapsed, badge }: SidebarItemProps) {
+export default function SidebarItem({ menu, collapsed, badges }: SidebarItemProps) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -154,18 +154,23 @@ export default function SidebarItem({ menu, collapsed, badge }: SidebarItemProps
             />
           )}
 
-          {/* Badge */}
-          {badge !== undefined && badge > 0 && (
-            <span
-              className={`
-                absolute z-10 flex h-5 min-w-5 items-center justify-center
-                rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white
-                ${collapsed ? "-right-1 -top-1" : "right-3"}
-              `}
-            >
-              {badge > 99 ? "99+" : badge}
-            </span>
-          )}
+          {/* Badge — sum of children badges */}
+          {(() => {
+            const totalBadge = hasChildren
+              ? menu.children!.reduce((sum, c) => sum + (badges?.[c.badgeKey ?? ""] ?? 0), 0)
+              : 0;
+            return totalBadge > 0 ? (
+              <span
+                className={`
+                  absolute z-10 flex h-5 min-w-5 items-center justify-center
+                  rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white
+                  ${collapsed ? "-right-1 -top-1" : "right-8"}
+                `}
+              >
+                {totalBadge > 99 ? "99+" : totalBadge}
+              </span>
+            ) : null;
+          })()}
 
           {/* Hover Overlay */}
           {!active && (
@@ -192,19 +197,18 @@ export default function SidebarItem({ menu, collapsed, badge }: SidebarItemProps
           )}
         </button>
 
-        {/* Children — smooth slide-down */}
+        {/* Children — smooth slide-down, plain text only */}
         <div
           className={`
             overflow-hidden
             transition-all
             duration-300
             ease-[cubic-bezier(.22,1,.36,1)]
-            ${isOpen ? "max-h-40 opacity-100" : "max-h-0 opacity-0"}
+            ${isOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}
           `}
         >
-          <div className={`${collapsed ? "pl-0" : "pl-6"} space-y-0.5 pt-1`}>
+          <div className={`${collapsed ? "pl-0" : "pl-10"} pt-1 pb-1`}>
             {menu.children!.map((child) => {
-              const ChildIcon = child.icon;
               const childActive = pathname.startsWith(child.href);
 
               return (
@@ -213,90 +217,34 @@ export default function SidebarItem({ menu, collapsed, badge }: SidebarItemProps
                   href={child.href}
                   title={collapsed ? child.label : ""}
                   className={`
-                    group
-                    relative
                     flex
-                    h-10
                     items-center
-                    overflow-hidden
-                    rounded-xl
+                    justify-between
+                    rounded-lg
+                    px-2
+                    py-1.5
 
-                    transition-all
-                    duration-300
+                    transition-colors
+                    duration-200
 
-                    ${collapsed ? "justify-center px-0" : "justify-start gap-3 px-3"}
+                    ${collapsed ? "justify-center" : ""}
 
                     ${
                       childActive
-                        ? `
-                          bg-slate-100
-                          text-slate-900
-                          dark:bg-neutral-800
-                          dark:text-white
-                        `
-                        : `
-                          text-slate-500
-                          dark:text-neutral-400
-
-                          hover:bg-slate-50
-                          hover:text-slate-700
-
-                          dark:hover:bg-neutral-800/50
-                          dark:hover:text-white
-                        `
+                        ? "text-[#1184CA] dark:text-sky-400 font-medium"
+                        : "text-slate-500 dark:text-neutral-400 hover:text-slate-700 dark:hover:text-neutral-200"
                     }
                   `}
                 >
-                  {/* Child active indicator */}
-                  <span
-                    className={`
-                      absolute
-                      left-0
-                      top-1/2
-                      -translate-y-1/2
-
-                      h-5
-                      w-0.5
-                      rounded-full
-
-                      transition-all
-                      duration-300
-
-                      ${
-                        childActive
-                          ? "opacity-100 bg-gradient-to-b from-[#1184CA] via-[#844EC0] to-[#CA3785]"
-                          : "opacity-0"
-                      }
-                    `}
-                  />
-
-                  {/* Child Icon */}
-                  <div
-                    className={`
-                      relative z-10
-                      flex items-center justify-center
-                      transition-colors duration-300
-                      ${childActive ? "text-dark dark:text-white" : "text-slate-400 dark:text-neutral-500"}
-                    `}
-                  >
-                    <ChildIcon size={16} strokeWidth={2} />
-                  </div>
-
-                  {/* Child Label */}
                   {!collapsed && (
-                    <span
-                      className={`
-                        relative z-10
-                        whitespace-nowrap
-                        text-sm font-medium
-
-                        transition-all
-                        duration-300
-
-                        ${childActive ? "text-slate-900 dark:text-white" : ""}
-                      `}
-                    >
+                    <span className="whitespace-nowrap text-[13px]">
                       {child.label}
+                    </span>
+                  )}
+
+                  {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && !collapsed && (
+                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                      {badges[child.badgeKey] > 99 ? "99+" : badges[child.badgeKey]}
                     </span>
                   )}
                 </Link>
@@ -419,7 +367,7 @@ export default function SidebarItem({ menu, collapsed, badge }: SidebarItemProps
       </span>
 
       {/* Badge */}
-      {badge !== undefined && badge > 0 && (
+      {menu.badgeKey && badges && (badges[menu.badgeKey] ?? 0) > 0 && (
         <span
           className={`
             absolute z-10 flex h-5 min-w-5 items-center justify-center
@@ -427,7 +375,7 @@ export default function SidebarItem({ menu, collapsed, badge }: SidebarItemProps
             ${collapsed ? "-right-1 -top-1" : "right-3"}
           `}
         >
-          {badge > 99 ? "99+" : badge}
+          {badges[menu.badgeKey] > 99 ? "99+" : badges[menu.badgeKey]}
         </span>
       )}
 
