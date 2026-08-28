@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown } from "lucide-react";
@@ -17,6 +17,15 @@ interface SidebarItemProps {
 export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpenMenu }: SidebarItemProps) {
   const pathname = usePathname();
   const itemRef = useRef<HTMLDivElement>(null);
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const [popupPos, setPopupPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+
+  const updatePopupPos = useCallback(() => {
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPopupPos({ top: rect.top, left: rect.right + 8 });
+    }
+  }, []);
 
   const hasChildren = menu.children && menu.children.length > 0;
 
@@ -39,9 +48,11 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
     setOpenMenu(openMenu === menu.label ? null : menu.label);
   }
 
-  // Close popup when clicking outside
+  // Update popup position and close on outside click
   useEffect(() => {
     if (!collapsed || !isOpen) return;
+
+    updatePopupPos();
 
     function handleClickOutside(e: MouseEvent) {
       if (itemRef.current && !itemRef.current.contains(e.target as Node)) {
@@ -49,9 +60,17 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
       }
     }
 
+    function handleScroll() {
+      updatePopupPos();
+    }
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [collapsed, isOpen, setOpenMenu]);
+    window.addEventListener("scroll", handleScroll, true);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      window.removeEventListener("scroll", handleScroll, true);
+    };
+  }, [collapsed, isOpen, setOpenMenu, updatePopupPos]);
 
   const Icon = menu.icon;
 
@@ -61,6 +80,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
       <div ref={itemRef} className="min-w-0 relative">
         {/* Parent button */}
         <button
+          ref={btnRef}
           onClick={toggleOpen}
           title={collapsed ? menu.label : ""}
           className={`
@@ -319,8 +339,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
         {collapsed && isOpen && (
           <div
             className="
-              absolute left-full top-0 z-[200]
-              ml-2
+              fixed z-[200]
               min-w-[180px]
               rounded-xl
               bg-white
@@ -331,7 +350,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
 
               animate-in fade-in slide-in-from-left-2
             "
-            style={{ animationDuration: "150ms" }}
+            style={{ animationDuration: "150ms", top: popupPos.top, left: popupPos.left }}
           >
             {/* Parent label header */}
             <div className="px-3 pb-1.5 mb-1 border-b border-slate-100 dark:border-white/10">
