@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 
 import ActivityLogs from "./ActivityLogs";
+import BadgePieChart from "./BadgePieChart";
 import CategoryPieChart from "./CategoryPieChart";
 import KecamatanChart from "./KecamatanChart";
 import LatestUmkm from "./LatestUmkm";
+import OmzetTrendChart from "./OmzetTrendChart";
 import QuickActions from "./QuickActions";
 import StatsCards from "./StatsCards";
 import UmkmMapWidget from "./UmkmMapWidget";
@@ -20,24 +22,42 @@ export default function DashboardGrid() {
   }, []);
 
   if (!data) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center py-20">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-[#1184CA]" />
+      </div>
+    );
   }
+
+  const monitoring = data.monitoring ?? {};
 
   return (
     <div className="grid grid-cols-12 gap-6">
       <div className="col-span-8 space-y-6">
+        {/* Top row: Stats + Quick Actions */}
         <div className="grid grid-cols-2 gap-6">
           <StatsCards stats={data.stats} />
-
           <QuickActions />
         </div>
 
+        {/* Omzet Trend Chart */}
+        <OmzetTrendChart data={monitoring.omzetTrend ?? []} />
+
+        {/* Latest UMKM */}
         <LatestUmkm umkms={data.latest} />
 
+        {/* Map */}
         <UmkmMapWidget umkms={data.map ?? []} />
       </div>
 
       <div className="col-span-4 space-y-6">
+        {/* Badge Distribution Pie Chart */}
+        <BadgePieChart
+          data={monitoring.badgeChart ?? []}
+          monitoredCount={monitoring.monitoredCount ?? 0}
+          totalUmkm={data.stats?.totalUmkm ?? 0}
+        />
+
         <CategoryPieChart data={data.kategoriChart} />
 
         <KecamatanChart data={data.kecamatanChart} />
