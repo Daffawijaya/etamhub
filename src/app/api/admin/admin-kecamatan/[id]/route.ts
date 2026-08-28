@@ -13,7 +13,7 @@ export async function PUT(
   try {
     const user = await getCurrentUser();
 
-    if (!user || user.role !== "super_admin") {
+    if (!user || !['super_admin', 'admin'].includes(user.role ?? '')) {
       return NextResponse.json(
         { message: "Unauthorized" },
         { status: 401 },
@@ -122,7 +122,7 @@ export async function DELETE(
   try {
     const user = await getCurrentUser();
 
-    if (!user || user.role !== "super_admin") {
+    if (!user || !['super_admin', 'admin'].includes(user.role ?? '')) {
       return NextResponse.json(
         { message: "Unauthorized" },
         { status: 401 },

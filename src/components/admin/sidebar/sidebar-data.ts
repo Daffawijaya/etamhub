@@ -28,6 +28,7 @@ export const menus: SidebarMenu[] = [
     label: "UMKM",
     href: "/admin/umkm",
     icon: Store,
+    roles: ["super_admin", "admin_kecamatan"],
   },
   {
     label: "Verifikasi UMKM",
@@ -46,23 +47,20 @@ export const menus: SidebarMenu[] = [
     label: "Admin Kecamatan",
     href: "/admin/admin-kecamatan",
     icon: Users,
-    roles: ["super_admin"],
-  },
-  {
-    label: "Requests",
-    href: "/admin/requests",
-    icon: ClipboardList,
     roles: ["super_admin", "admin"],
   },
+  // Requests dihapus — tidak diperlukan lagi
   {
     label: "Berita",
     href: "/admin/berita",
     icon: Newspaper,
+    roles: ["super_admin", "admin_kecamatan"],
   },
   {
     label: "Peta",
     href: "/admin/peta",
     icon: MapPinned,
+    roles: ["super_admin", "admin_kecamatan"],
   },
   {
     label: "Pengaturan Badge",

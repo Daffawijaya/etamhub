@@ -166,11 +166,26 @@ export async function POST(req: Request) {
 
     await supabaseAdmin.from("notifications").insert({
       id: crypto.randomUUID(),
+      admin_id: user.id,
       type: "create",
       title: `Admin menambahkan UMKM ${data.nama}`,
+      link: "/admin/umkm",
       created_at: now,
       read: false,
     });
+
+    // Notify owner if exists
+    if (body.owner_id) {
+      await supabaseAdmin.from("notifications").insert({
+        id: crypto.randomUUID(),
+        user_id: body.owner_id,
+        type: "approval",
+        title: `UMKM "${data.nama}" telah dibuat oleh admin`,
+        link: "/user/umkm",
+        created_at: now,
+        read: false,
+      });
+    }
 
     return NextResponse.json(
       {

@@ -11,7 +11,7 @@ export async function GET() {
   try {
     const user = await getCurrentUser();
 
-    if (!user || user.role !== "super_admin") {
+    if (!user || !['super_admin', 'admin'].includes(user.role ?? '')) {
       return NextResponse.json(
         { message: "Unauthorized" },
         { status: 401 },
@@ -29,12 +29,19 @@ export async function GET() {
         created_at,
         roles ( name )
       `,
-      )
-      .eq("roles.name", "admin_kecamatan");
+      );
 
     if (error) throw error;
 
-    const adminIds = (admins ?? []).map((a) => a.id);
+    // Filter: only admin + admin_kecamatan (exclude super_admin)
+    const allowedRoles = new Set(["admin_kecamatan", "admin"]);
+    const filteredAdmins = (admins ?? []).filter((a) => {
+      const roleData = a.roles as { name: string } | { name: string }[] | null;
+      const roleName = Array.isArray(roleData) ? roleData[0]?.name : roleData?.name;
+      return allowedRoles.has(roleName ?? "");
+    });
+
+    const adminIds = filteredAdmins.map((a) => a.id);
 
     let kecamatanMap: Record<string, string[]> = {};
 
@@ -71,12 +78,13 @@ export async function GET() {
       }
     }
 
-    const result = (admins ?? []).map((admin) => ({
+    const result = filteredAdmins.map((admin) => ({
       id: admin.id,
       nama: admin.nama,
       username: admin.username,
       is_active: admin.is_active,
       created_at: admin.created_at,
+      role: (admin.roles as any)?.name ?? "admin_kecamatan",
       kecamatan: kecamatanMap[admin.id] ?? [],
     }));
 
@@ -97,7 +105,7 @@ export async function POST(req: Request) {
   try {
     const user = await getCurrentUser();
 
-    if (!user || user.role !== "super_admin") {
+    if (!user || !['super_admin', 'admin'].includes(user.role ?? '')) {
       return NextResponse.json(
         { message: "Unauthorized" },
         { status: 401 },
@@ -105,12 +113,15 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { nama, username, password, kecamatanIds } = body as {
+    const { nama, username, password, role: targetRole, kecamatanIds } = body as {
       nama: string;
       username: string;
       password: string;
-      kecamatanIds: string[];
+      role?: string;
+      kecamatanIds?: string[];
     };
+
+    const roleName = targetRole === "admin" ? "admin" : "admin_kecamatan";
 
     if (!nama || !username || !password) {
       return NextResponse.json(
@@ -119,7 +130,7 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!Array.isArray(kecamatanIds) || kecamatanIds.length === 0) {
+    if (roleName === "admin_kecamatan" && (!Array.isArray(kecamatanIds) || kecamatanIds.length === 0)) {
       return NextResponse.json(
         { message: "Minimal pilih 1 kecamatan" },
         { status: 400 },
@@ -140,18 +151,28 @@ export async function POST(req: Request) {
       );
     }
 
-    // Get role_id for admin_kecamatan
-    const { data: role } = await supabaseAdmin
+    // Get or create role_id
+    let { data: role } = await supabaseAdmin
       .from("roles")
       .select("id")
-      .eq("name", "admin_kecamatan")
+      .eq("name", roleName)
       .maybeSingle();
 
     if (!role) {
-      return NextResponse.json(
-        { message: "Role admin_kecamatan tidak ditemukan di database" },
-        { status: 500 },
-      );
+      const { data: newRole, error: createError } = await supabaseAdmin
+        .from("roles")
+        .insert({ name: roleName })
+        .select("id")
+        .single();
+
+      if (createError || !newRole) {
+        return NextResponse.json(
+          { message: `Gagal membuat role ${roleName}` },
+          { status: 500 },
+        );
+      }
+
+      role = newRole;
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
@@ -172,17 +193,29 @@ export async function POST(req: Request) {
 
     if (insertError) throw insertError;
 
-    // Insert kecamatan relations
-    const rels = kecamatanIds.map((kecId) => ({
+    // Insert kecamatan relations (admin_kecamatan only)
+    if (roleName === "admin_kecamatan" && kecamatanIds && kecamatanIds.length > 0) {
+      const rels = kecamatanIds.map((kecId) => ({
+        admin_id: adminId,
+        kecamatan_id: kecId,
+      }));
+
+      const { error: relError } = await supabaseAdmin
+        .from("admin_kecamatan_kecamatan")
+        .insert(rels);
+
+      if (relError) throw relError;
+    }
+
+    // Notify the new admin
+    await supabaseAdmin.from("notifications").insert({
+      id: crypto.randomUUID(),
       admin_id: adminId,
-      kecamatan_id: kecId,
-    }));
-
-    const { error: relError } = await supabaseAdmin
-      .from("admin_kecamatan_kecamatan")
-      .insert(rels);
-
-    if (relError) throw relError;
+      type: "create",
+      title: `Akun ${roleName === "admin" ? "admin" : "admin kecamatan"} "${nama}" telah dibuat`,
+      created_at: new Date().toISOString(),
+      read: false,
+    });
 
     return NextResponse.json(
       { success: true, id: adminId },

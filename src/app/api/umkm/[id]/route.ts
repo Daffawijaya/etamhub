@@ -169,7 +169,6 @@ export async function PUT(
     .from("umkm")
     .update({
       ...umkmData,
-      approval_status: "approved",
       updated_at: now,
     })
     .eq("id", id)

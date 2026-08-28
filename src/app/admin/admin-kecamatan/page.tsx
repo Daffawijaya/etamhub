@@ -3,14 +3,15 @@
 import { useEffect, useState } from "react";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
-import { Plus, Trash2, Edit2 } from "lucide-react";
+import { Plus, Trash2, Edit2, Shield, Users } from "lucide-react";
 
-interface AdminKecamatan {
+interface AdminAccount {
   id: string;
   nama: string;
   username: string;
   is_active: boolean;
   created_at: string;
+  role: string;
   kecamatan: string[];
 }
 
@@ -20,10 +21,10 @@ interface KecamatanOption {
 }
 
 export default function AdminKecamatanPage() {
-  const [admins, setAdmins] = useState<AdminKecamatan[]>([]);
+  const [admins, setAdmins] = useState<AdminAccount[]>([]);
   const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [editing, setEditing] = useState<AdminKecamatan | null>(null);
+  const [showForm, setShowForm] = useState<"admin" | "admin_kecamatan" | null>(null);
+  const [editing, setEditing] = useState<AdminAccount | null>(null);
   const [kecamatanOptions, setKecamatanOptions] = useState<KecamatanOption[]>([]);
 
   // Form state
@@ -32,6 +33,9 @@ export default function AdminKecamatanPage() {
   const [formPassword, setFormPassword] = useState("");
   const [formKecamatanIds, setFormKecamatanIds] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+
+  const adminList = admins.filter((a) => a.role === "admin");
+  const kecamatanList = admins.filter((a) => a.role === "admin_kecamatan");
 
   async function loadData() {
     try {
@@ -43,7 +47,7 @@ export default function AdminKecamatanPage() {
       const adminsData = await adminsRes.json();
       const kecData = await kecRes.json();
 
-      if (adminsRes.ok) setAdmins(adminsData);
+      if (adminsRes.ok && Array.isArray(adminsData)) setAdmins(adminsData);
       setKecamatanOptions(kecData ?? []);
     } catch (error) {
       console.error(error);
@@ -56,15 +60,14 @@ export default function AdminKecamatanPage() {
     loadData();
   }, []);
 
-  function openForm(admin?: AdminKecamatan) {
-    if (admin) {
-      setEditing(admin);
-      setFormNama(admin.nama);
-      setFormUsername(admin.username);
+  function openForm(role: "admin" | "admin_kecamatan", account?: AdminAccount) {
+    if (account) {
+      setEditing(account);
+      setFormNama(account.nama);
+      setFormUsername(account.username);
       setFormPassword("");
-      // Map kecamatan names back to IDs
       const ids = kecamatanOptions
-        .filter((k) => admin.kecamatan.includes(k.nama))
+        .filter((k) => account.kecamatan.includes(k.nama))
         .map((k) => k.id);
       setFormKecamatanIds(ids);
     } else {
@@ -74,7 +77,7 @@ export default function AdminKecamatanPage() {
       setFormPassword("");
       setFormKecamatanIds([]);
     }
-    setShowForm(true);
+    setShowForm(role);
   }
 
   function toggleKecamatan(id: string) {
@@ -94,7 +97,7 @@ export default function AdminKecamatanPage() {
       return;
     }
 
-    if (formKecamatanIds.length === 0) {
+    if (showForm === "admin_kecamatan" && formKecamatanIds.length === 0) {
       alert("Minimal pilih 1 kecamatan");
       return;
     }
@@ -105,7 +108,8 @@ export default function AdminKecamatanPage() {
       const payload: Record<string, any> = {
         nama: formNama,
         username: formUsername,
-        kecamatanIds: formKecamatanIds,
+        role: showForm,
+        kecamatanIds: showForm === "admin_kecamatan" ? formKecamatanIds : [],
       };
 
       if (formPassword) payload.password = formPassword;
@@ -124,7 +128,7 @@ export default function AdminKecamatanPage() {
 
       if (!res.ok) throw new Error(result.message);
 
-      setShowForm(false);
+      setShowForm(null);
       setEditing(null);
       loadData();
     } catch (error) {
@@ -135,7 +139,7 @@ export default function AdminKecamatanPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Yakin ingin menghapus admin kecamatan ini?")) return;
+    if (!confirm("Yakin ingin menghapus akun ini?")) return;
 
     try {
       const res = await fetch(`/api/admin/admin-kecamatan/${id}`, {
@@ -143,7 +147,6 @@ export default function AdminKecamatanPage() {
       });
 
       if (!res.ok) throw new Error("Gagal menghapus");
-
       loadData();
     } catch (error) {
       alert(error instanceof Error ? error.message : "Gagal menghapus");
@@ -159,7 +162,6 @@ export default function AdminKecamatanPage() {
       });
 
       if (!res.ok) throw new Error("Gagal update");
-
       loadData();
     } catch (error) {
       alert(error instanceof Error ? error.message : "Gagal update");
@@ -169,69 +171,80 @@ export default function AdminKecamatanPage() {
   if (loading) return <LoadingState />;
 
   return (
-    <main className="px-6 pb-6">
+    <main className="px-6 pb-6 space-y-6">
+      {/* ==================== ADMIN SECTION ==================== */}
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
         <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
-          <div>
-            <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-              Admin Kecamatan
-            </h1>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              Kelola akun admin kecamatan
-            </p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-900/20">
+              <Shield size={20} className="text-violet-600 dark:text-violet-400" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Admin
+              </h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                {adminList.length} akun
+              </p>
+            </div>
           </div>
           <button
-            onClick={() => openForm()}
-            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+            onClick={() => openForm("admin")}
+            className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700"
           >
             <Plus size={16} />
             Tambah Admin
           </button>
         </div>
 
-        {admins.length === 0 ? (
-          <EmptyState />
+        {adminList.length === 0 ? (
+          <div className="p-8 text-center text-sm text-slate-400">
+            Belum ada akun admin
+          </div>
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-neutral-800">
-            {admins.map((admin) => (
+            {adminList.map((admin) => (
               <div
                 key={admin.id}
                 className="flex items-center gap-4 px-5 py-4"
               >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-50 dark:bg-violet-900/20">
+                  <Shield size={18} className="text-violet-600 dark:text-violet-400" />
+                </div>
                 <div className="min-w-0 flex-1">
                   <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
                     {admin.nama}
                   </h3>
                   <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                    @{admin.username} ·{" "}
-                    {admin.kecamatan.length > 0
-                      ? admin.kecamatan.join(", ")
-                      : "Belum ada kecamatan"}
+                    @{admin.username}
                   </p>
                 </div>
 
-                <span
-                  className={`rounded-full px-3 py-1 text-xs font-medium ${
-                    admin.is_active
-                      ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                      : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
-                  }`}
-                >
-                  {admin.is_active ? "Aktif" : "Nonaktif"}
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-[11px] font-semibold text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
+                    ADMIN
+                  </span>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${
+                      admin.is_active
+                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                        : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
+                    }`}
+                  >
+                    {admin.is_active ? "Aktif" : "Nonaktif"}
+                  </span>
+                </div>
 
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => openForm(admin)}
+                    onClick={() => openForm("admin", admin)}
                     className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
                     title="Edit"
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
-                    onClick={() =>
-                      handleToggleActive(admin.id, admin.is_active)
-                    }
+                    onClick={() => handleToggleActive(admin.id, admin.is_active)}
                     className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
                   >
                     {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
@@ -250,7 +263,101 @@ export default function AdminKecamatanPage() {
         )}
       </div>
 
-      {/* Modal Form */}
+      {/* ==================== ADMIN KECAMATAN SECTION ==================== */}
+      <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
+        <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 dark:bg-teal-900/20">
+              <Users size={20} className="text-teal-600 dark:text-teal-400" />
+            </div>
+            <div>
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+                Admin Kecamatan
+              </h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                {kecamatanList.length} akun
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => openForm("admin_kecamatan")}
+            className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-700"
+          >
+            <Plus size={16} />
+            Tambah Admin Kecamatan
+          </button>
+        </div>
+
+        {kecamatanList.length === 0 ? (
+          <div className="p-8 text-center text-sm text-slate-400">
+            Belum ada akun admin kecamatan
+          </div>
+        ) : (
+          <div className="divide-y divide-gray-100 dark:divide-neutral-800">
+            {kecamatanList.map((admin) => (
+              <div
+                key={admin.id}
+                className="flex items-center gap-4 px-5 py-4"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-900/20">
+                  <Users size={18} className="text-teal-600 dark:text-teal-400" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
+                    {admin.nama}
+                  </h3>
+                  <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                    @{admin.username} ·{" "}
+                    {admin.kecamatan.length > 0
+                      ? admin.kecamatan.join(", ")
+                      : "Belum ada kecamatan"}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="rounded-full bg-teal-50 px-2.5 py-0.5 text-[11px] font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400">
+                    KECAMATAN
+                  </span>
+                  <span
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${
+                      admin.is_active
+                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                        : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
+                    }`}
+                  >
+                    {admin.is_active ? "Aktif" : "Nonaktif"}
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => openForm("admin_kecamatan", admin)}
+                    className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
+                    title="Edit"
+                  >
+                    <Edit2 size={16} />
+                  </button>
+                  <button
+                    onClick={() => handleToggleActive(admin.id, admin.is_active)}
+                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
+                  >
+                    {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
+                  </button>
+                  <button
+                    onClick={() => handleDelete(admin.id)}
+                    className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                    title="Hapus"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* ==================== MODAL FORM ==================== */}
       {showForm && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
           <div
@@ -258,7 +365,9 @@ export default function AdminKecamatanPage() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
-              {editing ? "Edit Admin Kecamatan" : "Tambah Admin Kecamatan"}
+              {editing
+                ? `Edit ${showForm === "admin" ? "Admin" : "Admin Kecamatan"}`
+                : `Tambah ${showForm === "admin" ? "Admin" : "Admin Kecamatan"}`}
             </h2>
 
             <div className="mt-4 space-y-4">
@@ -301,35 +410,37 @@ export default function AdminKecamatanPage() {
                 />
               </div>
 
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Kecamatan
-                </label>
-                <div className="max-h-40 overflow-y-auto rounded-lg border border-slate-200 p-2 dark:border-slate-700 dark:bg-dark">
-                  {kecamatanOptions.map((kec) => (
-                    <label
-                      key={kec.id}
-                      className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50 dark:hover:bg-white/5"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formKecamatanIds.includes(kec.id)}
-                        onChange={() => toggleKecamatan(kec.id)}
-                        className="rounded"
-                      />
-                      <span className="text-slate-700 dark:text-slate-300">
-                        {kec.nama}
-                      </span>
-                    </label>
-                  ))}
+              {showForm === "admin_kecamatan" && (
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Kecamatan
+                  </label>
+                  <div className="max-h-40 overflow-y-auto rounded-lg border border-slate-200 p-2 dark:border-slate-700 dark:bg-dark">
+                    {kecamatanOptions.map((kec) => (
+                      <label
+                        key={kec.id}
+                        className="flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 text-sm hover:bg-slate-50 dark:hover:bg-white/5"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={formKecamatanIds.includes(kec.id)}
+                          onChange={() => toggleKecamatan(kec.id)}
+                          className="rounded"
+                        />
+                        <span className="text-slate-700 dark:text-slate-300">
+                          {kec.nama}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             <div className="mt-6 flex gap-3">
               <button
                 onClick={() => {
-                  setShowForm(false);
+                  setShowForm(null);
                   setEditing(null);
                 }}
                 className="flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800"
@@ -339,7 +450,11 @@ export default function AdminKecamatanPage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex-1 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-700 disabled:opacity-50"
+                className={`flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-white transition-all disabled:opacity-50 ${
+                  showForm === "admin"
+                    ? "bg-violet-600 hover:bg-violet-700"
+                    : "bg-teal-600 hover:bg-teal-700"
+                }`}
               >
                 {saving ? "Menyimpan..." : editing ? "Update" : "Simpan"}
               </button>

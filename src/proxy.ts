@@ -11,7 +11,7 @@ export function proxy(req: NextRequest) {
   }
 
   if (pathname.startsWith("/admin")) {
-    if (role !== "super_admin" && role !== "admin_kecamatan") {
+    if (!['super_admin', 'admin', 'admin_kecamatan'].includes(role ?? '')) {
       return NextResponse.redirect(new URL("/user", req.url));
     }
   }

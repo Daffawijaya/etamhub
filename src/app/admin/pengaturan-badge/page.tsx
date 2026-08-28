@@ -55,7 +55,7 @@ export default function PengaturanBadgePage() {
       .then((res) => res.json())
       .then((data) => {
         if (data.silver_omzet_min !== undefined) {
-          setCriteria(data);
+          setCriteria({ ...DEFAULTS, ...data, silver_label: data.silver_label ?? "", gold_label: data.gold_label ?? "", platinum_label: data.platinum_label ?? "" });
         }
       })
       .catch(console.error)
@@ -94,32 +94,22 @@ export default function PengaturanBadgePage() {
 
   return (
     <main className="px-6 pb-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Pengaturan Badge Monitoring
-          </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Atur kriteria minimal untuk setiap level badge UMKM
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <button
-            onClick={handleReset}
-            className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-          >
-            <RotateCcw size={14} />
-            Reset
-          </button>
-          <button
-            onClick={handleSave}
-            disabled={saving}
-            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
-          >
-            <Save size={14} />
-            {saving ? "Menyimpan..." : saved ? "✓ Tersimpan" : "Simpan"}
-          </button>
-        </div>
+      <div className="flex items-center justify-end gap-2">
+        <button
+          onClick={handleReset}
+          className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+        >
+          <RotateCcw size={14} />
+          Reset
+        </button>
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
+        >
+          <Save size={14} />
+          {saving ? "Menyimpan..." : saved ? "✓ Tersimpan" : "Simpan"}
+        </button>
       </div>
 
       {/* Silver Badge */}
@@ -130,7 +120,7 @@ export default function PengaturanBadgePage() {
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Silver Badge</h2>
             <input
               type="text"
-              value={criteria.silver_label}
+              value={criteria.silver_label ?? ""}
               onChange={(e) => updateField("silver_label", e.target.value)}
               className="mt-1 text-sm text-slate-500 dark:text-slate-400 bg-transparent border-b border-dashed border-slate-300 dark:border-slate-600 focus:outline-none focus:border-emerald-500 w-60"
               placeholder="Label badge"
@@ -190,7 +180,7 @@ export default function PengaturanBadgePage() {
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Gold Badge</h2>
             <input
               type="text"
-              value={criteria.gold_label}
+              value={criteria.gold_label ?? ""}
               onChange={(e) => updateField("gold_label", e.target.value)}
               className="mt-1 text-sm text-slate-500 dark:text-slate-400 bg-transparent border-b border-dashed border-slate-300 dark:border-slate-600 focus:outline-none focus:border-emerald-500 w-60"
               placeholder="Label badge"
@@ -250,7 +240,7 @@ export default function PengaturanBadgePage() {
             <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Platinum Badge</h2>
             <input
               type="text"
-              value={criteria.platinum_label}
+              value={criteria.platinum_label ?? ""}
               onChange={(e) => updateField("platinum_label", e.target.value)}
               className="mt-1 text-sm text-slate-500 dark:text-slate-400 bg-transparent border-b border-dashed border-slate-300 dark:border-slate-600 focus:outline-none focus:border-emerald-500 w-60"
               placeholder="Label badge"

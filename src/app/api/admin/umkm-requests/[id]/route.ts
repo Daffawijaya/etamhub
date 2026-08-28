@@ -87,8 +87,10 @@ console.log("CURRENT USER:", currentUser);
 
     await supabaseAdmin.from("notifications").insert({
       id: crypto.randomUUID(),
-      type: "request",
+      user_id: request.user_id,
+      type: "rejection",
       title: `Request UMKM ${request.action} ditolak`,
+      link: "/user/umkm",
       created_at: now,
       read: false,
     });
@@ -184,8 +186,10 @@ console.log("CURRENT USER:", currentUser);
 
   await supabaseAdmin.from("notifications").insert({
     id: crypto.randomUUID(),
-    type: "request",
+    user_id: request.user_id,
+    type: "approval",
     title: `Request UMKM ${request.action} disetujui`,
+    link: "/user/umkm",
     created_at: now,
     read: false,
   });

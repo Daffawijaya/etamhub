@@ -303,8 +303,8 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         jumlah_tenaga_kerja: form.jumlah_tenaga_kerja ? Number(form.jumlah_tenaga_kerja) : null,
         omzet: form.omzet ? Number(form.omzet) : null,
 
-        // user selalu pending
-        ...(role === "user" && {
+        // user create: always pending; user edit: direct update (no request)
+        ...(role === "user" && mode === "create" && {
           published: false,
           approval_status: "pending",
         }),
@@ -355,9 +355,11 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         </h1>
 
         <p className="mt-1 text-sm text-slate-500">
-          {role === "user"
+          {mode === "create" && role === "user"
             ? "Data akan dikirim untuk proses persetujuan admin."
-            : "Kelola data UMKM."}
+            : mode === "edit" && role === "user"
+              ? "Perubahan akan langsung diperbarui."
+              : "Kelola data UMKM."}
         </p>
       </div>
 
