@@ -21,6 +21,8 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
   const btnRef = useRef<HTMLButtonElement>(null);
   const [popupPos, setPopupPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const [mounted, setMounted] = useState(false);
+  // Track if user explicitly closed the popup (e.g. clicked a child link)
+  const userClosedRef = useRef(false);
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -46,11 +48,25 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
     : isChildActive;
 
   // Use shared openMenu state — accordion behavior
-  const isOpen = hasChildren ? openMenu === menu.label || isChildActive : false;
+  // In collapsed mode, don't auto-open from isChildActive after user clicked a link
+  const isOpen = hasChildren
+    ? openMenu === menu.label || (!collapsed && isChildActive) || (collapsed && isChildActive && !userClosedRef.current && openMenu === null ? false : openMenu === menu.label)
+    : false;
 
   function toggleOpen() {
+    userClosedRef.current = false;
     setOpenMenu(openMenu === menu.label ? null : menu.label);
   }
+
+  function handleChildClick() {
+    userClosedRef.current = true;
+    setOpenMenu(null);
+  }
+
+  // Reset userClosed when pathname changes back
+  useEffect(() => {
+    userClosedRef.current = false;
+  }, [pathname]);
 
   // Update popup position and close on outside click
   useEffect(() => {
@@ -369,7 +385,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
                 <Link
                   key={child.href}
                   href={child.href}
-                  onClick={() => setOpenMenu(null)}
+                  onClick={handleChildClick}
                   className={`
                     flex w-full items-center gap-3
                     px-4 py-3

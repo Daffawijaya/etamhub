@@ -10,8 +10,8 @@ import { menus } from "./sidebar-data";
 const STORAGE_KEY = "admin-sidebar-collapsed";
 
 export default function AdminSidebar() {
-  const [collapsed, setCollapsed] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [collapsed, setCollapsed] = useState<boolean | null>(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const [role, setRole] = useState<string | null>(null);
   const [badges, setBadges] = useState<Record<string, number>>({});
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -50,16 +50,15 @@ export default function AdminSidebar() {
       setCollapsed(saved === "true");
     } else if (window.innerWidth < 1024) {
       setCollapsed(true);
+    } else {
+      setCollapsed(false);
     }
-
-    setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
-
+    if (collapsed === null) return;
     localStorage.setItem(STORAGE_KEY, String(collapsed));
-  }, [collapsed, mounted]);
+  }, [collapsed]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -69,11 +68,16 @@ export default function AdminSidebar() {
     };
 
     window.addEventListener("resize", handleResize);
-
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  if (!mounted) return null;
+  function handleToggle() {
+    setHasInteracted(true);
+    setCollapsed((prev) => !(prev ?? false));
+  }
+
+  // Don't render until we know the collapsed state
+  if (collapsed === null) return null;
 
   return (
     <aside
@@ -86,9 +90,7 @@ export default function AdminSidebar() {
         flex-col
         bg-white
         dark:bg-dark-card
-        transition-[width]
-        duration-500
-        ease-[cubic-bezier(.22,1,.36,1)]
+        ${hasInteracted ? "transition-[width] duration-500 ease-[cubic-bezier(.22,1,.36,1)]" : ""}
         ${collapsed ? "w-16" : "w-70"}
       `}
     >
@@ -101,7 +103,6 @@ export default function AdminSidebar() {
           {menus
             .filter((menu) => {
               if (!menu.roles) return true;
-
               return menu.roles.includes(role ?? "");
             })
             .map((menu) => (
@@ -120,7 +121,7 @@ export default function AdminSidebar() {
       {/* Floating Toggle — rendered after nav so it sits on top */}
       <SidebarToggle
         collapsed={collapsed}
-        onToggle={() => setCollapsed((prev) => !prev)}
+        onToggle={handleToggle}
       />
     </aside>
   );

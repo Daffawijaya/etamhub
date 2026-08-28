@@ -11,6 +11,7 @@ import OmzetTrendChart from "./OmzetTrendChart";
 import QuickActions from "./QuickActions";
 import StatsCards from "./StatsCards";
 import UmkmMapWidget from "./UmkmMapWidget";
+import UmkmProgressStats from "./UmkmProgressStats";
 
 export default function DashboardGrid() {
   const [data, setData] = useState<any>(null);
@@ -55,6 +56,15 @@ export default function DashboardGrid() {
         <BadgePieChart
           data={monitoring.badgeChart ?? []}
           monitoredCount={monitoring.monitoredCount ?? 0}
+          totalUmkm={data.stats?.totalUmkm ?? 0}
+        />
+
+        {/* Umkm Progress: Digitalisasi & Legalitas */}
+        <UmkmProgressStats
+          digitalCount={data.stats?.digitalCount ?? 0}
+          digitalPercent={data.stats?.digitalPercent ?? 0}
+          legalitasCount={data.stats?.legalitasCount ?? 0}
+          legalitasPercent={data.stats?.legalitasPercent ?? 0}
           totalUmkm={data.stats?.totalUmkm ?? 0}
         />
 

@@ -216,12 +216,26 @@ export async function GET() {
     const monitoredCount = Object.keys(countMap).length;
     const totalMonitorings = allMonitorings.length;
 
+    // Digitalisasi & Legalitas stats
+    let digitalCount = 0;
+    let legalitasCount = 0;
+    for (const umkm of dataUmkm) {
+      const hasDigital = !!(umkm.instagram || umkm.facebook || umkm.tiktok);
+      const hasLegalitas = !!(umkm.halal || umkm.pirt || umkm.haki);
+      if (hasDigital) digitalCount++;
+      if (hasLegalitas) legalitasCount++;
+    }
+
     return NextResponse.json({
       stats: {
         totalUmkm,
         totalKategori: kategoriChart.length,
         totalKecamatan: kecamatanChart.length,
         totalSubkategori: subkategoriSet.size,
+        digitalCount,
+        legalitasCount,
+        digitalPercent: totalUmkm > 0 ? Math.round((digitalCount / totalUmkm) * 100) : 0,
+        legalitasPercent: totalUmkm > 0 ? Math.round((legalitasCount / totalUmkm) * 100) : 0,
       },
       latest: dataUmkm.slice(0, 5),
       kategoriChart,
