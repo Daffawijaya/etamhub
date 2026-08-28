@@ -112,7 +112,6 @@ export default function AdminSidebar() {
                 badges={badges}
                 openMenu={openMenu}
                 setOpenMenu={setOpenMenu}
-                onExpand={() => setCollapsed(false)}
               />
             ))}
         </div>
