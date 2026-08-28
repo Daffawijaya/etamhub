@@ -256,29 +256,6 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
                     }
                   `}
                 >
-                  {/* Child active indicator */}
-                  <span
-                    className={`
-                      absolute
-                      left-0
-                      top-1/2
-                      -translate-y-1/2
-
-                      h-6
-                      w-0.5
-                      rounded-full
-
-                      transition-all
-                      duration-300
-
-                      ${
-                        childActive
-                          ? "opacity-100 bg-gradient-to-b from-[#1184CA] via-[#844EC0] to-[#CA3785]"
-                          : "opacity-0"
-                      }
-                    `}
-                  />
-
                   {/* Child Icon */}
                   <div
                     className={`
