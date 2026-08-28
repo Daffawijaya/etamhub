@@ -80,16 +80,16 @@ export default function MonitoringFilters({
           Semua Badge
         </option>
         <option className={optionClass} value="platinum">
-          Naik Kelas
+          💎 Naik Kelas
         </option>
         <option className={optionClass} value="gold">
-          Berkembang Pesat
+          🥇 Berkembang Pesat
         </option>
         <option className={optionClass} value="silver">
-          Berkembang
+          🥈 Berkembang
         </option>
         <option className={optionClass} value="bronze">
-          Mulai Aktif
+          🥉 Pemula
         </option>
         <option className={optionClass} value="none">
           Belum Ada

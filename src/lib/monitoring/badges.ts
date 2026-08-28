@@ -3,10 +3,10 @@
  *
  * Criteria are configurable via badge_criteria table.
  * Uses absolute/nominal values:
- * - Mulai Aktif: Started monitoring (at least 1 visit)
- * - Berkembang: Omzet ≥ X, TK ≥ Y, dll
- * - Berkembang Pesat: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
- * - Naik Kelas: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W (top tier)
+ * - 🥉 Pemula: Started monitoring (at least 1 visit)
+ * - 🥈 Berkembang: Omzet ≥ X, TK ≥ Y, dll
+ * - 🥇 Berkembang Pesat: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
+ * - 💎 Naik Kelas: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W (top tier)
  */
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
@@ -43,10 +43,10 @@ export interface BadgeCriteria {
 // Display names mapping internal levels to user-facing labels
 export const BADGE_LEVEL_NAMES = {
   none: "",
-  bronze: "Mulai Aktif",
-  silver: "Berkembang",
-  gold: "Berkembang Pesat",
-  platinum: "Naik Kelas",
+  bronze: "🥉 Pemula",
+  silver: "🥈 Berkembang",
+  gold: "🥇 Berkembang Pesat",
+  platinum: "💎 Naik Kelas",
 } as const;
 
 export interface BadgeResult {
@@ -71,22 +71,22 @@ const BADGE_STYLES = {
     bgColor: "bg-slate-100 dark:bg-slate-800",
   },
   bronze: {
-    label: "Mulai Aktif",
+    label: "🥉 Pemula",
     color: "text-amber-700 dark:text-amber-400",
     bgColor: "bg-amber-50 dark:bg-amber-900/20",
   },
   silver: {
-    label: "Berkembang",
+    label: "🥈 Berkembang",
     color: "text-slate-600 dark:text-slate-300",
     bgColor: "bg-slate-100 dark:bg-slate-700/30",
   },
   gold: {
-    label: "Berkembang Pesat",
+    label: "🥇 Berkembang Pesat",
     color: "text-yellow-700 dark:text-yellow-400",
     bgColor: "bg-yellow-50 dark:bg-yellow-900/20",
   },
   platinum: {
-    label: "Naik Kelas",
+    label: "💎 Naik Kelas",
     color: "text-purple-700 dark:text-purple-400",
     bgColor: "bg-purple-50 dark:bg-purple-900/20",
   },
