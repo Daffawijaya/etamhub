@@ -180,10 +180,10 @@ export default function UmkmTable({
               <span
                 className={`
                   inline-flex
-                  rounded-full
-                  px-3
-                  py-1.5
-                  text-sm
+                  rounded-lg
+                  px-2.5
+                  py-1
+                  text-xs
                   font-medium
                   ${getCategoryStyle(item.kategori)}
                 `}
