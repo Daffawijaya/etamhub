@@ -18,7 +18,7 @@ export default function SidebarToggle({
       className={`
   absolute
   top-9
-  z-50
+  z-[100]
 
   ${collapsed ? "-right-2" : "right-2"}
 

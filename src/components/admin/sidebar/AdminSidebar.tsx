@@ -91,12 +91,6 @@ export default function AdminSidebar() {
         ${collapsed ? "w-16" : "w-70"}
       `}
     >
-      {/* Floating Toggle */}
-      <SidebarToggle
-        collapsed={collapsed}
-        onToggle={() => setCollapsed((prev) => !prev)}
-      />
-
       {/* Logo */}
       <SidebarLogo collapsed={collapsed} />
 
@@ -111,7 +105,7 @@ export default function AdminSidebar() {
             })
             .map((menu) => (
               <SidebarItem
-                key={menu.href}
+                key={menu.label}
                 menu={menu}
                 collapsed={collapsed}
                 badge={badges[menu.badgeKey ?? ""]}
@@ -119,6 +113,12 @@ export default function AdminSidebar() {
             ))}
         </div>
       </nav>
+
+      {/* Floating Toggle — rendered after nav so it sits on top */}
+      <SidebarToggle
+        collapsed={collapsed}
+        onToggle={() => setCollapsed((prev) => !prev)}
+      />
     </aside>
   );
 }
