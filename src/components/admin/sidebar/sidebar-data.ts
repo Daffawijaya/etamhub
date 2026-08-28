@@ -1,6 +1,5 @@
 import {
   BarChart3,
-  ClipboardList,
   LayoutDashboard,
   MapPinned,
   Newspaper,
@@ -11,12 +10,20 @@ import {
   Activity,
 } from "lucide-react";
 
-export interface SidebarMenu {
+export interface SidebarMenuItem {
   label: string;
   href: string;
   icon: any;
+  badgeKey?: string;
+}
+
+export interface SidebarMenu {
+  label: string;
+  href?: string;
+  icon: any;
   roles?: string[];
   badgeKey?: string;
+  children?: SidebarMenuItem[];
 }
 
 export const menus: SidebarMenu[] = [
@@ -27,9 +34,20 @@ export const menus: SidebarMenu[] = [
   },
   {
     label: "UMKM",
-    href: "/admin/umkm",
     icon: Store,
     roles: ["super_admin", "admin_kecamatan", "admin"],
+    children: [
+      {
+        label: "Data UMKM",
+        href: "/admin/umkm",
+        icon: Store,
+      },
+      {
+        label: "Monitoring UMKM",
+        href: "/admin/monitoring",
+        icon: BarChart3,
+      },
+    ],
   },
   {
     label: "Verifikasi UMKM",
@@ -39,18 +57,11 @@ export const menus: SidebarMenu[] = [
     badgeKey: "verifikasi",
   },
   {
-    label: "Monitoring UMKM",
-    href: "/admin/monitoring",
-    icon: BarChart3,
-    roles: ["super_admin", "admin_kecamatan", "admin"],
-  },
-  {
     label: "Admin Kecamatan",
     href: "/admin/admin-kecamatan",
     icon: Users,
     roles: ["super_admin", "admin"],
   },
-  // Requests dihapus — tidak diperlukan lagi
   {
     label: "Berita",
     href: "/admin/berita",

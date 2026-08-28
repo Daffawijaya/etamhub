@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { SidebarMenu } from "@/components/admin/sidebar/sidebar-data";
 
 interface SidebarItemProps {
-  menu: SidebarMenu;
+  menu: { label: string; href: string; icon: any };
   collapsed: boolean;
 }
 
