@@ -20,6 +20,7 @@ export interface MonitoringData {
   halal: string | null;
   pirt: string | null;
   haki: string | null;
+  nib: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -108,6 +109,7 @@ function countLegalitas(data: MonitoringData): number {
   if (data.halal) count++;
   if (data.pirt) count++;
   if (data.haki) count++;
+  if (data.nib) count++;
   return count;
 }
 

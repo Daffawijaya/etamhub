@@ -149,6 +149,7 @@ export async function GET() {
         halal: umkm.halal ?? null,
         pirt: umkm.pirt ?? null,
         haki: umkm.haki ?? null,
+        nib: umkm.nib ?? null,
         instagram: umkm.instagram ?? null,
         facebook: umkm.facebook ?? null,
         tiktok: umkm.tiktok ?? null,
@@ -161,6 +162,7 @@ export async function GET() {
             halal: null,
             pirt: null,
             haki: null,
+            nib: null,
             instagram: null,
             facebook: null,
             tiktok: null,
@@ -221,7 +223,7 @@ export async function GET() {
     let legalitasCount = 0;
     for (const umkm of dataUmkm) {
       const hasDigital = !!(umkm.instagram || umkm.facebook || umkm.tiktok);
-      const hasLegalitas = !!(umkm.halal || umkm.pirt || umkm.haki);
+      const hasLegalitas = !!(umkm.halal || umkm.pirt || umkm.haki || umkm.nib);
       if (hasDigital) digitalCount++;
       if (hasLegalitas) legalitasCount++;
     }

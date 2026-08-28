@@ -70,7 +70,7 @@ export default function UmkmProgressStats({
             />
           </div>
           <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
-            Memiliki Halal, PIRT, atau HAKI
+            Memiliki Halal, PIRT, HAKI, atau NIB
           </p>
         </div>
       </div>

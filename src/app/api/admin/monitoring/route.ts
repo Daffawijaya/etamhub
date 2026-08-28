@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
     // Get UMKM from assigned kecamatan
     let umkmQuery = supabaseAdmin
       .from("umkm")
-      .select("id, nama, pemilik, kategori, kecamatan, kecamatan_id, gambar, omzet, jumlah_tenaga_kerja, halal, pirt, haki, instagram, facebook, tiktok")
+      .select("id, nama, pemilik, kategori, kecamatan, kecamatan_id, gambar, omzet, jumlah_tenaga_kerja, halal, pirt, haki, nib, instagram, facebook, tiktok")
       .eq("published", true);
 
     if (user.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
@@ -105,6 +105,7 @@ export async function GET(req: NextRequest) {
         halal: umkm.halal ?? null,
         pirt: umkm.pirt ?? null,
         haki: umkm.haki ?? null,
+        nib: umkm.nib ?? null,
         instagram: umkm.instagram ?? null,
         facebook: umkm.facebook ?? null,
         tiktok: umkm.tiktok ?? null,
@@ -119,6 +120,7 @@ export async function GET(req: NextRequest) {
             halal: latestEntry.halal ?? null,
             pirt: latestEntry.pirt ?? null,
             haki: latestEntry.haki ?? null,
+            nib: latestEntry.nib ?? null,
             instagram: latestEntry.instagram ?? null,
             facebook: latestEntry.facebook ?? null,
             tiktok: latestEntry.tiktok ?? null,
