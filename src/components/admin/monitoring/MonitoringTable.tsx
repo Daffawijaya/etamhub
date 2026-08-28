@@ -41,6 +41,19 @@ function formatRupiah(value: number | null) {
   }).format(value);
 }
 
+const getCategoryStyle = (kategori: string) => {
+  switch (kategori) {
+    case "Perdagangan":
+      return "bg-green-50 text-green-700 dark:bg-green-500/20 dark:text-green-300";
+    case "Jasa":
+      return "bg-purple-50 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300";
+    case "Industri":
+      return "bg-orange-50 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300";
+    default:
+      return "bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300";
+  }
+};
+
 export default function MonitoringTable({ data }: Props) {
   if (data.length === 0) {
     return (
@@ -112,7 +125,7 @@ export default function MonitoringTable({ data }: Props) {
 
               {/* Kategori */}
               <td className="px-6 py-4">
-                <span className="inline-flex items-center rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/10 dark:text-slate-300">
+                <span className={`inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ${getCategoryStyle(item.kategori)}`}>
                   {item.kategori}
                 </span>
               </td>
