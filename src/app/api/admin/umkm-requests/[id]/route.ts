@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
+import { logActivity } from "@/lib/activity-log";
 import crypto from "crypto";
 
 export async function PUT(
@@ -93,6 +94,16 @@ console.log("CURRENT USER:", currentUser);
       link: "/user/umkm",
       created_at: now,
       read: false,
+    });
+
+    await logActivity({
+      actorId: currentUser.id,
+      actorName: currentUser.nama ?? "Unknown",
+      actorRole: currentUser.role ?? "unknown",
+      action: `reject_umkm_request_${request.action}`,
+      targetType: "umkm",
+      targetId: request.umkm_id,
+      detail: { reason: body.reason },
     });
 
     return NextResponse.json({
@@ -192,6 +203,16 @@ console.log("CURRENT USER:", currentUser);
     link: "/user/umkm",
     created_at: now,
     read: false,
+  });
+
+  await logActivity({
+    actorId: currentUser.id,
+    actorName: currentUser.nama ?? "Unknown",
+    actorRole: currentUser.role ?? "unknown",
+    action: `approve_umkm_request_${request.action}`,
+    targetType: "umkm",
+    targetId: request.umkm_id,
+    detail: { requestAction: request.action },
   });
 
   return NextResponse.json({

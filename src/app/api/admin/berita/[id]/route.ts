@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getCurrentUser } from "@/lib/session";
+import { logActivity } from "@/lib/activity-log";
 
 export async function DELETE(
   req: Request,
@@ -12,6 +14,19 @@ export async function DELETE(
 
     if (error) {
       throw error;
+    }
+
+    // Log activity
+    const user = await getCurrentUser();
+    if (user) {
+      await logActivity({
+        actorId: user.id,
+        actorName: user.nama ?? "Unknown",
+        actorRole: user.role ?? "unknown",
+        action: "delete_berita",
+        targetType: "berita",
+        targetId: id,
+      });
     }
 
     return NextResponse.json({

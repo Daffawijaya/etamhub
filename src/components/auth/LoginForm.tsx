@@ -34,7 +34,7 @@ export default function LoginForm() {
       return;
     }
 
-    if (data.role === "super_admin" || data.role === "admin_kecamatan") {
+    if (data.role === "super_admin" || data.role === "admin_kecamatan" || data.role === "admin") {
       window.location.href = "/admin";
       return;
     }

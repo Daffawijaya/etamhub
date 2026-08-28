@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getCurrentUser } from "@/lib/session";
+import { logActivity } from "@/lib/activity-log";
 
 export async function PATCH(
   req: Request,
@@ -19,6 +21,26 @@ export async function PATCH(
 
     if (error) {
       throw error;
+    }
+
+    // Log activity
+    const user = await getCurrentUser();
+    if (user) {
+      const { data: newsData } = await supabaseAdmin
+        .from("news")
+        .select("title")
+        .eq("id", id)
+        .single();
+
+      await logActivity({
+        actorId: user.id,
+        actorName: user.nama ?? "Unknown",
+        actorRole: user.role ?? "unknown",
+        action: published ? "publish_berita" : "unpublish_berita",
+        targetType: "berita",
+        targetId: id,
+        targetName: newsData?.title,
+      });
     }
 
     return NextResponse.json({

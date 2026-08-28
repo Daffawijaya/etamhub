@@ -46,7 +46,7 @@ export default function AuthCallbackPage() {
         return;
       }
 
-      if (data.role === "super_admin" || data.role === "admin_kecamatan") {
+      if (data.role === "super_admin" || data.role === "admin_kecamatan" || data.role === "admin") {
         router.replace("/admin");
         return;
       }

@@ -73,6 +73,10 @@ export default function AdminLayout({
       return "Pengaturan Badge";
     }
 
+    if (pathname === "/admin/log-aktivitas") {
+      return "Log Aktivitas";
+    }
+
     return "Admin";
   };
 

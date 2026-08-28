@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { logActivity } from "@/lib/activity-log";
 
 // =========================
 // PUT — Approve or reject a UMKM creation request
@@ -130,6 +131,18 @@ export async function PUT(
           read: false,
         });
       }
+
+      // Log activity
+      await logActivity({
+        actorId: user.id,
+        actorName: user.nama ?? "Unknown",
+        actorRole: user.role ?? "unknown",
+        action: "approve_umkm",
+        targetType: "umkm",
+        targetId: umkmId,
+        targetName: payload.nama,
+        detail: { kecamatan: payload.kecamatan, reason },
+      });
     } else {
       // Reject — just update the request status
       // Notify owner
@@ -144,6 +157,17 @@ export async function PUT(
           read: false,
         });
       }
+
+      // Log activity
+      await logActivity({
+        actorId: user.id,
+        actorName: user.nama ?? "Unknown",
+        actorRole: user.role ?? "unknown",
+        action: "reject_umkm",
+        targetType: "umkm",
+        targetName: payload.nama,
+        detail: { kecamatan: payload.kecamatan, reason },
+      });
     }
 
     // Update request status

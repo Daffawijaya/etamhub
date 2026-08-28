@@ -44,6 +44,17 @@ export async function PATCH(
       );
     }
 
+    // Log activity
+    await logActivity({
+      actorId: user.id,
+      actorName: user.nama ?? "Unknown",
+      actorRole: user.role ?? "unknown",
+      action: published ? "publish_umkm" : "unpublish_umkm",
+      targetType: "umkm",
+      targetId: id,
+      targetName: data?.nama,
+    });
+
     return NextResponse.json({
       success: true,
       data,

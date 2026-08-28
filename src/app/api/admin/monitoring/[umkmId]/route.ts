@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { calculateBadge } from "@/lib/monitoring/badges";
+import { logActivity } from "@/lib/activity-log";
 
 // =========================
 // GET — Monitoring history for a specific UMKM
@@ -159,6 +160,28 @@ export async function POST(
       });
 
     if (insertError) throw insertError;
+
+    // Get UMKM name for logging
+    const { data: umkmData } = await supabaseAdmin
+      .from("umkm")
+      .select("nama")
+      .eq("id", umkmId)
+      .single();
+
+    await logActivity({
+      actorId: user.id,
+      actorName: user.nama ?? "Unknown",
+      actorRole: user.role ?? "unknown",
+      action: "add_monitoring",
+      targetType: "umkm",
+      targetId: umkmId,
+      targetName: umkmData?.nama,
+      detail: {
+        omzet: body.omzet,
+        jumlah_tenaga_kerja: body.jumlah_tenaga_kerja,
+        catatan: body.catatan,
+      },
+    });
 
     return NextResponse.json(
       { success: true, message: "Monitoring berhasil ditambahkan" },
