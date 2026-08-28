@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
+import { logActivity } from "@/lib/activity-log";
 
 export async function PATCH(
   req: Request,
