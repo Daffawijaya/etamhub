@@ -125,7 +125,7 @@ export default function MonitoringTable({ data }: Props) {
 
               {/* Kategori */}
               <td className="px-6 py-4">
-                <span className={`inline-flex items-center rounded-full px-3 py-1.5 text-sm font-medium ${getCategoryStyle(item.kategori)}`}>
+                <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-medium ${getCategoryStyle(item.kategori)}`}>
                   {item.kategori}
                 </span>
               </td>
