@@ -269,14 +269,14 @@ export default function MonitoringDetailPage() {
 
       if (form.jumlah_tenaga_kerja) payload.jumlah_tenaga_kerja = Number(form.jumlah_tenaga_kerja);
       if (form.omzet) payload.omzet = Number(form.omzet);
-      if (form.halal) payload.halal = form.halal;
-      if (form.pirt) payload.pirt = form.pirt;
-      if (form.haki) payload.haki = form.haki;
-      if (form.nib) payload.nib = form.nib;
+      payload.halal = form.halal || null;
+      payload.pirt = form.pirt || null;
+      payload.haki = form.haki || null;
+      payload.nib = form.nib || null;
       if (form.kbli.length > 0) payload.kbli = form.kbli;
-      if (form.instagram) payload.instagram = form.instagram;
-      if (form.facebook) payload.facebook = form.facebook;
-      if (form.tiktok) payload.tiktok = form.tiktok;
+      payload.instagram = form.instagram || null;
+      payload.facebook = form.facebook || null;
+      payload.tiktok = form.tiktok || null;
       if (form.kebutuhan_utama) payload.kebutuhan_utama = form.kebutuhan_utama;
       if (form.catatan) payload.catatan = form.catatan;
 
@@ -613,10 +613,10 @@ export default function MonitoringDetailPage() {
                     type="number"
                     value={form.jumlah_tenaga_kerja}
                     onChange={(e) =>
-                      setForm((p) => ({ ...p, jumlah_tenaga_kerja: e.target.value }))
+                      setForm((p) => ({ ...p, jumlah_tenaga_kerja: e.target.value.replace(/\D/g, "").slice(0, 6) }))
                     }
                     placeholder={String(umkm.jumlah_tenaga_kerja ?? "-")}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
                 <div>
@@ -627,37 +627,44 @@ export default function MonitoringDetailPage() {
                     type="number"
                     value={form.omzet}
                     onChange={(e) =>
-                      setForm((p) => ({ ...p, omzet: e.target.value }))
+                      setForm((p) => ({ ...p, omzet: e.target.value.replace(/\D/g, "") }))
                     }
                     placeholder={String(umkm.omzet ?? "-")}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
               </div>
 
               {/* NIB & KBLI */}
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  NIB
-                </label>
-                <input
-                  type="text"
-                  value={form.nib}
-                  onChange={(e) =>
-                    setForm((p) => ({ ...p, nib: e.target.value }))
-                  }
-                  placeholder={umkm.nib ?? "13 digit NIB"}
-                  className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  KBLI
-                </label>
-                <KBLISelect
-                  value={form.kbli}
-                  onChange={(val) => setForm((p) => ({ ...p, kbli: val }))}
-                />
+              <div className="grid grid-cols-1 gap-3">
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    NIB
+                  </label>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    value={form.nib}
+                    onChange={(e) =>
+                      setForm((p) => ({
+                        ...p,
+                        nib: e.target.value.replace(/\D/g, "").slice(0, 13),
+                      }))
+                    }
+                    placeholder={umkm.nib ?? "13 digit NIB"}
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
+                  />
+                  <p className="mt-1 text-xs text-slate-400">Maksimal 13 digit angka</p>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    KBLI
+                  </label>
+                  <KBLISelect
+                    value={form.kbli}
+                    onChange={(val) => setForm((p) => ({ ...p, kbli: val }))}
+                  />
+                </div>
               </div>
 
               {/* Legalitas */}
@@ -673,7 +680,7 @@ export default function MonitoringDetailPage() {
                       setForm((p) => ({ ...p, halal: e.target.value }))
                     }
                     placeholder={umkm.halal ?? "No. Sertifikat"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
                 <div>
@@ -687,7 +694,7 @@ export default function MonitoringDetailPage() {
                       setForm((p) => ({ ...p, pirt: e.target.value }))
                     }
                     placeholder={umkm.pirt ?? "No. PIRT"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
                 <div>
@@ -701,7 +708,7 @@ export default function MonitoringDetailPage() {
                       setForm((p) => ({ ...p, haki: e.target.value }))
                     }
                     placeholder={umkm.haki ?? "No. HAKI"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
               </div>
@@ -719,7 +726,7 @@ export default function MonitoringDetailPage() {
                       setForm((p) => ({ ...p, instagram: e.target.value }))
                     }
                     placeholder={umkm.instagram ?? "-"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
                 <div>
@@ -733,7 +740,7 @@ export default function MonitoringDetailPage() {
                       setForm((p) => ({ ...p, facebook: e.target.value }))
                     }
                     placeholder={umkm.facebook ?? "-"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
                 <div>
@@ -747,7 +754,7 @@ export default function MonitoringDetailPage() {
                       setForm((p) => ({ ...p, tiktok: e.target.value }))
                     }
                     placeholder={umkm.tiktok ?? "-"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
               </div>
@@ -764,7 +771,7 @@ export default function MonitoringDetailPage() {
                   }
                   placeholder="Contoh: butuh bantuan pemasaran online, butuh legalitas halal, dll"
                   rows={2}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                 />
               </div>
 
@@ -780,7 +787,7 @@ export default function MonitoringDetailPage() {
                   }
                   placeholder="Catatan tambahan dari kunjungan/monitoring"
                   rows={2}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                 />
               </div>
             </div>
