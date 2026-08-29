@@ -104,14 +104,18 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      <SummaryCards data={data} />
+    <div className="grid grid-cols-12 gap-6">
+      {/* Left column */}
+      <div className="col-span-8 space-y-6">
+        <SummaryCards data={data} />
 
-      <LegalityCard legalitas={data.legalitas} />
+        <LegalityCard legalitas={data.legalitas} />
 
-      <div className="grid gap-6 xl:grid-cols-2">
         <BusinessInfoCard umkm={data.umkm} />
+      </div>
 
+      {/* Right column */}
+      <div className="col-span-4 space-y-6">
         <TimelineCard timeline={data.timeline} />
       </div>
     </div>

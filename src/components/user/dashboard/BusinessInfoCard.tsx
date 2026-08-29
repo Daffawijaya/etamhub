@@ -30,18 +30,18 @@ export default function BusinessInfoCard({ umkm }: Props) {
   if (!umkm) {
     return (
       <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
-        <h2 className="text-lg font-semibold text-dark dark:text-light">
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
           Informasi Usaha
         </h2>
 
-        <div className="mt-6 rounded-xl border border-dashed border-gray-300 p-8 text-center dark:border-gray-700">
-          <Building2 size={36} className="mx-auto text-gray-400" />
+        <div className="mt-6 rounded-xl border border-dashed border-slate-200 p-8 text-center dark:border-white/[0.06]">
+          <Building2 size={36} className="mx-auto text-slate-300 dark:text-slate-600" />
 
-          <p className="mt-3 font-medium text-dark dark:text-light">
+          <p className="mt-3 font-medium text-slate-700 dark:text-slate-200">
             Belum memiliki data UMKM
           </p>
 
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-slate-400">
             Silakan lengkapi data UMKM untuk melihat informasi usaha.
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function BusinessInfoCard({ umkm }: Props) {
 
   return (
     <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
-      <h2 className="text-lg font-semibold text-dark dark:text-light">
+      <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
         Informasi Usaha
       </h2>
 
@@ -88,13 +88,15 @@ export default function BusinessInfoCard({ umkm }: Props) {
           const Icon = item.icon;
 
           return (
-            <div key={item.label} className="flex gap-3">
-              <Icon size={20} className="text-primary" />
+            <div key={item.label} className="flex items-start gap-3">
+              <div className="rounded-lg bg-slate-50 p-2 dark:bg-white/[0.03]">
+                <Icon size={18} className="text-slate-500 dark:text-slate-400" />
+              </div>
 
               <div>
-                <p className="text-xs text-gray-500">{item.label}</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500">{item.label}</p>
 
-                <p className="text-sm font-medium text-dark dark:text-light">
+                <p className="mt-0.5 text-sm font-medium text-slate-700 dark:text-slate-200">
                   {item.value || "-"}
                 </p>
               </div>
