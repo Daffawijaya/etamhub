@@ -65,15 +65,16 @@ export default function UmkmPendampinganTab({ umkmId }: Props) {
 
   const { initial, latest, monitorings = [] } = data;
 
-  // Check what data was added/changed during monitoring
-  const hasOmzet = monitorings.some((m) => m.omzet != null);
-  const hasSosmed = monitorings.some(
-    (m) => m.instagram != null || m.facebook != null || m.tiktok != null,
-  );
-  const hasLegalitas = monitorings.some(
-    (m) => m.nib != null || m.halal != null || m.pirt != null || m.haki != null || (m.kbli && m.kbli.length > 0),
-  );
-  const hasTK = monitorings.some((m) => m.jumlah_tenaga_kerja != null);
+  // Check what data exists (monitoring data merged with UMKM initial data)
+  const hasOmzet = latest.omzet != null;
+  const hasSosmed = latest.instagram != null || latest.facebook != null || latest.tiktok != null;
+  const hasLegalitas =
+    latest.nib != null ||
+    latest.halal != null ||
+    latest.pirt != null ||
+    latest.haki != null ||
+    (latest.kbli && latest.kbli.length > 0);
+  const hasTK = latest.jumlah_tenaga_kerja != null;
 
   // Build pendampingan items based on monitoring data
   const pendampingan: { label: string; items: string[] }[] = [];

@@ -29,7 +29,7 @@ export async function GET(
     // Get monitoring history
     const { data: monitorings, error: monError } = await supabaseAdmin
       .from("umkm_monitoring")
-      .select("id, created_at, jumlah_tenaga_kerja, omzet, npwp, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok, kebutuhan_utama, catatan")
+      .select("id, created_at, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok, kebutuhan_utama, catatan")
       .eq("umkm_id", id)
       .order("created_at", { ascending: false });
 
@@ -42,7 +42,6 @@ export async function GET(
       gambar: umkm.gambar ?? null,
       omzet: umkm.omzet ?? null,
       jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja ?? null,
-      npwp: umkm.npwp ?? null,
       nib: umkm.nib ?? null,
       halal: umkm.halal ?? null,
       pirt: umkm.pirt ?? null,
@@ -61,7 +60,6 @@ export async function GET(
           gambar: initial.gambar,
           omzet: latestEntry.omzet ?? initial.omzet,
           jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? initial.jumlah_tenaga_kerja,
-          npwp: latestEntry.npwp ?? initial.npwp,
           nib: latestEntry.nib ?? initial.nib,
           halal: latestEntry.halal ?? initial.halal,
           pirt: latestEntry.pirt ?? initial.pirt,
