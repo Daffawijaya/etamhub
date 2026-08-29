@@ -50,8 +50,6 @@ type TierKey = "pemula" | "silver" | "gold" | "platinum";
 const TIERS: {
   key: TierKey;
   icon: React.ReactNode;
-  iconBg: string;
-  iconColor: string;
   name: string;
   description: string;
   tagBg?: string;
@@ -61,9 +59,7 @@ const TIERS: {
 }[] = [
   {
     key: "pemula",
-    icon: <SeedlingIcon className="h-6 w-6" />,
-    iconBg: "bg-amber-100 dark:bg-amber-900/30",
-    iconColor: "text-amber-600 dark:text-amber-400",
+    icon: <SeedlingIcon className="h-8 w-8" />,
     name: "Pemula",
     description: "Sudah mulai monitoring (minimal 1 kunjungan) — otomatis",
     tagBg: "bg-amber-100 dark:bg-amber-900/30",
@@ -73,8 +69,6 @@ const TIERS: {
   {
     key: "silver",
     icon: <SilverMedalIcon className="h-8 w-8" />,
-    iconBg: "bg-emerald-100 dark:bg-emerald-900/30",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
     name: "Tumbuh",
     description: "Sudah mulai menunjukkan perkembangan",
     fields: [
@@ -87,8 +81,6 @@ const TIERS: {
   {
     key: "gold",
     icon: <GoldMedalIcon className="h-8 w-8" />,
-    iconBg: "bg-orange-100 dark:bg-orange-900/30",
-    iconColor: "text-orange-600 dark:text-orange-400",
     name: "Berkembang",
     description: "UMKM yang sudah berkembang pesat",
     fields: [
@@ -101,8 +93,6 @@ const TIERS: {
   {
     key: "platinum",
     icon: <DiamondIcon className="h-8 w-8" />,
-    iconBg: "bg-purple-100 dark:bg-purple-900/30",
-    iconColor: "text-purple-600 dark:text-purple-400",
     name: "Naik Kelas",
     description: "Tertinggi — semua kriteria terpenuhi",
     tagBg: "bg-purple-100 dark:bg-purple-900/30",
@@ -213,7 +203,7 @@ export default function PengaturanBadgePage() {
               >
                 {/* Tier header */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${tier.iconBg}`}>
+                  <div className="flex h-10 w-10 items-center justify-center">
                     {tier.icon}
                   </div>
                   <div className="flex-1">
