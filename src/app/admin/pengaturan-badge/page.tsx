@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import LoadingState from "@/components/LoadingState";
 import { Save, RotateCcw } from "lucide-react";
-import { SeedlingIcon, TrophyIcon, CoinIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
+import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 
 interface BadgeCriteria {
   silver_omzet_min: number;
@@ -72,7 +72,7 @@ const TIERS: {
   },
   {
     key: "silver",
-    icon: <TrophyIcon className="h-6 w-6" />,
+    icon: <SilverMedalIcon className="h-8 w-8" />,
     iconBg: "bg-emerald-100 dark:bg-emerald-900/30",
     iconColor: "text-emerald-600 dark:text-emerald-400",
     name: "Tumbuh",
@@ -86,7 +86,7 @@ const TIERS: {
   },
   {
     key: "gold",
-    icon: <CoinIcon className="h-6 w-6" />,
+    icon: <GoldMedalIcon className="h-8 w-8" />,
     iconBg: "bg-orange-100 dark:bg-orange-900/30",
     iconColor: "text-orange-600 dark:text-orange-400",
     name: "Berkembang",
@@ -100,7 +100,7 @@ const TIERS: {
   },
   {
     key: "platinum",
-    icon: <DiamondIcon className="h-6 w-6" />,
+    icon: <DiamondIcon className="h-8 w-8" />,
     iconBg: "bg-purple-100 dark:bg-purple-900/30",
     iconColor: "text-purple-600 dark:text-purple-400",
     name: "Naik Kelas",
@@ -213,7 +213,7 @@ export default function PengaturanBadgePage() {
               >
                 {/* Tier header */}
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${tier.iconBg} ${tier.iconColor}`}>
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${tier.iconBg}`}>
                     {tier.icon}
                   </div>
                   <div className="flex-1">
@@ -278,7 +278,7 @@ export default function PengaturanBadgePage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
-                  <TrophyIcon className="h-3 w-3" /> Tumbuh
+                  <SilverMedalIcon className="h-3 w-3" /> Tumbuh
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.silver_omzet_min)}, TK ≥ {criteria.silver_tk_min}
@@ -288,7 +288,7 @@ export default function PengaturanBadgePage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
-                  <CoinIcon className="h-3 w-3" /> Berkembang
+                  <GoldMedalIcon className="h-3 w-3" /> Berkembang
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.gold_omzet_min)}, TK ≥ {criteria.gold_tk_min}

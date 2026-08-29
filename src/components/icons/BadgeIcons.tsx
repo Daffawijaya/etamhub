@@ -1,63 +1,7 @@
 /**
  * Flaticon-style medal badge icons.
- * Custom SVG icons matching the Flaticon diamond/coin aesthetic.
+ * Custom SVG icons matching the Flaticon medal aesthetic.
  */
-
-export function DiamondIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="diamond-grad" x1="120" y1="80" x2="392" y2="432" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#60A5FA" />
-          <stop offset="50%" stopColor="#3B82F6" />
-          <stop offset="100%" stopColor="#1D4ED8" />
-        </linearGradient>
-      </defs>
-      {/* Diamond shape */}
-      <path d="M256 32L480 200L256 480L32 200L256 32Z" fill="url(#diamond-grad)" />
-      {/* Facet highlights */}
-      <path d="M256 32L480 200H256V32Z" fill="#93C5FD" opacity="0.5" />
-      <path d="M256 32L32 200H256V32Z" fill="#60A5FA" opacity="0.3" />
-      <path d="M32 200L256 480V200H32Z" fill="#1E40AF" opacity="0.3" />
-      <path d="M480 200L256 480V200H480Z" fill="#2563EB" opacity="0.4" />
-      {/* Center line */}
-      <path d="M32 200H480" stroke="#1E3A8A" strokeWidth="3" opacity="0.3" />
-      {/* Sparkle */}
-      <circle cx="200" cy="180" r="12" fill="white" opacity="0.6" />
-      <circle cx="220" cy="160" r="6" fill="white" opacity="0.4" />
-    </svg>
-  );
-}
-
-export function CoinIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="coin-grad" x1="100" y1="100" x2="412" y2="412" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#FCD34D" />
-          <stop offset="50%" stopColor="#F59E0B" />
-          <stop offset="100%" stopColor="#D97706" />
-        </linearGradient>
-        <linearGradient id="coin-inner" x1="160" y1="160" x2="352" y2="352" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#FDE68A" />
-          <stop offset="100%" stopColor="#FBBF24" />
-        </linearGradient>
-      </defs>
-      {/* Outer circle */}
-      <circle cx="256" cy="256" r="230" fill="url(#coin-grad)" stroke="#B45309" strokeWidth="8" />
-      {/* Inner circle */}
-      <circle cx="256" cy="256" r="180" fill="url(#coin-inner)" stroke="#D97706" strokeWidth="4" />
-      {/* Star in center */}
-      <path
-        d="M256 120L280 200H360L296 248L320 328L256 280L192 328L216 248L152 200H232L256 120Z"
-        fill="#B45309"
-        opacity="0.8"
-      />
-      {/* Shine */}
-      <ellipse cx="200" cy="180" rx="40" ry="20" fill="white" opacity="0.25" transform="rotate(-30 200 180)" />
-    </svg>
-  );
-}
 
 export function SeedlingIcon({ className = "" }: { className?: string }) {
   return (
@@ -83,31 +27,110 @@ export function SeedlingIcon({ className = "" }: { className?: string }) {
   );
 }
 
-export function TrophyIcon({ className = "" }: { className?: string }) {
+export function SilverMedalIcon({ className = "" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <linearGradient id="trophy-grad" x1="160" y1="60" x2="352" y2="320" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#FDE68A" />
-          <stop offset="50%" stopColor="#F59E0B" />
-          <stop offset="100%" stopColor="#D97706" />
+        <linearGradient id="silver-body" x1="160" y1="80" x2="352" y2="380" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#F1F5F9" />
+          <stop offset="40%" stopColor="#CBD5E1" />
+          <stop offset="100%" stopColor="#94A3B8" />
+        </linearGradient>
+        <linearGradient id="silver-rim" x1="140" y1="60" x2="372" y2="400" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#E2E8F0" />
+          <stop offset="100%" stopColor="#64748B" />
+        </linearGradient>
+        <linearGradient id="ribbon-left" x1="180" y1="340" x2="220" y2="480" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#3B82F6" />
+          <stop offset="100%" stopColor="#1D4ED8" />
+        </linearGradient>
+        <linearGradient id="ribbon-right" x1="292" y1="340" x2="332" y2="480" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#60A5FA" />
+          <stop offset="100%" stopColor="#2563EB" />
         </linearGradient>
       </defs>
-      {/* Cup body */}
-      <path d="M160 80H352V160C352 260 308 320 256 340C204 320 160 260 160 160V80Z" fill="url(#trophy-grad)" />
-      {/* Cup rim */}
-      <rect x="148" y="68" width="216" height="16" rx="8" fill="#FBBF24" />
-      {/* Left handle */}
-      <path d="M160 120H120C100 120 80 140 80 160C80 200 100 220 120 220H160" stroke="#D97706" strokeWidth="12" fill="none" />
-      {/* Right handle */}
-      <path d="M352 120H392C412 120 432 140 432 160C432 200 412 220 392 220H352" stroke="#D97706" strokeWidth="12" fill="none" />
-      {/* Base */}
-      <rect x="232" y="340" width="48" height="40" fill="#B45309" />
-      <rect x="200" y="376" width="112" height="16" rx="4" fill="#92400E" />
-      {/* Star */}
-      <path d="M256 140L268 170H300L274 188L284 218L256 200L228 218L238 188L212 170H244L256 140Z" fill="#FDE68A" opacity="0.8" />
+      {/* Ribbon left */}
+      <path d="M180 340L160 480L228 440L256 380" fill="url(#ribbon-left)" />
+      {/* Ribbon right */}
+      <path d="M332 340L352 480L284 440L256 380" fill="url(#ribbon-right)" />
+      {/* Medal outer ring */}
+      <circle cx="256" cy="220" r="170" fill="url(#silver-rim)" />
+      {/* Medal body */}
+      <circle cx="256" cy="220" r="152" fill="url(#silver-body)" />
+      {/* Inner ring */}
+      <circle cx="256" cy="220" r="120" fill="none" stroke="#94A3B8" strokeWidth="3" opacity="0.4" />
+      {/* Number 1 */}
+      <text x="256" y="240" textAnchor="middle" fill="#475569" fontSize="100" fontWeight="bold" fontFamily="Arial, sans-serif">1</text>
       {/* Shine */}
-      <ellipse cx="210" cy="130" rx="20" ry="30" fill="white" opacity="0.2" transform="rotate(-15 210 130)" />
+      <ellipse cx="210" cy="160" rx="50" ry="25" fill="white" opacity="0.35" transform="rotate(-20 210 160)" />
+      <ellipse cx="200" cy="145" rx="20" ry="10" fill="white" opacity="0.25" transform="rotate(-20 200 145)" />
+    </svg>
+  );
+}
+
+export function GoldMedalIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gold-body" x1="160" y1="80" x2="352" y2="380" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#FDE68A" />
+          <stop offset="40%" stopColor="#FBBF24" />
+          <stop offset="100%" stopColor="#D97706" />
+        </linearGradient>
+        <linearGradient id="gold-rim" x1="140" y1="60" x2="372" y2="400" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#FEF3C7" />
+          <stop offset="100%" stopColor="#B45309" />
+        </linearGradient>
+        <linearGradient id="gold-ribbon-left" x1="180" y1="340" x2="220" y2="480" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#EF4444" />
+          <stop offset="100%" stopColor="#B91C1C" />
+        </linearGradient>
+        <linearGradient id="gold-ribbon-right" x1="292" y1="340" x2="332" y2="480" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#F87171" />
+          <stop offset="100%" stopColor="#DC2626" />
+        </linearGradient>
+      </defs>
+      {/* Ribbon left */}
+      <path d="M180 340L160 480L228 440L256 380" fill="url(#gold-ribbon-left)" />
+      {/* Ribbon right */}
+      <path d="M332 340L352 480L284 440L256 380" fill="url(#gold-ribbon-right)" />
+      {/* Medal outer ring */}
+      <circle cx="256" cy="220" r="170" fill="url(#gold-rim)" />
+      {/* Medal body */}
+      <circle cx="256" cy="220" r="152" fill="url(#gold-body)" />
+      {/* Inner ring */}
+      <circle cx="256" cy="220" r="120" fill="none" stroke="#D97706" strokeWidth="3" opacity="0.4" />
+      {/* Star */}
+      <path d="M256 120L280 185H350L294 225L314 290L256 252L198 290L218 225L162 185H232L256 120Z" fill="#92400E" opacity="0.7" />
+      {/* Shine */}
+      <ellipse cx="210" cy="160" rx="50" ry="25" fill="white" opacity="0.35" transform="rotate(-20 210 160)" />
+      <ellipse cx="200" cy="145" rx="20" ry="10" fill="white" opacity="0.25" transform="rotate(-20 200 145)" />
+    </svg>
+  );
+}
+
+export function DiamondIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="diamond-grad" x1="120" y1="80" x2="392" y2="432" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#60A5FA" />
+          <stop offset="50%" stopColor="#3B82F6" />
+          <stop offset="100%" stopColor="#1D4ED8" />
+        </linearGradient>
+      </defs>
+      {/* Diamond shape */}
+      <path d="M256 32L480 200L256 480L32 200L256 32Z" fill="url(#diamond-grad)" />
+      {/* Facet highlights */}
+      <path d="M256 32L480 200H256V32Z" fill="#93C5FD" opacity="0.5" />
+      <path d="M256 32L32 200H256V32Z" fill="#60A5FA" opacity="0.3" />
+      <path d="M32 200L256 480V200H32Z" fill="#1E40AF" opacity="0.3" />
+      <path d="M480 200L256 480V200H480Z" fill="#2563EB" opacity="0.4" />
+      {/* Center line */}
+      <path d="M32 200H480" stroke="#1E3A8A" strokeWidth="3" opacity="0.3" />
+      {/* Sparkle */}
+      <circle cx="200" cy="180" r="12" fill="white" opacity="0.6" />
+      <circle cx="220" cy="160" r="6" fill="white" opacity="0.4" />
     </svg>
   );
 }
