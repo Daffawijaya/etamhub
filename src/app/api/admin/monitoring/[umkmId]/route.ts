@@ -60,21 +60,21 @@ export async function GET(
       tiktok: umkm.tiktok ?? null,
     };
 
-    // Build latest monitoring data — monitoring only, no fallback to UMKM self-reported
+    // Build latest monitoring data — merge with UMKM data as fallback
     const latestEntry = (monitorings ?? [])[0] ?? null;
     const latest = latestEntry
       ? {
           omzet: latestEntry.omzet ?? null,
           jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? null,
-          halal: latestEntry.halal ?? null,
-          pirt: latestEntry.pirt ?? null,
-          haki: latestEntry.haki ?? null,
-          nib: latestEntry.nib ?? null,
-          instagram: latestEntry.instagram ?? null,
-          facebook: latestEntry.facebook ?? null,
-          tiktok: latestEntry.tiktok ?? null,
+          halal: latestEntry.halal ?? initial.halal,
+          pirt: latestEntry.pirt ?? initial.pirt,
+          haki: latestEntry.haki ?? initial.haki,
+          nib: latestEntry.nib ?? initial.nib,
+          instagram: latestEntry.instagram ?? initial.instagram,
+          facebook: latestEntry.facebook ?? initial.facebook,
+          tiktok: latestEntry.tiktok ?? initial.tiktok,
         }
-      : null;
+      : initial;
 
     const badge = await calculateBadge(initial, latest, (monitorings ?? []).length);
     const criteriaConfig = await getBadgeCriteria();
