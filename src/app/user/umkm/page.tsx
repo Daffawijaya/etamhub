@@ -8,8 +8,25 @@ import {
   XCircle,
   MapPin,
   Pencil,
+  Award,
 } from "lucide-react";
+import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 import UserProducts from "@/components/products/UserProducts";
+import type { ReactNode } from "react";
+
+const BADGE_SVG: Record<string, ReactNode> = {
+  bronze: <SeedlingIcon className="h-3.5 w-3.5" />,
+  silver: <SilverMedalIcon className="h-3.5 w-3.5" />,
+  gold: <GoldMedalIcon className="h-3.5 w-3.5" />,
+  platinum: <DiamondIcon className="h-3.5 w-3.5" />,
+};
+
+const BADGE_STYLE: Record<string, string> = {
+  bronze: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/20 dark:text-amber-400 dark:border-amber-800/40",
+  silver: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-emerald-400 dark:border-emerald-800/40",
+  gold: "bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/20 dark:text-orange-400 dark:border-orange-800/40",
+  platinum: "bg-purple-50 text-purple-700 border-purple-200 dark:bg-purple-900/20 dark:text-purple-400 dark:border-purple-800/40",
+};
 
 export default async function UserUmkmPage() {
   const cookieStore = await cookies();
@@ -119,6 +136,19 @@ export default async function UserUmkmPage() {
                   </div>
 
                   <div className="mt-6 flex flex-wrap gap-2">
+                    {/* Badge */}
+                    {umkm.badge && umkm.badge.level !== "none" ? (
+                      <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold ${BADGE_STYLE[umkm.badge.level] ?? ""}`}>
+                        {BADGE_SVG[umkm.badge.level]}
+                        {umkm.badge.label}
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-500 dark:border-slate-700 dark:bg-slate-800/50 dark:text-slate-400">
+                        <Award size={14} />
+                        Belum ada badge
+                      </span>
+                    )}
+
                     {umkm.published ? (
                       <span className="inline-flex items-center gap-2 rounded-full bg-green-100 px-3 py-1.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
                         <CheckCircle2 size={14} />

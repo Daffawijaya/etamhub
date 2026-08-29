@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
+import { calculateBadgeWithCriteria, getBadgeCriteria } from "@/lib/monitoring/badges";
 
 export async function GET() {
   const currentUser = await getCurrentUser();
@@ -59,6 +60,7 @@ export async function GET() {
         kecamatan,
         alamat,
         gambar,
+        omzet,
         halal,
         pirt,
         haki,
@@ -96,12 +98,58 @@ export async function GET() {
       .eq("status", "pending")
       .maybeSingle();
 
-    if (pendingEdit) {
-      return NextResponse.json({
-        ...data,
-        hasPendingEdit: true,
-      });
-    }
+    // Fetch monitoring + badge
+    const { data: monitorings } = await supabaseAdmin
+      .from("umkm_monitoring")
+      .select("id, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, instagram, facebook, tiktok")
+      .eq("umkm_id", data.id)
+      .order("created_at", { ascending: false });
+
+    const monitoringCount = (monitorings ?? []).length;
+    const latest = monitorings?.[0] ?? null;
+
+    const mergedLatest = latest
+      ? {
+          omzet: latest.omzet ?? data.omzet ?? null,
+          jumlah_tenaga_kerja: latest.jumlah_tenaga_kerja ?? null,
+          nib: latest.nib ?? null,
+          halal: latest.halal ?? data.halal ?? null,
+          pirt: latest.pirt ?? data.pirt ?? null,
+          haki: latest.haki ?? data.haki ?? null,
+          kbli: latest.kbli ?? data.kbli ?? null,
+          instagram: latest.instagram ?? null,
+          facebook: latest.facebook ?? null,
+          tiktok: latest.tiktok ?? null,
+        }
+      : {
+          omzet: data.omzet ?? null,
+          jumlah_tenaga_kerja: null,
+          nib: null,
+          halal: data.halal ?? null,
+          pirt: data.pirt ?? null,
+          haki: data.haki ?? null,
+          kbli: data.kbli ?? null,
+          instagram: null,
+          facebook: null,
+          tiktok: null,
+        };
+
+    const badgeConfig = await getBadgeCriteria();
+    const badge = calculateBadgeWithCriteria(mergedLatest, mergedLatest, monitoringCount, badgeConfig);
+
+    const result: Record<string, any> = {
+      ...data,
+      hasPendingEdit: !!pendingEdit,
+      badge: {
+        level: badge.level,
+        label: badge.label,
+        color: badge.color,
+        bgColor: badge.bgColor,
+      },
+      monitoringCount,
+    };
+
+    return NextResponse.json(result);
   }
 
   return NextResponse.json(data);
