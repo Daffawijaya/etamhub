@@ -11,6 +11,41 @@ interface Props {
   }>;
 }
 
+/**
+ * Merge latest monitoring data into UMKM record.
+ * Only fills fields that are null/empty in the UMKM record.
+ * This ensures monitoring data auto-populates the "Informasi Usaha" form.
+ */
+function mergeMonitoringIntoUmkm(umkm: Record<string, any>, latest: Record<string, any>) {
+  const merged = { ...umkm };
+
+  // Fields that monitoring can update on the UMKM record
+  const syncFields = [
+    "jumlah_tenaga_kerja",
+    "omzet",
+    "nib",
+    "halal",
+    "pirt",
+    "haki",
+    "kbli",
+    "instagram",
+    "facebook",
+    "tiktok",
+  ];
+
+  for (const field of syncFields) {
+    if (
+      (merged[field] == null || merged[field] === "" ||
+        (Array.isArray(merged[field]) && merged[field].length === 0)) &&
+      latest[field] != null
+    ) {
+      merged[field] = latest[field];
+    }
+  }
+
+  return merged;
+}
+
 export default async function UserEditUmkmPage({ params }: Props) {
   const { id } = await params;
 
@@ -39,13 +74,27 @@ export default async function UserEditUmkmPage({ params }: Props) {
     .eq("id", umkm.owner_id)
     .maybeSingle();
 
+  // Fetch latest monitoring entry to auto-fill empty UMKM fields
+  const { data: latestMonitoring } = await supabaseAdmin
+    .from("umkm_monitoring")
+    .select("jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok")
+    .eq("umkm_id", id)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  // Merge monitoring data into UMKM for empty fields
+  const mergedUmkm = latestMonitoring
+    ? mergeMonitoringIntoUmkm(umkm, latestMonitoring)
+    : umkm;
+
   return (
     <main className="min-h-screen bg-light px-6 pb-6 dark:bg-dark">
       <UmkmForm
         mode="edit"
         role="user"
         data={{
-          ...umkm,
+          ...mergedUmkm,
           email: owner?.email ?? "",
           nik: owner?.nik ?? "",
         }}
