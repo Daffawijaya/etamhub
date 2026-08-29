@@ -180,10 +180,11 @@ export async function GET() {
     }
 
     const badgeChart = [
-      { name: "Pemula", value: badgeCounts.bronze, color: "#F59E0B" },
+      { name: "Naik Kelas", value: badgeCounts.platinum, color: "#7C3AED" },
+      { name: "Berkembang", value: badgeCounts.gold, color: "#F97316" },
       { name: "Tumbuh", value: badgeCounts.silver, color: "#10B981" },
-      { name: "Berkembang", value: badgeCounts.gold, color: "#844EC0" },
-      { name: "Naik Kelas", value: badgeCounts.platinum, color: "#CA3785" },
+      { name: "Pemula", value: badgeCounts.bronze, color: "#F59E0B" },
+      { name: "Belum Dimonitoring", value: badgeCounts.none, color: "#94A3B8" },
     ];
 
     // Omzet trend — monthly average from monitoring data
