@@ -1,13 +1,28 @@
 "use client";
 
 import { Building2, ClipboardCheck, Clock3, Globe2, Award } from "lucide-react";
+import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
+import type { ReactNode } from "react";
 
-const BADGE_ICONS: Record<string, string> = {
-  none: "",
-  bronze: "🌱",
-  silver: "🌿",
-  gold: "🌳",
-  platinum: "💎",
+const BADGE_SVG: Record<string, ReactNode> = {
+  bronze: <SeedlingIcon className="h-4 w-4" />,
+  silver: <SilverMedalIcon className="h-4 w-4" />,
+  gold: <GoldMedalIcon className="h-4 w-4" />,
+  platinum: <DiamondIcon className="h-4 w-4" />,
+};
+
+const BADGE_DOT: Record<string, string> = {
+  bronze: "bg-amber-400",
+  silver: "bg-emerald-400",
+  gold: "bg-orange-400",
+  platinum: "bg-violet-400",
+};
+
+const BADGE_BORDER: Record<string, string> = {
+  bronze: "border-amber-400/60",
+  silver: "border-emerald-400/60",
+  gold: "border-orange-400/60",
+  platinum: "border-violet-400/60",
 };
 
 type Props = {
@@ -116,22 +131,19 @@ export default function SummaryCards({ data }: Props) {
         {/* Badge + Monitoring row */}
         <div className="mt-5 flex items-center gap-3">
           {badgeInfo.level !== "none" ? (
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 backdrop-blur-sm">
-              <span className="text-lg">{BADGE_ICONS[badgeInfo.level] ?? "🌱"}</span>
-              <div>
-                <p className="text-sm font-semibold leading-tight">Badge: {badgeInfo.label}</p>
-                <p className="text-[10px] text-white/60">{badgeInfo.description}</p>
-              </div>
+            <div className="inline-flex items-center gap-2 rounded-full border bg-white/15 px-3 py-1.5 backdrop-blur-sm border-white/20">
+              {BADGE_SVG[badgeInfo.level]}
+              <span className="text-sm font-semibold">{badgeInfo.label}</span>
             </div>
           ) : (
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
-              <Award size={16} className="text-white/50" />
-              <p className="text-sm text-white/60">Belum ada badge</p>
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5">
+              <div className="h-2 w-2 rounded-full bg-white/40" />
+              <p className="text-sm text-white/50">Belum ada badge</p>
             </div>
           )}
           {monitoringInfo.count > 0 && (
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 backdrop-blur-sm">
-              <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 backdrop-blur-sm">
+              <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
               <p className="text-sm font-semibold">
                 {monitoringInfo.count}x Monitoring
               </p>
