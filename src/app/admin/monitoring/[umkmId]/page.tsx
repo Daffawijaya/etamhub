@@ -539,27 +539,47 @@ export default function MonitoringDetailPage() {
                       </div>
 
                       {/* Quick stats */}
-                      <div className="mt-2 ml-5.5 flex items-center gap-4 text-xs text-slate-500">
-                        <span>
+                      <div className="mt-2 ml-5.5 flex flex-wrap items-center gap-2 text-xs">
+                        <span className="text-slate-500">
                           TK: <span className="font-medium text-slate-700 dark:text-slate-300">{entry.jumlah_tenaga_kerja ?? "-"}</span>
                         </span>
-                        <span>
+                        <span className="text-slate-500">
                           Omzet: <span className="font-medium text-slate-700 dark:text-slate-300">{formatRupiah(entry.omzet)}</span>
                         </span>
-                        <span>
-                          Legalitas:{" "}
-                          <span className="font-medium text-slate-700 dark:text-slate-300">
-                            {[entry.nib && "NIB", entry.kbli && entry.kbli.length > 0 && "KBLI", entry.halal && "Halal", entry.pirt && "PIRT", entry.haki && "HAKI"]
-                              .filter(Boolean)
-                              .join(", ") || "-"}
+                        <span className="text-slate-400">·</span>
+                        {/* Legalitas tags */}
+                        {((): { label: string }[] => {
+                          const items: { label: string }[] = [];
+                          if (entry.nib) items.push({ label: "NIB" });
+                          if (entry.kbli && entry.kbli.length > 0) items.push({ label: "KBLI" });
+                          if (entry.halal) items.push({ label: "Halal" });
+                          if (entry.pirt) items.push({ label: "PIRT" });
+                          if (entry.haki) items.push({ label: "HAKI" });
+                          return items;
+                        })().map((item) => (
+                          <span key={item.label} className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                            ✓ {item.label}
                           </span>
-                        </span>
-                        <span>
-                          Sosmed:{" "}
-                          <span className="font-medium text-slate-700 dark:text-slate-300">
-                            {[entry.instagram && "IG", entry.facebook && "FB", entry.tiktok && "TT"].filter(Boolean).join(", ") || "-"}
+                        ))}
+                        {!(entry.nib || (entry.kbli && entry.kbli.length > 0) || entry.halal || entry.pirt || entry.haki) && (
+                          <span className="text-slate-400">Legalitas: -</span>
+                        )}
+                        <span className="text-slate-400">·</span>
+                        {/* Sosmed tags */}
+                        {((): { label: string }[] => {
+                          const items: { label: string }[] = [];
+                          if (entry.instagram) items.push({ label: "IG" });
+                          if (entry.facebook) items.push({ label: "FB" });
+                          if (entry.tiktok) items.push({ label: "TT" });
+                          return items;
+                        })().map((item) => (
+                          <span key={item.label} className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                            ✓ {item.label}
                           </span>
-                        </span>
+                        ))}
+                        {!entry.instagram && !entry.facebook && !entry.tiktok && (
+                          <span className="text-slate-400">Sosmed: -</span>
+                        )}
                       </div>
 
                       {/* Expanded details */}
@@ -568,39 +588,23 @@ export default function MonitoringDetailPage() {
                           {/* Legalitas */}
                           <div>
                             <p className="text-xs font-medium text-slate-400 mb-1.5">Legalitas</p>
-                            <div className="grid grid-cols-2 gap-1.5 text-xs">
-                              {entry.nib && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">NIB</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.nib}</span>
-                                </div>
-                              )}
-                              {entry.kbli && entry.kbli.length > 0 && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">KBLI</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.kbli.join(", ")}</span>
-                                </div>
-                              )}
-                              {entry.halal && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">Halal</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.halal}</span>
-                                </div>
-                              )}
-                              {entry.pirt && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">PIRT</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.pirt}</span>
-                                </div>
-                              )}
-                              {entry.haki && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">HAKI</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.haki}</span>
-                                </div>
-                              )}
-                              {!entry.nib && (!entry.kbli || entry.kbli.length === 0) && !entry.halal && !entry.pirt && !entry.haki && (
-                                <span className="text-slate-400">-</span>
+                            <div className="flex flex-wrap gap-1.5">
+                              {((): { label: string; value: string }[] => {
+                                const items: { label: string; value: string }[] = [];
+                                if (entry.nib) items.push({ label: "NIB", value: entry.nib });
+                                if (entry.kbli && entry.kbli.length > 0) items.push({ label: "KBLI", value: entry.kbli.join(", ") });
+                                if (entry.halal) items.push({ label: "Halal", value: entry.halal });
+                                if (entry.pirt) items.push({ label: "PIRT", value: entry.pirt });
+                                if (entry.haki) items.push({ label: "HAKI", value: entry.haki });
+                                return items;
+                              })().map((item) => (
+                                <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                                  ✓ {item.label}
+                                  <span className="text-green-600/70 dark:text-green-400/60">{item.value}</span>
+                                </span>
+                              ))}
+                              {!(entry.nib || (entry.kbli && entry.kbli.length > 0) || entry.halal || entry.pirt || entry.haki) && (
+                                <span className="text-xs text-slate-400">-</span>
                               )}
                             </div>
                           </div>
@@ -608,26 +612,20 @@ export default function MonitoringDetailPage() {
                           {/* Sosmed */}
                           <div>
                             <p className="text-xs font-medium text-slate-400 mb-1.5">Sosmed</p>
-                            <div className="grid grid-cols-3 gap-1.5 text-xs">
-                              {entry.instagram && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">IG</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.instagram}</span>
-                                </div>
-                              )}
-                              {entry.facebook && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">FB</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.facebook}</span>
-                                </div>
-                              )}
-                              {entry.tiktok && (
-                                <div className="flex justify-between">
-                                  <span className="text-slate-500">TT</span>
-                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.tiktok}</span>
-                                </div>
-                              )}
-                              {!entry.instagram && !entry.facebook && !entry.tiktok && <span className="text-slate-400">-</span>}
+                            <div className="flex flex-wrap gap-1.5">
+                              {((): { label: string; value: string }[] => {
+                                const items: { label: string; value: string }[] = [];
+                                if (entry.instagram) items.push({ label: "Instagram", value: entry.instagram });
+                                if (entry.facebook) items.push({ label: "Facebook", value: entry.facebook });
+                                if (entry.tiktok) items.push({ label: "TikTok", value: entry.tiktok });
+                                return items;
+                              })().map((item) => (
+                                <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
+                                  ✓ {item.label}
+                                  <span className="text-green-600/70 dark:text-green-400/60">{item.value}</span>
+                                </span>
+                              ))}
+                              {!entry.instagram && !entry.facebook && !entry.tiktok && <span className="text-xs text-slate-400">-</span>}
                             </div>
                           </div>
 
