@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import UmkmForm from "@/components/form/UmkmForm";
+import UserMonitoringHistory from "@/components/user/UserMonitoringHistory";
 
 interface Props {
   params: Promise<{
@@ -49,6 +50,24 @@ export default async function UserEditUmkmPage({ params }: Props) {
           nik: owner?.nik ?? "",
         }}
       />
+
+      <div className="mt-6">
+        <UserMonitoringHistory
+          umkmId={umkm.id}
+          umkm={{
+            jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja ?? null,
+            omzet: umkm.omzet ?? null,
+            nib: umkm.nib ?? null,
+            halal: umkm.halal ?? null,
+            pirt: umkm.pirt ?? null,
+            haki: umkm.haki ?? null,
+            kbli: umkm.kbli ?? null,
+            instagram: umkm.instagram ?? null,
+            facebook: umkm.facebook ?? null,
+            tiktok: umkm.tiktok ?? null,
+          }}
+        />
+      </div>
     </main>
   );
 }

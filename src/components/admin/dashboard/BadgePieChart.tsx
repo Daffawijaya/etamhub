@@ -1,5 +1,6 @@
 "use client";
 
+import { useTheme } from "next-themes";
 import {
   PieChart,
   Pie,
@@ -8,6 +9,14 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+
+const DARK_OVERRIDES: Record<string, string> = {
+  "#94A3B8": "#64748B",
+  "#F59E0B": "#FBBF24",
+  "#10B981": "#34D399",
+  "#F97316": "#FB923C",
+  "#7C3AED": "#A78BFA",
+};
 
 interface Props {
   data: {
@@ -45,7 +54,16 @@ function renderCustomLabel(props: any) {
 }
 
 export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props) {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   const total = data.reduce((sum, item) => sum + item.value, 0);
+
+  // Force re-render Pie when dark mode changes by using key
+  const pieKey = isDark ? "dark" : "light";
+  const chartData = data.map((item) => ({
+    ...item,
+    color: isDark ? (DARK_OVERRIDES[item.color] ?? item.color) : item.color,
+  }));
 
   const customTooltip = ({ active, payload }: any) => {
     if (!active || !payload?.length) return null;
@@ -81,7 +99,8 @@ export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={data}
+                  key={pieKey}
+                  data={chartData}
                   cx="50%"
                   cy="50%"
                   labelLine={false}
@@ -91,7 +110,7 @@ export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props
                   dataKey="value"
                   stroke="none"
                 >
-                  {data.map((entry, index) => (
+                  {chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>

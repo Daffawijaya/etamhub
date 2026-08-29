@@ -165,6 +165,19 @@ export async function POST(
 
     if (insertError) throw insertError;
 
+    // Sync shared fields back to umkm table
+    const syncFields: Record<string, any> = {};
+    for (const field of [
+      "jumlah_tenaga_kerja", "omzet",
+      "halal", "pirt", "haki", "nib", "kbli",
+      "instagram", "facebook", "tiktok",
+    ]) {
+      if (body[field] != null) syncFields[field] = body[field];
+    }
+    if (Object.keys(syncFields).length > 0) {
+      await supabaseAdmin.from("umkm").update(syncFields).eq("id", umkmId);
+    }
+
     // Get UMKM name for logging
     const { data: umkmData } = await supabaseAdmin
       .from("umkm")
