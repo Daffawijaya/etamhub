@@ -67,7 +67,7 @@ export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props
           Distribusi Badge
         </h2>
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
-          Status badge UMKM yang sudah dipantau
+          Status badge UMKM yang sudah dimonitoring
         </p>
       </div>
 
@@ -114,7 +114,7 @@ export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props
           {/* Summary stats */}
           <div className="mt-4 grid grid-cols-2 gap-3">
             <div className="rounded-xl bg-slate-50 dark:bg-white/5 p-3">
-              <p className="text-xs text-slate-500 dark:text-slate-400">Dipantau</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Dimonitoring</p>
               <p className="text-lg font-bold text-slate-900 dark:text-white">
                 {monitoredCount ?? 0}
               </p>

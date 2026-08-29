@@ -106,10 +106,10 @@ export default function MonitoringFilters({
           Semua Status
         </option>
         <option className={optionClass} value="yes">
-          Sudah Dipantau
+          Sudah Dimonitoring
         </option>
         <option className={optionClass} value="no">
-          Belum Dipantau
+          Belum Dimonitoring
         </option>
       </select>
 
