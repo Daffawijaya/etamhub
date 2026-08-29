@@ -108,7 +108,7 @@ export async function GET() {
         const chunk = umkmIds.slice(i, i + chunkSize);
         const { data: chunkData } = await supabaseAdmin
           .from("umkm_monitoring")
-          .select("umkm_id, omzet, created_at")
+          .select("*")
           .in("umkm_id", chunk)
           .order("created_at", { ascending: false });
 
@@ -158,14 +158,14 @@ export async function GET() {
       const latest = latestEntry
         ? {
             omzet: latestEntry.omzet ?? null,
-            jumlah_tenaga_kerja: null,
-            halal: null,
-            pirt: null,
-            haki: null,
-            nib: null,
-            instagram: null,
-            facebook: null,
-            tiktok: null,
+            jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? null,
+            halal: latestEntry.halal ?? null,
+            pirt: latestEntry.pirt ?? null,
+            haki: latestEntry.haki ?? null,
+            nib: latestEntry.nib ?? null,
+            instagram: latestEntry.instagram ?? null,
+            facebook: latestEntry.facebook ?? null,
+            tiktok: latestEntry.tiktok ?? null,
           }
         : null;
 
