@@ -185,6 +185,34 @@ export async function POST(
       },
     });
 
+    // Notify admin & super_admin when admin_kecamatan adds monitoring
+    if (user.role === "admin_kecamatan") {
+      const { data: admins } = await supabaseAdmin
+        .from("admins")
+        .select("id, roles ( name )");
+
+      const adminIds = (admins ?? [])
+        .filter((a: any) => {
+          const roleName = Array.isArray(a.roles) ? a.roles[0]?.name : (a.roles as any)?.name;
+          return roleName === "admin" || roleName === "super_admin";
+        })
+        .map((a: any) => a.id);
+
+      if (adminIds.length > 0) {
+        const notifications = adminIds.map((adminId: string) => ({
+          id: crypto.randomUUID(),
+          admin_id: adminId,
+          type: "monitoring",
+          title: `${user.nama} menambah monitoring UMKM "${umkmData?.nama}"`,
+          link: `/admin/monitoring/${umkmId}`,
+          created_at: now,
+          read: false,
+        }));
+
+        await supabaseAdmin.from("notifications").insert(notifications);
+      }
+    }
+
     return NextResponse.json(
       { success: true, message: "Monitoring berhasil ditambahkan" },
       { status: 201 },

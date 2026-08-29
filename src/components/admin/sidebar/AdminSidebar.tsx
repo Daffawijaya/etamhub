@@ -15,12 +15,23 @@ export default function AdminSidebar() {
   const [role, setRole] = useState<string | null>(null);
   const [badges, setBadges] = useState<Record<string, number>>({});
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [notifCount, setNotifCount] = useState(0);
 
   const fetchBadges = useCallback(async () => {
     try {
       const res = await fetch("/api/admin/badges", { cache: "no-store" });
       if (res.ok) {
         setBadges(await res.json());
+      }
+    } catch {}
+  }, []);
+
+  const fetchNotifCount = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/notifications/count", { cache: "no-store" });
+      if (res.ok) {
+        const data = await res.json();
+        setNotifCount(data.count ?? 0);
       }
     } catch {}
   }, []);
@@ -33,15 +44,19 @@ export default function AdminSidebar() {
       });
   }, []);
 
-  // Poll badges every 10 seconds
+  // Poll badges + notifications every 10 seconds
   useEffect(() => {
     if (!role) return;
 
     fetchBadges();
-    const interval = setInterval(fetchBadges, 10000);
+    fetchNotifCount();
+    const interval = setInterval(() => {
+      fetchBadges();
+      fetchNotifCount();
+    }, 10000);
 
     return () => clearInterval(interval);
-  }, [role, fetchBadges]);
+  }, [role, fetchBadges, fetchNotifCount]);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -95,7 +110,14 @@ export default function AdminSidebar() {
       `}
     >
       {/* Logo */}
-      <SidebarLogo collapsed={collapsed} />
+      <div className="relative">
+        <SidebarLogo collapsed={collapsed} />
+        {notifCount > 0 && (
+          <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white shadow-lg">
+            {notifCount > 99 ? "99+" : notifCount}
+          </span>
+        )}
+      </div>
 
       {/* Menu */}
       <nav className="flex-1 overflow-y-auto px-2 py-1">
