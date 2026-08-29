@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { calculateBadge } from "@/lib/monitoring/badges";
 
 // =========================
 // GET — Public monitoring history for a specific UMKM
@@ -70,12 +71,40 @@ export async function GET(
         }
       : initial;
 
+    // Calculate badge
+    const badge = await calculateBadge(
+      {
+        omzet: initial.omzet,
+        jumlah_tenaga_kerja: initial.jumlah_tenaga_kerja,
+        halal: initial.halal,
+        pirt: initial.pirt,
+        haki: initial.haki,
+        nib: initial.nib,
+        instagram: initial.instagram,
+        facebook: initial.facebook,
+        tiktok: initial.tiktok,
+      },
+      {
+        omzet: latest.omzet,
+        jumlah_tenaga_kerja: latest.jumlah_tenaga_kerja,
+        halal: latest.halal,
+        pirt: latest.pirt,
+        haki: latest.haki,
+        nib: latest.nib,
+        instagram: latest.instagram,
+        facebook: latest.facebook,
+        tiktok: latest.tiktok,
+      },
+      (monitorings ?? []).length,
+    );
+
     return NextResponse.json({
       initial,
       latest,
       monitorings: monitorings ?? [],
       totalMonitoring: (monitorings ?? []).length,
       nama: umkm.nama,
+      badge,
     });
   } catch (error: any) {
     console.error("GET PUBLIC MONITORING ERROR:", error);

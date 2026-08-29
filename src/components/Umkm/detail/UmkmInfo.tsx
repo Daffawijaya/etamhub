@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import UmkmDescriptionTab from "./UmkmDescriptionTab";
 import UmkmLegalityTab from "./UmkmLegalityTab";
 import UmkmTabs from "./UmkmTabs";
 import UmkmPendampinganTab from "./UmkmPendampinganTab";
+import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 
 type Props = {
   umkmId: string;
@@ -33,6 +34,27 @@ type Props = {
   kbli?: string[] | null;
 };
 
+interface Badge {
+  level: "none" | "bronze" | "silver" | "gold" | "platinum";
+  label: string;
+  color: string;
+  bgColor: string;
+}
+
+const BADGE_ICONS: Record<string, React.ReactNode> = {
+  bronze: <SeedlingIcon className="h-3.5 w-3.5" />,
+  silver: <SilverMedalIcon className="h-3.5 w-3.5" />,
+  gold: <GoldMedalIcon className="h-3.5 w-3.5" />,
+  platinum: <DiamondIcon className="h-3.5 w-3.5" />,
+};
+
+const BADGE_RING: Record<string, string> = {
+  bronze: "border-amber-300 dark:border-amber-600",
+  silver: "border-emerald-300 dark:border-emerald-600",
+  gold: "border-orange-300 dark:border-orange-600",
+  platinum: "border-purple-300 dark:border-purple-600",
+};
+
 export default function UmkmInfo({
   umkmId,
   nama,
@@ -57,6 +79,18 @@ export default function UmkmInfo({
   const [activeTab, setActiveTab] = useState<
     "deskripsi" | "legalitas" | "pendampingan"
   >("deskripsi");
+  const [badge, setBadge] = useState<Badge | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/umkm/${umkmId}/monitoring`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.badge && res.badge.level !== "none") {
+          setBadge(res.badge);
+        }
+      })
+      .catch(() => {});
+  }, [umkmId]);
 
   return (
     <div
@@ -93,7 +127,7 @@ export default function UmkmInfo({
           {nama}
         </h1>
 
-        <div className="mt-5 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap items-center gap-2">
           <span
             className="
               rounded-full
@@ -129,6 +163,17 @@ export default function UmkmInfo({
           >
             {subkategori}
           </span>
+
+          {badge && (
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium ${
+                BADGE_RING[badge.level] ?? ""
+              } ${badge.bgColor} ${badge.color}`}
+            >
+              {BADGE_ICONS[badge.level]}
+              {badge.label}
+            </span>
+          )}
         </div>
 
         {/* Kecamatan */}
