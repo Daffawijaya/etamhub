@@ -12,6 +12,39 @@ import {
 // GET UMKM BY ID
 // =========================
 
+/**
+ * Merge latest monitoring data into UMKM record.
+ * Only fills fields that are null/empty in the UMKM record.
+ */
+function mergeMonitoringIntoUmkm(umkm: Record<string, any>, latest: Record<string, any>) {
+  const merged = { ...umkm };
+
+  const syncFields = [
+    "jumlah_tenaga_kerja",
+    "omzet",
+    "nib",
+    "halal",
+    "pirt",
+    "haki",
+    "kbli",
+    "instagram",
+    "facebook",
+    "tiktok",
+  ];
+
+  for (const field of syncFields) {
+    if (
+      (merged[field] == null || merged[field] === "" ||
+        (Array.isArray(merged[field]) && merged[field].length === 0)) &&
+      latest[field] != null
+    ) {
+      merged[field] = latest[field];
+    }
+  }
+
+  return merged;
+}
+
 export async function GET(
   req: Request,
   context: { params: Promise<{ id: string }> },
@@ -54,7 +87,20 @@ export async function GET(
     }
   }
 
-  return NextResponse.json(data);
+  // Fetch latest monitoring entry and merge into UMKM data for empty fields
+  const { data: latestMonitoring } = await supabaseAdmin
+    .from("umkm_monitoring")
+    .select("jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok")
+    .eq("umkm_id", id)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  const merged = latestMonitoring
+    ? mergeMonitoringIntoUmkm(data, latestMonitoring)
+    : data;
+
+  return NextResponse.json(merged);
 }
 
 // =========================
