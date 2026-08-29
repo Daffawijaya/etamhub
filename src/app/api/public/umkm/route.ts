@@ -83,23 +83,23 @@ export async function GET(req: Request) {
           }
         });
 
-        // Calculate badge for each UMKM
+        // Calculate badge for each UMKM (merge monitoring with UMKM data)
         for (const umkm of umkms) {
           const count = countMap[umkm.id] || 0;
-          const latest = latestMap[umkm.id];
-          if (latest && criteriaConfig) {
-            const initial = {
-              omzet: umkm.omzet,
-              jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja,
-              halal: umkm.halal,
-              pirt: umkm.pirt,
-              haki: umkm.haki,
-              nib: umkm.nib,
-              instagram: umkm.instagram,
-              facebook: umkm.facebook,
-              tiktok: umkm.tiktok,
+          const latestEntry = latestMap[umkm.id];
+          if (latestEntry && criteriaConfig) {
+            const merged = {
+              omzet: latestEntry.omzet ?? umkm.omzet,
+              jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? umkm.jumlah_tenaga_kerja,
+              nib: latestEntry.nib ?? umkm.nib,
+              halal: latestEntry.halal ?? umkm.halal,
+              pirt: latestEntry.pirt ?? umkm.pirt,
+              haki: latestEntry.haki ?? umkm.haki,
+              instagram: latestEntry.instagram ?? umkm.instagram,
+              facebook: latestEntry.facebook ?? umkm.facebook,
+              tiktok: latestEntry.tiktok ?? umkm.tiktok,
             };
-            badges[umkm.id] = calculateBadgeWithCriteria(initial, latest, count, criteriaConfig);
+            badges[umkm.id] = calculateBadgeWithCriteria(merged, merged, count, criteriaConfig);
           }
         }
       }
