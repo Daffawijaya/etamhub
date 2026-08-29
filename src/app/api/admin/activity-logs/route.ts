@@ -36,9 +36,14 @@ export async function GET(req: NextRequest) {
       query = query.eq("actor_id", actorId);
     }
 
-    // Admin kecamatan hanya bisa lihat log sendiri
+    // Role-based filtering:
+    // - super_admin: lihat semua log
+    // - admin: hanya lihat log admin_kecamatan
+    // - admin_kecamatan: hanya lihat log sendiri
     if (user.role === "admin_kecamatan") {
       query = query.eq("actor_id", user.id);
+    } else if (user.role === "admin") {
+      query = query.eq("actor_role", "admin_kecamatan");
     }
 
     const { data, error, count } = await query;

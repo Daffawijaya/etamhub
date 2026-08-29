@@ -9,12 +9,9 @@ import {
   Trash2,
   BarChart3,
   FileText,
-  User,
-  Calendar,
+  Search,
   ChevronLeft,
   ChevronRight,
-  Search,
-  Filter,
 } from "lucide-react";
 import LoadingState from "@/components/LoadingState";
 
@@ -127,6 +124,12 @@ const ROLE_LABELS: Record<string, string> = {
   admin_kecamatan: "Admin Kecamatan",
 };
 
+const ROLE_COLORS: Record<string, string> = {
+  super_admin: "bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400",
+  admin: "bg-blue-50 text-blue-700 dark:bg-blue-900/20 dark:text-blue-400",
+  admin_kecamatan: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400",
+};
+
 function formatDate(iso: string) {
   const d = new Date(iso);
   return d.toLocaleDateString("id-ID", {
@@ -155,6 +158,29 @@ function timeAgo(iso: string) {
   if (diff < 604800) return `${Math.floor(diff / 86400)} hari lalu`;
   return formatDate(iso);
 }
+
+const inputClass = `
+  h-11
+  rounded-xl
+  border
+  border-slate-200
+  dark:border-white/[0.06]
+  bg-slate-50
+  dark:bg-white/[0.03]
+  px-3
+  text-sm
+  font-medium
+  text-slate-700
+  dark:text-white
+  outline-none
+  transition-all
+  duration-300
+  hover:border-slate-300
+  dark:hover:border-white/[0.12]
+  focus:border-sky-500
+  focus:ring-4
+  focus:ring-sky-500/10
+`;
 
 export default function LogAktivitasPage() {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
@@ -200,82 +226,79 @@ export default function LogAktivitasPage() {
       .includes(searchName.toLowerCase());
   });
 
-  if (loading && logs.length === 0) return <LoadingState />;
-
   return (
-    <main className="px-6 pb-6 space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-            Log Aktivitas
-          </h1>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-            {total} aktivitas tercatat
-          </p>
-        </div>
-      </div>
+    <div className="pb-6 px-6">
+      <div className="rounded-xl bg-white transition-colors duration-300 dark:bg-dark-card">
+        {/* Header — matches berita/umkm page style */}
+        <div className="px-6 pt-5 pb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
+              Log Aktivitas
+            </h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+              {total} aktivitas tercatat
+            </p>
+          </div>
 
-      {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
-        <div className="relative flex-1 min-w-[200px] max-w-sm">
-          <Search
-            size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-          />
-          <input
-            type="text"
-            placeholder="Cari nama admin..."
-            value={searchName}
-            onChange={(e) => setSearchName(e.target.value)}
-            className="h-10 w-full rounded-lg border border-slate-200 pl-9 pr-4 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
-          />
+          {/* Search + Filter */}
+          <div className="flex items-center gap-3">
+            <div className="relative w-64">
+              <Search
+                size={16}
+                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+              />
+              <input
+                type="text"
+                placeholder="Cari nama admin..."
+                value={searchName}
+                onChange={(e) => setSearchName(e.target.value)}
+                className={`${inputClass} w-full pl-9 pr-4`}
+              />
+            </div>
+            <select
+              value={filterAction}
+              onChange={(e) => {
+                setFilterAction(e.target.value);
+                setPage(1);
+              }}
+              className={`${inputClass} w-56`}
+            >
+              <option value="">Semua Aksi</option>
+              {Object.entries(ACTION_CONFIG).map(([key, config]) => (
+                <option key={key} value={key}>
+                  {config.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div className="relative">
-          <Filter
-            size={16}
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-          />
-          <select
-            value={filterAction}
-            onChange={(e) => {
-              setFilterAction(e.target.value);
-              setPage(1);
-            }}
-            className="h-10 rounded-lg border border-slate-200 pl-9 pr-8 text-sm appearance-none dark:border-slate-700 dark:bg-dark dark:text-white"
-          >
-            <option value="">Semua Aksi</option>
-            {Object.entries(ACTION_CONFIG).map(([key, config]) => (
-              <option key={key} value={key}>
-                {config.label}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      {/* Log List */}
-      <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
-        {filteredLogs.length === 0 ? (
-          <div className="p-12 text-center text-sm text-slate-400">
-            Belum ada aktivitas
+        {/* Log List */}
+        {loading && logs.length === 0 ? (
+          <div className="py-12">
+            <LoadingState />
+          </div>
+        ) : filteredLogs.length === 0 ? (
+          <div className="px-6 py-16 text-center">
+            <p className="text-sm text-slate-400 dark:text-slate-500">
+              Belum ada aktivitas
+            </p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-100 dark:divide-neutral-800">
+          <div className="divide-y divide-gray-100 dark:divide-white/5">
             {filteredLogs.map((log) => {
               const config = ACTION_CONFIG[log.action] ?? {
                 label: log.action,
                 icon: FileText,
                 color: "text-slate-600",
-                bgColor: "bg-slate-50 dark:bg-slate-900/20",
+                bgColor: "bg-slate-50 dark:bg-white/5",
               };
               const Icon = config.icon;
 
               return (
                 <div
                   key={log.id}
-                  className="flex items-start gap-4 px-5 py-4"
+                  className="flex items-start gap-4 px-6 py-4 transition-colors hover:bg-slate-50 dark:hover:bg-white/[0.02]"
                 >
                   {/* Icon */}
                   <div
@@ -290,7 +313,7 @@ export default function LogAktivitasPage() {
                       <span className="font-semibold">{log.actor_name}</span>
                       <span className="mx-1.5 text-slate-400">·</span>
                       <span
-                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${config.bgColor} ${config.color}`}
+                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${ROLE_COLORS[log.actor_role] ?? "bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300"}`}
                       >
                         {ROLE_LABELS[log.actor_role] ?? log.actor_role}
                       </span>
@@ -335,30 +358,30 @@ export default function LogAktivitasPage() {
             })}
           </div>
         )}
-      </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2">
-          <button
-            onClick={() => setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 dark:border-slate-700 dark:hover:bg-white/5"
-          >
-            <ChevronLeft size={16} />
-          </button>
-          <span className="text-sm text-slate-500 dark:text-slate-400">
-            {page} / {totalPages}
-          </span>
-          <button
-            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-            disabled={page === totalPages}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 dark:border-slate-700 dark:hover:bg-white/5"
-          >
-            <ChevronRight size={16} />
-          </button>
-        </div>
-      )}
-    </main>
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex items-center justify-center gap-2 px-6 py-4">
+            <button
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
+            >
+              <ChevronLeft size={16} />
+            </button>
+            <span className="text-sm text-slate-500 dark:text-slate-400">
+              {page} / {totalPages}
+            </span>
+            <button
+              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+              disabled={page === totalPages}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
+            >
+              <ChevronRight size={16} />
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
