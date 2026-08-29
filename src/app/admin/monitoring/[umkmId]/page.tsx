@@ -326,6 +326,7 @@ export default function MonitoringDetailPage() {
     halal: umkm.halal,
     pirt: umkm.pirt,
     haki: umkm.haki,
+    nib: umkm.nib,
     instagram: umkm.instagram,
     facebook: umkm.facebook,
     tiktok: umkm.tiktok,
@@ -338,6 +339,7 @@ export default function MonitoringDetailPage() {
         halal: latest.halal ?? umkm.halal,
         pirt: latest.pirt ?? umkm.pirt,
         haki: latest.haki ?? umkm.haki,
+        nib: latest.nib ?? umkm.nib,
         instagram: latest.instagram ?? umkm.instagram,
         facebook: latest.facebook ?? umkm.facebook,
         tiktok: latest.tiktok ?? umkm.tiktok,
@@ -369,7 +371,23 @@ export default function MonitoringDetailPage() {
             )}
           </div>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => {
+              setForm({
+                jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja != null ? String(umkm.jumlah_tenaga_kerja) : "",
+                omzet: umkm.omzet != null ? String(umkm.omzet) : "",
+                halal: umkm.halal ?? "",
+                pirt: umkm.pirt ?? "",
+                haki: umkm.haki ?? "",
+                nib: umkm.nib ?? "",
+                kbli: umkm.kbli ?? [],
+                instagram: umkm.instagram ?? "",
+                facebook: umkm.facebook ?? "",
+                tiktok: umkm.tiktok ?? "",
+                kebutuhan_utama: "",
+                catatan: "",
+              });
+              setShowForm(true);
+            }}
             className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
           >
             <Plus size={16} />
@@ -424,15 +442,15 @@ export default function MonitoringDetailPage() {
           </div>
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">Legalitas</p>
-            <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {[
-                umkm.halal && "Halal",
-                umkm.pirt && "PIRT",
-                umkm.haki && "HAKI",
-              ]
-                .filter(Boolean)
-                .join(", ") || "-"}
-            </p>
+            <div className="mt-1 space-y-0.5">
+              {umkm.nib && <p className="text-sm font-medium text-slate-700 dark:text-white">NIB: {umkm.nib}</p>}
+              {umkm.halal && <p className="text-sm font-medium text-slate-700 dark:text-white">Halal: {umkm.halal}</p>}
+              {umkm.pirt && <p className="text-sm font-medium text-slate-700 dark:text-white">PIRT: {umkm.pirt}</p>}
+              {umkm.haki && <p className="text-sm font-medium text-slate-700 dark:text-white">HAKI: {umkm.haki}</p>}
+              {!umkm.nib && !umkm.halal && !umkm.pirt && !umkm.haki && (
+                <p className="text-sm text-slate-400">-</p>
+              )}
+            </div>
           </div>
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">KBLI</p>
@@ -470,6 +488,7 @@ export default function MonitoringDetailPage() {
 
           {/* Legalitas & Sosmed comparisons */}
           <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
+            <CompareCheck label="NIB" initial={initialData.nib} latest={latestData.nib} />
             <CompareCheck label="Halal" initial={initialData.halal} latest={latestData.halal} />
             <CompareCheck label="PIRT" initial={initialData.pirt} latest={latestData.pirt} />
             <CompareCheck label="HAKI" initial={initialData.haki} latest={latestData.haki} />
@@ -550,6 +569,7 @@ export default function MonitoringDetailPage() {
                   <span>
                     Legalitas:{" "}
                     {[
+                      entry.nib && "NIB",
                       entry.halal && "Halal",
                       entry.pirt && "PIRT",
                       entry.haki && "HAKI",
