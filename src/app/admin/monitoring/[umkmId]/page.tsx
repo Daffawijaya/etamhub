@@ -385,53 +385,95 @@ export default function MonitoringDetailPage() {
         {/* Left: Badge Progress + Ringkasan */}
         <div className="space-y-6 lg:col-span-1">
           {/* Badge Progress */}
-          {badge && badge.level !== "none" && (
+          {badge && badge.level !== "none" && criteriaConfig && (
             <div className="rounded-xl bg-white p-5 dark:bg-dark-card">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Kriteria Badge</h3>
+
+              {/* Badge Level Stepper */}
+              {(() => {
+                const levels = [
+                  { key: "bronze", label: "Pemula", icon: <SeedlingIcon className="h-4 w-4" />, color: "amber" },
+                  { key: "silver", label: "Tumbuh", icon: <SilverMedalIcon className="h-4 w-4" />, color: "emerald" },
+                  { key: "gold", label: "Berkembang", icon: <GoldMedalIcon className="h-4 w-4" />, color: "orange" },
+                  { key: "platinum", label: "Naik Kelas", icon: <DiamondIcon className="h-4 w-4" />, color: "purple" },
+                ];
+                const levelOrder = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
+                const currentIdx = levelOrder[badge.level as keyof typeof levelOrder] ?? 0;
+
+                return (
+                  <div className="mb-4">
+                    <div className="flex items-center">
+                      {levels.map((lvl, idx) => {
+                        const isReached = idx <= currentIdx;
+                        const isCurrent = idx === currentIdx;
+                        return (
+                          <div key={lvl.key} className="flex items-center flex-1 last:flex-initial">
+                            <div className="flex flex-col items-center">
+                              <div className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${
+                                isCurrent
+                                  ? `bg-${lvl.color}-100 ring-2 ring-${lvl.color}-500 dark:bg-${lvl.color}-900/30 dark:ring-${lvl.color}-400 scale-110`
+                                  : isReached
+                                    ? `bg-${lvl.color}-50 dark:bg-${lvl.color}-900/20`
+                                    : "bg-slate-100 dark:bg-white/5"
+                              }`}>
+                                <span className={`${
+                                  isCurrent
+                                    ? `text-${lvl.color}-600 dark:text-${lvl.color}-400`
+                                    : isReached
+                                      ? `text-${lvl.color}-500 dark:text-${lvl.color}-400`
+                                      : "text-slate-400 dark:text-slate-600"
+                                }`}>
+                                  {lvl.icon}
+                                </span>
+                              </div>
+                              <span className={`mt-1 text-[10px] font-medium ${
+                                isCurrent
+                                  ? `text-${lvl.color}-600 dark:text-${lvl.color}-400`
+                                  : isReached
+                                    ? "text-slate-600 dark:text-slate-400"
+                                    : "text-slate-400 dark:text-slate-600"
+                              }`}>
+                                {lvl.label}
+                              </span>
+                            </div>
+                            {idx < levels.length - 1 && (
+                              <div className={`mx-1 h-0.5 flex-1 transition-all duration-300 ${
+                                idx < currentIdx
+                                  ? `bg-${lvl.color}-400 dark:bg-${lvl.color}-500`
+                                  : idx === currentIdx
+                                    ? `bg-gradient-to-r from-${lvl.color}-400 to-slate-200 dark:from-${lvl.color}-500 dark:to-slate-700`
+                                    : "bg-slate-200 dark:bg-slate-700"
+                              }`} />
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Individual Progress Bars */}
               <div className="space-y-3">
                 <ProgressBar
                   current={badge.criteria.omzet ?? 0}
-                  target={
-                    badge.level === "platinum"
-                      ? criteriaConfig?.platinum_omzet_min ?? 25000000
-                      : badge.level === "gold"
-                        ? criteriaConfig?.gold_omzet_min ?? 10000000
-                        : criteriaConfig?.silver_omzet_min ?? 5000000
-                  }
+                  target={criteriaConfig.platinum_omzet_min}
                   label="Omzet"
                   format="rupiah"
                 />
                 <ProgressBar
                   current={badge.criteria.tk ?? 0}
-                  target={
-                    badge.level === "platinum"
-                      ? criteriaConfig?.platinum_tk_min ?? 5
-                      : badge.level === "gold"
-                        ? criteriaConfig?.gold_tk_min ?? 3
-                        : criteriaConfig?.silver_tk_min ?? 1
-                  }
+                  target={criteriaConfig.platinum_tk_min}
                   label="Tenaga Kerja"
                 />
                 <ProgressBar
                   current={badge.criteria.legalitas}
-                  target={
-                    badge.level === "platinum"
-                      ? criteriaConfig?.platinum_legalitas_min ?? 2
-                      : badge.level === "gold"
-                        ? criteriaConfig?.gold_legalitas_min ?? 1
-                        : criteriaConfig?.silver_legalitas_min ?? 0
-                  }
+                  target={criteriaConfig.platinum_legalitas_min}
                   label="Legalitas"
                 />
                 <ProgressBar
                   current={badge.criteria.sosmed}
-                  target={
-                    badge.level === "platinum"
-                      ? criteriaConfig?.platinum_sosmed_min ?? 2
-                      : badge.level === "gold"
-                        ? criteriaConfig?.gold_sosmed_min ?? 1
-                        : criteriaConfig?.silver_sosmed_min ?? 0
-                  }
+                  target={criteriaConfig.platinum_sosmed_min}
                   label="Sosmed Aktif"
                 />
               </div>
