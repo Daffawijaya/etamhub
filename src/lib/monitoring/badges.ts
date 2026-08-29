@@ -3,9 +3,9 @@
  *
  * Criteria are configurable via badge_criteria table.
  * Uses absolute/nominal values from MONITORING DATA ONLY:
- * - 🥉 Pemula: Started monitoring (at least 1 visit)
- * - 🌱 Tumbuh: Omzet ≥ X, TK ≥ Y
- * - 🥈 Berkembang: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
+ * - 🌱 Pemula: Started monitoring (at least 1 visit)
+ * - 🌿 Tumbuh: Omzet ≥ X, TK ≥ Y
+ * - 🌳 Berkembang: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W
  * - 💎 Naik Kelas: Omzet ≥ X, TK ≥ Y, Legalitas ≥ Z, Sosmed ≥ W (top tier)
  *
  * IMPORTANT: Badges only appear for UMKM that have been monitored.
@@ -47,9 +47,9 @@ export interface BadgeCriteria {
 // Display names mapping internal levels to user-facing labels
 export const BADGE_LEVEL_NAMES = {
   none: "",
-  bronze: "🥉 Pemula",
-  silver: "🌱 Tumbuh",
-  gold: "🥈 Berkembang",
+  bronze: "🌱 Pemula",
+  silver: "🌿 Tumbuh",
+  gold: "🌳 Berkembang",
   platinum: "💎 Naik Kelas",
 } as const;
 
@@ -75,19 +75,19 @@ const BADGE_STYLES = {
     bgColor: "bg-slate-100 dark:bg-slate-800",
   },
   bronze: {
-    label: "🥉 Pemula",
+    label: "🌱 Pemula",
     color: "text-amber-700 dark:text-amber-400",
     bgColor: "bg-amber-50 dark:bg-amber-900/20",
   },
   silver: {
-    label: "🌱 Tumbuh",
+    label: "🌿 Tumbuh",
     color: "text-emerald-700 dark:text-emerald-400",
     bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
   },
   gold: {
-    label: "🥈 Berkembang",
-    color: "text-slate-600 dark:text-slate-300",
-    bgColor: "bg-slate-100 dark:bg-slate-700/30",
+    label: "🌳 Berkembang",
+    color: "text-orange-700 dark:text-orange-400",
+    bgColor: "bg-orange-50 dark:bg-orange-900/20",
   },
   platinum: {
     label: "💎 Naik Kelas",
@@ -126,8 +126,8 @@ const DEFAULT_CRITERIA: BadgeCriteria = {
   platinum_tk_min: 5,
   platinum_legalitas_min: 2,
   platinum_sosmed_min: 2,
-  silver_label: "🌱 Tumbuh",
-  gold_label: "🥈 Berkembang",
+  silver_label: "🌿 Tumbuh",
+  gold_label: "🌳 Berkembang",
   platinum_label: "💎 Naik Kelas",
 };
 
@@ -271,7 +271,7 @@ export function calculateBadgeWithCriteria(
     };
   }
 
-  // 🥉 Pemula: minimal sudah monitoring
+  // 🌱 Pemula: minimal sudah monitoring
   return {
     level: "bronze",
     ...BADGE_STYLES.bronze,
