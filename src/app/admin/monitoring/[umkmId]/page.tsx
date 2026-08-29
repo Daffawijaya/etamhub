@@ -505,6 +505,86 @@ export default function MonitoringDetailPage() {
               </div>
             ) : (
               <div className="divide-y divide-gray-50 dark:divide-white/[0.04]">
+                {/* Data Awal (sebelum monitoring) */}
+                <div className="px-5 py-4 bg-slate-50/50 dark:bg-white/[0.01]">
+                  <div className="flex items-center gap-3">
+                    <div className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                    <div>
+                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Data Awal</p>
+                      <p className="text-xs text-slate-400">Sebelum monitoring</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 ml-5.5 flex flex-wrap items-center gap-2 text-xs">
+                    <span className="text-slate-500">
+                      TK: <span className="font-medium text-slate-600 dark:text-slate-400">{umkm.jumlah_tenaga_kerja ?? "-"}</span>
+                    </span>
+                    <span className="text-slate-500">
+                      Omzet: <span className="font-medium text-slate-600 dark:text-slate-400">{formatRupiah(umkm.omzet)}</span>
+                    </span>
+                    <span className="text-slate-400">·</span>
+                    <span className="text-slate-500">
+                      Legalitas: <span className="font-medium text-slate-600 dark:text-slate-400">
+                        {((umkm.nib || (umkm.kbli && umkm.kbli.length > 0)) ? 1 : 0) + (umkm.halal ? 1 : 0) + (umkm.pirt ? 1 : 0) + (umkm.haki ? 1 : 0)}
+                      </span>
+                    </span>
+                    <span className="text-slate-400">·</span>
+                    <span className="text-slate-500">
+                      Sosmed: <span className="font-medium text-slate-600 dark:text-slate-400">
+                        {(umkm.instagram ? 1 : 0) + (umkm.facebook ? 1 : 0) + (umkm.tiktok ? 1 : 0)}
+                      </span>
+                    </span>
+                  </div>
+                  {/* Expanded details for data awal */}
+                  {expandedEntry === "initial" && (
+                    <div className="mt-3 ml-5.5 rounded-lg bg-white p-4 dark:bg-white/[0.03] space-y-3">
+                      <div>
+                        <p className="text-xs font-medium text-slate-400 mb-1.5">Legalitas</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {((): { label: string; value: string }[] => {
+                            const items: { label: string; value: string }[] = [];
+                            if (umkm.nib) items.push({ label: "NIB", value: umkm.nib });
+                            if (umkm.kbli && umkm.kbli.length > 0) items.push({ label: "KBLI", value: umkm.kbli.join(", ") });
+                            if (umkm.halal) items.push({ label: "Halal", value: umkm.halal });
+                            if (umkm.pirt) items.push({ label: "PIRT", value: umkm.pirt });
+                            if (umkm.haki) items.push({ label: "HAKI", value: umkm.haki });
+                            return items;
+                          })().map((item) => (
+                            <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
+                              • {item.label} <span className="opacity-60">{item.value}</span>
+                            </span>
+                          ))}
+                          {!(umkm.nib || (umkm.kbli && umkm.kbli.length > 0) || umkm.halal || umkm.pirt || umkm.haki) && (
+                            <span className="text-xs text-slate-400">-</span>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-slate-400 mb-1.5">Sosmed</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {((): { label: string; value: string }[] => {
+                            const items: { label: string; value: string }[] = [];
+                            if (umkm.instagram) items.push({ label: "Instagram", value: umkm.instagram });
+                            if (umkm.facebook) items.push({ label: "Facebook", value: umkm.facebook });
+                            if (umkm.tiktok) items.push({ label: "TikTok", value: umkm.tiktok });
+                            return items;
+                          })().map((item) => (
+                            <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
+                              • {item.label} <span className="opacity-60">{item.value}</span>
+                            </span>
+                          ))}
+                          {!umkm.instagram && !umkm.facebook && !umkm.tiktok && <span className="text-xs text-slate-400">-</span>}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => setExpandedEntry(expandedEntry === "initial" ? null : "initial")}
+                    className="mt-2 ml-5.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                  >
+                    {expandedEntry === "initial" ? "Tutup" : "Lihat detail"}
+                  </button>
+                </div>
+
                 {monitorings.map((entry, idx) => {
                   const isExpanded = expandedEntry === entry.id;
                   const prevEntry = monitorings[idx + 1];
