@@ -107,7 +107,7 @@ export default function UmkmCard({
         {/* Badge on image */}
         {badge && badge.level !== "none" && (
           <span
-            className={`absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full border bg-white/90 px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm dark:bg-black/70 ${
+            className={`absolute bottom-3 left-3 sm:bottom-5 sm:left-5 md:bottom-6 md:left-6 inline-flex items-center gap-1 rounded-full border bg-white/90 px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm dark:bg-black/70 ${
               BADGE_RING[badge.level] ?? ""
             } ${badge.color}`}
           >
