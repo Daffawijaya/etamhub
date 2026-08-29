@@ -63,7 +63,7 @@ export default function UmkmPendampinganTab({ umkmId }: Props) {
     );
   }
 
-  const { initial, latest, monitorings } = data;
+  const { initial, latest, monitorings = [] } = data;
 
   // Check what data was added/changed during monitoring
   const hasOmzet = monitorings.some((m) => m.omzet != null);
