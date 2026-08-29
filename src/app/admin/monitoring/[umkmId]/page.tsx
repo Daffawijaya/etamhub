@@ -421,7 +421,7 @@ export default function MonitoringDetailPage() {
         )}
 
         {/* Data UMKM Awal */}
-        <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-4">
+        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">Tenaga Kerja</p>
             <p className="text-sm font-semibold text-slate-700 dark:text-white">
@@ -435,28 +435,30 @@ export default function MonitoringDetailPage() {
             </p>
           </div>
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-            <p className="text-xs text-slate-400">NIB</p>
-            <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {umkm.nib ?? "-"}
-            </p>
-          </div>
-          <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">Legalitas</p>
             <div className="mt-1 space-y-0.5">
               {umkm.nib && <p className="text-sm font-medium text-slate-700 dark:text-white">NIB: {umkm.nib}</p>}
+              {umkm.kbli && umkm.kbli.length > 0 && <p className="text-sm font-medium text-slate-700 dark:text-white">KBLI: {umkm.kbli.join(", ")}</p>}
               {umkm.halal && <p className="text-sm font-medium text-slate-700 dark:text-white">Halal: {umkm.halal}</p>}
               {umkm.pirt && <p className="text-sm font-medium text-slate-700 dark:text-white">PIRT: {umkm.pirt}</p>}
               {umkm.haki && <p className="text-sm font-medium text-slate-700 dark:text-white">HAKI: {umkm.haki}</p>}
-              {!umkm.nib && !umkm.halal && !umkm.pirt && !umkm.haki && (
+              {!umkm.nib && (!umkm.kbli || umkm.kbli.length === 0) && !umkm.halal && !umkm.pirt && !umkm.haki && (
                 <p className="text-sm text-slate-400">-</p>
               )}
             </div>
           </div>
+        </div>
+        <div className="mt-3 grid grid-cols-1 gap-4">
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-            <p className="text-xs text-slate-400">KBLI</p>
-            <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {umkm.kbli?.join(", ") || "-"}
-            </p>
+            <p className="text-xs text-slate-400">Sosmed</p>
+            <div className="mt-1 space-y-0.5">
+              {umkm.instagram && <p className="text-sm font-medium text-slate-700 dark:text-white">Instagram: {umkm.instagram}</p>}
+              {umkm.facebook && <p className="text-sm font-medium text-slate-700 dark:text-white">Facebook: {umkm.facebook}</p>}
+              {umkm.tiktok && <p className="text-sm font-medium text-slate-700 dark:text-white">TikTok: {umkm.tiktok}</p>}
+              {!umkm.instagram && !umkm.facebook && !umkm.tiktok && (
+                <p className="text-sm text-slate-400">-</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -486,15 +488,25 @@ export default function MonitoringDetailPage() {
             />
           </div>
 
-          {/* Legalitas & Sosmed comparisons */}
-          <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-2">
-            <CompareCheck label="NIB" initial={initialData.nib} latest={latestData.nib} />
-            <CompareCheck label="Halal" initial={initialData.halal} latest={latestData.halal} />
-            <CompareCheck label="PIRT" initial={initialData.pirt} latest={latestData.pirt} />
-            <CompareCheck label="HAKI" initial={initialData.haki} latest={latestData.haki} />
-            <CompareCheck label="Instagram" initial={initialData.instagram} latest={latestData.instagram} />
-            <CompareCheck label="Facebook" initial={initialData.facebook} latest={latestData.facebook} />
-            <CompareCheck label="TikTok" initial={initialData.tiktok} latest={latestData.tiktok} />
+          {/* Legalitas comparisons */}
+          <div className="mt-3">
+            <p className="text-xs font-medium text-slate-500 mb-2">Legalitas</p>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <CompareCheck label="NIB" initial={initialData.nib} latest={latestData.nib} />
+              <CompareCheck label="Halal" initial={initialData.halal} latest={latestData.halal} />
+              <CompareCheck label="PIRT" initial={initialData.pirt} latest={latestData.pirt} />
+              <CompareCheck label="HAKI" initial={initialData.haki} latest={latestData.haki} />
+            </div>
+          </div>
+
+          {/* Sosmed comparisons */}
+          <div className="mt-3">
+            <p className="text-xs font-medium text-slate-500 mb-2">Sosmed</p>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+              <CompareCheck label="Instagram" initial={initialData.instagram} latest={latestData.instagram} />
+              <CompareCheck label="Facebook" initial={initialData.facebook} latest={latestData.facebook} />
+              <CompareCheck label="TikTok" initial={initialData.tiktok} latest={latestData.tiktok} />
+            </div>
           </div>
 
           {/* Trend vs previous entry */}
@@ -563,30 +575,33 @@ export default function MonitoringDetailPage() {
                   )}
                 </div>
 
-                <div className="mt-2 grid grid-cols-2 gap-2 text-xs text-slate-500 md:grid-cols-4">
-                  <span>TK: {entry.jumlah_tenaga_kerja ?? "-"}</span>
-                  <span>Omzet: {formatRupiah(entry.omzet)}</span>
-                  <span>
-                    Legalitas:{" "}
+                <div className="mt-2 grid grid-cols-1 gap-2 text-xs text-slate-500 md:grid-cols-2">
+                  <div>
+                    <span className="font-medium">TK:</span> {entry.jumlah_tenaga_kerja ?? "-"}
+                    {' · '}<span className="font-medium">Omzet:</span> {formatRupiah(entry.omzet)}
+                  </div>
+                  <div>
+                    <span className="font-medium">Legalitas:</span>{" "}
                     {[
                       entry.nib && "NIB",
+                      entry.kbli && entry.kbli.length > 0 && "KBLI",
                       entry.halal && "Halal",
                       entry.pirt && "PIRT",
                       entry.haki && "HAKI",
                     ]
                       .filter(Boolean)
                       .join(", ") || "-"}
-                  </span>
-                  <span>
-                    Sosmed:{" "}
+                  </div>
+                  <div>
+                    <span className="font-medium">Sosmed:</span>{" "}
                     {[
-                      entry.instagram && "IG",
-                      entry.facebook && "FB",
-                      entry.tiktok && "TT",
+                      entry.instagram && `IG: ${entry.instagram}`,
+                      entry.facebook && `FB: ${entry.facebook}`,
+                      entry.tiktok && `TT: ${entry.tiktok}`,
                     ]
                       .filter(Boolean)
-                      .join(", ") || "-"}
-                  </span>
+                      .join(" · ") || "-"}
+                  </div>
                 </div>
 
                 {entry.kebutuhan_utama && (
