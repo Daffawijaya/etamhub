@@ -47,10 +47,10 @@ export interface BadgeCriteria {
 // Display names mapping internal levels to user-facing labels
 export const BADGE_LEVEL_NAMES = {
   none: "",
-  bronze: "🌱 Pemula",
-  silver: "🌿 Tumbuh",
-  gold: "🌳 Berkembang",
-  platinum: "💎 Naik Kelas",
+  bronze: "Pemula",
+  silver: "Tumbuh",
+  gold: "Berkembang",
+  platinum: "Naik Kelas",
 } as const;
 
 export interface BadgeResult {
@@ -75,22 +75,22 @@ const BADGE_STYLES = {
     bgColor: "bg-slate-100 dark:bg-slate-800",
   },
   bronze: {
-    label: "🌱 Pemula",
+    label: "Pemula",
     color: "text-amber-700 dark:text-amber-400",
     bgColor: "bg-amber-50 dark:bg-amber-900/20",
   },
   silver: {
-    label: "🌿 Tumbuh",
+    label: "Tumbuh",
     color: "text-emerald-700 dark:text-emerald-400",
     bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
   },
   gold: {
-    label: "🌳 Berkembang",
+    label: "Berkembang",
     color: "text-orange-700 dark:text-orange-400",
     bgColor: "bg-orange-50 dark:bg-orange-900/20",
   },
   platinum: {
-    label: "💎 Naik Kelas",
+    label: "Naik Kelas",
     color: "text-purple-700 dark:text-purple-400",
     bgColor: "bg-purple-50 dark:bg-purple-900/20",
   },
@@ -126,9 +126,9 @@ const DEFAULT_CRITERIA: BadgeCriteria = {
   platinum_tk_min: 5,
   platinum_legalitas_min: 2,
   platinum_sosmed_min: 2,
-  silver_label: "🌿 Tumbuh",
-  gold_label: "🌳 Berkembang",
-  platinum_label: "💎 Naik Kelas",
+  silver_label: "Tumbuh",
+  gold_label: "Berkembang",
+  platinum_label: "Naik Kelas",
 };
 
 // Fetch badge criteria from database

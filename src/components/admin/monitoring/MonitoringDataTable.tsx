@@ -146,9 +146,9 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
                 rounded-2xl
                 border
                 border-slate-200
-                dark:border-slate-800
+                dark:border-white/[0.06]
                 bg-white
-                dark:bg-dark
+                dark:bg-white/[0.03]
                 pl-11
                 pr-4
                 text-sm
@@ -160,7 +160,7 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
                 transition-all
                 duration-300
                 hover:border-slate-300
-                dark:hover:border-slate-700
+                dark:hover:border-white/[0.12]
                 focus:border-sky-500
                 focus:ring-4
                 focus:ring-sky-500/10

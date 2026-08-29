@@ -36,7 +36,7 @@ export default function MonitoringFilters({
     rounded-xl
     border
     border-slate-200
-    dark:border-slate-800
+    dark:border-white/[0.06]
 
     bg-slate-50
     dark:bg-dark
@@ -55,10 +55,10 @@ export default function MonitoringFilters({
     duration-300
 
     hover:border-slate-300
-    dark:hover:border-slate-700
+    dark:hover:border-white/[0.12]
 
     focus:border-slate-400
-    dark:focus:border-slate-600
+    dark:focus:border-white/[0.15]
   `;
 
   const optionClass = `
@@ -80,16 +80,16 @@ export default function MonitoringFilters({
           Semua Badge
         </option>
         <option className={optionClass} value="platinum">
-          💎 Naik Kelas
+          Naik Kelas
         </option>
         <option className={optionClass} value="gold">
-          🌳 Berkembang
+          Berkembang
         </option>
         <option className={optionClass} value="silver">
-          🌿 Tumbuh
+          Tumbuh
         </option>
         <option className={optionClass} value="bronze">
-          🌱 Pemula
+          Pemula
         </option>
         <option className={optionClass} value="none">
           Belum Ada

@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import LoadingState from "@/components/LoadingState";
 import { Save, RotateCcw } from "lucide-react";
+import { FaSeedling, FaLeaf, FaTree, FaGem } from "react-icons/fa";
 
 interface BadgeCriteria {
   silver_omzet_min: number;
@@ -35,9 +36,9 @@ const DEFAULTS: BadgeCriteria = {
   platinum_tk_min: 5,
   platinum_legalitas_min: 2,
   platinum_sosmed_min: 2,
-  silver_label: "🌿 Tumbuh",
-  gold_label: "🌳 Berkembang",
-  platinum_label: "💎 Naik Kelas",
+  silver_label: "Tumbuh",
+  gold_label: "Berkembang",
+  platinum_label: "Naik Kelas",
 };
 
 function formatRupiah(value: number) {
@@ -48,25 +49,34 @@ type TierKey = "pemula" | "silver" | "gold" | "platinum";
 
 const TIERS: {
   key: TierKey;
-  icon: string;
+  icon: React.ReactNode;
+  iconBg: string;
+  iconColor: string;
   name: string;
   description: string;
-  color: string;
+  tagBg?: string;
+  tagText?: string;
+  tagLabel?: string;
   fields?: { key: keyof BadgeCriteria; label: string; prefix?: string; suffix?: string }[];
 }[] = [
   {
     key: "pemula",
-    icon: "🌱",
+    icon: <FaSeedling size={20} />,
+    iconBg: "bg-amber-100 dark:bg-amber-900/30",
+    iconColor: "text-amber-600 dark:text-amber-400",
     name: "Pemula",
     description: "Sudah mulai monitoring (minimal 1 kunjungan) — otomatis",
-    color: "bg-amber-50 text-amber-700 dark:bg-amber-900/20 dark:text-amber-400",
+    tagBg: "bg-amber-100 dark:bg-amber-900/30",
+    tagText: "text-amber-600 dark:text-amber-400",
+    tagLabel: "Otomatis",
   },
   {
     key: "silver",
-    icon: "🌿",
+    icon: <FaLeaf size={20} />,
+    iconBg: "bg-emerald-100 dark:bg-emerald-900/30",
+    iconColor: "text-emerald-600 dark:text-emerald-400",
     name: "Tumbuh",
     description: "Sudah mulai menunjukkan perkembangan",
-    color: "bg-emerald-50 text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400",
     fields: [
       { key: "silver_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
       { key: "silver_tk_min", label: "Minimal Karyawan" },
@@ -76,10 +86,11 @@ const TIERS: {
   },
   {
     key: "gold",
-    icon: "🌳",
+    icon: <FaTree size={20} />,
+    iconBg: "bg-orange-100 dark:bg-orange-900/30",
+    iconColor: "text-orange-600 dark:text-orange-400",
     name: "Berkembang",
     description: "UMKM yang sudah berkembang pesat",
-    color: "bg-orange-50 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400",
     fields: [
       { key: "gold_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
       { key: "gold_tk_min", label: "Minimal Karyawan" },
@@ -89,10 +100,14 @@ const TIERS: {
   },
   {
     key: "platinum",
-    icon: "💎",
+    icon: <FaGem size={20} />,
+    iconBg: "bg-purple-100 dark:bg-purple-900/30",
+    iconColor: "text-purple-600 dark:text-purple-400",
     name: "Naik Kelas",
     description: "Tertinggi — semua kriteria terpenuhi",
-    color: "bg-purple-50 text-purple-700 dark:bg-purple-900/20 dark:text-purple-400",
+    tagBg: "bg-purple-100 dark:bg-purple-900/30",
+    tagText: "text-purple-600 dark:text-purple-400",
+    tagLabel: "Tertinggi",
     fields: [
       { key: "platinum_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
       { key: "platinum_tk_min", label: "Minimal Karyawan" },
@@ -151,13 +166,17 @@ export default function PengaturanBadgePage() {
   if (loading) return <LoadingState />;
 
   return (
-    <main className="px-6 pb-6">
-      <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
-        {/* Header with title + buttons */}
-        <div className="flex items-center justify-between mb-6">
+    <div className="pb-6 px-6">
+      <div className="rounded-xl bg-white transition-colors duration-300 dark:bg-dark-card">
+        {/* Header — matches berita page style */}
+        <div className="px-6 pt-5 pb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h1 className="text-lg font-semibold text-slate-900 dark:text-white">Pengaturan Badge</h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400">Atur kriteria untuk setiap tingkatan badge</p>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
+              Pengaturan Badge
+            </h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+              Atur kriteria untuk setiap tingkatan badge
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <button
@@ -178,34 +197,31 @@ export default function PengaturanBadgePage() {
           </div>
         </div>
 
-        <div className="space-y-5">
+        {/* Badge tiers */}
+        <div className="px-6 pb-6 space-y-4">
           {TIERS.map((tier) => {
             const isTopBadge = tier.key === "platinum";
-            const isPemula = tier.key === "pemula";
 
             return (
               <div
                 key={tier.key}
-                className={`rounded-xl border p-5 ${
+                className={`rounded-xl border p-5 transition-colors duration-300 ${
                   isTopBadge
-                    ? "border-purple-200 bg-purple-50/50 dark:border-purple-900/50 dark:bg-purple-900/10"
-                    : "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/30"
+                    ? "border-purple-200/60 bg-purple-50/50 dark:border-purple-800/40 dark:bg-purple-950/20"
+                    : "border-slate-200 bg-slate-50 dark:border-white/[0.06] dark:bg-white/[0.02]"
                 }`}
               >
                 {/* Tier header */}
                 <div className="flex items-center gap-3 mb-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-lg text-xl">{tier.icon}</span>
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${tier.iconBg} ${tier.iconColor}`}>
+                    {tier.icon}
+                  </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2">
-                      <h2 className="text-base font-semibold text-slate-900 dark:text-white">{tier.name}</h2>
-                      {isTopBadge && (
-                        <span className="rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-600 dark:bg-purple-900/30 dark:text-purple-400">
-                          Tertinggi
-                        </span>
-                      )}
-                      {isPemula && (
-                        <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-600 dark:bg-amber-900/30 dark:text-amber-400">
-                          Otomatis
+                      <h3 className="text-base font-semibold text-slate-900 dark:text-white">{tier.name}</h3>
+                      {tier.tagLabel && (
+                        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${tier.tagBg} ${tier.tagText}`}>
+                          {tier.tagLabel}
                         </span>
                       )}
                     </div>
@@ -213,7 +229,7 @@ export default function PengaturanBadgePage() {
                   </div>
                 </div>
 
-                {/* Fields (editable tiers only) */}
+                {/* Fields */}
                 {tier.fields && (
                   <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                     {tier.fields.map((field) => (
@@ -227,7 +243,7 @@ export default function PengaturanBadgePage() {
                             type="number"
                             value={criteria[field.key] as number}
                             onChange={(e) => updateField(field.key, Number(e.target.value))}
-                            className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-slate-700 dark:bg-dark dark:text-white"
+                            className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                           />
                         </div>
                         {field.suffix && (
@@ -239,7 +255,7 @@ export default function PengaturanBadgePage() {
                 )}
 
                 {/* Pemula info */}
-                {isPemula && (
+                {tier.key === "pemula" && (
                   <p className="text-sm text-slate-500 dark:text-slate-400">
                     Badge ini diberikan otomatis ketika UMKM sudah memiliki minimal 1 kunjungan monitoring. Tidak perlu dikonfigurasi.
                   </p>
@@ -249,20 +265,20 @@ export default function PengaturanBadgePage() {
           })}
 
           {/* Ringkasan */}
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 dark:border-slate-700 dark:bg-slate-800/30">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 transition-colors duration-300 dark:border-white/[0.06] dark:bg-white/[0.02]">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Ringkasan Kriteria</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-3">
-                <span className="rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
-                  🌱 Pemula
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
+                  <FaSeedling size={12} /> Pemula
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Minimal 1 kunjungan monitoring — otomatis
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="rounded-full bg-emerald-50 px-2 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
-                  🌿 Tumbuh
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
+                  <FaLeaf size={12} /> Tumbuh
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.silver_omzet_min)}, TK ≥ {criteria.silver_tk_min}
@@ -271,8 +287,8 @@ export default function PengaturanBadgePage() {
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="rounded-full bg-orange-50 px-2 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
-                  🌳 Berkembang
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
+                  <FaTree size={12} /> Berkembang
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.gold_omzet_min)}, TK ≥ {criteria.gold_tk_min}
@@ -281,8 +297,8 @@ export default function PengaturanBadgePage() {
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="rounded-full bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/20 dark:text-purple-400">
-                  💎 Naik Kelas
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/20 dark:text-purple-400">
+                  <FaGem size={12} /> Naik Kelas
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.platinum_omzet_min)}, TK ≥ {criteria.platinum_tk_min}
@@ -294,6 +310,6 @@ export default function PengaturanBadgePage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
