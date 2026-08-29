@@ -230,6 +230,16 @@ export async function GET() {
       })),
     ];
 
+    // Check for pending edit request
+    const { data: pendingEdit } = await supabaseAdmin
+      .from("umkm_requests")
+      .select("id")
+      .eq("user_id", userId)
+      .eq("umkm_id", umkm.id)
+      .eq("action", "edit")
+      .eq("status", "pending")
+      .maybeSingle();
+
     return NextResponse.json({
       profile,
 
@@ -253,6 +263,7 @@ export async function GET() {
         approval_status: umkm.approval_status,
         approval_label: getStatusLabel(umkm.approval_status),
         published: umkm.published,
+        hasPendingEdit: !!pendingEdit,
       },
 
       completeness: calculateCompleteness(umkm),

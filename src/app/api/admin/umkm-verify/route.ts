@@ -16,11 +16,11 @@ export async function GET() {
       );
     }
 
-    // Fetch pending create requests from umkm_requests
+    // Fetch pending create and edit requests from umkm_requests
     let query = supabaseAdmin
       .from("umkm_requests")
       .select("*")
-      .eq("action", "create")
+      .in("action", ["create", "edit"])
       .eq("status", "pending")
       .order("created_at", { ascending: false });
 

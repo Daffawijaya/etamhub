@@ -64,9 +64,9 @@ export async function PUT(
       );
     }
 
-    if (request.action !== "create") {
+    if (!["create", "edit"].includes(request.action)) {
       return NextResponse.json(
-        { message: "Hanya request create yang bisa diverifikasi di sini" },
+        { message: "Action tidak valid" },
         { status: 400 },
       );
     }
@@ -89,84 +89,123 @@ export async function PUT(
     const now = new Date().toISOString();
 
     if (action === "approve") {
-      // Insert into umkm table with published: true
-      const umkmId = crypto.randomUUID();
-
-      const { error: insertError } = await supabaseAdmin
-        .from("umkm")
-        .insert({
-          id: umkmId,
-          ...payload,
-          published: true,
-          approval_status: "approved",
-          approved_by: user.id,
-          approved_at: now,
-          created_at: now,
-          updated_at: now,
-        });
-
-      if (insertError) throw insertError;
-
-      // Update user data (email, nik) if provided
-      if (payload.email || payload.nik) {
-        await supabaseAdmin
-          .from("users")
-          .update({
-            email: payload.email,
-            nik: payload.nik,
+      if (request.action === "create") {
+        // CREATE: Insert into umkm table with published: true
+        const umkmId = crypto.randomUUID();
+        const { error: insertError } = await supabaseAdmin
+          .from("umkm")
+          .insert({
+            id: umkmId,
+            ...payload,
+            published: true,
+            approval_status: "approved",
+            approved_by: user.id,
+            approved_at: now,
+            created_at: now,
             updated_at: now,
-          })
-          .eq("id", payload.owner_id);
-      }
+          });
+        if (insertError) throw insertError;
 
-      // Notify owner
-      if (payload.owner_id) {
+        // Update user data (email, nik) if provided
+        if (payload.email || payload.nik) {
+          await supabaseAdmin
+            .from("users")
+            .update({ email: payload.email, nik: payload.nik, updated_at: now })
+            .eq("id", payload.owner_id);
+        }
+
+        // Notify owner
+        if (payload.owner_id) {
+          await supabaseAdmin.from("notifications").insert({
+            id: crypto.randomUUID(),
+            user_id: payload.owner_id,
+            type: "approval",
+            title: `UMKM "${payload.nama}" disetujui dan sudah dipublikasikan`,
+            link: "/user/umkm",
+            created_at: now,
+            read: false,
+          });
+        }
+
+        await logActivity({
+          actorId: user.id,
+          actorName: user.nama ?? "Unknown",
+          actorRole: user.role ?? "unknown",
+          action: "approve_umkm",
+          targetType: "umkm",
+          targetId: umkmId,
+          targetName: payload.nama,
+          detail: { kecamatan: payload.kecamatan, reason },
+        });
+      } else if (request.action === "edit") {
+        // EDIT: Update existing UMKM record
+        const umkmId = request.umkm_id;
+        const after = payload.after as Record<string, any>;
+        const { email, nik, ...updateData } = after;
+
+        const { error: updateError } = await supabaseAdmin
+          .from("umkm")
+          .update({ ...updateData, updated_at: now })
+          .eq("id", umkmId);
+        if (updateError) throw updateError;
+
+        // Update user data (email, nik) if provided
+        if (email || nik) {
+          await supabaseAdmin
+            .from("users")
+            .update({ email, nik, updated_at: now })
+            .eq("id", request.user_id);
+        }
+
+        // Notify owner
         await supabaseAdmin.from("notifications").insert({
           id: crypto.randomUUID(),
-          user_id: payload.owner_id,
+          user_id: request.user_id,
           type: "approval",
-          title: `UMKM "${payload.nama}" disetujui dan sudah dipublikasikan`,
+          title: `Perubahan data UMKM "${after.nama}" disetujui`,
           link: "/user/umkm",
           created_at: now,
           read: false,
         });
-      }
 
-      // Log activity
-      await logActivity({
-        actorId: user.id,
-        actorName: user.nama ?? "Unknown",
-        actorRole: user.role ?? "unknown",
-        action: "approve_umkm",
-        targetType: "umkm",
-        targetId: umkmId,
-        targetName: payload.nama,
-        detail: { kecamatan: payload.kecamatan, reason },
-      });
+        await logActivity({
+          actorId: user.id,
+          actorName: user.nama ?? "Unknown",
+          actorRole: user.role ?? "unknown",
+          action: "approve_edit_umkm",
+          targetType: "umkm",
+          targetId: umkmId,
+          targetName: after.nama,
+          detail: { reason },
+        });
+      }
     } else {
-      // Reject — just update the request status
-      // Notify owner
-      if (payload.owner_id) {
-        await supabaseAdmin.from("notifications").insert({
-          id: crypto.randomUUID(),
-          user_id: payload.owner_id,
-          type: "rejection",
-          title: `UMKM "${payload.nama}" ditolak${reason ? `: ${reason}` : ""}`,
-          link: "/user/umkm",
-          created_at: now,
-          read: false,
-        });
-      }
+      // Reject
+      const targetName = request.action === "create"
+        ? payload.nama
+        : (payload.after as Record<string, any>)?.nama ?? "";
+      const kecamatan = request.action === "create"
+        ? payload.kecamatan
+        : (payload.before as Record<string, any>)?.kecamatan;
 
-      // Log activity
+      await supabaseAdmin.from("notifications").insert({
+        id: crypto.randomUUID(),
+        user_id: request.user_id,
+        type: "rejection",
+        title: `${request.action === "create" ? "UMKM" : "Perubahan data UMKM"} "${targetName}" ditolak${reason ? `: ${reason}` : ""}`,
+        link: "/user/umkm",
+        created_at: now,
+        read: false,
+      });
+
       await logActivity({
         actorId: user.id,
         actorName: user.nama ?? "Unknown",
         actorRole: user.role ?? "unknown",
-        action: "reject_umkm",
+        action: request.action === "create" ? "reject_umkm" : "reject_edit_umkm",
         targetType: "umkm",
-        targetName: payload.nama,
-        detail: { kecamatan: payload.kecamatan, reason },
+        targetName,
+        detail: { kecamatan, reason },
       });
     }
 

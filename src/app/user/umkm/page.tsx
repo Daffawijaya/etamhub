@@ -93,6 +93,11 @@ export default async function UserUmkmPage() {
                           ? "Menunggu Verifikasi Admin Kecamatan"
                           : "Menunggu Persetujuan"}
                       </span>
+                    ) : umkm.hasPendingEdit ? (
+                      <span className="inline-flex w-fit items-center gap-2 rounded-full bg-blue-100 px-3 py-1.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                        <Clock3 size={14} />
+                        Edit Menunggu Verifikasi
+                      </span>
                     ) : (
                       <Link
                         href={`/user/umkm/${umkm.id}/edit`}

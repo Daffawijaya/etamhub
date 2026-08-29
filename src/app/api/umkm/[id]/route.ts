@@ -182,13 +182,116 @@ export async function PUT(
     );
   }
 
-  // =========================
-  // DELETE REMOVED IMAGES
-  // =========================
   const now = new Date().toISOString();
-  // gambar yang sudah tidak dipakai lagi
   const { email, nik, ...umkmData } = body;
 
+  // For user role: create edit request for admin verification
+  if (currentUser.role === "user") {
+    // Check for existing pending edit request
+    const { data: existingRequest } = await supabaseAdmin
+      .from("umkm_requests")
+      .select("id")
+      .eq("user_id", currentUser.id)
+      .eq("umkm_id", id)
+      .eq("action", "edit")
+      .eq("status", "pending")
+      .maybeSingle();
+
+    if (existingRequest) {
+      return NextResponse.json(
+        { message: "Anda sudah memiliki permintaan edit yang sedang diproses. Silakan tunggu hingga diverifikasi." },
+        { status: 409 },
+      );
+    }
+
+    const { error: requestError } = await supabaseAdmin
+      .from("umkm_requests")
+      .insert({
+        id: crypto.randomUUID(),
+        user_id: currentUser.id,
+        umkm_id: id,
+        action: "edit",
+        status: "pending",
+        payload: {
+          before: {
+            nama: oldData.nama,
+            pemilik: oldData.pemilik,
+            kategori: oldData.kategori,
+            subkategori: oldData.subkategori,
+            deskripsi: oldData.deskripsi,
+            kecamatan: oldData.kecamatan,
+            alamat: oldData.alamat,
+            lat: oldData.lat,
+            lng: oldData.lng,
+            whatsapp: oldData.whatsapp,
+            instagram: oldData.instagram,
+            facebook: oldData.facebook,
+            tiktok: oldData.tiktok,
+            nib: oldData.nib,
+            kbli: oldData.kbli,
+            npwp: oldData.npwp,
+            halal: oldData.halal,
+            pirt: oldData.pirt,
+            haki: oldData.haki,
+            tahun_mulai_usaha: oldData.tahun_mulai_usaha,
+            jumlah_tenaga_kerja: oldData.jumlah_tenaga_kerja,
+            omzet: oldData.omzet,
+            gambar: oldData.gambar,
+          },
+          after: {
+            ...umkmData,
+            email: email ?? oldData.email,
+            nik: nik ?? oldData.nik,
+          },
+        },
+        created_at: now,
+      });
+
+    if (requestError) throw requestError;
+
+    // Notify admin kecamatan
+    const { data: admins } = await supabaseAdmin
+      .from("admins")
+      .select("id, roles ( name )");
+
+    const adminIds = (admins ?? [])
+      .filter((a: any) => {
+        const roleName = Array.isArray(a.roles) ? a.roles[0]?.name : (a.roles as any)?.name;
+        return roleName === "admin" || roleName === "super_admin" || roleName === "admin_kecamatan";
+      })
+      .map((a: any) => a.id);
+
+    if (adminIds.length > 0) {
+      const notifications = adminIds.map((adminId: string) => ({
+        id: crypto.randomUUID(),
+        admin_id: adminId,
+        type: "edit_request",
+        title: `Perubahan data UMKM "${oldData.nama}" menunggu verifikasi`,
+        link: "/admin/verifikasi",
+        created_at: now,
+        read: false,
+      }));
+      await supabaseAdmin.from("notifications").insert(notifications);
+    }
+
+    // Notify owner
+    await supabaseAdmin.from("notifications").insert({
+      id: crypto.randomUUID(),
+      user_id: currentUser.id,
+      type: "edit_request",
+      title: `Perubahan data UMKM "${oldData.nama}" sedang diverifikasi admin`,
+      link: "/user/umkm",
+      created_at: now,
+      read: false,
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: "Perubahan data UMKM berhasil dikirim dan menunggu verifikasi admin.",
+    });
+  }
+
+  // For admin role: direct update (no verification needed)
   if (email || nik) {
     const { error: userError } = await supabaseAdmin
       .from("users")

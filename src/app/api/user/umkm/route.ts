@@ -85,5 +85,24 @@ export async function GET() {
     );
   }
 
+  // Check for pending edit request
+  if (data?.id) {
+    const { data: pendingEdit } = await supabaseAdmin
+      .from("umkm_requests")
+      .select("id")
+      .eq("user_id", currentUser.id)
+      .eq("umkm_id", data.id)
+      .eq("action", "edit")
+      .eq("status", "pending")
+      .maybeSingle();
+
+    if (pendingEdit) {
+      return NextResponse.json({
+        ...data,
+        hasPendingEdit: true,
+      });
+    }
+  }
+
   return NextResponse.json(data);
 }
