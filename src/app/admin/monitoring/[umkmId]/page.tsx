@@ -507,12 +507,20 @@ export default function MonitoringDetailPage() {
               <div className="divide-y divide-gray-50 dark:divide-white/[0.04]">
                 {/* Data Awal (sebelum monitoring) */}
                 <div className="px-5 py-4 bg-slate-50/50 dark:bg-white/[0.01]">
-                  <div className="flex items-center gap-3">
-                    <div className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-slate-600" />
-                    <div>
-                      <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Data Awal</p>
-                      <p className="text-xs text-slate-400">Sebelum monitoring</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-slate-600" />
+                      <div>
+                        <p className="text-sm font-medium text-slate-500 dark:text-slate-400">Data Awal</p>
+                        <p className="text-xs text-slate-400">Sebelum monitoring</p>
+                      </div>
                     </div>
+                    <button
+                      onClick={() => setExpandedEntry(expandedEntry === "initial" ? null : "initial")}
+                      className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-white/5"
+                    >
+                      {expandedEntry === "initial" ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    </button>
                   </div>
                   <div className="mt-2 ml-5.5 flex flex-wrap items-center gap-2 text-xs">
                     <span className="text-slate-500">
@@ -577,12 +585,7 @@ export default function MonitoringDetailPage() {
                       </div>
                     </div>
                   )}
-                  <button
-                    onClick={() => setExpandedEntry(expandedEntry === "initial" ? null : "initial")}
-                    className="mt-2 ml-5.5 text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
-                  >
-                    {expandedEntry === "initial" ? "Tutup" : "Lihat detail"}
-                  </button>
+
                 </div>
 
                 {monitorings.map((entry, idx) => {
