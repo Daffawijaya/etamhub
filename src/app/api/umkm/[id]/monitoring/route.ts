@@ -71,7 +71,8 @@ export async function GET(
         }
       : initial;
 
-    // Calculate badge
+    // Calculate badge — strict: omzet & TK from monitoring only (no umkm fallback)
+    const badgeLatestEntry = (monitorings ?? [])[0] ?? null;
     const badge = await calculateBadge(
       {
         omzet: initial.omzet,
@@ -85,15 +86,15 @@ export async function GET(
         tiktok: initial.tiktok,
       },
       {
-        omzet: latest.omzet,
-        jumlah_tenaga_kerja: latest.jumlah_tenaga_kerja,
-        halal: latest.halal,
-        pirt: latest.pirt,
-        haki: latest.haki,
-        nib: latest.nib,
-        instagram: latest.instagram,
-        facebook: latest.facebook,
-        tiktok: latest.tiktok,
+        omzet: badgeLatestEntry?.omzet ?? null,
+        jumlah_tenaga_kerja: badgeLatestEntry?.jumlah_tenaga_kerja ?? null,
+        halal: badgeLatestEntry?.halal ?? initial.halal,
+        pirt: badgeLatestEntry?.pirt ?? initial.pirt,
+        haki: badgeLatestEntry?.haki ?? initial.haki,
+        nib: badgeLatestEntry?.nib ?? initial.nib,
+        instagram: badgeLatestEntry?.instagram ?? initial.instagram,
+        facebook: badgeLatestEntry?.facebook ?? initial.facebook,
+        tiktok: badgeLatestEntry?.tiktok ?? initial.tiktok,
       },
       (monitorings ?? []).length,
     );

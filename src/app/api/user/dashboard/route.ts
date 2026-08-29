@@ -267,46 +267,39 @@ export async function GET() {
     const monitoringCount = (monitorings ?? []).length;
     const latestMonitoring = monitorings?.[0] ?? null;
 
-    // Build merged latest data (monitoring + umkm base)
+    // Build initial data from UMKM record (for badge comparison)
+    const initialData = {
+      omzet: umkm.omzet ?? null,
+      jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja ?? null,
+      nib: umkm.nib ?? null,
+      halal: umkm.halal ?? null,
+      pirt: umkm.pirt ?? null,
+      haki: umkm.haki ?? null,
+      kbli: umkm.kbli ?? null,
+      instagram: umkm.instagram ?? null,
+      facebook: umkm.facebook ?? null,
+      tiktok: umkm.tiktok ?? null,
+    };
+
+    // Build latest — same logic as admin monitoring API
+    // omzet & TK: NO fallback to umkm (strict monitoring-only)
+    // legalitas & sosmed: fallback to umkm
     const mergedLatest = latestMonitoring
       ? {
-          omzet: latestMonitoring.omzet ?? umkm.omzet,
-          jumlah_tenaga_kerja: latestMonitoring.jumlah_tenaga_kerja ?? umkm.jumlah_tenaga_kerja,
-          nib: latestMonitoring.nib ?? umkm.nib,
-          halal: latestMonitoring.halal ?? umkm.halal,
-          pirt: latestMonitoring.pirt ?? umkm.pirt,
-          haki: latestMonitoring.haki ?? umkm.haki,
-          kbli: latestMonitoring.kbli ?? umkm.kbli,
-          instagram: latestMonitoring.instagram ?? umkm.instagram,
-          facebook: latestMonitoring.facebook ?? umkm.facebook,
-          tiktok: latestMonitoring.tiktok ?? umkm.tiktok,
+          omzet: latestMonitoring.omzet ?? null,
+          jumlah_tenaga_kerja: latestMonitoring.jumlah_tenaga_kerja ?? null,
+          nib: latestMonitoring.nib ?? initialData.nib,
+          halal: latestMonitoring.halal ?? initialData.halal,
+          pirt: latestMonitoring.pirt ?? initialData.pirt,
+          haki: latestMonitoring.haki ?? initialData.haki,
+          kbli: latestMonitoring.kbli ?? initialData.kbli,
+          instagram: latestMonitoring.instagram ?? initialData.instagram,
+          facebook: latestMonitoring.facebook ?? initialData.facebook,
+          tiktok: latestMonitoring.tiktok ?? initialData.tiktok,
         }
-      : {
-          omzet: umkm.omzet,
-          jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja,
-          nib: umkm.nib,
-          halal: umkm.halal,
-          pirt: umkm.pirt,
-          haki: umkm.haki,
-          kbli: umkm.kbli,
-          instagram: umkm.instagram,
-          facebook: umkm.facebook,
-          tiktok: umkm.tiktok,
-        };
+      : initialData;
 
     const badgeConfig = await getBadgeCriteria();
-    const initialData = {
-      omzet: null,
-      jumlah_tenaga_kerja: null,
-      nib: null,
-      halal: null,
-      pirt: null,
-      haki: null,
-      kbli: null,
-      instagram: null,
-      facebook: null,
-      tiktok: null,
-    };
     const badge = calculateBadgeWithCriteria(initialData, mergedLatest, monitoringCount, badgeConfig);
 
     // Monitoring summary for dashboard

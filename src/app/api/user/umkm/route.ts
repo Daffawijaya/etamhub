@@ -113,34 +113,40 @@ export async function GET() {
     const monitoringCount = (monitorings ?? []).length;
     const latest = monitorings?.[0] ?? null;
 
+    // Build initial data from UMKM record
+    const initialData = {
+      omzet: data.omzet ?? null,
+      jumlah_tenaga_kerja: data.jumlah_tenaga_kerja ?? null,
+      nib: data.nib ?? null,
+      halal: data.halal ?? null,
+      pirt: data.pirt ?? null,
+      haki: data.haki ?? null,
+      kbli: data.kbli ?? null,
+      instagram: data.instagram ?? null,
+      facebook: data.facebook ?? null,
+      tiktok: data.tiktok ?? null,
+    };
+
+    // Build latest — same logic as admin monitoring API
+    // omzet & TK: NO fallback to umkm (strict monitoring-only)
+    // legalitas & sosmed: fallback to umkm
     const mergedLatest = latest
       ? {
-          omzet: latest.omzet ?? data.omzet ?? null,
+          omzet: latest.omzet ?? null,
           jumlah_tenaga_kerja: latest.jumlah_tenaga_kerja ?? null,
-          nib: latest.nib ?? null,
-          halal: latest.halal ?? data.halal ?? null,
-          pirt: latest.pirt ?? data.pirt ?? null,
-          haki: latest.haki ?? data.haki ?? null,
-          kbli: latest.kbli ?? data.kbli ?? null,
-          instagram: latest.instagram ?? null,
-          facebook: latest.facebook ?? null,
-          tiktok: latest.tiktok ?? null,
+          nib: latest.nib ?? initialData.nib,
+          halal: latest.halal ?? initialData.halal,
+          pirt: latest.pirt ?? initialData.pirt,
+          haki: latest.haki ?? initialData.haki,
+          kbli: latest.kbli ?? initialData.kbli,
+          instagram: latest.instagram ?? initialData.instagram,
+          facebook: latest.facebook ?? initialData.facebook,
+          tiktok: latest.tiktok ?? initialData.tiktok,
         }
-      : {
-          omzet: data.omzet ?? null,
-          jumlah_tenaga_kerja: null,
-          nib: null,
-          halal: data.halal ?? null,
-          pirt: data.pirt ?? null,
-          haki: data.haki ?? null,
-          kbli: data.kbli ?? null,
-          instagram: null,
-          facebook: null,
-          tiktok: null,
-        };
+      : initialData;
 
     const badgeConfig = await getBadgeCriteria();
-    const badge = calculateBadgeWithCriteria(mergedLatest, mergedLatest, monitoringCount, badgeConfig);
+    const badge = calculateBadgeWithCriteria(initialData, mergedLatest, monitoringCount, badgeConfig);
 
     const result: Record<string, any> = {
       ...data,

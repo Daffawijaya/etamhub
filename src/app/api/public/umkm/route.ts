@@ -83,23 +83,36 @@ export async function GET(req: Request) {
           }
         });
 
-        // Calculate badge for each UMKM (merge monitoring with UMKM data)
+        // Calculate badge for each UMKM (same logic as admin monitoring API)
         for (const umkm of umkms) {
           const count = countMap[umkm.id] || 0;
           const latestEntry = latestMap[umkm.id];
           if (latestEntry && criteriaConfig) {
-            const merged = {
-              omzet: latestEntry.omzet ?? umkm.omzet,
-              jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? umkm.jumlah_tenaga_kerja,
-              nib: latestEntry.nib ?? umkm.nib,
-              halal: latestEntry.halal ?? umkm.halal,
-              pirt: latestEntry.pirt ?? umkm.pirt,
-              haki: latestEntry.haki ?? umkm.haki,
-              instagram: latestEntry.instagram ?? umkm.instagram,
-              facebook: latestEntry.facebook ?? umkm.facebook,
-              tiktok: latestEntry.tiktok ?? umkm.tiktok,
+            // Initial = umkm record data
+            const initial = {
+              omzet: umkm.omzet ?? null,
+              jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja ?? null,
+              nib: umkm.nib ?? null,
+              halal: umkm.halal ?? null,
+              pirt: umkm.pirt ?? null,
+              haki: umkm.haki ?? null,
+              instagram: umkm.instagram ?? null,
+              facebook: umkm.facebook ?? null,
+              tiktok: umkm.tiktok ?? null,
             };
-            badges[umkm.id] = calculateBadgeWithCriteria(merged, merged, count, criteriaConfig);
+            // Latest: omzet & TK strict (no fallback), legalitas & sosmed fallback
+            const latest = {
+              omzet: latestEntry.omzet ?? null,
+              jumlah_tenaga_kerja: latestEntry.jumlah_tenaga_kerja ?? null,
+              nib: latestEntry.nib ?? initial.nib,
+              halal: latestEntry.halal ?? initial.halal,
+              pirt: latestEntry.pirt ?? initial.pirt,
+              haki: latestEntry.haki ?? initial.haki,
+              instagram: latestEntry.instagram ?? initial.instagram,
+              facebook: latestEntry.facebook ?? initial.facebook,
+              tiktok: latestEntry.tiktok ?? initial.tiktok,
+            };
+            badges[umkm.id] = calculateBadgeWithCriteria(initial, latest, count, criteriaConfig);
           }
         }
       }
