@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { calculateBadgeWithCriteria, getBadgeCriteria, BADGE_STYLES } from "@/lib/monitoring/badges";
 
 function calculateCompleteness(umkm: any) {
   const fields = [
@@ -110,6 +111,8 @@ export async function GET() {
             kecamatan,
             alamat,
             whatsapp,
+            omzet,
+            jumlah_tenaga_kerja,
             instagram,
             facebook,
             tiktok,
@@ -165,6 +168,20 @@ export async function GET() {
           pirt: false,
           haki: false,
           kbli: false,
+        },
+
+        badge: {
+          level: "none",
+          label: "",
+          color: BADGE_STYLES.none.color,
+          bgColor: BADGE_STYLES.none.bgColor,
+          description: "Belum ada UMKM",
+        },
+
+        monitoring: {
+          count: 0,
+          lastDate: null,
+          latestData: null,
         },
 
         timeline: [],
@@ -240,6 +257,77 @@ export async function GET() {
       .eq("status", "pending")
       .maybeSingle();
 
+    // Fetch monitoring data + calculate badge
+    const { data: monitorings } = await supabaseAdmin
+      .from("umkm_monitoring")
+      .select("id, created_at, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, instagram, facebook, tiktok")
+      .eq("umkm_id", umkm.id)
+      .order("created_at", { ascending: false });
+
+    const monitoringCount = (monitorings ?? []).length;
+    const latestMonitoring = monitorings?.[0] ?? null;
+
+    // Build merged latest data (monitoring + umkm base)
+    const mergedLatest = latestMonitoring
+      ? {
+          omzet: latestMonitoring.omzet ?? umkm.omzet,
+          jumlah_tenaga_kerja: latestMonitoring.jumlah_tenaga_kerja ?? umkm.jumlah_tenaga_kerja,
+          nib: latestMonitoring.nib ?? umkm.nib,
+          halal: latestMonitoring.halal ?? umkm.halal,
+          pirt: latestMonitoring.pirt ?? umkm.pirt,
+          haki: latestMonitoring.haki ?? umkm.haki,
+          kbli: latestMonitoring.kbli ?? umkm.kbli,
+          instagram: latestMonitoring.instagram ?? umkm.instagram,
+          facebook: latestMonitoring.facebook ?? umkm.facebook,
+          tiktok: latestMonitoring.tiktok ?? umkm.tiktok,
+        }
+      : {
+          omzet: umkm.omzet,
+          jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja,
+          nib: umkm.nib,
+          halal: umkm.halal,
+          pirt: umkm.pirt,
+          haki: umkm.haki,
+          kbli: umkm.kbli,
+          instagram: umkm.instagram,
+          facebook: umkm.facebook,
+          tiktok: umkm.tiktok,
+        };
+
+    const badgeConfig = await getBadgeCriteria();
+    const initialData = {
+      omzet: null,
+      jumlah_tenaga_kerja: null,
+      nib: null,
+      halal: null,
+      pirt: null,
+      haki: null,
+      kbli: null,
+      instagram: null,
+      facebook: null,
+      tiktok: null,
+    };
+    const badge = calculateBadgeWithCriteria(initialData, mergedLatest, monitoringCount, badgeConfig);
+
+    // Monitoring summary for dashboard
+    const monitoringSummary = {
+      count: monitoringCount,
+      lastDate: latestMonitoring?.created_at ?? null,
+      latestData: latestMonitoring
+        ? {
+            omzet: latestMonitoring.omzet,
+            jumlah_tenaga_kerja: latestMonitoring.jumlah_tenaga_kerja,
+            nib: latestMonitoring.nib,
+            halal: latestMonitoring.halal,
+            pirt: latestMonitoring.pirt,
+            haki: latestMonitoring.haki,
+            instagram: latestMonitoring.instagram,
+            facebook: latestMonitoring.facebook,
+            tiktok: latestMonitoring.tiktok,
+          }
+        : null,
+    };
+
     return NextResponse.json({
       profile,
 
@@ -276,6 +364,16 @@ export async function GET() {
         haki: Boolean(umkm.haki),
         kbli: Array.isArray(umkm.kbli) && umkm.kbli.length > 0,
       },
+
+      badge: {
+        level: badge.level,
+        label: badge.label,
+        color: badge.color,
+        bgColor: badge.bgColor,
+        description: badge.description,
+      },
+
+      monitoring: monitoringSummary,
 
       timeline,
     });

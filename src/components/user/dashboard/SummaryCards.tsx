@@ -1,6 +1,14 @@
 "use client";
 
-import { Building2, ClipboardCheck, Clock3, Globe2 } from "lucide-react";
+import { Building2, ClipboardCheck, Clock3, Globe2, Award } from "lucide-react";
+
+const BADGE_ICONS: Record<string, string> = {
+  none: "",
+  bronze: "🌱",
+  silver: "🌿",
+  gold: "🌳",
+  platinum: "💎",
+};
 
 type Props = {
   data: {
@@ -19,10 +27,26 @@ type Props = {
       filled: number;
       total: number;
     };
+
+    badge: {
+      level: string;
+      label: string;
+      color: string;
+      bgColor: string;
+      description: string;
+    };
+
+    monitoring: {
+      count: number;
+      lastDate: string | null;
+    };
   };
 };
 
 export default function SummaryCards({ data }: Props) {
+  const badgeInfo = data.badge;
+  const monitoringInfo = data.monitoring;
+
   const stats = [
     {
       title: "UMKM Saya",
@@ -89,8 +113,39 @@ export default function SummaryCards({ data }: Props) {
           </div>
         </div>
 
+        {/* Badge + Monitoring row */}
+        <div className="mt-5 flex items-center gap-3">
+          {badgeInfo.level !== "none" ? (
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 backdrop-blur-sm">
+              <span className="text-lg">{BADGE_ICONS[badgeInfo.level] ?? "🌱"}</span>
+              <div>
+                <p className="text-sm font-semibold leading-tight">Badge: {badgeInfo.label}</p>
+                <p className="text-[10px] text-white/60">{badgeInfo.description}</p>
+              </div>
+            </div>
+          ) : (
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2">
+              <Award size={16} className="text-white/50" />
+              <p className="text-sm text-white/60">Belum ada badge</p>
+            </div>
+          )}
+          {monitoringInfo.count > 0 && (
+            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 backdrop-blur-sm">
+              <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
+              <p className="text-sm font-semibold">
+                {monitoringInfo.count}x Monitoring
+              </p>
+              {monitoringInfo.lastDate && (
+                <p className="text-[10px] text-white/60">
+                  · {new Date(monitoringInfo.lastDate).toLocaleDateString("id-ID", { day: "2-digit", month: "short", year: "numeric" })}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Sub stats */}
-        <div className="mt-6 grid grid-cols-3 gap-4">
+        <div className="mt-5 grid grid-cols-3 gap-4">
           {stats.slice(1).map((item) => {
             const Icon = item.icon;
             return (

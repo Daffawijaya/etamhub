@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import BusinessInfoCard from "./BusinessInfoCard";
 import LegalityCard from "./LegalityCard";
+import MonitoringSummaryCard from "./MonitoringSummaryCard";
 import SummaryCards from "./SummaryCards";
 import TimelineCard from "./TimelineCard";
 
@@ -50,6 +51,30 @@ type DashboardData = {
     pirt: boolean;
     haki: boolean;
     kbli: boolean;
+  };
+
+  badge: {
+    level: string;
+    label: string;
+    color: string;
+    bgColor: string;
+    description: string;
+  };
+
+  monitoring: {
+    count: number;
+    lastDate: string | null;
+    latestData: {
+      omzet: number | null;
+      jumlah_tenaga_kerja: number | null;
+      nib: string | null;
+      halal: string | null;
+      pirt: string | null;
+      haki: string | null;
+      instagram: string | null;
+      facebook: string | null;
+      tiktok: string | null;
+    } | null;
   };
 
   timeline: {
@@ -109,7 +134,14 @@ export default function UserDashboard() {
       <div className="col-span-8 space-y-6">
         <SummaryCards data={data} />
 
-        <LegalityCard legalitas={data.legalitas} />
+        <div className="grid grid-cols-2 gap-6">
+          <LegalityCard legalitas={data.legalitas} />
+
+          <MonitoringSummaryCard
+            monitoring={data.monitoring}
+            umkm={data.umkm ? { nama: data.umkm.nama } : null}
+          />
+        </div>
 
         <BusinessInfoCard umkm={data.umkm} />
       </div>
