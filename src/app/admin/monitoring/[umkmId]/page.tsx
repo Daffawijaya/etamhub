@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import LoadingState from "@/components/LoadingState";
-import { Plus, TrendingUp, TrendingDown, Minus, Award, ArrowRight } from "lucide-react";
+import { Plus, TrendingUp, TrendingDown, Minus, ArrowRight, FileText, ChevronDown, ChevronUp } from "lucide-react";
+import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 import KBLISelect from "@/components/form/ui/KBLISelect";
 
 interface UmkmData {
@@ -74,110 +75,81 @@ function formatDate(date: string) {
   });
 }
 
-function formatPercentage(value: number | null) {
-  if (value === null) return null;
-  const sign = value > 0 ? "+" : "";
-  return `${sign}${value}%`;
+function formatDateTime(date: string) {
+  return new Date(date).toLocaleDateString("id-ID", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
-function CompareRow({
-  label,
-  initial,
-  latest,
-  format = "text",
-  showTrend = true,
-}: {
-  label: string;
-  initial: number | null;
-  latest: number | null;
-  format?: "text" | "rupiah" | "number";
-  showTrend?: boolean;
-}) {
-  const fmt = (v: number | null) => {
-    if (v === null || v === undefined) return "-";
-    if (format === "rupiah") return formatRupiah(v);
-    return String(v);
-  };
+const BADGE_ICONS: Record<string, React.ReactNode> = {
+  bronze: <SeedlingIcon className="h-5 w-5" />,
+  silver: <SilverMedalIcon className="h-5 w-5" />,
+  gold: <GoldMedalIcon className="h-5 w-5" />,
+  platinum: <DiamondIcon className="h-5 w-5" />,
+};
 
-  const diff = (initial ?? 0) - (latest ?? 0);
-  const pctChange =
-    initial && initial > 0 && latest !== null
-      ? Math.round(((latest - initial) / initial) * 100)
-      : null;
+const BADGE_RING_COLORS: Record<string, string> = {
+  bronze: "ring-amber-300 dark:ring-amber-600",
+  silver: "ring-emerald-300 dark:ring-emerald-600",
+  gold: "ring-orange-300 dark:ring-orange-600",
+  platinum: "ring-purple-300 dark:ring-purple-600",
+};
+
+function ProgressBar({
+  current,
+  target,
+  label,
+  format = "number",
+}: {
+  current: number;
+  target: number;
+  label: string;
+  format?: "number" | "rupiah";
+}) {
+  const pct = target > 0 ? Math.min(100, Math.round((current / target) * 100)) : 0;
+  const met = current >= target;
 
   return (
-    <div className="flex items-center justify-between rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-      <div className="flex-1">
-        <p className="text-xs text-slate-400">{label}</p>
-        <div className="mt-1 flex items-center gap-2">
-          <span className="text-sm font-medium text-slate-700 dark:text-white">
-            {fmt(initial)}
-          </span>
-          {showTrend && latest !== null && initial !== null && initial !== latest && (
-            <>
-              <ArrowRight size={12} className="text-slate-400" />
-              <span className="text-sm font-semibold text-slate-900 dark:text-white">
-                {fmt(latest)}
-              </span>
-            </>
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between text-xs">
+        <span className="text-slate-500 dark:text-slate-400">{label}</span>
+        <span className={`font-medium ${met ? "text-green-600 dark:text-green-400" : "text-slate-500 dark:text-slate-400"}`}>
+          {format === "rupiah" ? formatRupiah(current) : current}
+          {!met && (
+            <span className="text-slate-400 dark:text-slate-500">
+              {" / "}
+              {format === "rupiah" ? formatRupiah(target) : target}
+            </span>
           )}
-        </div>
-        {showTrend && pctChange !== null && pctChange !== 0 && (
-          <span
-            className={`inline-flex items-center gap-0.5 text-xs font-medium ${
-              pctChange > 0
-                ? "text-green-600 dark:text-green-400"
-                : "text-red-600 dark:text-red-400"
-            }`}
-          >
-            {pctChange > 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
-            {formatPercentage(pctChange)}
-          </span>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function CompareCheck({
-  label,
-  initial,
-  latest,
-}: {
-  label: string;
-  initial: string | null;
-  latest: string | null;
-}) {
-  const wasEmpty = !initial;
-  const isFilled = !!latest;
-  const added = wasEmpty && isFilled;
-
-  return (
-    <div className="flex items-center justify-between rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-      <div>
-        <p className="text-xs text-slate-400">{label}</p>
-        <p className="mt-1 text-sm font-medium text-slate-700 dark:text-white">
-          {latest || "-"}
-        </p>
-      </div>
-      {added && (
-        <span className="rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-900/30 dark:text-green-400">
-          Baru
         </span>
-      )}
+      </div>
+      <div className="h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-white/5">
+        <div
+          className={`h-full rounded-full transition-all duration-500 ${
+            met
+              ? "bg-green-500"
+              : pct > 50
+                ? "bg-amber-500"
+                : "bg-slate-300 dark:bg-slate-600"
+          }`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
     </div>
   );
 }
 
-function Trend({
+function TrendBadge({
   current,
   previous,
-  label,
   format = "number",
 }: {
   current: number | null;
   previous: number | null;
-  label: string;
   format?: "number" | "rupiah";
 }) {
   const curr = current ?? 0;
@@ -186,14 +158,9 @@ function Trend({
 
   if (prev === 0 && curr === 0) return null;
 
-  const formatted =
-    format === "rupiah"
-      ? `${diff > 0 ? "+" : ""}${formatRupiah(diff)}`
-      : `${diff > 0 ? "+" : ""}${diff}`;
-
   return (
     <span
-      className={`inline-flex items-center gap-1 text-xs font-medium ${
+      className={`inline-flex items-center gap-0.5 text-xs font-medium ${
         diff > 0
           ? "text-green-600 dark:text-green-400"
           : diff < 0
@@ -201,14 +168,8 @@ function Trend({
             : "text-slate-400"
       }`}
     >
-      {diff > 0 ? (
-        <TrendingUp size={12} />
-      ) : diff < 0 ? (
-        <TrendingDown size={12} />
-      ) : (
-        <Minus size={12} />
-      )}
-      {label} {formatted}
+      {diff > 0 ? <TrendingUp size={10} /> : diff < 0 ? <TrendingDown size={10} /> : <Minus size={10} />}
+      {format === "rupiah" ? formatRupiah(Math.abs(diff)) : Math.abs(diff)}
     </span>
   );
 }
@@ -223,8 +184,8 @@ export default function MonitoringDetailPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [expandedEntry, setExpandedEntry] = useState<string | null>(null);
 
-  // Form state
   const [form, setForm] = useState({
     jumlah_tenaga_kerja: "",
     omzet: "",
@@ -244,9 +205,7 @@ export default function MonitoringDetailPage() {
     try {
       const res = await fetch(`/api/admin/monitoring/${umkmId}`);
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.message);
-
       setUmkm(data.umkm);
       setMonitorings(data.monitorings ?? []);
       setBadge(data.badge ?? null);
@@ -263,10 +222,8 @@ export default function MonitoringDetailPage() {
 
   async function handleAddMonitoring() {
     setSaving(true);
-
     try {
       const payload: Record<string, any> = {};
-
       if (form.jumlah_tenaga_kerja) payload.jumlah_tenaga_kerja = Number(form.jumlah_tenaga_kerja);
       if (form.omzet) payload.omzet = Number(form.omzet);
       payload.halal = form.halal || null;
@@ -285,9 +242,7 @@ export default function MonitoringDetailPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
       const result = await res.json();
-
       if (!res.ok) throw new Error(result.message);
 
       setShowForm(false);
@@ -317,20 +272,6 @@ export default function MonitoringDetailPage() {
   if (!umkm) return <div className="p-6 text-center text-slate-500">UMKM tidak ditemukan</div>;
 
   const latest = monitorings[0] ?? null;
-  const prev = monitorings[1] ?? null;
-
-  // Build comparison data: initial (from UMKM) vs latest (from latest monitoring)
-  const initialData = {
-    omzet: umkm.omzet,
-    jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja,
-    halal: umkm.halal,
-    pirt: umkm.pirt,
-    haki: umkm.haki,
-    nib: umkm.nib,
-    instagram: umkm.instagram,
-    facebook: umkm.facebook,
-    tiktok: umkm.tiktok,
-  };
 
   const latestData = latest
     ? {
@@ -344,31 +285,49 @@ export default function MonitoringDetailPage() {
         facebook: latest.facebook ?? umkm.facebook,
         tiktok: latest.tiktok ?? umkm.tiktok,
       }
-    : initialData;
+    : { omzet: umkm.omzet, jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja, halal: umkm.halal, pirt: umkm.pirt, haki: umkm.haki, nib: umkm.nib, instagram: umkm.instagram, facebook: umkm.facebook, tiktok: umkm.tiktok };
+
+  const legalItems = [
+    latestData.nib && { label: "NIB", value: latestData.nib },
+    umkm.kbli && umkm.kbli.length > 0 && { label: "KBLI", value: umkm.kbli.join(", ") },
+    latestData.halal && { label: "Halal", value: latestData.halal },
+    latestData.pirt && { label: "PIRT", value: latestData.pirt },
+    latestData.haki && { label: "HAKI", value: latestData.haki },
+  ].filter(Boolean) as { label: string; value: string }[];
+
+  const sosmedItems = [
+    latestData.instagram && { label: "Instagram", value: latestData.instagram },
+    latestData.facebook && { label: "Facebook", value: latestData.facebook },
+    latestData.tiktok && { label: "TikTok", value: latestData.tiktok },
+  ].filter(Boolean) as { label: string; value: string }[];
 
   return (
     <main className="px-6 pb-6 space-y-6">
-      {/* Header UMKM + Badge */}
+      {/* Header */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
         <div className="flex items-start justify-between">
-          <div>
-            <div className="flex items-center gap-3">
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white capitalize">
-                {umkm.nama}
-              </h1>
+          <div className="flex items-start gap-4">
+            {/* Badge icon large */}
+            {badge && badge.level !== "none" && (
+              <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-2 shadow-sm dark:bg-dark-card ${BADGE_RING_COLORS[badge.level] ?? ""}`}>
+                {BADGE_ICONS[badge.level]}
+              </div>
+            )}
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white capitalize">{umkm.nama}</h1>
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                {umkm.kecamatan} · {umkm.kategori} · {umkm.pemilik}
+              </p>
               {badge && badge.level !== "none" && (
-                <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium ${badge.bgColor} ${badge.color}`}>
-                  <Award size={14} />
-                  {badge.label}
-                </span>
+                <div className="mt-2 flex items-center gap-2">
+                  <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-medium ${badge.bgColor} ${badge.color}`}>
+                    {BADGE_ICONS[badge.level]}
+                    {badge.label}
+                  </span>
+                  <span className="text-xs text-slate-400">{badge.criteria.monitoringCount}x monitoring</span>
+                </div>
               )}
             </div>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              {umkm.kecamatan} · {umkm.kategori} · {umkm.pemilik}
-            </p>
-            {badge && badge.level !== "none" && (
-              <p className="mt-1 text-xs text-slate-400">{badge.description}</p>
-            )}
           </div>
           <button
             onClick={() => {
@@ -394,451 +353,377 @@ export default function MonitoringDetailPage() {
             Tambah Monitoring
           </button>
         </div>
-
-        {/* Badge Criteria Progress */}
-        {badge && badge.level !== "none" && (
-          <div className="mt-4 rounded-lg bg-slate-50 p-4 dark:bg-white/5">
-            <p className="text-xs font-medium text-slate-500 mb-2">Kriteria Perolehan Badge</p>
-            <div className="grid grid-cols-2 gap-2 md:grid-cols-4 text-xs">
-              <div className={`flex items-center gap-1.5 ${badge.criteria.omzet !== null && badge.criteria.omzet > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.omzet !== null && badge.criteria.omzet > 0 ? "✅" : "⬜"}
-                Omzet {badge.criteria.omzet !== null ? `Rp${new Intl.NumberFormat("id-ID").format(badge.criteria.omzet)}` : "N/A"}
-              </div>
-              <div className={`flex items-center gap-1.5 ${badge.criteria.tk !== null && badge.criteria.tk > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.tk !== null && badge.criteria.tk > 0 ? "✅" : "⬜"}
-                Tenaga Kerja {badge.criteria.tk ?? "N/A"}
-              </div>
-              <div className={`flex items-center gap-1.5 ${badge.criteria.legalitas > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.legalitas > 0 ? "✅" : "⬜"}
-                Legalitas {badge.criteria.legalitas} jenis
-              </div>
-              <div className={`flex items-center gap-1.5 ${badge.criteria.sosmed > 0 ? "text-green-600 dark:text-green-400" : "text-slate-400"}`}>
-                {badge.criteria.sosmed > 0 ? "✅" : "⬜"}
-                Sosmed aktif ({badge.criteria.sosmed} platform)
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Data UMKM Terkini (dari monitoring terakhir atau data registrasi) */}
-        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-            <p className="text-xs text-slate-400">Tenaga Kerja</p>
-            <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {latestData.jumlah_tenaga_kerja ?? "-"}
-            </p>
-          </div>
-          <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-            <p className="text-xs text-slate-400">Omzet</p>
-            <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {formatRupiah(latestData.omzet)}
-            </p>
-          </div>
-          <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-            <p className="text-xs text-slate-400">Legalitas</p>
-            <div className="mt-1 space-y-0.5">
-              {latestData.nib && <p className="text-sm font-medium text-slate-700 dark:text-white">NIB: {latestData.nib}</p>}
-              {(umkm.kbli && umkm.kbli.length > 0) && <p className="text-sm font-medium text-slate-700 dark:text-white">KBLI: {umkm.kbli.join(", ")}</p>}
-              {latestData.halal && <p className="text-sm font-medium text-slate-700 dark:text-white">Halal: {latestData.halal}</p>}
-              {latestData.pirt && <p className="text-sm font-medium text-slate-700 dark:text-white">PIRT: {latestData.pirt}</p>}
-              {latestData.haki && <p className="text-sm font-medium text-slate-700 dark:text-white">HAKI: {latestData.haki}</p>}
-              {!latestData.nib && (!umkm.kbli || umkm.kbli.length === 0) && !latestData.halal && !latestData.pirt && !latestData.haki && (
-                <p className="text-sm text-slate-400">-</p>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="mt-3 grid grid-cols-1 gap-4">
-          <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-            <p className="text-xs text-slate-400">Sosmed</p>
-            <div className="mt-1 space-y-0.5">
-              {latestData.instagram && <p className="text-sm font-medium text-slate-700 dark:text-white">Instagram: {latestData.instagram}</p>}
-              {latestData.facebook && <p className="text-sm font-medium text-slate-700 dark:text-white">Facebook: {latestData.facebook}</p>}
-              {latestData.tiktok && <p className="text-sm font-medium text-slate-700 dark:text-white">TikTok: {latestData.tiktok}</p>}
-              {!latestData.instagram && !latestData.facebook && !latestData.tiktok && (
-                <p className="text-sm text-slate-400">-</p>
-              )}
-            </div>
-          </div>
-        </div>
       </div>
 
-      {/* Perbandingan Sebelum vs Sesudah */}
-      {monitorings.length > 0 && (
-        <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-1">
-            Perbandingan: Data Awal vs Monitoring Terakhir
-          </h2>
-          <p className="text-xs text-slate-400 mb-4">
-            {monitorings.length} kali monitoring · Terakhir: {latest ? formatDate(latest.created_at) : "-"}
-          </p>
-
-          {/* Numerical comparisons */}
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-            <CompareRow
-              label="Omzet"
-              initial={initialData.omzet}
-              latest={latestData.omzet}
-              format="rupiah"
-            />
-            <CompareRow
-              label="Jumlah Tenaga Kerja"
-              initial={initialData.jumlah_tenaga_kerja}
-              latest={latestData.jumlah_tenaga_kerja}
-            />
-          </div>
-
-          {/* Legalitas comparisons */}
-          <div className="mt-3">
-            <p className="text-xs font-medium text-slate-500 mb-2">Legalitas</p>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-              <CompareCheck label="NIB" initial={initialData.nib} latest={latestData.nib} />
-              <CompareCheck label="Halal" initial={initialData.halal} latest={latestData.halal} />
-              <CompareCheck label="PIRT" initial={initialData.pirt} latest={latestData.pirt} />
-              <CompareCheck label="HAKI" initial={initialData.haki} latest={latestData.haki} />
-            </div>
-          </div>
-
-          {/* Sosmed comparisons */}
-          <div className="mt-3">
-            <p className="text-xs font-medium text-slate-500 mb-2">Sosmed</p>
-            <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-              <CompareCheck label="Instagram" initial={initialData.instagram} latest={latestData.instagram} />
-              <CompareCheck label="Facebook" initial={initialData.facebook} latest={latestData.facebook} />
-              <CompareCheck label="TikTok" initial={initialData.tiktok} latest={latestData.tiktok} />
-            </div>
-          </div>
-
-          {/* Trend vs previous entry */}
-          {prev && (
-            <div className="mt-4 rounded-lg bg-slate-50 p-3 dark:bg-white/5">
-              <p className="text-xs text-slate-400 mb-2">Trend Monitoring Terakhir vs Sebelumnya</p>
-              <div className="flex flex-wrap gap-4">
-                <Trend
-                  current={latest?.omzet}
-                  previous={prev.omzet}
+      {/* Main content: 2 columns */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        {/* Left: Badge Progress + Ringkasan */}
+        <div className="space-y-6 lg:col-span-1">
+          {/* Badge Progress */}
+          {badge && badge.level !== "none" && (
+            <div className="rounded-xl bg-white p-5 dark:bg-dark-card">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Kriteria Badge</h3>
+              <div className="space-y-3">
+                <ProgressBar
+                  current={badge.criteria.omzet ?? 0}
+                  target={
+                    badge.level === "platinum"
+                      ? 25000000
+                      : badge.level === "gold"
+                        ? 10000000
+                        : 5000000
+                  }
                   label="Omzet"
                   format="rupiah"
                 />
-                <Trend
-                  current={latest?.jumlah_tenaga_kerja}
-                  previous={prev.jumlah_tenaga_kerja}
-                  label="TK"
+                <ProgressBar
+                  current={badge.criteria.tk ?? 0}
+                  target={
+                    badge.level === "platinum"
+                      ? 5
+                      : badge.level === "gold"
+                        ? 3
+                        : 1
+                  }
+                  label="Tenaga Kerja"
+                />
+                <ProgressBar
+                  current={badge.criteria.legalitas}
+                  target={
+                    badge.level === "platinum"
+                      ? 2
+                      : badge.level === "gold"
+                        ? 1
+                        : 0
+                  }
+                  label="Legalitas"
+                />
+                <ProgressBar
+                  current={badge.criteria.sosmed}
+                  target={
+                    badge.level === "platinum"
+                      ? 2
+                      : badge.level === "gold"
+                        ? 1
+                        : 0
+                  }
+                  label="Sosmed Aktif"
                 />
               </div>
             </div>
           )}
-        </div>
-      )}
 
-      {/* Riwayat Monitoring */}
-      <div className="rounded-xl bg-white dark:bg-dark-card">
-        <div className="border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-            Riwayat Monitoring ({monitorings.length})
-          </h2>
-        </div>
-
-        {monitorings.length === 0 ? (
-          <div className="p-8 text-center text-sm text-slate-400">
-            Belum ada riwayat monitoring
-          </div>
-        ) : (
-          <div className="divide-y divide-gray-100 dark:divide-neutral-800">
-            {monitorings.map((entry, idx) => (
-              <div key={entry.id} className="px-5 py-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
-                      Monitoring #{monitorings.length - idx}
-                    </p>
-                    <p className="text-xs text-slate-400">
-                      {formatDate(entry.created_at)}
-                    </p>
+          {/* Ringkasan Data */}
+          <div className="rounded-xl bg-white p-5 dark:bg-dark-card">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Ringkasan Data</h3>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-500 dark:text-slate-400">Tenaga Kerja</span>
+                <span className="font-medium text-slate-900 dark:text-white">{latestData.jumlah_tenaga_kerja ?? "-"}</span>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-slate-500 dark:text-slate-400">Omzet</span>
+                <span className="font-medium text-slate-900 dark:text-white">{formatRupiah(latestData.omzet)}</span>
+              </div>
+              <div className="border-t border-slate-100 dark:border-white/[0.06] pt-2.5">
+                <p className="text-xs font-medium text-slate-400 mb-2">Legalitas</p>
+                {legalItems.length > 0 ? (
+                  <div className="space-y-1">
+                    {legalItems.map((item) => (
+                      <div key={item.label} className="flex items-center justify-between text-sm">
+                        <span className="text-slate-500 dark:text-slate-400">{item.label}</span>
+                        <span className="font-medium text-slate-700 dark:text-slate-200 text-xs">{item.value}</span>
+                      </div>
+                    ))}
                   </div>
-
-                  {/* Trend vs previous entry */}
-                  {idx < monitorings.length - 1 && (
-                    <div className="flex flex-col items-end gap-1">
-                      <Trend
-                        current={entry.omzet}
-                        previous={monitorings[idx + 1].omzet}
-                        label="Omzet"
-                        format="rupiah"
-                      />
-                      <Trend
-                        current={entry.jumlah_tenaga_kerja}
-                        previous={monitorings[idx + 1].jumlah_tenaga_kerja}
-                        label="TK"
-                      />
-                    </div>
-                  )}
-                </div>
-
-                <div className="mt-2 grid grid-cols-1 gap-2 text-xs text-slate-500 md:grid-cols-2">
-                  <div>
-                    <span className="font-medium">TK:</span> {entry.jumlah_tenaga_kerja ?? "-"}
-                    {' · '}<span className="font-medium">Omzet:</span> {formatRupiah(entry.omzet)}
-                  </div>
-                  <div>
-                    <span className="font-medium">Legalitas:</span>{" "}
-                    {[
-                      entry.nib && "NIB",
-                      entry.kbli && entry.kbli.length > 0 && "KBLI",
-                      entry.halal && "Halal",
-                      entry.pirt && "PIRT",
-                      entry.haki && "HAKI",
-                    ]
-                      .filter(Boolean)
-                      .join(", ") || "-"}
-                  </div>
-                  <div>
-                    <span className="font-medium">Sosmed:</span>{" "}
-                    {[
-                      entry.instagram && `IG: ${entry.instagram}`,
-                      entry.facebook && `FB: ${entry.facebook}`,
-                      entry.tiktok && `TT: ${entry.tiktok}`,
-                    ]
-                      .filter(Boolean)
-                      .join(" · ") || "-"}
-                  </div>
-                </div>
-
-                {entry.kebutuhan_utama && (
-                  <p className="mt-2 text-xs text-slate-500">
-                    <span className="font-medium">Kebutuhan:</span>{" "}
-                    {entry.kebutuhan_utama}
-                  </p>
-                )}
-
-                {entry.catatan && (
-                  <p className="mt-1 text-xs text-slate-500">
-                    <span className="font-medium">Catatan:</span>{" "}
-                    {entry.catatan}
-                  </p>
+                ) : (
+                  <p className="text-sm text-slate-400">-</p>
                 )}
               </div>
-            ))}
+              <div className="border-t border-slate-100 dark:border-white/[0.06] pt-2.5">
+                <p className="text-xs font-medium text-slate-400 mb-2">Sosmed</p>
+                {sosmedItems.length > 0 ? (
+                  <div className="space-y-1">
+                    {sosmedItems.map((item) => (
+                      <div key={item.label} className="flex items-center justify-between text-sm">
+                        <span className="text-slate-500 dark:text-slate-400">{item.label}</span>
+                        <span className="font-medium text-slate-700 dark:text-slate-200 text-xs">{item.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-slate-400">-</p>
+                )}
+              </div>
+            </div>
           </div>
-        )}
+        </div>
+
+        {/* Right: Riwayat Monitoring */}
+        <div className="lg:col-span-2">
+          <div className="rounded-xl bg-white dark:bg-dark-card">
+            <div className="border-b border-gray-100 px-5 py-4 dark:border-white/[0.06]">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Riwayat Monitoring</h2>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    {monitorings.length} kali monitoring{latest ? ` · Terakhir: ${formatDate(latest.created_at)}` : ""}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {monitorings.length === 0 ? (
+              <div className="p-8 text-center">
+                <FileText size={32} className="mx-auto text-slate-300 dark:text-slate-600 mb-2" />
+                <p className="text-sm text-slate-400">Belum ada riwayat monitoring</p>
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-50 dark:divide-white/[0.04]">
+                {monitorings.map((entry, idx) => {
+                  const isExpanded = expandedEntry === entry.id;
+                  const prevEntry = monitorings[idx + 1];
+
+                  return (
+                    <div key={entry.id} className="px-5 py-4">
+                      {/* Header row */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          {/* Timeline dot */}
+                          <div className="relative">
+                            <div className={`h-2.5 w-2.5 rounded-full ${idx === 0 ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"}`} />
+                            {idx === 0 && <div className="absolute inset-0 h-2.5 w-2.5 animate-ping rounded-full bg-emerald-400 opacity-40" />}
+                          </div>
+                          <div>
+                            <p className="text-sm font-medium text-slate-700 dark:text-slate-200">
+                              Monitoring #{monitorings.length - idx}
+                            </p>
+                            <p className="text-xs text-slate-400">{formatDateTime(entry.created_at)}</p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                          {/* Trend badges */}
+                          {prevEntry && (
+                            <div className="flex items-center gap-2">
+                              <TrendBadge current={entry.omzet} previous={prevEntry.omzet} format="rupiah" />
+                              <TrendBadge current={entry.jumlah_tenaga_kerja} previous={prevEntry.jumlah_tenaga_kerja} />
+                            </div>
+                          )}
+
+                          {/* Expand toggle */}
+                          <button
+                            onClick={() => setExpandedEntry(isExpanded ? null : entry.id)}
+                            className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-white/5"
+                          >
+                            {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* Quick stats */}
+                      <div className="mt-2 ml-5.5 flex items-center gap-4 text-xs text-slate-500">
+                        <span>
+                          TK: <span className="font-medium text-slate-700 dark:text-slate-300">{entry.jumlah_tenaga_kerja ?? "-"}</span>
+                        </span>
+                        <span>
+                          Omzet: <span className="font-medium text-slate-700 dark:text-slate-300">{formatRupiah(entry.omzet)}</span>
+                        </span>
+                        <span>
+                          Legalitas:{" "}
+                          <span className="font-medium text-slate-700 dark:text-slate-300">
+                            {[entry.nib && "NIB", entry.kbli && entry.kbli.length > 0 && "KBLI", entry.halal && "Halal", entry.pirt && "PIRT", entry.haki && "HAKI"]
+                              .filter(Boolean)
+                              .join(", ") || "-"}
+                          </span>
+                        </span>
+                        <span>
+                          Sosmed:{" "}
+                          <span className="font-medium text-slate-700 dark:text-slate-300">
+                            {[entry.instagram && "IG", entry.facebook && "FB", entry.tiktok && "TT"].filter(Boolean).join(", ") || "-"}
+                          </span>
+                        </span>
+                      </div>
+
+                      {/* Expanded details */}
+                      {isExpanded && (
+                        <div className="mt-3 ml-5.5 rounded-lg bg-slate-50 p-4 dark:bg-white/[0.02] space-y-3">
+                          {/* Legalitas */}
+                          <div>
+                            <p className="text-xs font-medium text-slate-400 mb-1.5">Legalitas</p>
+                            <div className="grid grid-cols-2 gap-1.5 text-xs">
+                              {entry.nib && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">NIB</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.nib}</span>
+                                </div>
+                              )}
+                              {entry.kbli && entry.kbli.length > 0 && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">KBLI</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.kbli.join(", ")}</span>
+                                </div>
+                              )}
+                              {entry.halal && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">Halal</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.halal}</span>
+                                </div>
+                              )}
+                              {entry.pirt && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">PIRT</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.pirt}</span>
+                                </div>
+                              )}
+                              {entry.haki && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">HAKI</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.haki}</span>
+                                </div>
+                              )}
+                              {!entry.nib && (!entry.kbli || entry.kbli.length === 0) && !entry.halal && !entry.pirt && !entry.haki && (
+                                <span className="text-slate-400">-</span>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Sosmed */}
+                          <div>
+                            <p className="text-xs font-medium text-slate-400 mb-1.5">Sosmed</p>
+                            <div className="grid grid-cols-3 gap-1.5 text-xs">
+                              {entry.instagram && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">IG</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.instagram}</span>
+                                </div>
+                              )}
+                              {entry.facebook && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">FB</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.facebook}</span>
+                                </div>
+                              )}
+                              {entry.tiktok && (
+                                <div className="flex justify-between">
+                                  <span className="text-slate-500">TT</span>
+                                  <span className="font-medium text-slate-700 dark:text-slate-300">{entry.tiktok}</span>
+                                </div>
+                              )}
+                              {!entry.instagram && !entry.facebook && !entry.tiktok && <span className="text-slate-400">-</span>}
+                            </div>
+                          </div>
+
+                          {/* Catatan */}
+                          {(entry.kebutuhan_utama || entry.catatan) && (
+                            <div className="border-t border-slate-100 dark:border-white/[0.06] pt-2.5">
+                              {entry.kebutuhan_utama && (
+                                <p className="text-xs text-slate-500">
+                                  <span className="font-medium">Kebutuhan:</span> {entry.kebutuhan_utama}
+                                </p>
+                              )}
+                              {entry.catatan && (
+                                <p className="text-xs text-slate-500 mt-1">
+                                  <span className="font-medium">Catatan:</span> {entry.catatan}
+                                </p>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
-      {/* Modal Form Tambah Monitoring */}
+      {/* Modal Form */}
       {showForm && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div
-            className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl dark:bg-zinc-900"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
-              Tambah Monitoring
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">
-              Isi hanya data yang berubah/lengkap baru
-            </p>
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl dark:bg-zinc-900" onClick={(e) => e.stopPropagation()}>
+            <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Tambah Monitoring</h2>
+            <p className="text-sm text-slate-500 mt-1">Isi hanya data yang berubah/lengkap baru</p>
 
             <div className="mt-4 space-y-4">
-              {/* Tenaga Kerja & Omzet */}
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Jumlah Tenaga Kerja
-                  </label>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Jumlah Tenaga Kerja</label>
                   <input
                     type="number"
                     value={form.jumlah_tenaga_kerja}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, jumlah_tenaga_kerja: e.target.value.replace(/\D/g, "").slice(0, 6) }))
-                    }
+                    onChange={(e) => setForm((p) => ({ ...p, jumlah_tenaga_kerja: e.target.value.replace(/\D/g, "").slice(0, 6) }))}
                     placeholder={String(umkm.jumlah_tenaga_kerja ?? "-")}
                     className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Omzet (Rp)
-                  </label>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Omzet (Rp)</label>
                   <input
                     type="number"
                     value={form.omzet}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, omzet: e.target.value.replace(/\D/g, "") }))
-                    }
+                    onChange={(e) => setForm((p) => ({ ...p, omzet: e.target.value.replace(/\D/g, "") }))}
                     placeholder={String(umkm.omzet ?? "-")}
                     className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
               </div>
 
-              {/* NIB & KBLI */}
               <div className="grid grid-cols-1 gap-3">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    NIB
-                  </label>
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">NIB</label>
                   <input
                     type="text"
                     inputMode="numeric"
                     value={form.nib}
-                    onChange={(e) =>
-                      setForm((p) => ({
-                        ...p,
-                        nib: e.target.value.replace(/\D/g, "").slice(0, 13),
-                      }))
-                    }
+                    onChange={(e) => setForm((p) => ({ ...p, nib: e.target.value.replace(/\D/g, "").slice(0, 13) }))}
                     placeholder={umkm.nib ?? "13 digit NIB"}
                     className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                   <p className="mt-1 text-xs text-slate-400">Maksimal 13 digit angka</p>
                 </div>
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    KBLI
-                  </label>
-                  <KBLISelect
-                    value={form.kbli}
-                    onChange={(val) => setForm((p) => ({ ...p, kbli: val }))}
-                  />
+                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">KBLI</label>
+                  <KBLISelect value={form.kbli} onChange={(val) => setForm((p) => ({ ...p, kbli: val }))} />
                 </div>
               </div>
 
-              {/* Legalitas */}
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Halal
-                  </label>
-                  <input
-                    type="text"
-                    value={form.halal}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, halal: e.target.value }))
-                    }
-                    placeholder={umkm.halal ?? "No. Sertifikat"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    PIRT
-                  </label>
-                  <input
-                    type="text"
-                    value={form.pirt}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, pirt: e.target.value }))
-                    }
-                    placeholder={umkm.pirt ?? "No. PIRT"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    HAKI
-                  </label>
-                  <input
-                    type="text"
-                    value={form.haki}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, haki: e.target.value }))
-                    }
-                    placeholder={umkm.haki ?? "No. HAKI"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                  />
-                </div>
-              </div>
-
-              {/* Sosmed */}
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Instagram
-                  </label>
-                  <input
-                    type="text"
-                    value={form.instagram}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, instagram: e.target.value }))
-                    }
-                    placeholder={umkm.instagram ?? "-"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Facebook
-                  </label>
-                  <input
-                    type="text"
-                    value={form.facebook}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, facebook: e.target.value }))
-                    }
-                    placeholder={umkm.facebook ?? "-"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    TikTok
-                  </label>
-                  <input
-                    type="text"
-                    value={form.tiktok}
-                    onChange={(e) =>
-                      setForm((p) => ({ ...p, tiktok: e.target.value }))
-                    }
-                    placeholder={umkm.tiktok ?? "-"}
-                    className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                  />
-                </div>
-              </div>
-
-              {/* Kebutuhan Utama */}
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Kebutuhan Utama
-                </label>
-                <textarea
-                  value={form.kebutuhan_utama}
-                  onChange={(e) =>
-                    setForm((p) => ({ ...p, kebutuhan_utama: e.target.value }))
-                  }
-                  placeholder="Contoh: butuh bantuan pemasaran online, butuh legalitas halal, dll"
-                  rows={2}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                />
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Legalitas</label>
+                <div className="grid grid-cols-3 gap-3">
+                  <input type="text" value={form.halal} onChange={(e) => setForm((p) => ({ ...p, halal: e.target.value }))} placeholder={umkm.halal ?? "No. Halal"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <input type="text" value={form.pirt} onChange={(e) => setForm((p) => ({ ...p, pirt: e.target.value }))} placeholder={umkm.pirt ?? "No. PIRT"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <input type="text" value={form.haki} onChange={(e) => setForm((p) => ({ ...p, haki: e.target.value }))} placeholder={umkm.haki ?? "No. HAKI"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                </div>
               </div>
 
-              {/* Catatan */}
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Catatan
-                </label>
-                <textarea
-                  value={form.catatan}
-                  onChange={(e) =>
-                    setForm((p) => ({ ...p, catatan: e.target.value }))
-                  }
-                  placeholder="Catatan tambahan dari kunjungan/monitoring"
-                  rows={2}
-                  className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                />
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Sosmed</label>
+                <div className="grid grid-cols-3 gap-3">
+                  <input type="text" value={form.instagram} onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))} placeholder={umkm.instagram ?? "Instagram"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <input type="text" value={form.facebook} onChange={(e) => setForm((p) => ({ ...p, facebook: e.target.value }))} placeholder={umkm.facebook ?? "Facebook"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <input type="text" value={form.tiktok} onChange={(e) => setForm((p) => ({ ...p, tiktok: e.target.value }))} placeholder={umkm.tiktok ?? "TikTok"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                </div>
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Kebutuhan Utama</label>
+                <textarea value={form.kebutuhan_utama} onChange={(e) => setForm((p) => ({ ...p, kebutuhan_utama: e.target.value }))} placeholder="Contoh: butuh bantuan pemasaran online, butuh legalitas halal, dll" rows={2} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Catatan</label>
+                <textarea value={form.catatan} onChange={(e) => setForm((p) => ({ ...p, catatan: e.target.value }))} placeholder="Catatan tambahan dari kunjungan/monitoring" rows={2} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
               </div>
             </div>
 
             <div className="mt-6 flex gap-3">
-              <button
-                onClick={() => setShowForm(false)}
-                className="flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800"
-              >
+              <button onClick={() => setShowForm(false)} className="flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800">
                 Batal
               </button>
-              <button
-                onClick={handleAddMonitoring}
-                disabled={saving}
-                className="flex-1 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-700 disabled:opacity-50"
-              >
+              <button onClick={handleAddMonitoring} disabled={saving} className="flex-1 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-700 disabled:opacity-50">
                 {saving ? "Menyimpan..." : "Simpan"}
               </button>
             </div>
