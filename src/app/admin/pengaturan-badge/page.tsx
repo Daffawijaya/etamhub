@@ -45,6 +45,15 @@ function formatRupiah(value: number) {
   return new Intl.NumberFormat("id-ID").format(value);
 }
 
+function formatDisplayNumber(value: number): string {
+  return new Intl.NumberFormat("id-ID").format(value);
+}
+
+function parseFormattedNumber(input: string): number {
+  const cleaned = input.replace(/[^\d]/g, "");
+  return cleaned === "" ? 0 : Number(cleaned);
+}
+
 type TierKey = "pemula" | "silver" | "gold" | "platinum";
 
 const TIERS: {
@@ -230,9 +239,10 @@ export default function PengaturanBadgePage() {
                         <div className="flex items-center gap-1">
                           {field.prefix && <span className="text-sm text-slate-400">{field.prefix}</span>}
                           <input
-                            type="number"
-                            value={criteria[field.key] as number}
-                            onChange={(e) => updateField(field.key, Number(e.target.value))}
+                            type="text"
+                            inputMode="numeric"
+                            value={formatDisplayNumber(criteria[field.key] as number)}
+                            onChange={(e) => updateField(field.key, parseFormattedNumber(e.target.value))}
                             className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                           />
                         </div>
