@@ -290,19 +290,27 @@ export default function MonitoringDetailPage() {
 
   const latest = monitorings[0] ?? null;
 
-  const latestData = latest
-    ? {
-        omzet: latest.omzet ?? umkm.omzet,
-        jumlah_tenaga_kerja: latest.jumlah_tenaga_kerja ?? umkm.jumlah_tenaga_kerja,
-        halal: latest.halal ?? umkm.halal,
-        pirt: latest.pirt ?? umkm.pirt,
-        haki: latest.haki ?? umkm.haki,
-        nib: latest.nib ?? umkm.nib,
-        instagram: latest.instagram ?? umkm.instagram,
-        facebook: latest.facebook ?? umkm.facebook,
-        tiktok: latest.tiktok ?? umkm.tiktok,
-      }
-    : { omzet: umkm.omzet, jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja, halal: umkm.halal, pirt: umkm.pirt, haki: umkm.haki, nib: umkm.nib, instagram: umkm.instagram, facebook: umkm.facebook, tiktok: umkm.tiktok };
+  // Merge monitoring entry with UMKM data (fallback)
+  // eslint-disable-next-line
+  const _umkm = umkm!;
+  function getEntryData(entry: MonitoringEntry | null) {
+    if (!entry) {
+      return { omzet: _umkm.omzet, jumlah_tenaga_kerja: _umkm.jumlah_tenaga_kerja, halal: _umkm.halal, pirt: _umkm.pirt, haki: _umkm.haki, nib: _umkm.nib, instagram: _umkm.instagram, facebook: _umkm.facebook, tiktok: _umkm.tiktok };
+    }
+    return {
+      omzet: entry.omzet ?? _umkm.omzet,
+      jumlah_tenaga_kerja: entry.jumlah_tenaga_kerja ?? _umkm.jumlah_tenaga_kerja,
+      halal: entry.halal ?? _umkm.halal,
+      pirt: entry.pirt ?? _umkm.pirt,
+      haki: entry.haki ?? _umkm.haki,
+      nib: entry.nib ?? _umkm.nib,
+      instagram: entry.instagram ?? _umkm.instagram,
+      facebook: entry.facebook ?? _umkm.facebook,
+      tiktok: entry.tiktok ?? _umkm.tiktok,
+    };
+  }
+
+  const latestData = getEntryData(latest);
 
   const legalItems = [
     latestData.nib && { label: "NIB", value: latestData.nib },
@@ -500,6 +508,7 @@ export default function MonitoringDetailPage() {
                 {monitorings.map((entry, idx) => {
                   const isExpanded = expandedEntry === entry.id;
                   const prevEntry = monitorings[idx + 1];
+                  const entryData = getEntryData(entry);
 
                   return (
                     <div key={entry.id} className="px-5 py-4">
@@ -541,43 +550,43 @@ export default function MonitoringDetailPage() {
                       {/* Quick stats */}
                       <div className="mt-2 ml-5.5 flex flex-wrap items-center gap-2 text-xs">
                         <span className="text-slate-500">
-                          TK: <span className="font-medium text-slate-700 dark:text-slate-300">{entry.jumlah_tenaga_kerja ?? "-"}</span>
+                          TK: <span className="font-medium text-slate-700 dark:text-slate-300">{entryData.jumlah_tenaga_kerja ?? "-"}</span>
                         </span>
                         <span className="text-slate-500">
-                          Omzet: <span className="font-medium text-slate-700 dark:text-slate-300">{formatRupiah(entry.omzet)}</span>
+                          Omzet: <span className="font-medium text-slate-700 dark:text-slate-300">{formatRupiah(entryData.omzet)}</span>
                         </span>
                         <span className="text-slate-400">·</span>
                         {/* Legalitas tags */}
                         {((): { label: string }[] => {
                           const items: { label: string }[] = [];
-                          if (entry.nib) items.push({ label: "NIB" });
-                          if (entry.kbli && entry.kbli.length > 0) items.push({ label: "KBLI" });
-                          if (entry.halal) items.push({ label: "Halal" });
-                          if (entry.pirt) items.push({ label: "PIRT" });
-                          if (entry.haki) items.push({ label: "HAKI" });
+                          if (entryData.nib) items.push({ label: "NIB" });
+                          if (umkm.kbli && umkm.kbli.length > 0) items.push({ label: "KBLI" });
+                          if (entryData.halal) items.push({ label: "Halal" });
+                          if (entryData.pirt) items.push({ label: "PIRT" });
+                          if (entryData.haki) items.push({ label: "HAKI" });
                           return items;
                         })().map((item) => (
                           <span key={item.label} className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
                             ✓ {item.label}
                           </span>
                         ))}
-                        {!(entry.nib || (entry.kbli && entry.kbli.length > 0) || entry.halal || entry.pirt || entry.haki) && (
+                        {!(entryData.nib || (umkm.kbli && umkm.kbli.length > 0) || entryData.halal || entryData.pirt || entryData.haki) && (
                           <span className="text-slate-400">Legalitas: -</span>
                         )}
                         <span className="text-slate-400">·</span>
                         {/* Sosmed tags */}
                         {((): { label: string }[] => {
                           const items: { label: string }[] = [];
-                          if (entry.instagram) items.push({ label: "IG" });
-                          if (entry.facebook) items.push({ label: "FB" });
-                          if (entry.tiktok) items.push({ label: "TT" });
+                          if (entryData.instagram) items.push({ label: "IG" });
+                          if (entryData.facebook) items.push({ label: "FB" });
+                          if (entryData.tiktok) items.push({ label: "TT" });
                           return items;
                         })().map((item) => (
                           <span key={item.label} className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
                             ✓ {item.label}
                           </span>
                         ))}
-                        {!entry.instagram && !entry.facebook && !entry.tiktok && (
+                        {!entryData.instagram && !entryData.facebook && !entryData.tiktok && (
                           <span className="text-slate-400">Sosmed: -</span>
                         )}
                       </div>
@@ -591,11 +600,11 @@ export default function MonitoringDetailPage() {
                             <div className="flex flex-wrap gap-1.5">
                               {((): { label: string; value: string }[] => {
                                 const items: { label: string; value: string }[] = [];
-                                if (entry.nib) items.push({ label: "NIB", value: entry.nib });
-                                if (entry.kbli && entry.kbli.length > 0) items.push({ label: "KBLI", value: entry.kbli.join(", ") });
-                                if (entry.halal) items.push({ label: "Halal", value: entry.halal });
-                                if (entry.pirt) items.push({ label: "PIRT", value: entry.pirt });
-                                if (entry.haki) items.push({ label: "HAKI", value: entry.haki });
+                                if (entryData.nib) items.push({ label: "NIB", value: entryData.nib });
+                                if (umkm.kbli && umkm.kbli.length > 0) items.push({ label: "KBLI", value: umkm.kbli.join(", ") });
+                                if (entryData.halal) items.push({ label: "Halal", value: entryData.halal });
+                                if (entryData.pirt) items.push({ label: "PIRT", value: entryData.pirt });
+                                if (entryData.haki) items.push({ label: "HAKI", value: entryData.haki });
                                 return items;
                               })().map((item) => (
                                 <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
@@ -603,7 +612,7 @@ export default function MonitoringDetailPage() {
                                   <span className="text-green-600/70 dark:text-green-400/60">{item.value}</span>
                                 </span>
                               ))}
-                              {!(entry.nib || (entry.kbli && entry.kbli.length > 0) || entry.halal || entry.pirt || entry.haki) && (
+                              {!(entryData.nib || (umkm.kbli && umkm.kbli.length > 0) || entryData.halal || entryData.pirt || entryData.haki) && (
                                 <span className="text-xs text-slate-400">-</span>
                               )}
                             </div>
@@ -615,9 +624,9 @@ export default function MonitoringDetailPage() {
                             <div className="flex flex-wrap gap-1.5">
                               {((): { label: string; value: string }[] => {
                                 const items: { label: string; value: string }[] = [];
-                                if (entry.instagram) items.push({ label: "Instagram", value: entry.instagram });
-                                if (entry.facebook) items.push({ label: "Facebook", value: entry.facebook });
-                                if (entry.tiktok) items.push({ label: "TikTok", value: entry.tiktok });
+                                if (entryData.instagram) items.push({ label: "Instagram", value: entryData.instagram });
+                                if (entryData.facebook) items.push({ label: "Facebook", value: entryData.facebook });
+                                if (entryData.tiktok) items.push({ label: "TikTok", value: entryData.tiktok });
                                 return items;
                               })().map((item) => (
                                 <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
@@ -625,7 +634,7 @@ export default function MonitoringDetailPage() {
                                   <span className="text-green-600/70 dark:text-green-400/60">{item.value}</span>
                                 </span>
                               ))}
-                              {!entry.instagram && !entry.facebook && !entry.tiktok && <span className="text-xs text-slate-400">-</span>}
+                              {!entryData.instagram && !entryData.facebook && !entryData.tiktok && <span className="text-xs text-slate-400">-</span>}
                             </div>
                           </div>
 
