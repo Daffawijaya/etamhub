@@ -420,29 +420,29 @@ export default function MonitoringDetailPage() {
           </div>
         )}
 
-        {/* Data UMKM Awal */}
+        {/* Data UMKM Terkini (dari monitoring terakhir atau data registrasi) */}
         <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">Tenaga Kerja</p>
             <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {umkm.jumlah_tenaga_kerja ?? "-"}
+              {latestData.jumlah_tenaga_kerja ?? "-"}
             </p>
           </div>
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">Omzet</p>
             <p className="text-sm font-semibold text-slate-700 dark:text-white">
-              {formatRupiah(umkm.omzet)}
+              {formatRupiah(latestData.omzet)}
             </p>
           </div>
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">Legalitas</p>
             <div className="mt-1 space-y-0.5">
-              {umkm.nib && <p className="text-sm font-medium text-slate-700 dark:text-white">NIB: {umkm.nib}</p>}
-              {umkm.kbli && umkm.kbli.length > 0 && <p className="text-sm font-medium text-slate-700 dark:text-white">KBLI: {umkm.kbli.join(", ")}</p>}
-              {umkm.halal && <p className="text-sm font-medium text-slate-700 dark:text-white">Halal: {umkm.halal}</p>}
-              {umkm.pirt && <p className="text-sm font-medium text-slate-700 dark:text-white">PIRT: {umkm.pirt}</p>}
-              {umkm.haki && <p className="text-sm font-medium text-slate-700 dark:text-white">HAKI: {umkm.haki}</p>}
-              {!umkm.nib && (!umkm.kbli || umkm.kbli.length === 0) && !umkm.halal && !umkm.pirt && !umkm.haki && (
+              {latestData.nib && <p className="text-sm font-medium text-slate-700 dark:text-white">NIB: {latestData.nib}</p>}
+              {(umkm.kbli && umkm.kbli.length > 0) && <p className="text-sm font-medium text-slate-700 dark:text-white">KBLI: {umkm.kbli.join(", ")}</p>}
+              {latestData.halal && <p className="text-sm font-medium text-slate-700 dark:text-white">Halal: {latestData.halal}</p>}
+              {latestData.pirt && <p className="text-sm font-medium text-slate-700 dark:text-white">PIRT: {latestData.pirt}</p>}
+              {latestData.haki && <p className="text-sm font-medium text-slate-700 dark:text-white">HAKI: {latestData.haki}</p>}
+              {!latestData.nib && (!umkm.kbli || umkm.kbli.length === 0) && !latestData.halal && !latestData.pirt && !latestData.haki && (
                 <p className="text-sm text-slate-400">-</p>
               )}
             </div>
@@ -452,10 +452,10 @@ export default function MonitoringDetailPage() {
           <div className="rounded-lg bg-slate-50 p-3 dark:bg-white/5">
             <p className="text-xs text-slate-400">Sosmed</p>
             <div className="mt-1 space-y-0.5">
-              {umkm.instagram && <p className="text-sm font-medium text-slate-700 dark:text-white">Instagram: {umkm.instagram}</p>}
-              {umkm.facebook && <p className="text-sm font-medium text-slate-700 dark:text-white">Facebook: {umkm.facebook}</p>}
-              {umkm.tiktok && <p className="text-sm font-medium text-slate-700 dark:text-white">TikTok: {umkm.tiktok}</p>}
-              {!umkm.instagram && !umkm.facebook && !umkm.tiktok && (
+              {latestData.instagram && <p className="text-sm font-medium text-slate-700 dark:text-white">Instagram: {latestData.instagram}</p>}
+              {latestData.facebook && <p className="text-sm font-medium text-slate-700 dark:text-white">Facebook: {latestData.facebook}</p>}
+              {latestData.tiktok && <p className="text-sm font-medium text-slate-700 dark:text-white">TikTok: {latestData.tiktok}</p>}
+              {!latestData.instagram && !latestData.facebook && !latestData.tiktok && (
                 <p className="text-sm text-slate-400">-</p>
               )}
             </div>
