@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import LoadingState from "@/components/LoadingState";
 import { Save, RotateCcw } from "lucide-react";
-import { FaSeedling, FaLeaf, FaTree, FaGem } from "react-icons/fa";
+import { SeedlingIcon, TrophyIcon, CoinIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 
 interface BadgeCriteria {
   silver_omzet_min: number;
@@ -61,7 +61,7 @@ const TIERS: {
 }[] = [
   {
     key: "pemula",
-    icon: <FaSeedling size={20} />,
+    icon: <SeedlingIcon className="h-6 w-6" />,
     iconBg: "bg-amber-100 dark:bg-amber-900/30",
     iconColor: "text-amber-600 dark:text-amber-400",
     name: "Pemula",
@@ -72,7 +72,7 @@ const TIERS: {
   },
   {
     key: "silver",
-    icon: <FaLeaf size={20} />,
+    icon: <TrophyIcon className="h-6 w-6" />,
     iconBg: "bg-emerald-100 dark:bg-emerald-900/30",
     iconColor: "text-emerald-600 dark:text-emerald-400",
     name: "Tumbuh",
@@ -86,7 +86,7 @@ const TIERS: {
   },
   {
     key: "gold",
-    icon: <FaTree size={20} />,
+    icon: <CoinIcon className="h-6 w-6" />,
     iconBg: "bg-orange-100 dark:bg-orange-900/30",
     iconColor: "text-orange-600 dark:text-orange-400",
     name: "Berkembang",
@@ -100,7 +100,7 @@ const TIERS: {
   },
   {
     key: "platinum",
-    icon: <FaGem size={20} />,
+    icon: <DiamondIcon className="h-6 w-6" />,
     iconBg: "bg-purple-100 dark:bg-purple-900/30",
     iconColor: "text-purple-600 dark:text-purple-400",
     name: "Naik Kelas",
@@ -270,7 +270,7 @@ export default function PengaturanBadgePage() {
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
-                  <FaSeedling size={12} /> Pemula
+                  <SeedlingIcon className="h-3 w-3" /> Pemula
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Minimal 1 kunjungan monitoring — otomatis
@@ -278,7 +278,7 @@ export default function PengaturanBadgePage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
-                  <FaLeaf size={12} /> Tumbuh
+                  <TrophyIcon className="h-3 w-3" /> Tumbuh
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.silver_omzet_min)}, TK ≥ {criteria.silver_tk_min}
@@ -288,7 +288,7 @@ export default function PengaturanBadgePage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
-                  <FaTree size={12} /> Berkembang
+                  <CoinIcon className="h-3 w-3" /> Berkembang
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.gold_omzet_min)}, TK ≥ {criteria.gold_tk_min}
@@ -298,7 +298,7 @@ export default function PengaturanBadgePage() {
               </div>
               <div className="flex items-start gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-50 px-2.5 py-0.5 text-xs font-medium text-purple-700 dark:bg-purple-900/20 dark:text-purple-400">
-                  <FaGem size={12} /> Naik Kelas
+                  <DiamondIcon className="h-3 w-3" /> Naik Kelas
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
                   Omzet ≥ Rp{formatRupiah(criteria.platinum_omzet_min)}, TK ≥ {criteria.platinum_tk_min}

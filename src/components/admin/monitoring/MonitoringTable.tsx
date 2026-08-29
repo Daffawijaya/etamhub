@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, Award } from "lucide-react";
+import { Eye } from "lucide-react";
+import { SeedlingIcon, TrophyIcon, CoinIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 import { getUmkmImage } from "@/lib/getUmkmImage";
 
 interface MonitoringItem {
@@ -141,7 +142,10 @@ export default function MonitoringTable({ data }: Props) {
                   <span
                     className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}
                   >
-                    <Award size={12} />
+                    {item.badge.level === "platinum" && <DiamondIcon className="h-3 w-3" />}
+                    {item.badge.level === "gold" && <CoinIcon className="h-3 w-3" />}
+                    {item.badge.level === "silver" && <TrophyIcon className="h-3 w-3" />}
+                    {item.badge.level === "bronze" && <SeedlingIcon className="h-3 w-3" />}
                     {item.badge.label}
                   </span>
                 ) : (

@@ -72,7 +72,7 @@ const BADGE_STYLES = {
   none: {
     label: "",
     color: "text-slate-400",
-    bgColor: "bg-slate-100 dark:bg-slate-800",
+    bgColor: "bg-slate-100 dark:bg-white/5",
   },
   bronze: {
     label: "Pemula",
