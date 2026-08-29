@@ -543,48 +543,50 @@ export default function MonitoringDetailPage() {
                     </span>
                   </div>
                   {/* Expanded details for data awal */}
-                  {expandedEntry === "initial" && (
-                    <div className="mt-3 ml-5.5 rounded-lg bg-white p-4 dark:bg-white/[0.03] space-y-3">
-                      <div>
-                        <p className="text-xs font-medium text-slate-400 mb-1.5">Legalitas</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {((): { label: string; value: string }[] => {
-                            const items: { label: string; value: string }[] = [];
-                            if (umkm.nib) items.push({ label: "NIB", value: umkm.nib });
-                            if (umkm.kbli && umkm.kbli.length > 0) items.push({ label: "KBLI", value: umkm.kbli.join(", ") });
-                            if (umkm.halal) items.push({ label: "Halal", value: umkm.halal });
-                            if (umkm.pirt) items.push({ label: "PIRT", value: umkm.pirt });
-                            if (umkm.haki) items.push({ label: "HAKI", value: umkm.haki });
-                            return items;
-                          })().map((item) => (
-                            <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
-                              • {item.label} <span className="opacity-60">{item.value}</span>
-                            </span>
-                          ))}
-                          {!(umkm.nib || (umkm.kbli && umkm.kbli.length > 0) || umkm.halal || umkm.pirt || umkm.haki) && (
-                            <span className="text-xs text-slate-400">-</span>
-                          )}
+                  <div className={`ml-5.5 grid transition-all duration-300 ease-in-out ${expandedEntry === "initial" ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                    <div className="overflow-hidden min-h-0">
+                      <div className="mt-3 rounded-lg bg-white p-4 dark:bg-white/[0.03] space-y-3">
+                        <div>
+                          <p className="text-xs font-medium text-slate-400 mb-1.5">Legalitas</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {((): { label: string; value: string }[] => {
+                              const items: { label: string; value: string }[] = [];
+                              if (umkm.nib) items.push({ label: "NIB", value: umkm.nib });
+                              if (umkm.kbli && umkm.kbli.length > 0) items.push({ label: "KBLI", value: umkm.kbli.join(", ") });
+                              if (umkm.halal) items.push({ label: "Halal", value: umkm.halal });
+                              if (umkm.pirt) items.push({ label: "PIRT", value: umkm.pirt });
+                              if (umkm.haki) items.push({ label: "HAKI", value: umkm.haki });
+                              return items;
+                            })().map((item) => (
+                              <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
+                                • {item.label} <span className="opacity-60">{item.value}</span>
+                              </span>
+                            ))}
+                            {!(umkm.nib || (umkm.kbli && umkm.kbli.length > 0) || umkm.halal || umkm.pirt || umkm.haki) && (
+                              <span className="text-xs text-slate-400">-</span>
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <div>
-                        <p className="text-xs font-medium text-slate-400 mb-1.5">Sosmed</p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {((): { label: string; value: string }[] => {
-                            const items: { label: string; value: string }[] = [];
-                            if (umkm.instagram) items.push({ label: "Instagram", value: umkm.instagram });
-                            if (umkm.facebook) items.push({ label: "Facebook", value: umkm.facebook });
-                            if (umkm.tiktok) items.push({ label: "TikTok", value: umkm.tiktok });
-                            return items;
-                          })().map((item) => (
-                            <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
-                              • {item.label} <span className="opacity-60">{item.value}</span>
-                            </span>
-                          ))}
-                          {!umkm.instagram && !umkm.facebook && !umkm.tiktok && <span className="text-xs text-slate-400">-</span>}
+                        <div>
+                          <p className="text-xs font-medium text-slate-400 mb-1.5">Sosmed</p>
+                          <div className="flex flex-wrap gap-1.5">
+                            {((): { label: string; value: string }[] => {
+                              const items: { label: string; value: string }[] = [];
+                              if (umkm.instagram) items.push({ label: "Instagram", value: umkm.instagram });
+                              if (umkm.facebook) items.push({ label: "Facebook", value: umkm.facebook });
+                              if (umkm.tiktok) items.push({ label: "TikTok", value: umkm.tiktok });
+                              return items;
+                            })().map((item) => (
+                              <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
+                                • {item.label} <span className="opacity-60">{item.value}</span>
+                              </span>
+                            ))}
+                            {!umkm.instagram && !umkm.facebook && !umkm.tiktok && <span className="text-xs text-slate-400">-</span>}
+                          </div>
                         </div>
                       </div>
                     </div>
-                  )}
+                  </div>
 
                 </div>
 
@@ -653,8 +655,9 @@ export default function MonitoringDetailPage() {
                       </div>
 
                       {/* Expanded details */}
-                      {isExpanded && (
-                        <div className="mt-3 ml-5.5 rounded-lg bg-slate-50 p-4 dark:bg-white/[0.02] space-y-3">
+                      <div className={`ml-5.5 grid transition-all duration-300 ease-in-out ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}>
+                        <div className="overflow-hidden min-h-0">
+                          <div className="mt-3 rounded-lg bg-slate-50 p-4 dark:bg-white/[0.02] space-y-3">
                           {/* Legalitas */}
                           <div>
                             <p className="text-xs font-medium text-slate-400 mb-1.5">Legalitas</p>
@@ -725,8 +728,9 @@ export default function MonitoringDetailPage() {
                               )}
                             </div>
                           )}
+                          </div>
                         </div>
-                      )}
+                      </div>
                     </div>
                   );
                 })}
