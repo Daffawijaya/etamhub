@@ -58,6 +58,21 @@ interface Badge {
   };
 }
 
+interface CriteriaConfig {
+  silver_omzet_min: number;
+  silver_tk_min: number;
+  silver_legalitas_min: number;
+  silver_sosmed_min: number;
+  gold_omzet_min: number;
+  gold_tk_min: number;
+  gold_legalitas_min: number;
+  gold_sosmed_min: number;
+  platinum_omzet_min: number;
+  platinum_tk_min: number;
+  platinum_legalitas_min: number;
+  platinum_sosmed_min: number;
+}
+
 function formatRupiah(value: number | null) {
   if (!value) return "-";
   return new Intl.NumberFormat("id-ID", {
@@ -181,6 +196,7 @@ export default function MonitoringDetailPage() {
   const [umkm, setUmkm] = useState<UmkmData | null>(null);
   const [monitorings, setMonitorings] = useState<MonitoringEntry[]>([]);
   const [badge, setBadge] = useState<Badge | null>(null);
+  const [criteriaConfig, setCriteriaConfig] = useState<CriteriaConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -209,6 +225,7 @@ export default function MonitoringDetailPage() {
       setUmkm(data.umkm);
       setMonitorings(data.monitorings ?? []);
       setBadge(data.badge ?? null);
+      setCriteriaConfig(data.criteriaConfig ?? null);
     } catch (error) {
       console.error(error);
     } finally {
@@ -368,10 +385,10 @@ export default function MonitoringDetailPage() {
                   current={badge.criteria.omzet ?? 0}
                   target={
                     badge.level === "platinum"
-                      ? 25000000
+                      ? criteriaConfig?.platinum_omzet_min ?? 25000000
                       : badge.level === "gold"
-                        ? 10000000
-                        : 5000000
+                        ? criteriaConfig?.gold_omzet_min ?? 10000000
+                        : criteriaConfig?.silver_omzet_min ?? 5000000
                   }
                   label="Omzet"
                   format="rupiah"
@@ -380,10 +397,10 @@ export default function MonitoringDetailPage() {
                   current={badge.criteria.tk ?? 0}
                   target={
                     badge.level === "platinum"
-                      ? 5
+                      ? criteriaConfig?.platinum_tk_min ?? 5
                       : badge.level === "gold"
-                        ? 3
-                        : 1
+                        ? criteriaConfig?.gold_tk_min ?? 3
+                        : criteriaConfig?.silver_tk_min ?? 1
                   }
                   label="Tenaga Kerja"
                 />
@@ -391,10 +408,10 @@ export default function MonitoringDetailPage() {
                   current={badge.criteria.legalitas}
                   target={
                     badge.level === "platinum"
-                      ? 2
+                      ? criteriaConfig?.platinum_legalitas_min ?? 2
                       : badge.level === "gold"
-                        ? 1
-                        : 0
+                        ? criteriaConfig?.gold_legalitas_min ?? 1
+                        : criteriaConfig?.silver_legalitas_min ?? 0
                   }
                   label="Legalitas"
                 />
@@ -402,10 +419,10 @@ export default function MonitoringDetailPage() {
                   current={badge.criteria.sosmed}
                   target={
                     badge.level === "platinum"
-                      ? 2
+                      ? criteriaConfig?.platinum_sosmed_min ?? 2
                       : badge.level === "gold"
-                        ? 1
-                        : 0
+                        ? criteriaConfig?.gold_sosmed_min ?? 1
+                        : criteriaConfig?.silver_sosmed_min ?? 0
                   }
                   label="Sosmed Aktif"
                 />

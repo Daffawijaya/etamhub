@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import { calculateBadge } from "@/lib/monitoring/badges";
+import { calculateBadge, getBadgeCriteria } from "@/lib/monitoring/badges";
 import { logActivity } from "@/lib/activity-log";
 
 // =========================
@@ -77,11 +77,13 @@ export async function GET(
       : null;
 
     const badge = await calculateBadge(initial, latest, (monitorings ?? []).length);
+    const criteriaConfig = await getBadgeCriteria();
 
     return NextResponse.json({
       umkm,
       monitorings: monitorings ?? [],
       badge,
+      criteriaConfig,
     });
   } catch (error: any) {
     console.error("GET MONITORING HISTORY ERROR:", error);
