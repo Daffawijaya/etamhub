@@ -556,39 +556,17 @@ export default function MonitoringDetailPage() {
                           Omzet: <span className="font-medium text-slate-700 dark:text-slate-300">{formatRupiah(entryData.omzet)}</span>
                         </span>
                         <span className="text-slate-400">·</span>
-                        {/* Legalitas tags */}
-                        {((): { label: string }[] => {
-                          const items: { label: string }[] = [];
-                          if (entryData.nib) items.push({ label: "NIB" });
-                          if (umkm.kbli && umkm.kbli.length > 0) items.push({ label: "KBLI" });
-                          if (entryData.halal) items.push({ label: "Halal" });
-                          if (entryData.pirt) items.push({ label: "PIRT" });
-                          if (entryData.haki) items.push({ label: "HAKI" });
-                          return items;
-                        })().map((item) => (
-                          <span key={item.label} className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                            ✓ {item.label}
+                        <span className="text-slate-500">
+                          Legalitas: <span className="font-medium text-slate-700 dark:text-slate-300">
+                            {((entryData.nib || (umkm.kbli && umkm.kbli.length > 0)) ? 1 : 0) + (entryData.halal ? 1 : 0) + (entryData.pirt ? 1 : 0) + (entryData.haki ? 1 : 0)}
                           </span>
-                        ))}
-                        {!(entryData.nib || (umkm.kbli && umkm.kbli.length > 0) || entryData.halal || entryData.pirt || entryData.haki) && (
-                          <span className="text-slate-400">Legalitas: -</span>
-                        )}
+                        </span>
                         <span className="text-slate-400">·</span>
-                        {/* Sosmed tags */}
-                        {((): { label: string }[] => {
-                          const items: { label: string }[] = [];
-                          if (entryData.instagram) items.push({ label: "IG" });
-                          if (entryData.facebook) items.push({ label: "FB" });
-                          if (entryData.tiktok) items.push({ label: "TT" });
-                          return items;
-                        })().map((item) => (
-                          <span key={item.label} className="inline-flex items-center gap-1 rounded-full bg-green-50 px-2 py-0.5 font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                            ✓ {item.label}
+                        <span className="text-slate-500">
+                          Sosmed: <span className="font-medium text-slate-700 dark:text-slate-300">
+                            {(entryData.instagram ? 1 : 0) + (entryData.facebook ? 1 : 0) + (entryData.tiktok ? 1 : 0)}
                           </span>
-                        ))}
-                        {!entryData.instagram && !entryData.facebook && !entryData.tiktok && (
-                          <span className="text-slate-400">Sosmed: -</span>
-                        )}
+                        </span>
                       </div>
 
                       {/* Expanded details */}
@@ -598,18 +576,24 @@ export default function MonitoringDetailPage() {
                           <div>
                             <p className="text-xs font-medium text-slate-400 mb-1.5">Legalitas</p>
                             <div className="flex flex-wrap gap-1.5">
-                              {((): { label: string; value: string }[] => {
-                                const items: { label: string; value: string }[] = [];
-                                if (entryData.nib) items.push({ label: "NIB", value: entryData.nib });
-                                if (umkm.kbli && umkm.kbli.length > 0) items.push({ label: "KBLI", value: umkm.kbli.join(", ") });
-                                if (entryData.halal) items.push({ label: "Halal", value: entryData.halal });
-                                if (entryData.pirt) items.push({ label: "PIRT", value: entryData.pirt });
-                                if (entryData.haki) items.push({ label: "HAKI", value: entryData.haki });
+                              {((): { label: string; value: string; isNew: boolean }[] => {
+                                const prevData = prevEntry ? getEntryData(prevEntry) : { nib: _umkm.nib, halal: _umkm.halal, pirt: _umkm.pirt, haki: _umkm.haki };
+                                const prevKbli = prevEntry ? (prevEntry.kbli ?? _umkm.kbli) : _umkm.kbli;
+                                const items: { label: string; value: string; isNew: boolean }[] = [];
+                                if (entryData.nib) items.push({ label: "NIB", value: entryData.nib, isNew: !prevData.nib });
+                                if (_umkm.kbli && _umkm.kbli.length > 0) items.push({ label: "KBLI", value: _umkm.kbli.join(", "), isNew: !(prevKbli && prevKbli.length > 0) });
+                                if (entryData.halal) items.push({ label: "Halal", value: entryData.halal, isNew: !prevData.halal });
+                                if (entryData.pirt) items.push({ label: "PIRT", value: entryData.pirt, isNew: !prevData.pirt });
+                                if (entryData.haki) items.push({ label: "HAKI", value: entryData.haki, isNew: !prevData.haki });
                                 return items;
                               })().map((item) => (
-                                <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                                  ✓ {item.label}
-                                  <span className="text-green-600/70 dark:text-green-400/60">{item.value}</span>
+                                <span key={item.label} className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
+                                  item.isNew
+                                    ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                                    : "bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400"
+                                }`}>
+                                  {item.isNew ? "✓" : "•"} {item.label}
+                                  <span className="opacity-60">{item.value}</span>
                                 </span>
                               ))}
                               {!(entryData.nib || (umkm.kbli && umkm.kbli.length > 0) || entryData.halal || entryData.pirt || entryData.haki) && (
@@ -622,16 +606,21 @@ export default function MonitoringDetailPage() {
                           <div>
                             <p className="text-xs font-medium text-slate-400 mb-1.5">Sosmed</p>
                             <div className="flex flex-wrap gap-1.5">
-                              {((): { label: string; value: string }[] => {
-                                const items: { label: string; value: string }[] = [];
-                                if (entryData.instagram) items.push({ label: "Instagram", value: entryData.instagram });
-                                if (entryData.facebook) items.push({ label: "Facebook", value: entryData.facebook });
-                                if (entryData.tiktok) items.push({ label: "TikTok", value: entryData.tiktok });
+                              {((): { label: string; value: string; isNew: boolean }[] => {
+                                const prevData = prevEntry ? getEntryData(prevEntry) : { instagram: umkm.instagram, facebook: umkm.facebook, tiktok: umkm.tiktok };
+                                const items: { label: string; value: string; isNew: boolean }[] = [];
+                                if (entryData.instagram) items.push({ label: "Instagram", value: entryData.instagram, isNew: !prevData.instagram });
+                                if (entryData.facebook) items.push({ label: "Facebook", value: entryData.facebook, isNew: !prevData.facebook });
+                                if (entryData.tiktok) items.push({ label: "TikTok", value: entryData.tiktok, isNew: !prevData.tiktok });
                                 return items;
                               })().map((item) => (
-                                <span key={item.label} className="inline-flex items-center gap-1.5 rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700 dark:bg-green-900/20 dark:text-green-400">
-                                  ✓ {item.label}
-                                  <span className="text-green-600/70 dark:text-green-400/60">{item.value}</span>
+                                <span key={item.label} className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${
+                                  item.isNew
+                                    ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                                    : "bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400"
+                                }`}>
+                                  {item.isNew ? "✓" : "•"} {item.label}
+                                  <span className="opacity-60">{item.value}</span>
                                 </span>
                               ))}
                               {!entryData.instagram && !entryData.facebook && !entryData.tiktok && <span className="text-xs text-slate-400">-</span>}
