@@ -391,11 +391,46 @@ export default function MonitoringDetailPage() {
 
               {/* Badge Level Stepper */}
               {(() => {
-                const levels = [
-                  { key: "bronze", label: "Pemula", icon: <SeedlingIcon className="h-4 w-4" />, color: "amber" },
-                  { key: "silver", label: "Tumbuh", icon: <SilverMedalIcon className="h-4 w-4" />, color: "emerald" },
-                  { key: "gold", label: "Berkembang", icon: <GoldMedalIcon className="h-4 w-4" />, color: "orange" },
-                  { key: "platinum", label: "Naik Kelas", icon: <DiamondIcon className="h-4 w-4" />, color: "purple" },
+                const LEVEL_STYLES = {
+                  bronze: {
+                    reached: "bg-amber-50 dark:bg-amber-900/20",
+                    current: "bg-amber-100 ring-2 ring-amber-500 dark:bg-amber-900/30 dark:ring-amber-400 scale-110",
+                    icon: "text-amber-500 dark:text-amber-400",
+                    iconCurrent: "text-amber-600 dark:text-amber-400",
+                    line: "bg-amber-400 dark:bg-amber-500",
+                    lineGrad: "bg-gradient-to-r from-amber-400 to-slate-200 dark:from-amber-500 dark:to-slate-700",
+                  },
+                  silver: {
+                    reached: "bg-emerald-50 dark:bg-emerald-900/20",
+                    current: "bg-emerald-100 ring-2 ring-emerald-500 dark:bg-emerald-900/30 dark:ring-emerald-400 scale-110",
+                    icon: "text-emerald-500 dark:text-emerald-400",
+                    iconCurrent: "text-emerald-600 dark:text-emerald-400",
+                    line: "bg-emerald-400 dark:bg-emerald-500",
+                    lineGrad: "bg-gradient-to-r from-emerald-400 to-slate-200 dark:from-emerald-500 dark:to-slate-700",
+                  },
+                  gold: {
+                    reached: "bg-orange-50 dark:bg-orange-900/20",
+                    current: "bg-orange-100 ring-2 ring-orange-500 dark:bg-orange-900/30 dark:ring-orange-400 scale-110",
+                    icon: "text-orange-500 dark:text-orange-400",
+                    iconCurrent: "text-orange-600 dark:text-orange-400",
+                    line: "bg-orange-400 dark:bg-orange-500",
+                    lineGrad: "bg-gradient-to-r from-orange-400 to-slate-200 dark:from-orange-500 dark:to-slate-700",
+                  },
+                  platinum: {
+                    reached: "bg-purple-50 dark:bg-purple-900/20",
+                    current: "bg-purple-100 ring-2 ring-purple-500 dark:bg-purple-900/30 dark:ring-purple-400 scale-110",
+                    icon: "text-purple-500 dark:text-purple-400",
+                    iconCurrent: "text-purple-600 dark:text-purple-400",
+                    line: "bg-purple-400 dark:bg-purple-500",
+                    lineGrad: "bg-gradient-to-r from-purple-400 to-slate-200 dark:from-purple-500 dark:to-slate-700",
+                  },
+                } as const;
+
+                const levels: { key: keyof typeof LEVEL_STYLES; label: string; icon: React.ReactNode }[] = [
+                  { key: "bronze", label: "Pemula", icon: <SeedlingIcon className="h-4 w-4" /> },
+                  { key: "silver", label: "Tumbuh", icon: <SilverMedalIcon className="h-4 w-4" /> },
+                  { key: "gold", label: "Berkembang", icon: <GoldMedalIcon className="h-4 w-4" /> },
+                  { key: "platinum", label: "Naik Kelas", icon: <DiamondIcon className="h-4 w-4" /> },
                 ];
                 const levelOrder = { bronze: 0, silver: 1, gold: 2, platinum: 3 };
                 const currentIdx = levelOrder[badge.level as keyof typeof levelOrder] ?? 0;
@@ -406,43 +441,26 @@ export default function MonitoringDetailPage() {
                       {levels.map((lvl, idx) => {
                         const isReached = idx <= currentIdx;
                         const isCurrent = idx === currentIdx;
+                        const s = LEVEL_STYLES[lvl.key];
                         return (
                           <div key={lvl.key} className="flex items-center flex-1 last:flex-initial">
                             <div className="flex flex-col items-center">
                               <div className={`flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${
-                                isCurrent
-                                  ? `bg-${lvl.color}-100 ring-2 ring-${lvl.color}-500 dark:bg-${lvl.color}-900/30 dark:ring-${lvl.color}-400 scale-110`
-                                  : isReached
-                                    ? `bg-${lvl.color}-50 dark:bg-${lvl.color}-900/20`
-                                    : "bg-slate-100 dark:bg-white/5"
+                                isCurrent ? s.current : isReached ? s.reached : "bg-slate-100 dark:bg-white/5"
                               }`}>
-                                <span className={`${
-                                  isCurrent
-                                    ? `text-${lvl.color}-600 dark:text-${lvl.color}-400`
-                                    : isReached
-                                      ? `text-${lvl.color}-500 dark:text-${lvl.color}-400`
-                                      : "text-slate-400 dark:text-slate-600"
-                                }`}>
+                                <span className={isCurrent ? s.iconCurrent : isReached ? s.icon : "text-slate-400 dark:text-slate-600"}>
                                   {lvl.icon}
                                 </span>
                               </div>
                               <span className={`mt-1 text-[10px] font-medium ${
-                                isCurrent
-                                  ? `text-${lvl.color}-600 dark:text-${lvl.color}-400`
-                                  : isReached
-                                    ? "text-slate-600 dark:text-slate-400"
-                                    : "text-slate-400 dark:text-slate-600"
+                                isCurrent ? s.iconCurrent : isReached ? "text-slate-600 dark:text-slate-400" : "text-slate-400 dark:text-slate-600"
                               }`}>
                                 {lvl.label}
                               </span>
                             </div>
                             {idx < levels.length - 1 && (
                               <div className={`mx-1 h-0.5 flex-1 transition-all duration-300 ${
-                                idx < currentIdx
-                                  ? `bg-${lvl.color}-400 dark:bg-${lvl.color}-500`
-                                  : idx === currentIdx
-                                    ? `bg-gradient-to-r from-${lvl.color}-400 to-slate-200 dark:from-${lvl.color}-500 dark:to-slate-700`
-                                    : "bg-slate-200 dark:bg-slate-700"
+                                idx < currentIdx ? s.line : idx === currentIdx ? s.lineGrad : "bg-slate-200 dark:bg-slate-700"
                               }`} />
                             )}
                           </div>
