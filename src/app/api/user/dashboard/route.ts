@@ -176,6 +176,22 @@ export async function GET() {
           color: BADGE_STYLES.none.color,
           bgColor: BADGE_STYLES.none.bgColor,
           description: "Belum ada UMKM",
+          criteria: { omzet: null, tk: null, legalitas: 0, sosmed: 0, monitoringCount: 0 },
+        },
+
+        criteriaConfig: {
+          silver_omzet_min: 5000000,
+          silver_tk_min: 1,
+          silver_legalitas_min: 0,
+          silver_sosmed_min: 0,
+          gold_omzet_min: 10000000,
+          gold_tk_min: 3,
+          gold_legalitas_min: 1,
+          gold_sosmed_min: 1,
+          platinum_omzet_min: 25000000,
+          platinum_tk_min: 5,
+          platinum_legalitas_min: 2,
+          platinum_sosmed_min: 2,
         },
 
         monitoring: {
@@ -302,6 +318,9 @@ export async function GET() {
     const badgeConfig = await getBadgeCriteria();
     const badge = calculateBadgeWithCriteria(initialData, mergedLatest, monitoringCount, badgeConfig);
 
+    // Badge criteria details for progress display
+    const badgeCriteria = badge.criteria;
+
     // Monitoring summary for dashboard
     const monitoringSummary = {
       count: monitoringCount,
@@ -364,6 +383,22 @@ export async function GET() {
         color: badge.color,
         bgColor: badge.bgColor,
         description: badge.description,
+        criteria: badgeCriteria,
+      },
+
+      criteriaConfig: {
+        silver_omzet_min: badgeConfig.silver_omzet_min,
+        silver_tk_min: badgeConfig.silver_tk_min,
+        silver_legalitas_min: badgeConfig.silver_legalitas_min,
+        silver_sosmed_min: badgeConfig.silver_sosmed_min,
+        gold_omzet_min: badgeConfig.gold_omzet_min,
+        gold_tk_min: badgeConfig.gold_tk_min,
+        gold_legalitas_min: badgeConfig.gold_legalitas_min,
+        gold_sosmed_min: badgeConfig.gold_sosmed_min,
+        platinum_omzet_min: badgeConfig.platinum_omzet_min,
+        platinum_tk_min: badgeConfig.platinum_tk_min,
+        platinum_legalitas_min: badgeConfig.platinum_legalitas_min,
+        platinum_sosmed_min: badgeConfig.platinum_sosmed_min,
       },
 
       monitoring: monitoringSummary,

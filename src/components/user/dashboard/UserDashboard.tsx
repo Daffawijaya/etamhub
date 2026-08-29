@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 
+import BadgeProgressCard from "./BadgeProgressCard";
 import BusinessInfoCard from "./BusinessInfoCard";
 import LegalityCard from "./LegalityCard";
 import MonitoringSummaryCard from "./MonitoringSummaryCard";
@@ -59,6 +60,28 @@ type DashboardData = {
     color: string;
     bgColor: string;
     description: string;
+    criteria: {
+      omzet: number | null;
+      tk: number | null;
+      legalitas: number;
+      sosmed: number;
+      monitoringCount: number;
+    };
+  };
+
+  criteriaConfig: {
+    silver_omzet_min: number;
+    silver_tk_min: number;
+    silver_legalitas_min: number;
+    silver_sosmed_min: number;
+    gold_omzet_min: number;
+    gold_tk_min: number;
+    gold_legalitas_min: number;
+    gold_sosmed_min: number;
+    platinum_omzet_min: number;
+    platinum_tk_min: number;
+    platinum_legalitas_min: number;
+    platinum_sosmed_min: number;
   };
 
   monitoring: {
@@ -148,6 +171,10 @@ export default function UserDashboard() {
 
       {/* Right column */}
       <div className="col-span-4 space-y-6">
+        {data.badge.level !== "none" && (
+          <BadgeProgressCard badge={data.badge} criteriaConfig={data.criteriaConfig} />
+        )}
+
         <TimelineCard timeline={data.timeline} />
       </div>
     </div>
