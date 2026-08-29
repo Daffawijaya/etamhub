@@ -43,7 +43,7 @@ export default async function UserProfilePage() {
     .toUpperCase();
 
   return (
-    <main className="min-h-screen pb-8">
+    <main className="min-h-screen bg-light px-6 pb-8 dark:bg-dark">
       <div className="grid grid-cols-12 gap-6">
         {/* Left: Profile Hero + Info */}
         <div className="col-span-8 space-y-6">
