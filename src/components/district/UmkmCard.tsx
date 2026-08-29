@@ -2,6 +2,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { imageUrl } from "@/lib/imageUrl";
 import BottomAccent from "../decoration/BottomAccent";
+import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
+
+type BadgeData = {
+  level: "none" | "bronze" | "silver" | "gold" | "platinum";
+  label: string;
+  color: string;
+  bgColor: string;
+} | null;
 
 type Props = {
   id: string;
@@ -10,6 +18,21 @@ type Props = {
   deskripsi: string;
   gambar: string[];
   distance?: number | null;
+  badge?: BadgeData;
+};
+
+const BADGE_ICONS: Record<string, React.ReactNode> = {
+  bronze: <SeedlingIcon className="h-3 w-3" />,
+  silver: <SilverMedalIcon className="h-3 w-3" />,
+  gold: <GoldMedalIcon className="h-3 w-3" />,
+  platinum: <DiamondIcon className="h-3 w-3" />,
+};
+
+const BADGE_RING: Record<string, string> = {
+  bronze: "border-amber-300/80 dark:border-amber-500/60",
+  silver: "border-emerald-300/80 dark:border-emerald-500/60",
+  gold: "border-orange-300/80 dark:border-orange-500/60",
+  platinum: "border-purple-300/80 dark:border-purple-500/60",
 };
 
 export default function UmkmCard({
@@ -19,6 +42,7 @@ export default function UmkmCard({
   deskripsi,
   gambar,
   distance,
+  badge,
 }: Props) {
   const formatDistance = (value: number) => {
     if (value < 1) {
@@ -79,6 +103,18 @@ export default function UmkmCard({
         />
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
+
+        {/* Badge on image */}
+        {badge && badge.level !== "none" && (
+          <span
+            className={`absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-full border bg-white/90 px-2 py-0.5 text-[10px] font-semibold backdrop-blur-sm dark:bg-black/70 ${
+              BADGE_RING[badge.level] ?? ""
+            } ${badge.color}`}
+          >
+            {BADGE_ICONS[badge.level]}
+            {badge.label}
+          </span>
+        )}
       </div>
 
       {/* Content */}

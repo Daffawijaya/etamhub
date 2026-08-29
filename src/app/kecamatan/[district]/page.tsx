@@ -15,6 +15,13 @@ type Props = {
   }>;
 };
 
+interface Badge {
+  level: "none" | "bronze" | "silver" | "gold" | "platinum";
+  label: string;
+  color: string;
+  bgColor: string;
+}
+
 interface Umkm {
   id: string;
   nama: string;
@@ -25,6 +32,7 @@ interface Umkm {
   kecamatan: string;
   lat: number;
   lng: number;
+  badge?: Badge | null;
 }
 
 function getDistance(lat1: number, lon1: number, lat2: number, lon2: number) {
@@ -206,6 +214,7 @@ export default function KecamatanPage({ params }: Props) {
               deskripsi={item.deskripsi}
               gambar={item.gambar}
               distance={urutTerdekat ? item.distance : null}
+              badge={item.badge}
             />
           ))}
         </div>

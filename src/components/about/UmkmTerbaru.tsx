@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Link from "next/link";
 import { supabase } from "@/lib/supabase";
-import { imageUrl } from "@/lib/imageUrl";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import SectionHeader from "../textBlock/SectionHeader";
-import BottomAccent from "../decoration/BottomAccent";
 import ExploreButton from "../button/ExploreButton";
+import UmkmCard from "../district/UmkmCard";
+import { calculateBadgeWithCriteria, getBadgeCriteria } from "@/lib/monitoring/badges";
 
 export default async function UmkmTerbaruSection() {
   let { data: latestUmkms, error } = await supabase
@@ -31,6 +30,56 @@ export default async function UmkmTerbaruSection() {
 
   if (error) {
     throw new Error(error.message);
+  }
+
+  const umkms = latestUmkms ?? [];
+  const umkmIds = umkms.map((u) => u.id);
+
+  // Fetch badges
+  let badges: Record<string, any> = {};
+  if (umkmIds.length > 0) {
+    const criteriaConfig = await getBadgeCriteria();
+
+    const { data: monitoringCounts } = await supabaseAdmin
+      .from("umkm_monitoring")
+      .select("umkm_id")
+      .in("umkm_id", umkmIds);
+
+    const countMap: Record<string, number> = {};
+    (monitoringCounts ?? []).forEach((m) => {
+      countMap[m.umkm_id] = (countMap[m.umkm_id] || 0) + 1;
+    });
+
+    const umkmsWithMonitoring = Object.keys(countMap);
+    if (umkmsWithMonitoring.length > 0) {
+      const { data: latestMonitorings } = await supabaseAdmin
+        .from("umkm_monitoring")
+        .select("umkm_id, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok")
+        .in("umkm_id", umkmsWithMonitoring)
+        .order("created_at", { ascending: false });
+
+      const latestMap: Record<string, any> = {};
+      (latestMonitorings ?? []).forEach((m) => {
+        if (!latestMap[m.umkm_id]) latestMap[m.umkm_id] = m;
+      });
+
+      for (const umkm of umkms) {
+        const count = countMap[umkm.id] || 0;
+        const latest = latestMap[umkm.id];
+        if (latest) {
+          badges[umkm.id] = calculateBadgeWithCriteria(
+            {
+              omzet: umkm.omzet, jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja,
+              halal: umkm.halal, pirt: umkm.pirt, haki: umkm.haki, nib: umkm.nib,
+              instagram: umkm.instagram, facebook: umkm.facebook, tiktok: umkm.tiktok,
+            },
+            latest,
+            count,
+            criteriaConfig,
+          );
+        }
+      }
+    }
   }
 
   return (
@@ -64,157 +113,16 @@ export default async function UmkmTerbaruSection() {
             md:gap-6
           "
         >
-          {latestUmkms?.map((umkm) => (
-            <Link
-              key={`${umkm.id}-${umkm.nama}`}
-              href={`/umkm/${umkm.id}`}
-              className="
-                group
-                flex
-                flex-col
-                overflow-hidden
-                bg-light
-                dark:bg-[#1b1b1b]
-                border
-                border-white
-                dark:border-zinc-800
-                rounded-xl
-                dark:hover:border-zinc-700
-                transition-all
-                duration-300
-                relative
-              "
-            >
-              <div
-                className="
-                  relative
-                  aspect-[4/3]
-                  overflow-hidden
-                  rounded-t-xl
-                  bg-zinc-200
-                  dark:bg-zinc-900
-                "
-              >
-                <Image
-                  src={imageUrl(umkm.gambar?.[0])}
-                  alt={umkm.nama}
-                  fill
-                  sizes="
-                    (max-width:768px) 50vw,
-                    (max-width:1200px) 50vw,
-                    25vw
-                  "
-                  className="
-                    object-cover
-                    transition-transform
-                    duration-500
-                    group-hover:scale-105
-                  "
-                />
-
-                <div
-                  className="
-                    absolute
-                    inset-0
-                    bg-gradient-to-t
-                    from-black/60
-                    via-black/10
-                    to-transparent
-                  "
-                />
-              </div>
-
-              <div
-                className="
-                  flex
-                  flex-col
-                  flex-1
-                  p-3
-                  sm:p-5
-                  md:p-6
-                "
-              >
-                <div
-                  className="
-                    text-[9px]
-                    sm:text-xs
-                    uppercase
-                    tracking-wider
-                    text-zinc-500
-                  "
-                >
-                  {umkm.kecamatan}
-                </div>
-
-                <h3
-                  className="
-                    mt-2
-                    sm:mt-3
-                    text-sm
-                    sm:text-lg
-                    md:text-xl
-                    font-semibold
-                    leading-tight
-                    text-zinc-900
-                    dark:text-white
-                    line-clamp-3
-                  "
-                >
-                  {umkm.nama}
-                </h3>
-
-                <p
-                  className="
-                    mt-2
-                    sm:mt-3
-                    text-[11px]
-                    sm:text-sm
-                    text-zinc-600
-                    dark:text-zinc-400
-                  "
-                >
-                  {umkm.subkategori}
-                </p>
-
-                <p
-                  className="
-                    mt-3
-                    sm:mt-4
-                    text-[11px]
-                    sm:text-sm
-                    leading-relaxed
-                    text-zinc-500
-                    dark:text-zinc-500
-                    line-clamp-2
-                  "
-                >
-                  {umkm.deskripsi}
-                </p>
-
-                <div className="mt-auto pt-4 sm:pt-8">
-                  <span
-                    className="
-                      inline-flex
-                      items-center
-                      gap-1
-                      sm:gap-2
-                      text-[11px]
-                      sm:text-sm
-                      text-zinc-900
-                      dark:text-white
-                      transition-all
-                      duration-300
-                      group-hover:translate-x-1
-                    "
-                  >
-                    Lihat Detail
-                    <span>→</span>
-                  </span>
-                </div>
-              </div>
-
-              <BottomAccent />
-            </Link>
+          {umkms.map((umkm) => (
+            <UmkmCard
+              key={umkm.id}
+              id={umkm.id}
+              nama={umkm.nama}
+              subkategori={umkm.subkategori}
+              deskripsi={umkm.deskripsi}
+              gambar={umkm.gambar}
+              badge={badges[umkm.id] ?? null}
+            />
           ))}
         </div>
 

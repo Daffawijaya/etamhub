@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { calculateBadgeWithCriteria, getBadgeCriteria, type BadgeCriteria } from "@/lib/monitoring/badges";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-
     const kecamatan = searchParams.get("kecamatan");
     const kategori = searchParams.get("kategori");
     const search = searchParams.get("search");
@@ -44,8 +44,69 @@ export async function GET(req: Request) {
       throw error;
     }
 
+    const umkms = data ?? [];
+
+    // Fetch badges for all UMKMs in this batch
+    const umkmIds = umkms.map((u) => u.id);
+    let badges: Record<string, any> = {};
+    let criteriaConfig: BadgeCriteria | null = null;
+
+    if (umkmIds.length > 0) {
+      criteriaConfig = await getBadgeCriteria();
+
+      // Fetch monitoring counts and latest entries for each UMKM
+      const { data: monitoringCounts } = await supabaseAdmin
+        .from("umkm_monitoring")
+        .select("umkm_id")
+        .in("umkm_id", umkmIds);
+
+      // Group count by umkm_id
+      const countMap: Record<string, number> = {};
+      (monitoringCounts ?? []).forEach((m) => {
+        countMap[m.umkm_id] = (countMap[m.umkm_id] || 0) + 1;
+      });
+
+      // Fetch latest monitoring for each UMKM that has monitoring
+      const umkmsWithMonitoring = Object.keys(countMap);
+      if (umkmsWithMonitoring.length > 0) {
+        const { data: latestMonitorings } = await supabaseAdmin
+          .from("umkm_monitoring")
+          .select("umkm_id, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok")
+          .in("umkm_id", umkmsWithMonitoring)
+          .order("created_at", { ascending: false });
+
+        // Get only the latest per umkm_id
+        const latestMap: Record<string, any> = {};
+        (latestMonitorings ?? []).forEach((m) => {
+          if (!latestMap[m.umkm_id]) {
+            latestMap[m.umkm_id] = m;
+          }
+        });
+
+        // Calculate badge for each UMKM
+        for (const umkm of umkms) {
+          const count = countMap[umkm.id] || 0;
+          const latest = latestMap[umkm.id];
+          if (latest && criteriaConfig) {
+            const initial = {
+              omzet: umkm.omzet,
+              jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja,
+              halal: umkm.halal,
+              pirt: umkm.pirt,
+              haki: umkm.haki,
+              nib: umkm.nib,
+              instagram: umkm.instagram,
+              facebook: umkm.facebook,
+              tiktok: umkm.tiktok,
+            };
+            badges[umkm.id] = calculateBadgeWithCriteria(initial, latest, count, criteriaConfig);
+          }
+        }
+      }
+    }
+
     return NextResponse.json({
-      data: data ?? [],
+      data: umkms.map((u) => ({ ...u, badge: badges[u.id] ?? null })),
       total: count ?? 0,
       page,
       limit,
