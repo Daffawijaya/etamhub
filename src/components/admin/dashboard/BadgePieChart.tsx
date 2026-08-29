@@ -7,7 +7,6 @@ import {
   Cell,
   Tooltip,
   ResponsiveContainer,
-  Legend,
 } from "recharts";
 
 const DARK_OVERRIDES: Record<string, string> = {
@@ -115,19 +114,23 @@ export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props
                   ))}
                 </Pie>
                 <Tooltip content={customTooltip} />
-                <Legend
-                  verticalAlign="bottom"
-                  height={36}
-                  iconType="circle"
-                  iconSize={8}
-                  formatter={(value: string) => (
-                    <span className="text-xs text-slate-600 dark:text-slate-300">
-                      {value}
-                    </span>
-                  )}
-                />
               </PieChart>
             </ResponsiveContainer>
+          </div>
+
+          {/* Custom legend to preserve order */}
+          <div className="mt-2 flex flex-wrap justify-center gap-x-4 gap-y-1">
+            {chartData.map((item) => (
+              <div key={item.name} className="flex items-center gap-1.5">
+                <span
+                  className="h-2 w-2 rounded-full"
+                  style={{ backgroundColor: item.color }}
+                />
+                <span className="text-xs text-slate-600 dark:text-slate-300">
+                  {item.name}
+                </span>
+              </div>
+            ))}
           </div>
 
           {/* Summary stats */}
