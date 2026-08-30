@@ -35,6 +35,7 @@ export default function BasicSection({
     <FormSection title="Informasi UMKM">
       <div
         className="
+relative z-10
 grid
 md:grid-cols-2
 gap-4

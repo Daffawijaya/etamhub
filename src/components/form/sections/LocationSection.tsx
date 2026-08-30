@@ -32,7 +32,7 @@ export default function LocationSection({
 
   return (
     <FormSection title="Lokasi">
-      <div className="grid md:grid-cols-2 gap-4">
+      <div className="relative z-10 grid md:grid-cols-2 gap-4">
         <KecamatanSelect
           required
           options={kecamatanOptions}
