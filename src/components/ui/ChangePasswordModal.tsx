@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Lock, Eye, EyeOff } from "lucide-react";
 
 interface Props {
@@ -82,8 +83,8 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
     }
   }
 
-  return (
-    <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
       <div
         className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-zinc-900"
         onClick={(e) => e.stopPropagation()}
@@ -209,6 +210,7 @@ export default function ChangePasswordModal({ open, onClose }: Props) {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
