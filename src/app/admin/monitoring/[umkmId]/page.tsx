@@ -854,18 +854,36 @@ export default function MonitoringDetailPage() {
               <div>
                 <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Legalitas</label>
                 <div className="grid grid-cols-3 gap-3">
-                  <input type="text" value={form.halal} onChange={(e) => setForm((p) => ({ ...p, halal: e.target.value }))} placeholder={umkm.halal ?? "No. Halal"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
-                  <input type="text" value={form.pirt} onChange={(e) => setForm((p) => ({ ...p, pirt: e.target.value }))} placeholder={umkm.pirt ?? "No. PIRT"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
-                  <input type="text" value={form.haki} onChange={(e) => setForm((p) => ({ ...p, haki: e.target.value }))} placeholder={umkm.haki ?? "No. HAKI"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <div>
+                    <label className="mb-1 block text-xs text-slate-400">No. Halal</label>
+                    <input type="text" value={form.halal} onChange={(e) => setForm((p) => ({ ...p, halal: e.target.value }))} placeholder="Nomor Halal" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-slate-400">No. PIRT</label>
+                    <input type="text" value={form.pirt} onChange={(e) => setForm((p) => ({ ...p, pirt: e.target.value }))} placeholder="Nomor PIRT" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-slate-400">No. HAKI</label>
+                    <input type="text" value={form.haki} onChange={(e) => setForm((p) => ({ ...p, haki: e.target.value }))} placeholder="Nomor HAKI" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  </div>
                 </div>
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Sosmed</label>
+                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Sosial Media</label>
                 <div className="grid grid-cols-3 gap-3">
-                  <input type="text" value={form.instagram} onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
-                  <input type="text" value={form.facebook} onChange={(e) => setForm((p) => ({ ...p, facebook: e.target.value }))} placeholder="Facebook URL" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
-                  <input type="text" value={form.tiktok} onChange={(e) => setForm((p) => ({ ...p, tiktok: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <div>
+                    <label className="mb-1 block text-xs text-slate-400">Instagram</label>
+                    <input type="text" value={form.instagram} onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-slate-400">Facebook</label>
+                    <input type="text" value={form.facebook} onChange={(e) => setForm((p) => ({ ...p, facebook: e.target.value }))} placeholder="URL atau username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  </div>
+                  <div>
+                    <label className="mb-1 block text-xs text-slate-400">TikTok</label>
+                    <input type="text" value={form.tiktok} onChange={(e) => setForm((p) => ({ ...p, tiktok: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  </div>
                 </div>
               </div>
 
