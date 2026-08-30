@@ -272,7 +272,7 @@ export default function AdminKecamatanPage() {
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                Admin Kecamatan
+                Akun
               </h2>
               <p className="text-sm text-slate-500 dark:text-slate-400">
                 {kecamatanList.length} akun
@@ -284,13 +284,13 @@ export default function AdminKecamatanPage() {
             className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-700"
           >
             <Plus size={16} />
-            Tambah Admin Kecamatan
+            Tambah Akun
           </button>
         </div>
 
         {kecamatanList.length === 0 ? (
           <div className="p-8 text-center text-sm text-slate-400">
-            Belum ada akun admin kecamatan
+            Belum ada akun
           </div>
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-neutral-800">
@@ -366,8 +366,8 @@ export default function AdminKecamatanPage() {
           >
             <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
               {editing
-                ? `Edit ${showForm === "admin" ? "Admin" : "Admin Kecamatan"}`
-                : `Tambah ${showForm === "admin" ? "Admin" : "Admin Kecamatan"}`}
+                ? `Edit ${showForm === "admin" ? "Admin" : "Akun"}`
+                : `Tambah ${showForm === "admin" ? "Admin" : "Akun"}`}
             </h2>
 
             <div className="mt-4 space-y-4">

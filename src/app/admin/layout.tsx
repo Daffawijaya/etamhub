@@ -58,7 +58,7 @@ export default function AdminLayout({
     }
 
     if (pathname === "/admin/admin-kecamatan") {
-      return "Admin Kecamatan";
+      return "Akun";
     }
 
     if (pathname === "/admin/monitoring") {
