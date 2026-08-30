@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 
 import ActivityLogs from "./ActivityLogs";
+import AdminDashboardSkeleton from "./DashboardSkeleton";
 import BadgePieChart from "./BadgePieChart";
 import CategoryPieChart from "./CategoryPieChart";
 import KecamatanChart from "./KecamatanChart";
@@ -23,11 +24,7 @@ export default function DashboardGrid() {
   }, []);
 
   if (!data) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-[#1184CA]" />
-      </div>
-    );
+    return <AdminDashboardSkeleton />;
   }
 
   const monitoring = data.monitoring ?? {};

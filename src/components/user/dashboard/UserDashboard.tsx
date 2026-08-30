@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import BadgeProgressCard from "./BadgeProgressCard";
 import BusinessInfoCard from "./BusinessInfoCard";
+import DashboardSkeleton from "./DashboardSkeleton";
 import LegalityCard from "./LegalityCard";
 import MonitoringSummaryCard from "./MonitoringSummaryCard";
 import SummaryCards from "./SummaryCards";
@@ -136,11 +137,7 @@ export default function UserDashboard() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="rounded-2xl bg-white p-8 text-center dark:bg-dark-card">
-        <p className="text-sm text-gray-500">Memuat dashboard...</p>
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   if (!data) {
