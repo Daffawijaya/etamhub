@@ -2,9 +2,12 @@
 
 import Link from "next/link";
 import { ReactNode } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { navigation } from "@/data/navigation";
 
 export default function Footer({ title }: { title?: ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
   return (
     <footer className="border-t-[0.5px] border-light dark:border-white/10 relative overflow-hidden bg-light dark:bg-dark text-black dark:text-white transition-colors">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-10 z-20">
@@ -102,6 +105,17 @@ export default function Footer({ title }: { title?: ReactNode }) {
                 <Link
                   key={item.href}
                   href={item.href}
+                  onClick={(e) => {
+                    const hash = item.href.includes("#") ? item.href.split("#")[1] : null;
+                    if (hash && pathname === "/") {
+                      e.preventDefault();
+                      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+                      window.history.replaceState(null, "", "#" + hash);
+                    } else if (hash && pathname !== "/") {
+                      e.preventDefault();
+                      router.push("/#" + hash);
+                    }
+                  }}
                   className="text-black/80 dark:text-white/80 hover:text-black dark:hover:text-white transition"
                 >
                   {item.label}
