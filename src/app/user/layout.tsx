@@ -7,7 +7,7 @@ import UserSidebar from "@/components/user/sidebar/UserSidebar";
 import DashboardNavbar from "@/components/DashboardNavbar";
 
 // Pages accessible without UMKM data
-const ALLOWED_WITHOUT_UMKM = ["/user/tambah", "/user/profil"];
+const ALLOWED_WITHOUT_UMKM = ["/user/tambah"];
 
 export default function UserLayout({
   children,
