@@ -55,7 +55,12 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
 
   function toggleOpen() {
     userClosedRef.current = false;
-    setOpenMenu(openMenu === menu.label ? null : menu.label);
+    const willOpen = openMenu !== menu.label;
+    if (willOpen && collapsed && btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect();
+      setPopupPos({ top: rect.top, left: rect.right + 8 });
+    }
+    setOpenMenu(willOpen ? menu.label : null);
   }
 
   function handleChildClick() {
@@ -373,7 +378,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
               dark:border-white/10
               dark:bg-dark-card
 
-              transition-all duration-300
+              transition-opacity duration-200
             "
             style={{ top: popupPos.top, left: popupPos.left }}
           >
