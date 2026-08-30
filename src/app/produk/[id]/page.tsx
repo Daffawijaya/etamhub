@@ -1,8 +1,11 @@
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
 import Breadcrumb from "@/components/Breadcrumb";
 import ProductDetailPage from "@/components/products/ProductDetailPage";
+import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { getBaseUrl } from "@/lib/api";
 
 type Props = {
   params: Promise<{
@@ -11,51 +14,90 @@ type Props = {
 };
 
 async function getProduct(id: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/products/${id}`,
-    { cache: "no-store" },
-  );
+  const { data, error } = await supabaseAdmin
+    .from("products")
+    .select("*, umkm:umkm_id (id, nama, kecamatan), product_legalitas (*)")
+    .eq("id", id)
+    .maybeSingle();
 
-  if (!res.ok) {
+  if (error || !data) {
     return null;
   }
 
-  const result = await res.json();
-  return result.success ? result.data : null;
+  return data;
 }
 
 async function getUmkm(id: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/umkm/${id}`,
-    { cache: "no-store" },
-  );
+  const { data } = await supabaseAdmin
+    .from("umkm")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
 
-  if (!res.ok) {
-    return null;
-  }
-
-  return res.json();
+  return data;
 }
 
 async function getOtherProducts(umkmId: string, excludeProductId: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_URL}/api/products?umkm_id=${umkmId}`,
-    { cache: "no-store" },
-  );
+  const { data } = await supabaseAdmin
+    .from("products")
+    .select("*, product_legalitas (*)")
+    .eq("umkm_id", umkmId)
+    .eq("is_available", true)
+    .neq("id", excludeProductId)
+    .order("created_at", { ascending: false })
+    .limit(10);
 
-  if (!res.ok) {
-    return [];
+  return data ?? [];
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = await params;
+
+  try {
+    const product = await getProduct(id);
+    if (!product) {
+      return { title: "Produk Tidak Ditemukan" };
+    }
+
+    const umkm = product.umkm as any;
+    const description =
+      product.deskripsi ||
+      `${product.nama} — Produk dari ${umkm?.nama || "UMKM"} di Kecamatan ${umkm?.kecamatan || ""}.`;
+    const imageUrl = product.gambar?.[0];
+
+    return {
+      title: `${product.nama}${umkm?.nama ? ` — ${umkm.nama}` : ""}`,
+      description: description.slice(0, 160),
+      alternates: {
+        canonical: `/produk/${product.id}`,
+      },
+      openGraph: {
+        type: "website",
+        title: `${product.nama}${umkm?.nama ? ` — ${umkm.nama}` : ""}`,
+        description: description.slice(0, 160),
+        ...(imageUrl && {
+          images: [
+            {
+              url: imageUrl,
+              width: 1200,
+              height: 630,
+              alt: product.nama,
+            },
+          ],
+        }),
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: `${product.nama}${umkm?.nama ? ` — ${umkm.nama}` : ""}`,
+        description: description.slice(0, 160),
+        ...(imageUrl && {
+          images: [imageUrl],
+        }),
+      },
+    };
+  } catch {
+    return { title: "Produk Tidak Ditemukan" };
   }
-
-  const result = await res.json();
-  if (!result.success) {
-    return [];
-  }
-
-  return result.data.filter(
-    (p: { id: string; is_available: boolean }) =>
-      p.id !== excludeProductId && p.is_available,
-  );
 }
 
 export default async function ProdukPage({ params }: Props) {
@@ -67,8 +109,11 @@ export default async function ProdukPage({ params }: Props) {
     notFound();
   }
 
-  const umkm = await getUmkm(product.umkm_id);
-  const otherProducts = await getOtherProducts(product.umkm_id, product.id);
+  // Parallel fetch: umkm and other products
+  const [umkm, otherProducts] = await Promise.all([
+    getUmkm(product.umkm_id),
+    getOtherProducts(product.umkm_id, product.id),
+  ]);
 
   const kecamatanSlug =
     umkm?.kecamatan

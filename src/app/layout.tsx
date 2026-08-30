@@ -3,20 +3,53 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import Providers from "./provider";
 import ScrollTop from "@/components/ScrollTop";
-import "leaflet/dist/leaflet.css";
 import TopLoader from "@/components/TopLoader";
 import GlobalLoader from "@/components/GlobalLoader";
 import { ModalProvider } from "@/components/ui/modal";
+import { getBaseUrl } from "@/lib/api";
 
 const outfit = Outfit({
   subsets: ["latin"],
+  display: "swap",
 });
 
+const baseUrl = getBaseUrl();
+
 export const metadata: Metadata = {
-  title: "etamhub",
-  description: "Katalog UMKM Kutai Kartanegara",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "EtamHub — Katalog UMKM Kutai Kartanegara",
+    template: "%s | EtamHub",
+  },
+  description:
+    "EtamHub adalah platform katalog UMKM Kutai Kartanegara. Temukan produk, layanan, dan informasi UMKM dari seluruh kecamatan.",
   icons: {
     icon: "/eiconl.png",
+  },
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: "EtamHub",
+    title: "EtamHub — Katalog UMKM Kutai Kartanegara",
+    description:
+      "Platform katalog UMKM Kutai Kartanegara. Temukan produk, layanan, dan informasi UMKM dari seluruh kecamatan.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "EtamHub — Katalog UMKM Kutai Kartanegara",
+    description:
+      "Platform katalog UMKM Kutai Kartanegara. Temukan produk, layanan, dan informasi UMKM dari seluruh kecamatan.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 

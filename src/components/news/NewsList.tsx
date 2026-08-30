@@ -117,6 +117,7 @@ export default function NewsList({ data, search = "", total = 0 }: Props) {
                   src={news.gambar || "/images/news-placeholder.jpg"}
                   alt={news.title}
                   fill
+                  sizes="(max-width: 640px) 112px, 128px"
                   className="object-cover transition duration-500 group-hover:scale-105"
                 />
               </div>

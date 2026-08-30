@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import FooterBrand from "@/components/FooterBrand";
 import HeroBackground from "@/components/news/HeroNews";
@@ -6,6 +7,18 @@ import Pagination from "@/components/news/Pagination";
 import NewsPopular from "@/components/news/NewsPopular";
 import { getNews, getTrendingNews } from "@/lib/news/news.service";
 import Navbar from "@/components/navbar/Navbar";
+
+export const metadata: Metadata = {
+  title: "Berita UMKM Kutai Kartanegara",
+  description:
+    "Kabar terbaru seputar UMKM, perkembangan usaha lokal, dan informasi penting bagi pelaku UMKM di Kutai Kartanegara.",
+  openGraph: {
+    title: "Berita UMKM Kutai Kartanegara",
+    description:
+      "Kabar terbaru seputar UMKM dan perkembangan usaha lokal di Kutai Kartanegara.",
+    type: "website",
+  },
+};
 
 type Props = {
   searchParams: Promise<{

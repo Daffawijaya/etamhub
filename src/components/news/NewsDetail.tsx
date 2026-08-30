@@ -98,7 +98,9 @@ export default function NewsDetail({ news }: Props) {
             alt={news.title}
             width={900}
             height={600}
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 900px"
             className="h-full w-full object-cover"
+            priority
           />
         </div>
       )}

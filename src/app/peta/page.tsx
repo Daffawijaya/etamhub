@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import "leaflet/dist/leaflet.css";
 import { supabase } from "@/lib/supabase";
 import UmkmMap from "@/components/map/UmkmMap";
 import Navbar from "@/components/navbar/Navbar";
