@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 import SidebarItem from "./SidebarItem";
 import SidebarLogo from "./SidebarLogo";
 import SidebarToggle from "./SidebarToggle";
+import ChangePasswordModal from "@/components/ui/ChangePasswordModal";
 import { userMenus } from "./user-sidebar-data";
+import { Settings } from "lucide-react"
 
 const STORAGE_KEY = "user-sidebar-collapsed";
 
 export default function UserSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
@@ -76,6 +79,66 @@ export default function UserSidebar() {
           ))}
         </div>
       </nav>
+
+      {/* Pengaturan Akun */}
+      <div className="px-2 pb-2">
+        <button
+          onClick={() => setShowPasswordModal(true)}
+          title={collapsed ? "Pengaturan Akun" : ""}
+          className={`
+            group
+            relative
+            flex
+            h-12
+            w-full
+            items-center
+            overflow-hidden
+            rounded-2xl
+
+            transition-all
+            duration-500
+            ease-[cubic-bezier(.22,1,.36,1)]
+
+            ${collapsed ? "justify-center px-0" : "justify-start gap-4 px-4"}
+
+            text-slate-600
+            dark:text-neutral-300
+
+            hover:bg-slate-100
+            hover:text-slate-900
+
+            dark:hover:bg-neutral-800
+            dark:hover:text-white
+          `}
+        >
+          <div className="relative z-10 flex items-center justify-center transition-all duration-300 group-hover:scale-110 text-slate-500 dark:text-neutral-400">
+            <Settings size={20} strokeWidth={2.2} />
+          </div>
+          <span
+            className={`
+              relative z-10
+              whitespace-nowrap text-left font-medium
+
+              transition-all
+              duration-500
+              ease-[cubic-bezier(.22,1,.36,1)]
+
+              ${
+                collapsed
+                  ? `w-0 -translate-x-3 opacity-0`
+                  : `w-auto translate-x-0 opacity-100`
+              }
+            `}
+          >
+            Pengaturan Akun
+          </span>
+        </button>
+      </div>
+
+      <ChangePasswordModal
+        open={showPasswordModal}
+        onClose={() => setShowPasswordModal(false)}
+      />
     </aside>
   );
 }
