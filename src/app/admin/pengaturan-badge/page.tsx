@@ -81,8 +81,8 @@ const TIERS: {
     name: "Tumbuh",
     description: "Sudah mulai menunjukkan perkembangan",
     fields: [
-      { key: "silver_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
-      { key: "silver_tk_min", label: "Minimal Karyawan" },
+      { key: "silver_omzet_min", label: "Omzet Increase", suffix: "% dari baseline" },
+      { key: "silver_tk_min", label: "TK Increase", suffix: "orang" },
       { key: "silver_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
       { key: "silver_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (IG/FB/TT)" },
     ],
@@ -93,8 +93,8 @@ const TIERS: {
     name: "Berkembang",
     description: "UMKM yang sudah berkembang pesat",
     fields: [
-      { key: "gold_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
-      { key: "gold_tk_min", label: "Minimal Karyawan" },
+      { key: "gold_omzet_min", label: "Omzet Increase", suffix: "% dari baseline" },
+      { key: "gold_tk_min", label: "TK Increase", suffix: "orang" },
       { key: "gold_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
       { key: "gold_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (IG/FB/TT)" },
     ],
@@ -108,8 +108,8 @@ const TIERS: {
     tagText: "text-purple-600 dark:text-purple-400",
     tagLabel: "Tertinggi",
     fields: [
-      { key: "platinum_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
-      { key: "platinum_tk_min", label: "Minimal Karyawan" },
+      { key: "platinum_omzet_min", label: "Omzet Increase", suffix: "% dari baseline" },
+      { key: "platinum_tk_min", label: "TK Multiplier", suffix: "x lipat" },
       { key: "platinum_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
       { key: "platinum_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (IG/FB/TT)" },
     ],
@@ -281,7 +281,7 @@ export default function PengaturanBadgePage() {
                   <SilverMedalIcon className="h-3 w-3" /> Tumbuh
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
-                  Omzet ≥ Rp{formatRupiah(criteria.silver_omzet_min)}, TK ≥ {criteria.silver_tk_min}
+                  Omzet +{criteria.silver_omzet_min}%, TK +{criteria.silver_tk_min}
                   {criteria.silver_legalitas_min > 0 && `, Legalitas ≥ ${criteria.silver_legalitas_min}`}
                   {criteria.silver_sosmed_min > 0 && `, Sosmed ≥ ${criteria.silver_sosmed_min}`}
                 </p>
@@ -291,7 +291,7 @@ export default function PengaturanBadgePage() {
                   <GoldMedalIcon className="h-3 w-3" /> Berkembang
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
-                  Omzet ≥ Rp{formatRupiah(criteria.gold_omzet_min)}, TK ≥ {criteria.gold_tk_min}
+                  Omzet +{criteria.gold_omzet_min}%, TK +{criteria.gold_tk_min}
                   {criteria.gold_legalitas_min > 0 && `, Legalitas ≥ ${criteria.gold_legalitas_min}`}
                   {criteria.gold_sosmed_min > 0 && `, Sosmed ≥ ${criteria.gold_sosmed_min}`}
                 </p>
@@ -301,7 +301,7 @@ export default function PengaturanBadgePage() {
                   <DiamondIcon className="h-3 w-3" /> Naik Kelas
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
-                  Omzet ≥ Rp{formatRupiah(criteria.platinum_omzet_min)}, TK ≥ {criteria.platinum_tk_min}
+                  Omzet +{criteria.platinum_omzet_min}%, TK ×{criteria.platinum_tk_min}
                   {criteria.platinum_legalitas_min > 0 && `, Legalitas ≥ ${criteria.platinum_legalitas_min}`}
                   {criteria.platinum_sosmed_min > 0 && `, Sosmed ≥ ${criteria.platinum_sosmed_min}`}
                 </p>
