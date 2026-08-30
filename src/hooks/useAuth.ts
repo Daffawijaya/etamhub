@@ -8,11 +8,6 @@ interface AuthState {
   dashboardPath: string;
 }
 
-function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
-  return match ? decodeURIComponent(match[1]) : null;
-}
-
 function getDashboardPath(role: string | null): string {
   switch (role) {
     case "super_admin":
@@ -34,16 +29,25 @@ export function useAuth(): AuthState {
   });
 
   useEffect(() => {
-    const userId = getCookie("user_id");
-    const role = getCookie("role");
-
-    if (userId) {
-      setAuth({
-        isLoggedIn: true,
-        role: role ?? "user",
-        dashboardPath: getDashboardPath(role),
-      });
+    async function checkAuth() {
+      try {
+        const res = await fetch("/api/auth/me", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.id) {
+            setAuth({
+              isLoggedIn: true,
+              role: data.role ?? "user",
+              dashboardPath: getDashboardPath(data.role),
+            });
+          }
+        }
+      } catch {
+        // not logged in
+      }
     }
+
+    checkAuth();
   }, []);
 
   return auth;
