@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { imageUrl } from "@/lib/imageUrl";
-import { Eye, MapPin, Tag, ArrowRight } from "lucide-react";
+import { MapPin, Tag, ArrowRight, Store, MessageCircle } from "lucide-react";
 import type { Product, ProductLegalitas } from "@/types/product";
 
 type UmkmData = {
@@ -45,6 +45,7 @@ const formatPrice = (value: number | null) => {
   }).format(value);
 };
 
+/* ─── Gallery ─── */
 function ProductGallery({
   images,
   nama,
@@ -56,7 +57,7 @@ function ProductGallery({
 
   if (images.length === 0) {
     return (
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-white bg-light dark:border-white/10 dark:bg-[#161616]">
+      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white bg-light dark:border-white/10 dark:bg-[#161616]">
         <div className="flex h-full items-center justify-center text-sm text-zinc-400">
           Tidak ada gambar
         </div>
@@ -65,37 +66,43 @@ function ProductGallery({
   }
 
   return (
-    <div className="w-full min-w-0">
-      <div className="group relative overflow-hidden rounded-xl border border-white bg-light dark:border-white/10 dark:bg-[#161616]">
-        <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.10),transparent_45%)] pointer-events-none z-10" />
+    <div className="flex flex-col gap-3">
+      {/* Main image */}
+      <div className="group relative aspect-[4/3] w-full overflow-hidden rounded-2xl border border-white bg-light dark:border-white/10 dark:bg-[#161616]">
+        <div className="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 bg-[radial-gradient(circle_at_top_left,rgba(139,92,246,0.08),transparent_40%)] pointer-events-none z-10" />
 
-        <div className="relative aspect-square w-full overflow-hidden">
-          <Image
-            src={imageUrl(images[active])}
-            alt={nama}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-        </div>
+        <Image
+          src={imageUrl(images[active])}
+          alt={nama}
+          fill
+          className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          priority
+        />
 
-        <div className="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-violet-500 via-fuchsia-400 to-transparent transition-all duration-500 group-hover:w-full" />
+        {/* Image counter */}
+        {images.length > 1 && (
+          <span className="absolute bottom-3 right-3 z-20 rounded-full bg-black/50 px-2.5 py-1 text-[10px] font-medium text-white backdrop-blur-sm">
+            {active + 1} / {images.length}
+          </span>
+        )}
       </div>
 
+      {/* Thumbnails */}
       {images.length > 1 && (
-        <div className="mt-4 flex justify-center gap-2">
+        <div className="flex gap-2">
           {images.map((img, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border transition-all duration-300 ${
+              className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border-2 transition-all duration-200 sm:h-[72px] sm:w-[72px] ${
                 active === i
-                  ? "border-violet-500/20 bg-violet-500/10 ring-2 ring-violet-500/20"
-                  : "border-white hover:border-violet-500/20 dark:border-white/10"
+                  ? "border-violet-500 shadow-[0_0_0_2px_rgba(139,92,246,0.2)]"
+                  : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
               <Image
                 src={imageUrl(img)}
-                alt={`${nama}-${i}`}
+                alt={`${nama} ${i + 1}`}
                 fill
                 className="object-cover"
               />
@@ -107,25 +114,25 @@ function ProductGallery({
   );
 }
 
+/* ─── Info ─── */
 function ProductInfo({
   product,
 }: {
   product: Product;
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Name & Price */}
       <div>
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-white md:text-3xl">
+        <h1 className="text-2xl font-bold leading-tight text-zinc-900 dark:text-white lg:text-[28px]">
           {product.nama}
         </h1>
 
         {product.harga !== null && (
-          <p className="mt-2 text-xl font-bold text-emerald-600 dark:text-emerald-400">
+          <p className="mt-2 text-2xl font-bold text-emerald-600 dark:text-emerald-400">
             {formatPrice(product.harga)}
             {product.satuan && (
-              <span className="text-sm font-normal text-zinc-500 dark:text-zinc-400">
-                {" "}
+              <span className="ml-1 text-sm font-normal text-zinc-400 dark:text-zinc-500">
                 / {product.satuan}
               </span>
             )}
@@ -151,13 +158,16 @@ function ProductInfo({
         </span>
       </div>
 
+      {/* Divider */}
+      <div className="border-t border-zinc-100 dark:border-white/5" />
+
       {/* Description */}
       {product.deskripsi && (
-        <div className="rounded-xl border border-white bg-light p-5 dark:border-white/10 dark:bg-[#161616]">
-          <p className="text-xs uppercase tracking-wide text-zinc-500">
+        <div>
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
             Deskripsi
-          </p>
-          <p className="mt-2 text-sm leading-7 text-zinc-600 dark:text-zinc-300">
+          </h3>
+          <p className="mt-2 text-sm leading-relaxed text-zinc-600 dark:text-zinc-300">
             {product.deskripsi}
           </p>
         </div>
@@ -165,21 +175,20 @@ function ProductInfo({
 
       {/* Legalitas */}
       {product.product_legalitas.length > 0 && (
-        <div className="rounded-xl border border-white bg-light p-5 dark:border-white/10 dark:bg-[#161616]">
-          <p className="text-xs uppercase tracking-wide text-zinc-500">
-            Legalitas Produk
-          </p>
-          <div className="mt-3 flex flex-wrap gap-2">
+        <div>
+          <h3 className="text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            Legalitas
+          </h3>
+          <div className="mt-2 flex flex-wrap gap-1.5">
             {product.product_legalitas.map((leg: ProductLegalitas) => (
               <span
                 key={leg.id}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-white bg-white px-3 py-1.5 text-xs font-medium text-zinc-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300"
+                className="inline-flex items-center gap-1 rounded-lg border border-violet-500/10 bg-violet-500/5 px-2.5 py-1 text-xs font-medium text-violet-700 dark:text-violet-300"
               >
-                <Tag size={11} className="text-violet-500" />
+                <Tag size={10} />
                 {leg.jenis === "kbli"
                   ? `KBLI ${leg.kode}`
                   : leg.jenis.toUpperCase()}
-                {leg.kode && leg.jenis !== "kbli" && `: ${leg.kode}`}
               </span>
             ))}
           </div>
@@ -189,109 +198,94 @@ function ProductInfo({
   );
 }
 
-function UmkmMiniCard({ umkm }: { umkm: UmkmData }) {
+/* ─── UMKM Card ─── */
+function UmkmCard({ umkm }: { umkm: UmkmData }) {
   const whatsappNumber = umkm.whatsapp
     ?.replace(/\D/g, "")
     .replace(/^0/, "62");
 
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-white bg-light p-5 dark:border-white/10 dark:bg-[#161616]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.06),transparent_45%)] pointer-events-none" />
+    <div className="rounded-2xl border border-white bg-light p-4 dark:border-white/10 dark:bg-[#161616]">
+      <div className="flex items-center gap-3">
+        {/* UMKM avatar */}
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
+          <Store size={18} />
+        </div>
 
-      <div className="relative z-10">
-        <p className="text-xs uppercase tracking-[0.25em] text-zinc-500">
-          UMKM
-        </p>
+        <div className="min-w-0 flex-1">
+          <Link
+            href={`/umkm/${umkm.id}`}
+            className="block truncate text-sm font-semibold text-zinc-900 transition-colors hover:text-violet-600 dark:text-white dark:hover:text-violet-400"
+          >
+            {umkm.nama}
+          </Link>
+          <p className="mt-0.5 truncate text-xs text-zinc-500">
+            {umkm.kecamatan}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-3 flex gap-2">
+        {whatsappNumber && (
+          <button
+            onClick={() =>
+              window.open(`https://wa.me/${whatsappNumber}`, "_blank")
+            }
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
+          >
+            <MessageCircle size={13} />
+            WhatsApp
+          </button>
+        )}
 
         <Link
           href={`/umkm/${umkm.id}`}
-          className="mt-1 block text-base font-semibold text-zinc-900 transition-colors hover:text-violet-600 dark:text-white dark:hover:text-violet-400"
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-all hover:border-violet-300 hover:text-violet-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:text-violet-400"
         >
-          {umkm.nama}
+          <Store size={13} />
+          Lihat UMKM
         </Link>
-
-        <div className="mt-3 space-y-2 text-xs text-zinc-500 dark:text-zinc-400">
-          <div className="flex items-start gap-2">
-            <Tag size={12} className="mt-0.5 shrink-0 text-zinc-400" />
-            <span>
-              {umkm.kategori}
-              {umkm.subkategori && ` · ${umkm.subkategori}`}
-            </span>
-          </div>
-
-          <div className="flex items-start gap-2">
-            <MapPin size={12} className="mt-0.5 shrink-0 text-zinc-400" />
-            <span>
-              {umkm.kecamatan}
-              {umkm.alamat && `, ${umkm.alamat}`}
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-2">
-          {whatsappNumber && (
-            <button
-              onClick={() =>
-                window.open(`https://wa.me/${whatsappNumber}`, "_blank")
-              }
-              className="w-full rounded-lg border border-violet-500/20 bg-violet-500/10 px-3 py-2 text-xs font-medium text-violet-600 transition-all hover:bg-violet-500/15 dark:text-violet-300 dark:hover:text-white"
-            >
-              Chat WhatsApp
-            </button>
-          )}
-
-          <Link
-            href={`/umkm/${umkm.id}`}
-            className="flex w-full items-center justify-center gap-1.5 rounded-lg border border-white bg-light-bg px-3 py-2 text-xs font-medium text-zinc-600 transition-all hover:border-violet-500/20 hover:bg-violet-500/10 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:text-white"
-          >
-            Lihat UMKM
-            <ArrowRight size={12} />
-          </Link>
-        </div>
       </div>
     </div>
   );
 }
 
+/* ─── Other Products ─── */
 function OtherProducts({
   products,
-  umkmId,
 }: {
   products: Product[];
-  umkmId: string;
 }) {
   if (products.length === 0) return null;
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-12 md:px-6">
-      <div>
-        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
-          Produk Lainnya
-        </h2>
-        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-          Produk lain dari UMKM ini
-        </p>
-      </div>
+      <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
+        Produk Lainnya
+      </h2>
+      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+        Dari UMKM yang sama
+      </p>
 
-      <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
-        {products.map((product) => {
-          const image = product.gambar?.[0];
+      <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        {products.map((p) => {
+          const img = p.gambar?.[0];
 
           return (
             <Link
-              key={product.id}
-              href={`/produk/${product.id}`}
-              className="group min-w-0 overflow-hidden rounded-xl border border-white bg-light-bg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-white/[0.03]"
+              key={p.id}
+              href={`/produk/${p.id}`}
+              className="group overflow-hidden rounded-xl border border-white bg-light transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-white/[0.03]"
             >
-              <div className="aspect-[5/4] overflow-hidden bg-zinc-100 dark:bg-white/[0.03]">
-                {image ? (
+              <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100 dark:bg-white/[0.03]">
+                {img ? (
                   <img
-                    src={imageUrl(image)}
-                    alt={product.nama}
+                    src={imageUrl(img)}
+                    alt={p.nama}
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center px-2 text-center text-xs text-zinc-400">
+                  <div className="flex h-full items-center justify-center text-xs text-zinc-400">
                     Tidak ada gambar
                   </div>
                 )}
@@ -300,24 +294,13 @@ function OtherProducts({
               <div className="p-3">
                 <h3
                   className="truncate text-sm font-semibold text-zinc-900 dark:text-white"
-                  title={product.nama}
+                  title={p.nama}
                 >
-                  {product.nama}
+                  {p.nama}
                 </h3>
-
-                <p className="mt-1 truncate text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                  {formatPrice(product.harga) ?? "Harga tidak tersedia"}
-                  {product.satuan && ` / ${product.satuan}`}
+                <p className="mt-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                  {formatPrice(p.harga) ?? "Hubungi"}
                 </p>
-
-                <div className="mt-3 flex items-center justify-between">
-                  <span className="text-[10px] font-medium text-zinc-400">
-                    Lihat detail
-                  </span>
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-lg border border-white bg-white text-zinc-500 transition-colors group-hover:text-emerald-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-400 dark:group-hover:text-emerald-400">
-                    <Eye size={13} />
-                  </span>
-                </div>
               </div>
             </Link>
           );
@@ -327,6 +310,7 @@ function OtherProducts({
   );
 }
 
+/* ─── Main ─── */
 export default function ProductDetailPage({
   product,
   umkm,
@@ -334,26 +318,24 @@ export default function ProductDetailPage({
 }: Props) {
   return (
     <>
-      {/* Main Content */}
-      <div className="relative z-10 mx-auto max-w-7xl px-5 md:px-6">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] xl:gap-8">
-          {/* Left: Product Gallery + Info */}
-          <div className="w-full min-w-0 space-y-6">
+      {/* Two-column layout */}
+      <div className="relative z-10 mx-auto max-w-6xl px-5 md:px-6">
+        <div className="grid gap-8 lg:grid-cols-[1fr_380px] lg:items-start">
+          {/* Left: Gallery */}
+          <div className="w-full min-w-0">
             <ProductGallery images={product.gambar} nama={product.nama} />
-            <ProductInfo product={product} />
           </div>
 
-          {/* Right: UMKM Sidebar */}
-          <div className="w-full min-w-0">
-            <div className="sticky top-24">
-              {umkm && <UmkmMiniCard umkm={umkm} />}
-            </div>
+          {/* Right: Info + UMKM */}
+          <div className="w-full min-w-0 space-y-5">
+            <ProductInfo product={product} />
+            {umkm && <UmkmCard umkm={umkm} />}
           </div>
         </div>
       </div>
 
-      {/* Other Products */}
-      <OtherProducts products={otherProducts} umkmId={product.umkm_id} />
+      {/* Related products */}
+      <OtherProducts products={otherProducts} />
     </>
   );
 }
