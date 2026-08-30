@@ -204,47 +204,66 @@ function UmkmCard({ umkm }: { umkm: UmkmData }) {
     ?.replace(/\D/g, "")
     .replace(/^0/, "62");
 
+  const hasImage = umkm.gambar && umkm.gambar.length > 0;
+
   return (
-    <div className="rounded-2xl border border-white bg-light p-4 dark:border-white/10 dark:bg-[#161616]">
-      <div className="flex items-center gap-3">
-        {/* UMKM avatar */}
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
-          <Store size={18} />
+    <div className="overflow-hidden rounded-2xl border border-white bg-light dark:border-white/10 dark:bg-[#161616]">
+      {/* UMKM Image */}
+      {hasImage && (
+        <div className="relative aspect-[16/7] w-full overflow-hidden">
+          <Image
+            src={imageUrl(umkm.gambar[0])}
+            alt={umkm.nama}
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+        </div>
+      )}
+
+      <div className="p-4">
+        <div className="flex items-center gap-3">
+          {!hasImage && (
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
+              <Store size={18} />
+            </div>
+          )}
+
+          <div className="min-w-0 flex-1">
+            <Link
+              href={`/umkm/${umkm.id}`}
+              className="block truncate text-sm font-semibold text-zinc-900 transition-colors hover:text-violet-600 dark:text-white dark:hover:text-violet-400"
+            >
+              {umkm.nama}
+            </Link>
+            <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-zinc-500">
+              <MapPin size={11} className="shrink-0" />
+              {umkm.kecamatan}
+            </p>
+          </div>
         </div>
 
-        <div className="min-w-0 flex-1">
+        <div className="mt-3 flex gap-2">
+          {whatsappNumber && (
+            <button
+              onClick={() =>
+                window.open(`https://wa.me/${whatsappNumber}`, "_blank")
+              }
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
+            >
+              <MessageCircle size={13} />
+              WhatsApp
+            </button>
+          )}
+
           <Link
             href={`/umkm/${umkm.id}`}
-            className="block truncate text-sm font-semibold text-zinc-900 transition-colors hover:text-violet-600 dark:text-white dark:hover:text-violet-400"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-all hover:border-violet-300 hover:text-violet-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:text-violet-400"
           >
-            {umkm.nama}
+            <Store size={13} />
+            Lihat UMKM
           </Link>
-          <p className="mt-0.5 truncate text-xs text-zinc-500">
-            {umkm.kecamatan}
-          </p>
         </div>
-      </div>
-
-      <div className="mt-3 flex gap-2">
-        {whatsappNumber && (
-          <button
-            onClick={() =>
-              window.open(`https://wa.me/${whatsappNumber}`, "_blank")
-            }
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
-          >
-            <MessageCircle size={13} />
-            WhatsApp
-          </button>
-        )}
-
-        <Link
-          href={`/umkm/${umkm.id}`}
-          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-all hover:border-violet-300 hover:text-violet-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:text-violet-400"
-        >
-          <Store size={13} />
-          Lihat UMKM
-        </Link>
       </div>
     </div>
   );
