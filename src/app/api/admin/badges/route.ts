@@ -12,7 +12,7 @@ export async function GET() {
   const badges: Record<string, number> = {};
 
   // Verifikasi badge: count of pending umkm_requests
-  if (user.role === "admin_kecamatan" || user.role === "super_admin") {
+  if (user.role === "admin_kecamatan" || user.role === "super_admin" || user.role === "admin") {
     const { data: pendingRequests } = await supabaseAdmin
       .from("umkm_requests")
       .select("payload")
@@ -27,7 +27,7 @@ export async function GET() {
           return user.kecamatan.includes(payload?.kecamatan);
         }).length;
       } else {
-        // Super admin: all pending
+        // Super admin & admin: all pending
         badges.verifikasi = pendingRequests.length;
       }
     } else {
