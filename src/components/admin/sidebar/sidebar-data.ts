@@ -49,7 +49,6 @@ export const menus: SidebarMenu[] = [
     href: "/admin/berita",
     icon: Newspaper,
     roles: ["super_admin", "admin_kecamatan", "admin"],
-    badgeKey: "notifikasi",
   },
   {
     label: "Akun",

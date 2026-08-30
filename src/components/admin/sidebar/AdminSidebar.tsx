@@ -128,10 +128,7 @@ export default function AdminSidebar() {
                 key={menu.label}
                 menu={menu}
                 collapsed={collapsed}
-                badges={{
-                  ...badges,
-                  ...(notifCount > 0 ? { notifikasi: notifCount } : {}),
-                }}
+                badges={badges}
                 openMenu={openMenu}
                 setOpenMenu={setOpenMenu}
               />
