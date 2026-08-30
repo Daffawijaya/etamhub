@@ -9,7 +9,6 @@ import {
   Trash2,
   BarChart3,
   FileText,
-  Search,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -189,7 +188,18 @@ export default function LogAktivitasPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
   const [filterAction, setFilterAction] = useState("");
-  const [searchName, setSearchName] = useState("");
+  const [filterActor, setFilterActor] = useState("");
+  const [actors, setActors] = useState<{ actor_id: string; actor_name: string; actor_role: string }[]>([]);
+
+  async function loadActors() {
+    try {
+      const res = await fetch("/api/admin/activity-logs/actors");
+      const data = await res.json();
+      if (res.ok) setActors(data.actors ?? []);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   async function loadLogs() {
     setLoading(true);
@@ -199,6 +209,7 @@ export default function LogAktivitasPage() {
         limit: "20",
       });
       if (filterAction) params.set("action", filterAction);
+      if (filterActor) params.set("actor_id", filterActor);
 
       const res = await fetch(`/api/admin/activity-logs?${params}`);
       const data = await res.json();
@@ -216,15 +227,14 @@ export default function LogAktivitasPage() {
   }
 
   useEffect(() => {
-    loadLogs();
-  }, [page, filterAction]);
+    loadActors();
+  }, []);
 
-  const filteredLogs = logs.filter((log) => {
-    if (!searchName) return true;
-    return log.actor_name
-      .toLowerCase()
-      .includes(searchName.toLowerCase());
-  });
+  useEffect(() => {
+    loadLogs();
+  }, [page, filterAction, filterActor]);
+
+  const filteredLogs = logs;
 
   return (
     <div className="pb-6 px-6">
@@ -242,19 +252,21 @@ export default function LogAktivitasPage() {
 
           {/* Search + Filter */}
           <div className="flex items-center gap-3">
-            <div className="relative w-64">
-              <Search
-                size={16}
-                className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-              />
-              <input
-                type="text"
-                placeholder="Cari nama admin..."
-                value={searchName}
-                onChange={(e) => setSearchName(e.target.value)}
-                className={`${inputClass} w-full pl-9 pr-4`}
-              />
-            </div>
+            <select
+              value={filterActor}
+              onChange={(e) => {
+                setFilterActor(e.target.value);
+                setPage(1);
+              }}
+              className={`${inputClass} w-56`}
+            >
+              <option value="">Semua Admin</option>
+              {actors.map((actor) => (
+                <option key={actor.actor_id} value={actor.actor_id}>
+                  {actor.actor_name}
+                </option>
+              ))}
+            </select>
             <select
               value={filterAction}
               onChange={(e) => {
