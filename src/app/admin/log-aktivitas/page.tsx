@@ -13,6 +13,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import LoadingState from "@/components/LoadingState";
+import CustomSelect from "@/components/ui/CustomSelect";
 
 interface ActivityLog {
   id: string;
@@ -158,28 +159,7 @@ function timeAgo(iso: string) {
   return formatDate(iso);
 }
 
-const inputClass = `
-  h-11
-  rounded-xl
-  border
-  border-slate-200
-  dark:border-white/[0.06]
-  bg-slate-50
-  dark:bg-white/[0.03]
-  px-3
-  text-sm
-  font-medium
-  text-slate-700
-  dark:text-white
-  outline-none
-  transition-all
-  duration-300
-  hover:border-slate-300
-  dark:hover:border-white/[0.12]
-  focus:border-sky-500
-  focus:ring-4
-  focus:ring-sky-500/10
-`;
+
 
 export default function LogAktivitasPage() {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
@@ -252,36 +232,32 @@ export default function LogAktivitasPage() {
 
           {/* Search + Filter */}
           <div className="flex items-center gap-3">
-            <select
+            <CustomSelect
               value={filterActor}
-              onChange={(e) => {
-                setFilterActor(e.target.value);
+              onChange={(v) => {
+                setFilterActor(v);
                 setPage(1);
               }}
-              className={`${inputClass} w-56`}
-            >
-              <option value="">Semua Admin</option>
-              {actors.map((actor) => (
-                <option key={actor.actor_id} value={actor.actor_id}>
-                  {actor.actor_name}
-                </option>
-              ))}
-            </select>
-            <select
+              placeholder="Semua Admin"
+              options={actors.map((a) => ({
+                value: a.actor_id,
+                label: a.actor_name,
+              }))}
+              className="w-56"
+            />
+            <CustomSelect
               value={filterAction}
-              onChange={(e) => {
-                setFilterAction(e.target.value);
+              onChange={(v) => {
+                setFilterAction(v);
                 setPage(1);
               }}
-              className={`${inputClass} w-56`}
-            >
-              <option value="">Semua Aksi</option>
-              {Object.entries(ACTION_CONFIG).map(([key, config]) => (
-                <option key={key} value={key}>
-                  {config.label}
-                </option>
-              ))}
-            </select>
+              placeholder="Semua Aksi"
+              options={Object.entries(ACTION_CONFIG).map(([key, config]) => ({
+                value: key,
+                label: config.label,
+              }))}
+              className="w-56"
+            />
           </div>
         </div>
 
