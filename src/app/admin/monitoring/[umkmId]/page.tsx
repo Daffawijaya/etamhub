@@ -82,6 +82,16 @@ function formatRupiah(value: number | null) {
   }).format(value);
 }
 
+function formatRupiahInput(value: string) {
+  const nums = value.replace(/\D/g, "");
+  if (!nums) return "";
+  return nums.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+function parseRupiahInput(value: string) {
+  return value.replace(/\./g, "");
+}
+
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString("id-ID", {
     day: "2-digit",
@@ -824,9 +834,9 @@ export default function MonitoringDetailPage() {
                   <input
                     type="text"
                     inputMode="numeric"
-                    value={form.omzet}
-                    onChange={(e) => setForm((p) => ({ ...p, omzet: e.target.value.replace(/[^\d]/g, "") }))}
-                    placeholder="Contoh: 10.000.000"
+                    value={formatRupiahInput(form.omzet)}
+                    onChange={(e) => setForm((p) => ({ ...p, omzet: parseRupiahInput(e.target.value) }))}
+                    placeholder="Contoh: 12.000.000"
                     className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
