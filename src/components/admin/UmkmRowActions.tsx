@@ -35,6 +35,7 @@ export default function UmkmRowActions({
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [publishLoading, setPublishLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -46,6 +47,10 @@ export default function UmkmRowActions({
 
   useEffect(() => {
     setMounted(true);
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setRole(data.role))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -66,6 +71,8 @@ export default function UmkmRowActions({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const isSuperAdmin = role === "super_admin";
 
   function toggleMenu() {
     if (!open && buttonRef.current) {
@@ -210,17 +217,18 @@ export default function UmkmRowActions({
               <ExternalLink size={16} />
               Detail UMKM
             </button>
-            <button
-              onClick={() => {
-                if (onEdit) {
-                  onEdit();
-                } else {
-                  router.push(`/admin/umkm/${id}/edit`);
-                }
+            {isSuperAdmin && (
+              <button
+                onClick={() => {
+                  if (onEdit) {
+                    onEdit();
+                  } else {
+                    router.push(`/admin/umkm/${id}/edit`);
+                  }
 
-                setOpen(false);
-              }}
-              className="
+                  setOpen(false);
+                }}
+                className="
                 flex w-full items-center gap-3
                 px-4 py-3
                 text-sm font-medium
@@ -232,10 +240,11 @@ export default function UmkmRowActions({
                 dark:text-slate-200
                 dark:hover:bg-white/10
               "
-            >
-              <Pencil size={16} />
-              Edit UMKM
-            </button>
+              >
+                <Pencil size={16} />
+                Edit UMKM
+              </button>
+            )}
             {showPublishAction && (
               <>
                 <button
@@ -271,10 +280,11 @@ export default function UmkmRowActions({
               </>
             )}
 
-            <button
-              disabled={deleteLoading}
-              onClick={handleDelete}
-              className="
+            {isSuperAdmin && (
+              <button
+                disabled={deleteLoading}
+                onClick={handleDelete}
+                className="
                 flex w-full items-center gap-3
                 px-4 py-3
                 text-sm font-medium
@@ -289,11 +299,12 @@ export default function UmkmRowActions({
                 disabled:cursor-not-allowed
                 disabled:opacity-50
               "
-            >
-              <Trash2 size={16} />
+              >
+                <Trash2 size={16} />
 
-              {deleteLoading ? "Menghapus..." : "Hapus UMKM"}
-            </button>
+                {deleteLoading ? "Menghapus..." : "Hapus UMKM"}
+              </button>
+            )}
           </div>,
           document.body,
         )}

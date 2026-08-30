@@ -18,6 +18,16 @@ async function checkAdmin() {
   return true;
 }
 
+async function checkSuperAdmin() {
+  const user = await getCurrentUser();
+
+  if (!user || user.role !== "super_admin") {
+    return false;
+  }
+
+  return true;
+}
+
 const MAX_NOTIFICATION_AGE = 30 * 24 * 60 * 60 * 1000;
 
 function cleanNotifications(notifications: any[]) {
@@ -91,7 +101,7 @@ export async function PUT(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  const allowed = await checkAdmin();
+  const allowed = await checkSuperAdmin();
 
   if (!allowed) {
     return NextResponse.json(
@@ -309,7 +319,7 @@ export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  const allowed = await checkAdmin();
+  const allowed = await checkSuperAdmin();
 
   if (!allowed) {
     return NextResponse.json(
