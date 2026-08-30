@@ -862,9 +862,9 @@ export default function MonitoringDetailPage() {
               <div>
                 <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Sosmed</label>
                 <div className="grid grid-cols-3 gap-3">
-                  <input type="text" value={form.instagram} onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))} placeholder={umkm.instagram ?? "Instagram"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
-                  <input type="text" value={form.facebook} onChange={(e) => setForm((p) => ({ ...p, facebook: e.target.value }))} placeholder={umkm.facebook ?? "Facebook"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
-                  <input type="text" value={form.tiktok} onChange={(e) => setForm((p) => ({ ...p, tiktok: e.target.value }))} placeholder={umkm.tiktok ?? "TikTok"} className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <input type="text" value={form.instagram} onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <input type="text" value={form.facebook} onChange={(e) => setForm((p) => ({ ...p, facebook: e.target.value }))} placeholder="Facebook URL" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  <input type="text" value={form.tiktok} onChange={(e) => setForm((p) => ({ ...p, tiktok: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
                 </div>
               </div>
 
