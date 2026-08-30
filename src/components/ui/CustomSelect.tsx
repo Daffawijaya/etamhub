@@ -56,27 +56,28 @@ export default function CustomSelect({
         onClick={() => !disabled && setOpen((o) => !o)}
         disabled={disabled}
         className={`
-          h-11 w-full
+          w-full
           rounded-xl
           border
           border-slate-200
-          dark:border-white/[0.06]
-          bg-slate-50
-          dark:bg-white/[0.03]
-          px-3 pr-9
+          dark:border-slate-800
+          bg-white
+          dark:bg-dark
+          px-4 pr-10
+          py-3
           text-left
           text-sm
           font-medium
-          text-slate-700
+          text-slate-900
           dark:text-white
           outline-none
-          transition-all
+          transition-colors
           duration-300
           hover:border-slate-300
-          dark:hover:border-white/[0.12]
+          dark:hover:border-slate-700
           focus:border-sky-500
-          focus:ring-4
-          focus:ring-sky-500/10
+          focus:ring-1
+          focus:ring-sky-500/20
           disabled:cursor-not-allowed
           disabled:opacity-50
         `}
@@ -86,7 +87,7 @@ export default function CustomSelect({
         </span>
         <ChevronDown
           size={16}
-          className={`pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
         />
       </button>
 
