@@ -7,6 +7,7 @@ interface Props {
   kategori: string;
   value: string;
   required?: boolean;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }
 
@@ -15,6 +16,7 @@ export default function SubkategoriSelect({
   value,
   onChange,
   required = false,
+  disabled = false,
 }: Props) {
   const options = kategori
     ? [
@@ -29,6 +31,7 @@ export default function SubkategoriSelect({
       placeholder="Pilih Subkategori*"
       value={value}
       required={required}
+      disabled={disabled || !kategori}
       options={options}
       onChange={onChange}
     />

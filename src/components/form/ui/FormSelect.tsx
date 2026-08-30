@@ -8,6 +8,7 @@ interface SelectProps {
   options: readonly string[];
   placeholder?: string;
   required?: boolean;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }
 
@@ -17,6 +18,7 @@ export default function FormSelect({
   options,
   placeholder,
   required = false,
+  disabled = false,
   onChange,
 }: SelectProps) {
   const sortedOptions = [...options].sort((a, b) => {
@@ -38,6 +40,7 @@ export default function FormSelect({
       options={mappedOptions}
       placeholder={placeholder ?? `Pilih ${name}`}
       required={required}
+      disabled={disabled}
     />
   );
 }
