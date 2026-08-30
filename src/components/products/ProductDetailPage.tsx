@@ -207,9 +207,20 @@ function UmkmCard({ umkm }: { umkm: UmkmData }) {
   return (
     <div className="rounded-2xl border border-white bg-light p-4 dark:border-white/10 dark:bg-[#161616]">
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
-          <Store size={18} />
-        </div>
+        {umkm.gambar && umkm.gambar.length > 0 ? (
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl">
+            <Image
+              src={imageUrl(umkm.gambar[0])}
+              alt={umkm.nama}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
+            <Store size={18} />
+          </div>
+        )}
 
         <div className="min-w-0 flex-1">
           <Link
