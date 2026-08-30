@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { imageUrl } from "@/lib/imageUrl";
-import { MapPin, Tag, ArrowRight, Store, MessageCircle } from "lucide-react";
+import { MapPin, Tag, ArrowRight, Store, MessageCircle, Eye } from "lucide-react";
 import type { Product, ProductLegalitas } from "@/types/product";
 
 type UmkmData = {
@@ -204,66 +204,47 @@ function UmkmCard({ umkm }: { umkm: UmkmData }) {
     ?.replace(/\D/g, "")
     .replace(/^0/, "62");
 
-  const hasImage = umkm.gambar && umkm.gambar.length > 0;
-
   return (
-    <div className="overflow-hidden rounded-2xl border border-white bg-light dark:border-white/10 dark:bg-[#161616]">
-      {/* UMKM Image */}
-      {hasImage && (
-        <div className="relative aspect-[16/7] w-full overflow-hidden">
-          <Image
-            src={imageUrl(umkm.gambar[0])}
-            alt={umkm.nama}
-            fill
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-        </div>
-      )}
-
-      <div className="p-4">
-        <div className="flex items-center gap-3">
-          {!hasImage && (
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
-              <Store size={18} />
-            </div>
-          )}
-
-          <div className="min-w-0 flex-1">
-            <Link
-              href={`/umkm/${umkm.id}`}
-              className="block truncate text-sm font-semibold text-zinc-900 transition-colors hover:text-violet-600 dark:text-white dark:hover:text-violet-400"
-            >
-              {umkm.nama}
-            </Link>
-            <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-zinc-500">
-              <MapPin size={11} className="shrink-0" />
-              {umkm.kecamatan}
-            </p>
-          </div>
+    <div className="rounded-2xl border border-white bg-light p-4 dark:border-white/10 dark:bg-[#161616]">
+      <div className="flex items-center gap-3">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400">
+          <Store size={18} />
         </div>
 
-        <div className="mt-3 flex gap-2">
-          {whatsappNumber && (
-            <button
-              onClick={() =>
-                window.open(`https://wa.me/${whatsappNumber}`, "_blank")
-              }
-              className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
-            >
-              <MessageCircle size={13} />
-              WhatsApp
-            </button>
-          )}
-
+        <div className="min-w-0 flex-1">
           <Link
             href={`/umkm/${umkm.id}`}
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-all hover:border-violet-300 hover:text-violet-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:text-violet-400"
+            className="block truncate text-sm font-semibold text-zinc-900 transition-colors hover:text-violet-600 dark:text-white dark:hover:text-violet-400"
           >
-            <Store size={13} />
-            Lihat UMKM
+            {umkm.nama}
           </Link>
+          <p className="mt-0.5 flex items-center gap-1 truncate text-xs text-zinc-500">
+            <MapPin size={11} className="shrink-0" />
+            {umkm.kecamatan}
+          </p>
         </div>
+      </div>
+
+      <div className="mt-3 flex gap-2">
+        {whatsappNumber && (
+          <button
+            onClick={() =>
+              window.open(`https://wa.me/${whatsappNumber}`, "_blank")
+            }
+            className="flex flex-1 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-3 py-2 text-xs font-medium text-white transition-opacity hover:opacity-90"
+          >
+            <MessageCircle size={13} />
+            WhatsApp
+          </button>
+        )}
+
+        <Link
+          href={`/umkm/${umkm.id}`}
+          className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-all hover:border-violet-300 hover:text-violet-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:text-violet-400"
+        >
+          <Store size={13} />
+          Lihat UMKM
+        </Link>
       </div>
     </div>
   );
@@ -279,32 +260,48 @@ function OtherProducts({
 
   return (
     <section className="mx-auto max-w-7xl px-5 py-12 md:px-6">
-      <h2 className="text-lg font-bold text-zinc-900 dark:text-white">
-        Produk Lainnya
-      </h2>
-      <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-        Dari UMKM yang sama
-      </p>
+      <div>
+        <h2 className="text-xl font-semibold text-zinc-900 dark:text-white">
+          Produk
+        </h2>
+        <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+          Produk lain dari UMKM ini
+        </p>
+      </div>
 
-      <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
         {products.map((p) => {
-          const img = p.gambar?.[0];
+          const image = p.gambar?.[0];
 
           return (
             <Link
               key={p.id}
               href={`/produk/${p.id}`}
-              className="group overflow-hidden rounded-xl border border-white bg-light transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:border-white/10 dark:bg-white/[0.03]"
+              className="
+                group
+                min-w-0
+                overflow-hidden
+                rounded-xl
+                border
+                border-white
+                bg-light-bg
+                transition-all
+                duration-200
+                hover:-translate-y-0.5
+                hover:shadow-md
+                dark:border-white/10
+                dark:bg-white/[0.03]
+              "
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-zinc-100 dark:bg-white/[0.03]">
-                {img ? (
+              <div className="aspect-[5/4] overflow-hidden bg-zinc-100 dark:bg-white/[0.03]">
+                {image ? (
                   <img
-                    src={imageUrl(img)}
+                    src={image}
                     alt={p.nama}
                     className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center text-xs text-zinc-400">
+                  <div className="flex h-full items-center justify-center px-2 text-center text-xs text-zinc-400 dark:text-zinc-600">
                     Tidak ada gambar
                   </div>
                 )}
@@ -317,9 +314,79 @@ function OtherProducts({
                 >
                   {p.nama}
                 </h3>
-                <p className="mt-1 text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                  {formatPrice(p.harga) ?? "Hubungi"}
+
+                <p
+                  className="mt-1 truncate text-xs font-semibold text-emerald-600 dark:text-emerald-400"
+                  title={formatPrice(p.harga) ?? "Harga tidak tersedia"}
+                >
+                  {formatPrice(p.harga) ?? "Harga tidak tersedia"}
+                  {p.satuan && ` / ${p.satuan}`}
                 </p>
+
+                {p.deskripsi && (
+                  <p className="mt-2 line-clamp-2 text-xs leading-5 text-zinc-500 dark:text-zinc-400">
+                    {p.deskripsi}
+                  </p>
+                )}
+
+                {p.product_legalitas.length > 0 && (
+                  <div className="mt-2 flex flex-wrap gap-1">
+                    {p.product_legalitas.map((leg) => (
+                      <span
+                        key={leg.id}
+                        className="
+                          max-w-full
+                          truncate
+                          rounded-md
+                          border
+                          border-white
+                          bg-white
+                          px-1.5
+                          py-1
+                          text-[9px]
+                          font-medium
+                          text-zinc-600
+                          dark:border-white/10
+                          dark:bg-white/[0.03]
+                          dark:text-zinc-300
+                        "
+                      >
+                        {leg.jenis === "kbli"
+                          ? `KBLI ${leg.kode}`
+                          : leg.jenis.toUpperCase()}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="mt-3 flex items-center justify-between">
+                  <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500">
+                    Lihat detail
+                  </span>
+
+                  <span
+                    className="
+                      inline-flex
+                      h-7
+                      w-7
+                      items-center
+                      justify-center
+                      rounded-lg
+                      border
+                      border-white
+                      bg-white
+                      text-zinc-500
+                      transition-colors
+                      group-hover:text-emerald-600
+                      dark:border-white/10
+                      dark:bg-white/[0.03]
+                      dark:text-zinc-400
+                      dark:group-hover:text-emerald-400
+                    "
+                  >
+                    <Eye size={13} />
+                  </span>
+                </div>
               </div>
             </Link>
           );
