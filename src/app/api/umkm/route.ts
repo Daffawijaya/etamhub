@@ -342,6 +342,32 @@ export async function POST(req: Request) {
       }
     }
 
+    // Notify super_admin and admin
+    const { data: allAdmins } = await supabaseAdmin
+      .from("admins")
+      .select("id, roles ( name )")
+      .neq("id", user.id);
+
+    const superAndAdminIds = (allAdmins ?? [])
+      .filter((a: any) => {
+        const roleName = Array.isArray(a.roles) ? a.roles[0]?.name : (a.roles as any)?.name;
+        return roleName === "super_admin" || roleName === "admin";
+      })
+      .map((a: any) => a.id);
+
+    if (superAndAdminIds.length > 0) {
+      const adminNotifs = superAndAdminIds.map((adminId: string) => ({
+        id: crypto.randomUUID(),
+        admin_id: adminId,
+        type: "verification",
+        title: `UMKM "${body.nama}" menunggu verifikasi`,
+        link: "/admin/verifikasi",
+        created_at: now,
+        read: false,
+      }));
+      await supabaseAdmin.from("notifications").insert(adminNotifs);
+    }
+
     return NextResponse.json({
       success: true,
       message: "UMKM berhasil dikirim untuk diverifikasi admin kecamatan",
