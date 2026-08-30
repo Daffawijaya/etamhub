@@ -18,6 +18,7 @@ export default function AdminSidebar() {
   const [badges, setBadges] = useState<Record<string, number>>({});
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [notifCount, setNotifCount] = useState(0);
+  const [userName, setUserName] = useState<string | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const fetchBadges = useCallback(async () => {
@@ -44,6 +45,7 @@ export default function AdminSidebar() {
       .then((res) => res.json())
       .then((data) => {
         setRole(data.role);
+        setUserName(data.nama ?? null);
       });
   }, []);
 
@@ -113,7 +115,7 @@ export default function AdminSidebar() {
       `}
     >
       {/* Logo */}
-      <SidebarLogo collapsed={collapsed} />
+      <SidebarLogo collapsed={collapsed} userName={userName} />
 
       {/* Menu */}
       <nav className="flex-1 overflow-y-auto px-2 py-1">

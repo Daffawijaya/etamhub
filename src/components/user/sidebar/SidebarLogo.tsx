@@ -4,9 +4,10 @@ import Image from "next/image";
 
 interface SidebarLogoProps {
   collapsed: boolean;
+  userName?: string | null;
 }
 
-export default function SidebarLogo({ collapsed }: SidebarLogoProps) {
+export default function SidebarLogo({ collapsed, userName }: SidebarLogoProps) {
   return (
     <div>
       <div
@@ -79,9 +80,11 @@ export default function SidebarLogo({ collapsed }: SidebarLogoProps) {
               text-slate-500
               dark:text-neutral-400
               whitespace-nowrap
+              truncate
+              max-w-[160px]
             "
           >
-            Admin Dashboard
+            Selamat datang, {userName ?? "User"}
           </p>
         </div>
       </div>

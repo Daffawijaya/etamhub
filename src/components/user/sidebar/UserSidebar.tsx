@@ -14,6 +14,7 @@ const STORAGE_KEY = "user-sidebar-collapsed";
 export default function UserSidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [userName, setUserName] = useState<string | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   useEffect(() => {
@@ -26,6 +27,11 @@ export default function UserSidebar() {
     }
 
     setMounted(true);
+
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setUserName(data.nama ?? null))
+      .catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -70,7 +76,7 @@ export default function UserSidebar() {
         onToggle={() => setCollapsed((prev) => !prev)}
       />
 
-      <SidebarLogo collapsed={collapsed} />
+      <SidebarLogo collapsed={collapsed} userName={userName} />
 
       <nav className="flex-1 overflow-y-auto px-2 py-1">
         <div className="space-y-1">
