@@ -102,12 +102,18 @@ function NavLink({
   href: string;
   children: React.ReactNode;
 }) {
+  const router = useRouter();
   const pathname = usePathname();
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
     const hash = href.includes("#") ? href.split("#")[1] : null;
     if (hash && pathname === "/") {
+      e.preventDefault();
       document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+      window.history.replaceState(null, "", "#" + hash);
+    } else if (hash && pathname !== "/") {
+      e.preventDefault();
+      router.push("/#" + hash);
     }
   };
 

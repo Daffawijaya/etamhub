@@ -23,6 +23,17 @@ export default function HeroNavbar() {
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={(e) => {
+                  const hash = item.href.includes("#") ? item.href.split("#")[1] : null;
+                  if (hash && pathname === "/") {
+                    e.preventDefault();
+                    document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+                    window.history.replaceState(null, "", "#" + hash);
+                  } else if (hash && pathname !== "/") {
+                    e.preventDefault();
+                    router.push("/#" + hash);
+                  }
+                }}
                 className={`transition text-sm ${
                   isHome
                     ? "text-white hover:text-white/80 dark:text-white/90 dark:hover:text-white"

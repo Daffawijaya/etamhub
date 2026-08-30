@@ -112,7 +112,21 @@ export default function MobileNavbar() {
             <Link
               key={item.href}
               href={item.href}
-              onClick={() => setOpen(false)}
+              onClick={(e) => {
+                const hash = item.href.includes("#") ? item.href.split("#")[1] : null;
+                if (hash && pathname === "/") {
+                  e.preventDefault();
+                  setOpen(false);
+                  document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+                  window.history.replaceState(null, "", "#" + hash);
+                } else if (hash && pathname !== "/") {
+                  e.preventDefault();
+                  setOpen(false);
+                  router.push("/#" + hash);
+                } else {
+                  setOpen(false);
+                }
+              }}
               className="text-black dark:text-white text-xl font-medium"
             >
               {item.label}

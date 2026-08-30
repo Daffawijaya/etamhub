@@ -49,7 +49,10 @@ export default function Hero() {
           </h1>
           <BigChevronButtonButton
             title="Pilih Kecamatan"
-            onClick={() => router.push("/#kecamatan")}
+            onClick={() => {
+              document.getElementById("kecamatan")?.scrollIntoView({ behavior: "smooth" });
+              window.history.replaceState(null, "", "#kecamatan");
+            }}
           />
         </div>
       </div>

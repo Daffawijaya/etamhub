@@ -9,7 +9,10 @@ export default function ExploreButton() {
   return (
     <BigChevronButtonButton
       title="Jelajahi Kecamatan"
-      onClick={() => router.push("/#kecamatan")}
+      onClick={() => {
+        document.getElementById("kecamatan")?.scrollIntoView({ behavior: "smooth" });
+        window.history.replaceState(null, "", "#kecamatan");
+      }}
     />
   );
 }
