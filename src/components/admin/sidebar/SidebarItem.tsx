@@ -220,24 +220,6 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
             />
           )}
 
-          {/* Badge — sum of children badges */}
-          {(() => {
-            const totalBadge = hasChildren
-              ? menu.children!.reduce((sum, c) => sum + (badges?.[c.badgeKey ?? ""] ?? 0), 0)
-              : 0;
-            return totalBadge > 0 ? (
-              <span
-                className={`
-                  absolute z-10 flex h-5 min-w-5 items-center justify-center
-                  rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white
-                  ${collapsed ? "-right-1 -top-1" : "right-8"}
-                `}
-              >
-                {totalBadge > 99 ? "99+" : totalBadge}
-              </span>
-            ) : null;
-          })()}
-
           {/* Hover Overlay */}
           {!active && (
             <span
@@ -262,6 +244,24 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
             />
           )}
         </button>
+
+        {/* Badge — sum of children badges (outside button to avoid overflow-hidden) */}
+        {(() => {
+          const totalBadge = hasChildren
+            ? menu.children!.reduce((sum, c) => sum + (badges?.[c.badgeKey ?? ""] ?? 0), 0)
+            : 0;
+          return totalBadge > 0 ? (
+            <span
+              className={`
+                absolute z-20 flex h-4 min-w-4 items-center justify-center
+                rounded-full bg-red-500 px-1 text-[9px] font-bold text-white
+                ${collapsed ? "-right-0.5 top-0.5" : "right-3 top-1.5"}
+              `}
+            >
+              {totalBadge > 99 ? "99+" : totalBadge}
+            </span>
+          ) : null;
+        })()}
 
         {/* ─── Expanded mode: slide-down children ─── */}
         {!collapsed && (
@@ -349,7 +349,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
 
                     {/* Child Badge */}
                     {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && (
-                      <span className="absolute right-3 z-10 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                      <span className="absolute right-3 top-1.5 z-10 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white">
                         {badges[child.badgeKey] > 99 ? "99+" : badges[child.badgeKey]}
                       </span>
                     )}
@@ -409,7 +409,7 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
                   <span className="whitespace-nowrap">{child.label}</span>
 
                   {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && (
-                    <span className="ml-auto flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white">
+                    <span className="ml-auto flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[9px] font-bold text-white">
                       {badges[child.badgeKey] > 99 ? "99+" : badges[child.badgeKey]}
                     </span>
                   )}
@@ -537,9 +537,9 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
       {menu.badgeKey && badges && (badges[menu.badgeKey] ?? 0) > 0 && (
         <span
           className={`
-            absolute z-10 flex h-5 min-w-5 items-center justify-center
-            rounded-full bg-red-500 px-1.5 text-[10px] font-bold text-white
-            ${collapsed ? "-right-1 -top-1" : "right-3"}
+            absolute z-20 flex h-4 min-w-4 items-center justify-center
+            rounded-full bg-red-500 px-1 text-[9px] font-bold text-white
+            ${collapsed ? "-right-0.5 top-0.5" : "right-3 top-1.5"}
           `}
         >
           {badges[menu.badgeKey] > 99 ? "99+" : badges[menu.badgeKey]}
