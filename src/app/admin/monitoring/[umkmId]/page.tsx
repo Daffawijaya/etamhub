@@ -815,17 +815,18 @@ export default function MonitoringDetailPage() {
                     type="number"
                     value={form.jumlah_tenaga_kerja}
                     onChange={(e) => setForm((p) => ({ ...p, jumlah_tenaga_kerja: e.target.value.replace(/\D/g, "").slice(0, 6) }))}
-                    placeholder={String(umkm.jumlah_tenaga_kerja ?? "-")}
+                    placeholder="Contoh: 5"
                     className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
                 <div>
                   <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Omzet (Rp)</label>
                   <input
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     value={form.omzet}
-                    onChange={(e) => setForm((p) => ({ ...p, omzet: e.target.value.replace(/\D/g, "") }))}
-                    placeholder={String(umkm.omzet ?? "-")}
+                    onChange={(e) => setForm((p) => ({ ...p, omzet: e.target.value.replace(/[^\d]/g, "") }))}
+                    placeholder="Contoh: 10.000.000"
                     className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
                   />
                 </div>
@@ -875,7 +876,7 @@ export default function MonitoringDetailPage() {
 
               <div>
                 <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Catatan</label>
-                <textarea value={form.catatan} onChange={(e) => setForm((p) => ({ ...p, catatan: e.target.value }))} placeholder="Catatan tambahan dari kunjungan/monitoring" rows={2} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                <textarea value={form.catatan} onChange={(e) => setForm((p) => ({ ...p, catatan: e.target.value }))} placeholder="Contoh: hasil observasi lapangan, rencana tindak lanjut, dll" rows={2} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
               </div>
             </div>
 
