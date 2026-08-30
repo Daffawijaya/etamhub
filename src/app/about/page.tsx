@@ -9,14 +9,14 @@ import AboutTeamTabs from "@/components/about/AboutTeamTabs";
 import FooterBrand from "@/components/FooterBrand";
 
 export const metadata: Metadata = {
-  title: "Tentang EtamHub",
+  title: "Tentang etamhub",
   description:
-    "EtamHub adalah platform digital katalog UMKM Kutai Kartanegara. Kenali visi, manfaat, dan tim di balik pengembangan ekosistem UMKM lokal.",
+    "etamhub adalah platform digital katalog UMKM Kutai Kartanegara. Kenali visi, manfaat, dan tim di balik pengembangan ekosistem UMKM lokal.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
-    title: "Tentang EtamHub",
+    title: "Tentang etamhub",
     description:
       "Platform digital katalog UMKM Kutai Kartanegara.",
     type: "website",

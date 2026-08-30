@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         title: news.title,
         description,
         url: canonicalUrl,
-        siteName: "EtamHub",
+        siteName: "etamhub",
         locale: "id_ID",
         ...(news.published_at && {
           publishedTime: news.published_at,
@@ -142,7 +142,7 @@ export default async function BeritaDetailPage({ params }: Props) {
       },
       publisher: {
         "@type": "Organization",
-        name: "EtamHub",
+        name: "etamhub",
         url: baseUrl,
       },
     };

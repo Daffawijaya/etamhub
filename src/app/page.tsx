@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navbar/Navbar";
 
 export const metadata: Metadata = {
-  title: "EtamHub — Katalog UMKM Kutai Kartanegara",
+  title: "etamhub — Katalog UMKM Kutai Kartanegara",
   description:
     "Temukan UMKM, produk, dan layanan dari seluruh kecamatan di Kutai Kartanegara. Jelajahi peta interaktif, berita terbaru, dan profil usaha lokal.",
   openGraph: {
-    title: "EtamHub — Katalog UMKM Kutai Kartanegara",
+    title: "etamhub — Katalog UMKM Kutai Kartanegara",
     description:
       "Temukan UMKM, produk, dan layanan dari seluruh kecamatan di Kutai Kartanegara.",
     type: "website",

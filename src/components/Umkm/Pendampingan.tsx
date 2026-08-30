@@ -130,7 +130,7 @@ export default function Pendampingan({ umkmId }: Props) {
       title: "Digitalisasi",
       items: [
         {
-          label: "Terdaftar di EtamHub",
+          label: "Terdaftar di etamhub",
           detail: "Profil UMKM aktif di platform",
           checked: true,
         },

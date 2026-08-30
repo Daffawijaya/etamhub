@@ -48,7 +48,7 @@ export default function LatestUmkm({ umkms }: Props) {
             duration-300
           "
         >
-          5 UMKM yang terakhir ditambahkan ke EtamHub
+          5 UMKM yang terakhir ditambahkan ke etamhub
         </p>
       </div>
 

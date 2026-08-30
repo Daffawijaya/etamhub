@@ -18,25 +18,25 @@ const baseUrl = getBaseUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "EtamHub — Katalog UMKM Kutai Kartanegara",
-    template: "%s | EtamHub",
+    default: "etamhub — Katalog UMKM Kutai Kartanegara",
+    template: "%s | etamhub",
   },
   description:
-    "EtamHub adalah platform katalog UMKM Kutai Kartanegara. Temukan produk, layanan, dan informasi UMKM dari seluruh kecamatan.",
+    "etamhub adalah platform katalog UMKM Kutai Kartanegara. Temukan produk, layanan, dan informasi UMKM dari seluruh kecamatan.",
   icons: {
     icon: "/eiconl.png",
   },
   openGraph: {
     type: "website",
     locale: "id_ID",
-    siteName: "EtamHub",
-    title: "EtamHub — Katalog UMKM Kutai Kartanegara",
+    siteName: "etamhub",
+    title: "etamhub — Katalog UMKM Kutai Kartanegara",
     description:
       "Platform katalog UMKM Kutai Kartanegara. Temukan produk, layanan, dan informasi UMKM dari seluruh kecamatan.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "EtamHub — Katalog UMKM Kutai Kartanegara",
+    title: "etamhub — Katalog UMKM Kutai Kartanegara",
     description:
       "Platform katalog UMKM Kutai Kartanegara. Temukan produk, layanan, dan informasi UMKM dari seluruh kecamatan.",
   },

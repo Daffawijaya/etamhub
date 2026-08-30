@@ -96,7 +96,7 @@ body::-webkit-scrollbar,
   display: none !important;
 }
 
-/* EtamHub Loading Bar */
+/* etamhub Loading Bar */
 #nprogress .bar {
   background: linear-gradient(to right, #844ec0, #ca3785) !important;
 

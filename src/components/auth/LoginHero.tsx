@@ -7,7 +7,7 @@ export default function LoginHero() {
       <div className="relative h-full overflow-hidden rounded-[18px]">
         <Image
           src="/bgrr.png"
-          alt="EtamHub Login"
+          alt="etamhub Login"
           fill
           priority
           className="object-cover"
