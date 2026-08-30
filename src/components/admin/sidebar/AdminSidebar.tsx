@@ -113,12 +113,7 @@ export default function AdminSidebar() {
       `}
     >
       {/* Logo */}
-      <div className="relative">
-        <SidebarLogo collapsed={collapsed} />
-        {notifCount > 0 && (
-          <span className="absolute -right-0.5 top-0.5 h-2 w-2 rounded-full bg-red-500 shadow-lg" />
-        )}
-      </div>
+      <SidebarLogo collapsed={collapsed} />
 
       {/* Menu */}
       <nav className="flex-1 overflow-y-auto px-2 py-1">
@@ -133,7 +128,10 @@ export default function AdminSidebar() {
                 key={menu.label}
                 menu={menu}
                 collapsed={collapsed}
-                badges={badges}
+                badges={{
+                  ...badges,
+                  ...(notifCount > 0 ? { notifikasi: notifCount } : {}),
+                }}
                 openMenu={openMenu}
                 setOpenMenu={setOpenMenu}
               />

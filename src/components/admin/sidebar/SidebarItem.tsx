@@ -245,15 +245,13 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
           )}
         </button>
 
-        {/* Badge dot (outside button to avoid overflow-hidden) */}
+        {/* Badge dot — top-right of icon */}
         {(() => {
           const totalBadge = hasChildren
             ? menu.children!.reduce((sum, c) => sum + (badges?.[c.badgeKey ?? ""] ?? 0), 0)
             : 0;
           return totalBadge > 0 ? (
-            <span
-              className={`absolute z-20 h-2 w-2 rounded-full bg-red-500 ${collapsed ? "-right-0.5 top-1" : "right-4 top-2"}`}
-            />
+            <span className="absolute left-[22px] top-1 z-20 h-2 w-2 rounded-full bg-red-500" />
           ) : null;
         })()}
 
@@ -492,6 +490,11 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
         `}
       >
         <Icon size={20} strokeWidth={2.2} />
+
+        {/* Badge dot — top-right of icon */}
+        {menu.badgeKey && badges && (badges[menu.badgeKey] ?? 0) > 0 && (
+          <span className="absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full bg-red-500" />
+        )}
       </div>
 
       {/* Label */}
@@ -522,13 +525,6 @@ export default function SidebarItem({ menu, collapsed, badges, openMenu, setOpen
       >
         {menu.label}
       </span>
-
-      {/* Badge dot */}
-      {menu.badgeKey && badges && (badges[menu.badgeKey] ?? 0) > 0 && (
-        <span
-          className={`absolute z-20 h-2 w-2 rounded-full bg-red-500 ${collapsed ? "-right-0.5 top-1" : "right-4 top-2"}`}
-        />
-      )}
 
       {/* Hover Overlay */}
       {!active && (
