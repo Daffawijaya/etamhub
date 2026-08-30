@@ -96,7 +96,7 @@ export default function CustomSelect({
         <div
           className="
             absolute
-            z-30
+            z-50
             mt-2
             w-full
             max-h-64
