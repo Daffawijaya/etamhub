@@ -119,17 +119,22 @@ const TIERS: {
 
 export default function PengaturanBadgePage() {
   const [criteria, setCriteria] = useState<BadgeCriteria>(DEFAULTS);
+  const [initialCriteria, setInitialCriteria] = useState<BadgeCriteria>(DEFAULTS);
   const modal = useModal();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+
+  const hasChanges = JSON.stringify(criteria) !== JSON.stringify(initialCriteria);
 
   useEffect(() => {
     fetch("/api/admin/badge-criteria")
       .then((res) => res.json())
       .then((data) => {
         if (data.silver_omzet_min !== undefined) {
-          setCriteria({ ...DEFAULTS, ...data, silver_label: data.silver_label ?? "", gold_label: data.gold_label ?? "", platinum_label: data.platinum_label ?? "" });
+          const loaded = { ...DEFAULTS, ...data, silver_label: data.silver_label ?? "", gold_label: data.gold_label ?? "", platinum_label: data.platinum_label ?? "" };
+          setCriteria(loaded);
+          setInitialCriteria(loaded);
         }
       })
       .catch(console.error)
@@ -161,6 +166,7 @@ export default function PengaturanBadgePage() {
         description: "Kriteria badge berhasil diperbarui.",
       });
 
+      setInitialCriteria(criteria);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch {
@@ -174,7 +180,7 @@ export default function PengaturanBadgePage() {
   }
 
   function handleReset() {
-    setCriteria(DEFAULTS);
+    setCriteria(initialCriteria);
   }
 
   function updateField<K extends keyof BadgeCriteria>(field: K, value: BadgeCriteria[K]) {
@@ -206,7 +212,7 @@ export default function PengaturanBadgePage() {
             </button>
             <button
               onClick={handleSave}
-              disabled={saving}
+              disabled={saving || !hasChanges}
               className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
             >
               <Save size={14} />
