@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 import { Plus, Trash2, Edit2, Shield, Users } from "lucide-react";
+import { useModal } from "@/components/ui/modal";
 
 interface AdminAccount {
   id: string;
@@ -21,6 +22,7 @@ interface KecamatanOption {
 }
 
 export default function AdminKecamatanPage() {
+  const modal = useModal();
   const [admins, setAdmins] = useState<AdminAccount[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState<"admin" | "admin_kecamatan" | null>(null);
@@ -139,7 +141,14 @@ export default function AdminKecamatanPage() {
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Yakin ingin menghapus akun ini?")) return;
+    const confirmed = await modal.confirm({
+      title: "Hapus Akun?",
+      description: "Akun ini akan dihapus permanen.",
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      confirmButtonVariant: "danger",
+    });
+    if (!confirmed) return;
 
     try {
       const res = await fetch(`/api/admin/admin-kecamatan/${id}`, {

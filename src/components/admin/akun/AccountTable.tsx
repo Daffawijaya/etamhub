@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useModal } from "@/components/ui/modal";
 
 interface Account {
   id: string;
@@ -20,6 +21,7 @@ interface Account {
 export default function AccountTable() {
   const [users, setUsers] = useState<Account[]>([]);
   const [resetId, setResetId] = useState<string | null>(null);
+  const modal = useModal();
   useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
@@ -53,10 +55,15 @@ export default function AccountTable() {
   }
 
   async function deleteUser(id: string) {
-    const confirmDelete = confirm("Hapus akun ini?");
-    console.log("DELETE USER ID:", id);
+    const confirmed = await modal.confirm({
+      title: "Hapus Akun?",
+      description: "Akun ini akan dihapus permanen.",
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      confirmButtonVariant: "danger",
+    });
 
-    if (!confirmDelete) return;
+    if (!confirmed) return;
 
     const res = await fetch(`/api/users/${id}`, {
       method: "DELETE",
@@ -69,9 +76,8 @@ export default function AccountTable() {
       return;
     }
 
-    alert("Akun dihapus");
-
-    window.location.reload();
+    modal.success({ title: "Tersimpan", description: "Akun berhasil dihapus." });
+    setUsers((prev) => prev.filter((u) => u.id !== id));
   }
   return (
     <div

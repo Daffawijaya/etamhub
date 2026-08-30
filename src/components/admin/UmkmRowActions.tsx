@@ -11,6 +11,7 @@ import {
   Trash2,
   ExternalLink,
 } from "lucide-react";
+import { useModal } from "@/components/ui/modal";
 
 interface Props {
   id: string | number;
@@ -28,6 +29,7 @@ export default function UmkmRowActions({
   showPublishAction = true,
 }: Props) {
   const router = useRouter();
+  const modal = useModal();
 
   const [open, setOpen] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
@@ -105,9 +107,15 @@ export default function UmkmRowActions({
     }
   }
   async function handleDelete() {
-    const confirmDelete = window.confirm("Yakin ingin menghapus UMKM ini?");
+    const confirmed = await modal.confirm({
+      title: "Hapus UMKM?",
+      description: "Data UMKM dan semua produknya akan dihapus permanen.",
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      confirmButtonVariant: "danger",
+    });
 
-    if (!confirmDelete) return;
+    if (!confirmed) return;
 
     try {
       setDeleteLoading(true);

@@ -11,6 +11,7 @@ import {
   Pencil,
   Trash2,
 } from "lucide-react";
+import { useModal } from "@/components/ui/modal";
 
 interface Props {
   id: string;
@@ -26,6 +27,7 @@ export default function NewsRowActions({
   onStatusChanged,
 }: Props) {
   const router = useRouter();
+  const modal = useModal();
 
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -107,13 +109,15 @@ export default function NewsRowActions({
   };
 
   const handleDelete = async () => {
-    const confirmed = window.confirm(
-      "Yakin ingin menghapus berita ini?",
-    );
+    const confirmed = await modal.confirm({
+      title: "Hapus Berita?",
+      description: "Berita yang dihapus tidak dapat dikembalikan.",
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      confirmButtonVariant: "danger",
+    });
 
-    if (!confirmed) {
-      return;
-    }
+    if (!confirmed) return;
 
     try {
       setDeleteLoading(true);

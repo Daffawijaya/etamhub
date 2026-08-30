@@ -5,6 +5,7 @@ import { Eye, Pencil, Plus, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import type { Product } from "@/types/product";
 import { deleteProduct, getProducts } from "@/lib/api/products";
+import { useModal } from "@/components/ui/modal";
 
 type Props = {
   umkmId: string;
@@ -23,6 +24,7 @@ const formatPrice = (value: number | null) => {
 };
 
 export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
+  const modal = useModal();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -52,7 +54,13 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
   }, [loadProducts]);
 
   const handleDelete = async (product: Product) => {
-    const confirmed = window.confirm(`Hapus produk "${product.nama}"?`);
+    const confirmed = await modal.confirm({
+      title: "Hapus Produk?",
+      description: `Produk \"${product.nama}\" akan dihapus permanen.`,
+      confirmText: "Hapus",
+      cancelText: "Batal",
+      confirmButtonVariant: "danger",
+    });
 
     if (!confirmed) return;
 
