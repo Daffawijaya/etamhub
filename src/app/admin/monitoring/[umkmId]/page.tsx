@@ -357,16 +357,16 @@ export default function MonitoringDetailPage() {
           <button
             onClick={() => {
               setForm({
-                jumlah_tenaga_kerja: umkm.jumlah_tenaga_kerja != null ? String(umkm.jumlah_tenaga_kerja) : "",
-                omzet: umkm.omzet != null ? String(umkm.omzet) : "",
-                halal: umkm.halal ?? "",
-                pirt: umkm.pirt ?? "",
-                haki: umkm.haki ?? "",
-                nib: umkm.nib ?? "",
+                jumlah_tenaga_kerja: latestData.jumlah_tenaga_kerja != null ? String(latestData.jumlah_tenaga_kerja) : "",
+                omzet: "",
+                halal: latestData.halal ?? "",
+                pirt: latestData.pirt ?? "",
+                haki: latestData.haki ?? "",
+                nib: latestData.nib ?? "",
                 kbli: umkm.kbli ?? [],
-                instagram: umkm.instagram ?? "",
-                facebook: umkm.facebook ?? "",
-                tiktok: umkm.tiktok ?? "",
+                instagram: latestData.instagram ?? "",
+                facebook: latestData.facebook ?? "",
+                tiktok: latestData.tiktok ?? "",
                 kebutuhan_utama: "",
                 catatan: "",
               });
