@@ -35,16 +35,22 @@ export default function AdminKecamatanPage() {
   const [formPassword, setFormPassword] = useState("");
   const [formKecamatanIds, setFormKecamatanIds] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
+  const [currentRole, setCurrentRole] = useState<string | null>(null);
 
+  const isSuperAdmin = currentRole === "super_admin";
   const adminList = admins.filter((a) => a.role === "admin");
   const kecamatanList = admins.filter((a) => a.role === "admin_kecamatan");
 
   async function loadData() {
     try {
-      const [adminsRes, kecRes] = await Promise.all([
+      const [roleRes, adminsRes, kecRes] = await Promise.all([
+        fetch("/api/auth/me"),
         fetch("/api/admin/admin-kecamatan"),
         fetch("/api/kecamatan"),
       ]);
+
+      const roleData = await roleRes.json();
+      setCurrentRole(roleData.role ?? null);
 
       const adminsData = await adminsRes.json();
       const kecData = await kecRes.json();
@@ -181,7 +187,8 @@ export default function AdminKecamatanPage() {
 
   return (
     <main className="px-6 pb-6 space-y-6">
-      {/* ==================== ADMIN SECTION ==================== */}
+      {/* ==================== ADMIN SECTION (super_admin only) ==================== */}
+      {isSuperAdmin && (
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
         <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
           <div className="flex items-center gap-3">
@@ -271,6 +278,7 @@ export default function AdminKecamatanPage() {
           </div>
         )}
       </div>
+      )}
 
       {/* ==================== ADMIN KECAMATAN SECTION ==================== */}
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
