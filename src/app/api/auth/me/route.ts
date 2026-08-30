@@ -2,6 +2,14 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
+export const dynamic = "force-dynamic";
+
+const noCacheHeaders = {
+  "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+  "Pragma": "no-cache",
+  "Expires": "0",
+};
+
 export async function GET() {
   try {
     const cookieStore = await cookies();
@@ -16,6 +24,7 @@ export async function GET() {
         },
         {
           status: 401,
+          headers: noCacheHeaders,
         },
       );
     }
@@ -39,12 +48,15 @@ export async function GET() {
       .maybeSingle();
 
     if (user) {
-      return NextResponse.json({
-        id: user.id,
-        nama: user.nama,
-        role: cookieRole ?? "user",
-        kecamatan: [],
-      });
+      return NextResponse.json(
+        {
+          id: user.id,
+          nama: user.nama,
+          role: cookieRole ?? "user",
+          kecamatan: [],
+        },
+        { headers: noCacheHeaders },
+      );
     }
 
     // =========================
@@ -71,12 +83,15 @@ export async function GET() {
     // Fallback: return cookie-based auth if DB lookup fails
     // (proxy already validated these cookies exist)
     if (!admin) {
-      return NextResponse.json({
-        id: userId,
-        nama: null,
-        role: cookieRole ?? "user",
-        kecamatan: [],
-      });
+      return NextResponse.json(
+        {
+          id: userId,
+          nama: null,
+          role: cookieRole ?? "user",
+          kecamatan: [],
+        },
+        { headers: noCacheHeaders },
+      );
     }
 
     const roleData = admin.roles as
@@ -86,12 +101,15 @@ export async function GET() {
 
     const role = Array.isArray(roleData) ? roleData[0]?.name : roleData?.name;
 
-    return NextResponse.json({
-      id: admin.id,
-      nama: admin.nama,
-      role: cookieRole ?? role ?? null,
-      kecamatan: [],
-    });
+    return NextResponse.json(
+      {
+        id: admin.id,
+        nama: admin.nama,
+        role: cookieRole ?? role ?? null,
+        kecamatan: [],
+      },
+      { headers: noCacheHeaders },
+    );
   } catch (error: any) {
     console.error("AUTH ME ERROR:", error);
 
@@ -101,12 +119,15 @@ export async function GET() {
       const userId = cookieStore.get("user_id")?.value;
       const cookieRole = cookieStore.get("role")?.value;
       if (userId) {
-        return NextResponse.json({
-          id: userId,
-          nama: null,
-          role: cookieRole ?? "user",
-          kecamatan: [],
-        });
+        return NextResponse.json(
+          {
+            id: userId,
+            nama: null,
+            role: cookieRole ?? "user",
+            kecamatan: [],
+          },
+          { headers: noCacheHeaders },
+        );
       }
     } catch {}
 
@@ -116,6 +137,7 @@ export async function GET() {
       },
       {
         status: 500,
+        headers: noCacheHeaders,
       },
     );
   }

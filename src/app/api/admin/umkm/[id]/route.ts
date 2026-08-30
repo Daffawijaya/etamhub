@@ -8,6 +8,8 @@ import {
   normalizeNullable,
 } from "@/lib/validation";
 
+export const dynamic = "force-dynamic";
+
 async function checkAdmin() {
   const user = await getCurrentUser();
 
