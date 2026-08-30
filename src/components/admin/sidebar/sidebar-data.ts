@@ -2,7 +2,7 @@ import {
   BarChart3,
   LayoutDashboard,
   Newspaper,
-  Settings,
+  Award,
   ShieldCheck,
   Store,
   Users,
@@ -62,7 +62,7 @@ export const menus: SidebarMenu[] = [
   {
     label: "Pengaturan Badge",
     href: "/admin/pengaturan-badge",
-    icon: Settings,
+    icon: Award,
     roles: ["super_admin", "admin"],
   },
 ];
