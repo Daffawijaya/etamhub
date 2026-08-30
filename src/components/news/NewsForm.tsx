@@ -6,6 +6,7 @@ import { NEWS_CATEGORIES } from "@/data/news";
 
 import type { News } from "@/types/news";
 import NewsEditor from "./NewsEditor";
+import CustomSelect from "@/components/ui/CustomSelect";
 
 type Props = {
   initialData?: News;
@@ -183,39 +184,17 @@ export default function NewsForm({ initialData }: Props) {
             Kategori
           </label>
 
-          <select
+          <CustomSelect
             name="category"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={setCategory}
             required
-            className="
-              w-full
-              rounded-xl
-              border
-              border-slate-200
-              bg-white
-              px-4
-              py-3
-              text-sm
-              text-slate-900
-              outline-none
-              transition
-              focus:border-primary
-              dark:border-slate-800
-              dark:bg-dark
-              dark:text-white
-            "
-          >
-            <option value="" disabled>
-              Pilih kategori berita
-            </option>
-
-            {NEWS_CATEGORIES.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+            placeholder="Pilih kategori berita"
+            options={NEWS_CATEGORIES.map((c) => ({
+              value: c,
+              label: c,
+            }))}
+          />
         </div>
 
         <div>

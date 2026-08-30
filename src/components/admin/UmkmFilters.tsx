@@ -1,5 +1,7 @@
 "use client";
 
+import CustomSelect from "@/components/ui/CustomSelect";
+
 interface Props {
   kecamatanOptions: string[];
   kategoriOptions: string[];
@@ -27,115 +29,60 @@ export default function UmkmFilters({
   onKategoriChange,
   onStatusChange,
 }: Props) {
-  const selectClass = `
-    h-11
-    rounded-xl
-    border
-    border-slate-200
-    dark:border-slate-800
-
-    bg-slate-50
-    dark:bg-dark
-
-    px-3
-
-    text-sm
-    font-medium
-
-    text-slate-700
-    dark:text-white
-
-    outline-none
-
-    transition-all
-    duration-300
-
-    hover:border-slate-300
-    dark:hover:border-slate-700
-
-    focus:border-slate-400
-    dark:focus:border-slate-600
-  `;
-
-  const optionClass = `
-    bg-white
-    dark:bg-dark
-    text-slate-900
-    dark:text-white
-  `;
-
   return (
     <div className="flex flex-wrap items-center gap-3">
       {/* Status */}
-      <select
+      <CustomSelect
         value={status}
-        onChange={(e) => onStatusChange(e.target.value)}
-        className={`${selectClass} w-40`}
-      >
-        <option className={optionClass} value="all">
-          Semua Status
-        </option>
+        onChange={onStatusChange}
+        className="w-40"
+        placeholder="Semua Status"
+        options={[
+          { value: "all", label: "Semua Status" },
+          { value: "public", label: "Publik" },
+          { value: "private", label: "Privat" },
+        ]}
+      />
 
-        <option className={optionClass} value="public">
-          Publik
-        </option>
-
-        <option className={optionClass} value="private">
-          Privat
-        </option>
-      </select>
       {/* Sort */}
-      <select
+      <CustomSelect
         value={sort}
-        onChange={(e) => onSortChange(e.target.value)}
-        className={`${selectClass} w-40`}
-      >
-        <option className={optionClass} value="nama">
-          Nama A-Z
-        </option>
-
-        <option className={optionClass} value="terbaru">
-          Terbaru
-        </option>
-      </select>
+        onChange={onSortChange}
+        className="w-40"
+        placeholder="Nama A-Z"
+        options={[
+          { value: "nama", label: "Nama A-Z" },
+          { value: "terbaru", label: "Terbaru" },
+        ]}
+      />
 
       {/* Kategori */}
-      <select
+      <CustomSelect
         value={kategori}
-        onChange={(e) => onKategoriChange(e.target.value)}
-        className={`${selectClass} w-44`}
-      >
-        <option className={optionClass} value="all">
-          Semua Kategori
-        </option>
-
-        {kategoriOptions
-          .filter((item) => item !== "all")
-          .map((item) => (
-            <option className={optionClass} key={item} value={item}>
-              {item}
-            </option>
-          ))}
-      </select>
+        onChange={onKategoriChange}
+        className="w-44"
+        placeholder="Semua Kategori"
+        options={[
+          { value: "all", label: "Semua Kategori" },
+          ...kategoriOptions
+            .filter((item) => item !== "all")
+            .map((item) => ({ value: item, label: item })),
+        ]}
+      />
 
       {/* Kecamatan */}
-      <select
+      <CustomSelect
         value={kecamatan}
-        onChange={(e) => onKecamatanChange(e.target.value)}
-        className={`${selectClass} w-56`}
-      >
-        <option className={optionClass} value="all">
-          Semua Kecamatan
-        </option>
-
-        {kecamatanOptions
-          .filter((item) => item !== "all")
-          .map((item) => (
-            <option className={optionClass} key={item} value={item}>
-              {item}
-            </option>
-          ))}
-      </select>
+        onChange={onKecamatanChange}
+        className="w-56"
+        placeholder="Semua Kecamatan"
+        options={[
+          { value: "all", label: "Semua Kecamatan" },
+          ...kecamatanOptions
+            .filter((item) => item !== "all")
+            .map((item) => ({ value: item, label: item })),
+        ]}
+      />
     </div>
   );
 }

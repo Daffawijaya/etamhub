@@ -1,5 +1,7 @@
 "use client";
 
+import CustomSelect from "@/components/ui/CustomSelect";
+
 interface Props {
   kecamatanOptions: string[];
   badge: string;
@@ -31,7 +33,7 @@ export default function MonitoringFilters({
   onKecamatanChange,
   onSortChange,
 }: Props) {
-  const selectClass = `
+  const inputClass = `
     h-11
     rounded-xl
     border
@@ -57,78 +59,54 @@ export default function MonitoringFilters({
     hover:border-slate-300
     dark:hover:border-white/[0.12]
 
-    focus:border-slate-400
-    dark:focus:border-white/[0.15]
-  `;
-
-  const optionClass = `
-    bg-white
-    dark:bg-dark
-    text-slate-900
-    dark:text-white
+    focus:border-sky-500
+    focus:ring-4
+    focus:ring-sky-500/10
   `;
 
   return (
     <div className="flex flex-wrap items-center gap-3">
       {/* Badge */}
-      <select
+      <CustomSelect
         value={badge}
-        onChange={(e) => onBadgeChange(e.target.value)}
-        className={`${selectClass} w-44`}
-      >
-        <option className={optionClass} value="all">
-          Semua Badge
-        </option>
-        <option className={optionClass} value="platinum">
-          Naik Kelas
-        </option>
-        <option className={optionClass} value="gold">
-          Berkembang
-        </option>
-        <option className={optionClass} value="silver">
-          Tumbuh
-        </option>
-        <option className={optionClass} value="bronze">
-          Pemula
-        </option>
-        <option className={optionClass} value="none">
-          Belum Ada
-        </option>
-      </select>
+        onChange={onBadgeChange}
+        className="w-44"
+        placeholder="Semua Badge"
+        options={[
+          { value: "all", label: "Semua Badge" },
+          { value: "platinum", label: "Naik Kelas" },
+          { value: "gold", label: "Berkembang" },
+          { value: "silver", label: "Tumbuh" },
+          { value: "bronze", label: "Pemula" },
+          { value: "none", label: "Belum Ada" },
+        ]}
+      />
 
       {/* Monitored */}
-      <select
+      <CustomSelect
         value={monitored}
-        onChange={(e) => onMonitoredChange(e.target.value)}
-        className={`${selectClass} w-40`}
-      >
-        <option className={optionClass} value="all">
-          Semua Status
-        </option>
-        <option className={optionClass} value="yes">
-          Sudah Dimonitoring
-        </option>
-        <option className={optionClass} value="no">
-          Belum Dimonitoring
-        </option>
-      </select>
+        onChange={onMonitoredChange}
+        className="w-40"
+        placeholder="Semua Status"
+        options={[
+          { value: "all", label: "Semua Status" },
+          { value: "yes", label: "Sudah Dimonitoring" },
+          { value: "no", label: "Belum Dimonitoring" },
+        ]}
+      />
 
       {/* Sort */}
-      <select
+      <CustomSelect
         value={sort}
-        onChange={(e) => onSortChange(e.target.value)}
-        className={`${selectClass} w-40`}
-      >
-        <option className={optionClass} value="nama">
-          Nama A-Z
-        </option>
-        <option className={optionClass} value="monitoring">
-          Jumlah Monitoring
-        </option>
-        <option className={optionClass} value="badge">
-          Level Badge
-        </option>
-      </select>
+        onChange={onSortChange}
+        className="w-40"
+        placeholder="Nama A-Z"
+        options={[
+          { value: "nama", label: "Nama A-Z" },
+          { value: "monitoring", label: "Jumlah Monitoring" },
+          { value: "badge", label: "Level Badge" },
+        ]}
+      />
 
       {/* Omzet Min */}
       <input
@@ -137,7 +115,7 @@ export default function MonitoringFilters({
         value={omzetMin}
         onChange={(e) => onOmzetMinChange(e.target.value)}
         className={`
-          ${selectClass} w-36
+          ${inputClass} w-36
           placeholder:text-slate-400
           dark:placeholder:text-slate-500
         `}
@@ -150,29 +128,25 @@ export default function MonitoringFilters({
         value={omzetMax}
         onChange={(e) => onOmzetMaxChange(e.target.value)}
         className={`
-          ${selectClass} w-36
+          ${inputClass} w-36
           placeholder:text-slate-400
           dark:placeholder:text-slate-500
         `}
       />
 
       {/* Kecamatan */}
-      <select
+      <CustomSelect
         value={kecamatan}
-        onChange={(e) => onKecamatanChange(e.target.value)}
-        className={`${selectClass} w-56`}
-      >
-        <option className={optionClass} value="all">
-          Semua Kecamatan
-        </option>
-        {kecamatanOptions
-          .filter((item) => item !== "all")
-          .map((item) => (
-            <option className={optionClass} key={item} value={item}>
-              {item}
-            </option>
-          ))}
-      </select>
+        onChange={onKecamatanChange}
+        className="w-56"
+        placeholder="Semua Kecamatan"
+        options={[
+          { value: "all", label: "Semua Kecamatan" },
+          ...kecamatanOptions
+            .filter((item) => item !== "all")
+            .map((item) => ({ value: item, label: item })),
+        ]}
+      />
     </div>
   );
 }

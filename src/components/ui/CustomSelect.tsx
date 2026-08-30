@@ -3,11 +3,19 @@
 import { useState, useRef, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
 
+export interface CustomSelectOption {
+  value: string;
+  label: string;
+}
+
 interface CustomSelectProps {
   value: string;
   onChange: (value: string) => void;
-  options: { value: string; label: string }[];
+  options: CustomSelectOption[];
   placeholder?: string;
+  name?: string;
+  required?: boolean;
+  disabled?: boolean;
   className?: string;
 }
 
@@ -16,6 +24,9 @@ export default function CustomSelect({
   onChange,
   options,
   placeholder = "Pilih...",
+  name,
+  required = false,
+  disabled = false,
   className = "",
 }: CustomSelectProps) {
   const [open, setOpen] = useState(false);
@@ -23,6 +34,7 @@ export default function CustomSelect({
 
   const selected = options.find((o) => o.value === value);
 
+  // Close on outside click
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
@@ -35,10 +47,14 @@ export default function CustomSelect({
 
   return (
     <div ref={wrapperRef} className={`relative ${className}`}>
+      {/* Hidden input for form submission */}
+      {name && <input type="hidden" name={name} value={value} />}
+
       {/* Trigger */}
       <button
         type="button"
-        onClick={() => setOpen((o) => !o)}
+        onClick={() => !disabled && setOpen((o) => !o)}
+        disabled={disabled}
         className={`
           h-11 w-full
           rounded-xl
@@ -61,6 +77,8 @@ export default function CustomSelect({
           focus:border-sky-500
           focus:ring-4
           focus:ring-sky-500/10
+          disabled:cursor-not-allowed
+          disabled:opacity-50
         `}
       >
         <span className={!selected ? "text-slate-400 dark:text-slate-500" : ""}>
