@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import LoadingState from "@/components/LoadingState";
+import { useModal } from "@/components/ui/modal";
 import { Save, RotateCcw } from "lucide-react";
 import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 
@@ -118,6 +119,7 @@ const TIERS: {
 
 export default function PengaturanBadgePage() {
   const [criteria, setCriteria] = useState<BadgeCriteria>(DEFAULTS);
+  const modal = useModal();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -135,6 +137,15 @@ export default function PengaturanBadgePage() {
   }, []);
 
   async function handleSave() {
+    const confirmed = await modal.confirm({
+      title: "Simpan Kriteria Badge?",
+      description: "Perubahan kriteria badge akan diterapkan ke semua UMKM.",
+      confirmText: "Simpan",
+      cancelText: "Batal",
+    });
+
+    if (!confirmed) return;
+
     setSaving(true);
     try {
       const res = await fetch("/api/admin/badge-criteria", {
@@ -145,10 +156,18 @@ export default function PengaturanBadgePage() {
 
       if (!res.ok) throw new Error("Gagal menyimpan");
 
+      modal.success({
+        title: "Tersimpan!",
+        description: "Kriteria badge berhasil diperbarui.",
+      });
+
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch {
-      alert("Gagal menyimpan kriteria badge");
+      modal.error({
+        title: "Gagal Menyimpan",
+        description: "Terjadi kesalahan saat menyimpan kriteria badge.",
+      });
     } finally {
       setSaving(false);
     }
