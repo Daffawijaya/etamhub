@@ -36,7 +36,7 @@ interface Props {
 
 export default function MonitoringDataTable({ limit = 10 }: Props) {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("nama");
+  const [sort, setSort] = useState("terbaru");
   const [kecamatan, setKecamatan] = useState("all");
   const [badge, setBadge] = useState("all");
   const [monitored, setMonitored] = useState("all");
@@ -57,7 +57,7 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
       page: String(page),
       limit: String(limit),
       sort,
-      order: sort === "nama" ? "asc" : "desc",
+      order: sort === "terbaru" ? "desc" : sort === "nama" ? "asc" : "desc",
     });
 
     if (search) params.append("search", search);

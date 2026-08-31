@@ -34,13 +34,13 @@ export async function GET(req: NextRequest) {
     const omzetMin = searchParams.get("omzet_min");
     const omzetMax = searchParams.get("omzet_max");
     const kecamatanFilter = searchParams.get("kecamatan") ?? "all";
-    const sort = searchParams.get("sort") ?? "nama";
-    const order = searchParams.get("order") === "desc" ? false : true;
+    const sort = searchParams.get("sort") ?? "terbaru";
+    const desc = searchParams.get("order") !== "asc";
 
     // Get UMKM from assigned kecamatan
     let umkmQuery = supabaseAdmin
       .from("umkm")
-      .select("id, nama, pemilik, kategori, kecamatan, kecamatan_id, gambar, omzet, jumlah_tenaga_kerja, halal, pirt, haki, nib, instagram, facebook, tiktok")
+      .select("id, nama, pemilik, kategori, kecamatan, kecamatan_id, gambar, omzet, jumlah_tenaga_kerja, halal, pirt, haki, nib, instagram, facebook, tiktok, created_at")
       .eq("published", true);
 
     if (user.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
@@ -136,6 +136,7 @@ export async function GET(req: NextRequest) {
         kecamatan: umkm.kecamatan,
         kecamatan_id: umkm.kecamatan_id,
         gambar: umkm.gambar,
+        createdAt: umkm.created_at,
         latestMonitoring: latestEntry,
         monitoringCount,
         badge,
@@ -173,15 +174,21 @@ export async function GET(req: NextRequest) {
     const total = filtered.length;
 
     // Sort
-    if (sort === "nama") {
-      filtered.sort((a, b) => order ? a.nama.localeCompare(b.nama) : b.nama.localeCompare(a.nama));
+    if (sort === "terbaru") {
+      filtered.sort((a, b) => {
+        const dateA = a.createdAt ?? "";
+        const dateB = b.createdAt ?? "";
+        return desc ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB);
+      });
+    } else if (sort === "nama") {
+      filtered.sort((a, b) => desc ? b.nama.localeCompare(a.nama) : a.nama.localeCompare(b.nama));
     } else if (sort === "monitoring") {
-      filtered.sort((a, b) => order ? a.monitoringCount - b.monitoringCount : b.monitoringCount - a.monitoringCount);
+      filtered.sort((a, b) => desc ? b.monitoringCount - a.monitoringCount : a.monitoringCount - b.monitoringCount);
     } else if (sort === "badge") {
       const badgeOrder = { none: 0, bronze: 1, silver: 2, gold: 3, platinum: 4 };
-      filtered.sort((a, b) => order
-        ? (badgeOrder[a.badge.level as keyof typeof badgeOrder] ?? 0) - (badgeOrder[b.badge.level as keyof typeof badgeOrder] ?? 0)
-        : (badgeOrder[b.badge.level as keyof typeof badgeOrder] ?? 0) - (badgeOrder[a.badge.level as keyof typeof badgeOrder] ?? 0)
+      filtered.sort((a, b) => desc
+        ? (badgeOrder[b.badge.level as keyof typeof badgeOrder] ?? 0) - (badgeOrder[a.badge.level as keyof typeof badgeOrder] ?? 0)
+        : (badgeOrder[a.badge.level as keyof typeof badgeOrder] ?? 0) - (badgeOrder[b.badge.level as keyof typeof badgeOrder] ?? 0)
       );
     }
 

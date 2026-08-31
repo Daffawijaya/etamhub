@@ -100,8 +100,10 @@ export default function MonitoringFilters({
         value={sort}
         onChange={onSortChange}
         className="w-40"
-        placeholder="Nama A-Z"
+        placeholder="Data Terbaru"
         options={[
+          { value: "terbaru", label: "Data Terbaru" },
+          { value: "lama", label: "Data Terlama" },
           { value: "nama", label: "Nama A-Z" },
           { value: "monitoring", label: "Jumlah Monitoring" },
           { value: "badge", label: "Level Badge" },
