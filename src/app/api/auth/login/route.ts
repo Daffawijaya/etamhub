@@ -5,7 +5,7 @@ import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
 export async function POST(req: Request) {
   try {
-    const { login, password } = await req.json();
+    const { login, password, remember } = await req.json();
 
     // =========================
     // CEK ADMIN
@@ -104,17 +104,20 @@ export async function POST(req: Request) {
         },
       });
 
+      const maxAge = remember ? 60 * 60 * 24 * 7 : 60 * 60 * 24;
       const cookieOptions = {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax" as const,
         path: "/",
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge,
       };
 
       response.cookies.set("auth", token, cookieOptions);
       response.cookies.set("user_id", admin.id, cookieOptions);
       response.cookies.set("role", role, cookieOptions);
+      response.cookies.set("session_created_at", String(Date.now()), cookieOptions);
+      response.cookies.set("session_max_age", String(maxAge), cookieOptions);
 
       return response;
     }
@@ -176,17 +179,20 @@ export async function POST(req: Request) {
       },
     });
 
+    const maxAge = remember ? 60 * 60 * 24 * 7 : 60 * 60 * 24;
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax" as const,
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge,
     };
 
     response.cookies.set("auth", token, cookieOptions);
     response.cookies.set("user_id", normalUser.id, cookieOptions);
     response.cookies.set("role", "user_umkm", cookieOptions);
+    response.cookies.set("session_created_at", String(Date.now()), cookieOptions);
+    response.cookies.set("session_max_age", String(maxAge), cookieOptions);
 
     return response;
   } catch (error) {

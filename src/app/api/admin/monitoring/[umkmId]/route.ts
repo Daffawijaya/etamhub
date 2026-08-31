@@ -111,7 +111,7 @@ export async function POST(
       );
     }
 
-    const allowedRoles = ["super_admin", "admin_kecamatan"];
+    const allowedRoles = ["super_admin", "admin", "admin_kecamatan"];
     if (!allowedRoles.includes(user.role ?? "")) {
       return NextResponse.json(
         { message: "Unauthorized" },

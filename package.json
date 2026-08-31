@@ -30,6 +30,7 @@
     "react-qr-code": "^2.2.0",
     "recharts": "^3.10.1",
     "sharp": "^0.34.5",
+    "sonner": "^2.0.8",
     "tailwindcss-animate": "^1.0.7",
     "uuid": "^14.0.1",
     "xlsx": "^0.18.5"

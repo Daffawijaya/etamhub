@@ -77,17 +77,20 @@ export async function POST(req: Request) {
       },
     });
 
+    const maxAge = 60 * 60 * 24;
     const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax" as const,
       path: "/",
-      maxAge: 60 * 60 * 24 * 7,
+      maxAge,
     };
 
     response.cookies.set("auth", token, cookieOptions);
     response.cookies.set("user_id", user.id, cookieOptions);
     response.cookies.set("role", "user_umkm", cookieOptions);
+    response.cookies.set("session_created_at", String(Date.now()), cookieOptions);
+    response.cookies.set("session_max_age", String(maxAge), cookieOptions);
 
     return response;
   } catch (error) {

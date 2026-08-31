@@ -24,6 +24,7 @@ export default function LoginForm() {
       body: JSON.stringify({
         login,
         password,
+        remember,
       }),
     });
 

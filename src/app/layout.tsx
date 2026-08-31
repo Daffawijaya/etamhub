@@ -6,6 +6,7 @@ import ScrollTop from "@/components/ScrollTop";
 import TopLoader from "@/components/TopLoader";
 import GlobalLoader from "@/components/GlobalLoader";
 import { ModalProvider } from "@/components/ui/modal";
+import SessionExpiryChecker from "@/components/SessionExpiryChecker";
 import { getBaseUrl } from "@/lib/api";
 
 const outfit = Outfit({
@@ -66,6 +67,7 @@ export default function RootLayout({
 
         <Providers>
           <ModalProvider>
+            <SessionExpiryChecker />
             <ScrollTop />
             {children}
           </ModalProvider>
