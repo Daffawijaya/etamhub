@@ -348,7 +348,7 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
   }
 
   return (
-    <div className="bg-white dark:bg-dark-card rounded-2xl px-6 py-5">
+    <div className="bg-white dark:bg-dark-card rounded-2xl px-4 py-4 sm:px-6 sm:py-5">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
           {mode === "create" ? "Tambah UMKM" : "Edit UMKM"}

@@ -193,19 +193,19 @@ export default function PengaturanBadgePage() {
     <div>
       <div className="rounded-xl bg-white transition-colors duration-300 dark:bg-dark-card">
         {/* Header — matches berita page style */}
-        <div className="px-6 pt-5 pb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="px-4 pt-4 pb-3 flex flex-col gap-3 sm:px-6 sm:pt-5 sm:pb-4 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
               Pengaturan Badge
             </h2>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
               Atur kriteria untuk setiap tingkatan badge
             </p>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleReset}
-              className="flex items-center gap-2 rounded-lg border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs sm:px-4 sm:text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <RotateCcw size={14} />
               Reset
@@ -213,7 +213,7 @@ export default function PengaturanBadgePage() {
             <button
               onClick={handleSave}
               disabled={saving || !hasChanges}
-              className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
+              className="flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs sm:px-4 sm:text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
             >
               <Save size={14} />
               {saving ? "Menyimpan..." : saved ? "✓ Tersimpan" : "Simpan"}
@@ -222,7 +222,7 @@ export default function PengaturanBadgePage() {
         </div>
 
         {/* Badge tiers */}
-        <div className="px-6 pb-6 space-y-4">
+        <div className="px-4 pb-4 sm:px-6 sm:pb-6 space-y-4">
           {TIERS.map((tier) => {
             const isTopBadge = tier.key === "platinum";
 
@@ -255,7 +255,7 @@ export default function PengaturanBadgePage() {
 
                 {/* Fields */}
                 {tier.fields && (
-                  <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-4">
                     {tier.fields.map((field) => (
                       <div key={field.key}>
                         <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -290,7 +290,7 @@ export default function PengaturanBadgePage() {
           })}
 
           {/* Ringkasan */}
-          <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 transition-colors duration-300 dark:border-white/[0.06] dark:bg-white/[0.02]">
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-5 transition-colors duration-300 dark:border-white/[0.06] dark:bg-white/[0.02]">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Ringkasan Kriteria</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-3">

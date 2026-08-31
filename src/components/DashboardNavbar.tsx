@@ -72,7 +72,7 @@ export default function DashboardNavbar({
   }
 
   return (
-    <header className="hidden lg:flex items-center justify-between gap-4 px-6 py-4 bg-light dark:bg-dark">
+    <header className="relative z-10 hidden lg:flex items-center justify-between gap-4 px-6 py-4 bg-light dark:bg-dark">
       <div>
         <h1
           className="

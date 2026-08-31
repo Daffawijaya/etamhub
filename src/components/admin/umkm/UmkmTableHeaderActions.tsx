@@ -121,6 +121,7 @@ export default function UmkmTableHeaderActions() {
             <button
               key={action.type}
               onClick={() => handleClick(action.type)}
+              title={action.label}
               className="
                 inline-flex
                 items-center
@@ -131,8 +132,7 @@ export default function UmkmTableHeaderActions() {
                 dark:border-slate-800
                 bg-white
                 dark:bg-dark-card
-                px-3
-                py-2
+                px-2.5 py-2 sm:px-3
                 text-sm
                 font-medium
                 text-slate-700
@@ -151,7 +151,7 @@ export default function UmkmTableHeaderActions() {
                 "
               />
 
-              {action.label}
+              <span className="hidden sm:inline">{action.label}</span>
             </button>
           );
         })}

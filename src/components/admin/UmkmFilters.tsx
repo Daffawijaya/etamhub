@@ -30,12 +30,12 @@ export default function UmkmFilters({
   onStatusChange,
 }: Props) {
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
       {/* Status */}
       <CustomSelect
         value={status}
         onChange={onStatusChange}
-        className="w-40"
+        className="w-full sm:w-40"
         placeholder="Semua Status"
         options={[
           { value: "all", label: "Semua Status" },
@@ -48,7 +48,7 @@ export default function UmkmFilters({
       <CustomSelect
         value={sort}
         onChange={onSortChange}
-        className="w-40"
+        className="w-full sm:w-40"
         placeholder="Terbaru"
         options={[
           { value: "terbaru", label: "Terbaru" },
@@ -60,7 +60,7 @@ export default function UmkmFilters({
       <CustomSelect
         value={kategori}
         onChange={onKategoriChange}
-        className="w-44"
+        className="w-full sm:w-44"
         placeholder="Semua Kategori"
         options={[
           { value: "all", label: "Semua Kategori" },
@@ -74,7 +74,7 @@ export default function UmkmFilters({
       <CustomSelect
         value={kecamatan}
         onChange={onKecamatanChange}
-        className="w-56"
+        className="w-full sm:w-56"
         placeholder="Semua Kecamatan"
         options={[
           { value: "all", label: "Semua Kecamatan" },

@@ -67,14 +67,14 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
       "
     >
       {/* Header */}
-      <div className="px-6 py-5">
-        <div className="flex items-start justify-between gap-4">
+      <div className="px-4 py-4 sm:px-6 sm:py-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
               Data UMKM
             </h2>
 
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
               Kelola data UMKM terdaftar
             </p>
           </div>
@@ -82,7 +82,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
           <UmkmTableHeaderActions />
         </div>
 
-        <div className="flex items-center justify-between pt-4">
+        <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <UmkmSearch
             value={search}
             onChange={(value) => {

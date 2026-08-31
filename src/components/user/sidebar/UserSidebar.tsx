@@ -79,7 +79,7 @@ export default function UserSidebar({ mobile = false, open = false, onClose }: U
         {/* Hamburger trigger bar — fixed top bar on mobile */}
         <nav
           className={`
-            fixed top-0 left-0 z-50
+            fixed top-0 left-0 z-[999]
             w-screen h-12
             flex items-center justify-between px-5
             bg-light dark:bg-dark/40 backdrop-blur-xl
@@ -102,7 +102,7 @@ export default function UserSidebar({ mobile = false, open = false, onClose }: U
         {/* Fullscreen overlay menu */}
         <div
           className={`
-            fixed inset-0 z-[60]
+            fixed inset-0 z-[1000]
             bg-light dark:bg-dark
             transition-transform duration-300 ease-out
             ${open ? "translate-y-0" : "-translate-y-full"}

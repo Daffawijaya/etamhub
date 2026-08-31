@@ -89,7 +89,7 @@ export default function NewsForm({ initialData }: Props) {
     rounded-xl
     transition-all
     duration-300
-    p-6"
+    px-4 py-4 sm:p-6"
     >
       <div className="mb-8">
         <h1 className="text-xl font-semibold text-slate-900 dark:text-white">

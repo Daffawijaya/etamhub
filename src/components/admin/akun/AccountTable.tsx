@@ -80,60 +80,50 @@ export default function AccountTable() {
     setUsers((prev) => prev.filter((u) => u.id !== id));
   }
   return (
-    <div
-      className="
-      overflow-hidden
-      rounded-xl
-      border
-      "
-    >
-      <table className="w-full">
+    <div className="overflow-hidden rounded-xl border">
+      <div className="overflow-x-auto">
+      <table className="w-full text-sm">
         <thead>
-          <tr>
-            <th>Nama</th>
-            <th>Login</th>
-            <th>Role</th>
-            <th>Kecamatan</th>
-            <th>Aksi</th>
+          <tr className="border-b border-gray-200 dark:border-neutral-800">
+            <th className="px-4 py-3 text-left font-medium text-slate-500 dark:text-slate-400">Nama</th>
+            <th className="hidden sm:table-cell px-4 py-3 text-left font-medium text-slate-500 dark:text-slate-400">Login</th>
+            <th className="hidden md:table-cell px-4 py-3 text-left font-medium text-slate-500 dark:text-slate-400">Role</th>
+            <th className="hidden lg:table-cell px-4 py-3 text-left font-medium text-slate-500 dark:text-slate-400">Kecamatan</th>
+            <th className="px-4 py-3 text-right font-medium text-slate-500 dark:text-slate-400">Aksi</th>
           </tr>
         </thead>
 
-        <tbody>
+        <tbody className="divide-y divide-gray-100 dark:divide-neutral-800">
           {users.map((user) => (
-            <tr key={user.id}>
-              <td>{user.nama}</td>
-
-              <td>{user.username ?? user.nik}</td>
-
-              <td>{user.roles.name}</td>
-
-              <td>
-                {user.user_kecamatan
-                  ?.map((item) => item.kecamatan.nama)
-                  .join(", ") || "-"}
+            <tr key={user.id} className="hover:bg-slate-50 dark:hover:bg-white/[0.02]">
+              <td className="px-4 py-3">
+                <p className="font-medium text-slate-900 dark:text-white">{user.nama}</p>
+                <p className="sm:hidden text-xs text-slate-500 dark:text-slate-400">{user.username ?? user.nik}</p>
               </td>
 
-              <td>
-                <button
-                  onClick={() => deleteUser(user.id)}
-                  className="
- text-sm
- text-red-500
- "
-                >
-                  Hapus
-                </button>
-                <button
-                  onClick={() => resetPassword(user.id)}
-                  className="text-sm text-violet-500"
-                >
-                  Reset Password
-                </button>
+              <td className="hidden sm:table-cell px-4 py-3 text-slate-600 dark:text-slate-300">{user.username ?? user.nik}</td>
+
+              <td className="hidden md:table-cell px-4 py-3 text-slate-600 dark:text-slate-300">{user.roles.name}</td>
+
+              <td className="hidden lg:table-cell px-4 py-3 text-slate-600 dark:text-slate-300">
+                {user.user_kecamatan?.map((item) => item.kecamatan.nama).join(", ") || "-"}
+              </td>
+
+              <td className="px-4 py-3 text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <button onClick={() => resetPassword(user.id)} className="text-xs sm:text-sm text-violet-500 hover:text-violet-700">
+                    Reset
+                  </button>
+                  <button onClick={() => deleteUser(user.id)} className="text-xs sm:text-sm text-red-500 hover:text-red-700">
+                    Hapus
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

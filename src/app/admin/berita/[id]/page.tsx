@@ -44,7 +44,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
   return (
     <div>
       <div className="overflow-hidden rounded-xl border border-white bg-light dark:border-zinc-800 dark:bg-[#1b1b1b]">
-        <div className="flex items-center justify-between border-b border-white px-6 py-4 dark:border-zinc-800">
+        <div className="flex items-center justify-between border-b border-white px-4 py-3 sm:px-6 sm:py-4 dark:border-zinc-800">
           <Link
             href="/admin/berita"
             className="
@@ -97,7 +97,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
           </Link>
         </div>
 
-        <article className="p-6">
+        <article className="p-4 sm:p-6">
           <div className="flex items-center justify-between gap-4">
             {news.category ? (
               <span className="inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
@@ -124,19 +124,18 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
 
               {news.published ? "Publik" : "Privat"}
             </div>
-          </div>
-
-          <h1
-            className="
-              mt-4
-              text-3xl
-              font-bold
-              leading-tight
-              text-slate-900
-              sm:text-4xl
-              dark:text-white
-            "
-          >
+          </div>            <h1
+              className="
+                mt-4
+                text-2xl
+                font-bold
+                leading-tight
+                text-slate-900
+                sm:text-3xl
+                md:text-4xl
+                dark:text-white
+              "
+            >
             {news.title}
           </h1>
 
@@ -172,7 +171,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
           </div>
 
           {news.gambar && (
-            <div className="mx-auto my-8 aspect-[3/2] w-full max-w-[900px] overflow-hidden rounded-xl">
+            <div className="mx-auto my-5 sm:my-8 aspect-[3/2] w-full max-w-[900px] overflow-hidden rounded-xl">
               <Image
                 src={news.gambar}
                 alt={news.title}
@@ -186,7 +185,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
           {news.excerpt && (
             <p
               className="
-                mt-8
+                mt-5 sm:mt-8
                 border-l-4
                 border-emerald-500
                 pl-4
@@ -200,7 +199,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
             </p>
           )}
 
-          <div className="my-8 border-t border-white dark:border-zinc-800" />
+          <div className="my-5 sm:my-8 border-t border-white dark:border-zinc-800" />
 
           <NewsContent content={news.content} />
         </article>

@@ -43,12 +43,12 @@ export default function EditUmkmPage({
   }
 
   if (!form) {
-    return <div>Loading...</div>;
+    return <div className="px-4 py-12 text-center text-slate-400">Loading...</div>;
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-3xl">
-      <h1 className="text-2xl font-bold">Edit UMKM</h1>
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-3xl px-0">
+      <h1 className="text-xl sm:text-2xl font-bold">Edit UMKM</h1>
 
       <input
         className="w-full border p-3 rounded"

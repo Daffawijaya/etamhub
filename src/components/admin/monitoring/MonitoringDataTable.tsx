@@ -104,19 +104,19 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
       "
     >
       {/* Header */}
-      <div className="px-6 py-5">
-        <div className="flex items-center justify-between gap-4">
+      <div className="px-4 py-4 sm:px-6 sm:py-5">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
+            <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
               Monitoring UMKM
             </h2>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
               Pantau perkembangan UMKM di kecamatan Anda
             </p>
           </div>
 
           {/* Search */}
-          <div className="relative w-80">
+          <div className="relative w-full sm:w-80">
             <Search
               size={18}
               className="
@@ -169,8 +169,8 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
           </div>
         </div>
 
-        {/* Filters — below search, aligned right */}
-        <div className="flex justify-end pt-4">
+        {/* Filters — below search */}
+        <div className="pt-3 sm:flex sm:justify-end sm:pt-4">
           <MonitoringFilters
             badge={badge}
             monitored={monitored}

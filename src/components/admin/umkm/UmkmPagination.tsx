@@ -44,14 +44,14 @@ export default function UmkmPagination({
       className="
         flex flex-col gap-4 
         border-t border-slate-100 dark:border-white/10
-        px-6 py-5
+        px-4 sm:px-6 py-4 sm:py-5
         transition-colors duration-300
         md:flex-row md:items-center md:justify-between
       "
     >
       <p
         className="
-          text-sm text-slate-500 
+          text-xs sm:text-sm text-slate-500 
           dark:text-slate-400
           transition-colors duration-300
         "
@@ -83,7 +83,7 @@ export default function UmkmPagination({
           disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
           className="
-            flex h-10 w-10 items-center justify-center
+            flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center
             rounded-xl
             border border-slate-200
             bg-white
@@ -101,7 +101,7 @@ export default function UmkmPagination({
             disabled:opacity-40
           "
         >
-          <ChevronLeft size={18} />
+          <ChevronLeft size={16} />
         </button>
 
         {getPages().map((item, index) =>
@@ -109,7 +109,7 @@ export default function UmkmPagination({
             <span
               key={index}
               className="
-                flex h-10 w-10 items-center justify-center
+                flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center
                 text-slate-400
                 dark:text-slate-500
                 transition-colors duration-300
@@ -122,7 +122,7 @@ export default function UmkmPagination({
               key={item}
               onClick={() => onPageChange(Number(item))}
               className={`
-                h-10 w-10
+                h-9 w-9 sm:h-10 sm:w-10
                 rounded-xl
                 text-sm font-medium
                 transition-all duration-300
@@ -159,7 +159,7 @@ export default function UmkmPagination({
           disabled={page === totalPages}
           onClick={() => onPageChange(page + 1)}
           className="
-            flex h-10 w-10 items-center justify-center
+            flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center
             rounded-xl
             border border-slate-200
             bg-white
@@ -177,7 +177,7 @@ export default function UmkmPagination({
             disabled:opacity-40
           "
         >
-          <ChevronRight size={18} />
+          <ChevronRight size={16} />
         </button>
       </div>
     </div>

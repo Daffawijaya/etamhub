@@ -77,12 +77,12 @@ export default function RequestsPage() {
   return (
     <main>
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
-        <div className="border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+        <div className="border-b border-gray-200 px-4 py-3 sm:px-5 sm:py-4 dark:border-neutral-800">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
             Daftar Request
           </h1>
 
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             {pendingCount} request belum dikonfirmasi
           </p>
         </div>

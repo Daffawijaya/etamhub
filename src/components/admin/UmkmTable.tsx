@@ -100,8 +100,8 @@ export default function UmkmTable({
           className={`
             flex
             items-center
-            gap-4
-            px-6
+            gap-3 sm:gap-4
+            px-4 sm:px-6
             py-2.5
             transition-colors
             duration-300
@@ -113,7 +113,7 @@ export default function UmkmTable({
           `}
         >
           {columns.gambar && (
-            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl">
+            <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 overflow-hidden rounded-xl">
               <Image
                 src={getUmkmImage(item.gambar)}
                 alt={item.nama}
@@ -129,7 +129,7 @@ export default function UmkmTable({
                 className="
                   truncate
                   capitalize
-                  text-[17px]
+                  text-sm sm:text-[17px]
                   font-semibold
                   text-slate-900
                   dark:text-white
@@ -160,7 +160,7 @@ export default function UmkmTable({
           )}
 
           {columns.whatsapp && (
-            <div className="hidden w-[130px] flex-shrink-0 sm:block">
+            <div className="hidden w-[130px] flex-shrink-0 md:block">
               <p className="truncate text-sm text-slate-500 dark:text-slate-400">
                 {item.whatsapp || "-"}
               </p>
@@ -168,7 +168,7 @@ export default function UmkmTable({
           )}
 
           {columns.kategori && (
-            <div className="w-[80px] flex-shrink-0 sm:w-[120px]">
+            <div className="hidden sm:block w-[80px] flex-shrink-0 sm:w-[120px]">
               <span
                 className={`
                   inline-flex
@@ -194,7 +194,7 @@ export default function UmkmTable({
           )}
 
           {columns.status && (
-            <div className="w-[110px] flex-shrink-0">
+            <div className="w-[70px] sm:w-[110px] flex-shrink-0">
               <span
                 className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-medium ${getStatusStyle(item.published)}`}
               >

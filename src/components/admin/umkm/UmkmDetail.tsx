@@ -39,13 +39,13 @@ function Item({
 
 export default function UmkmDetail({ data }: Props) {
   return (
-    <div className="space-y-6 px-6 pb-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
 
-      <div className="rounded-2xl bg-white dark:bg-dark-card p-6">
+      <div className="rounded-2xl bg-white dark:bg-dark-card p-4 sm:p-6">
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
               {data.nama}
             </h1>
 
@@ -70,7 +70,7 @@ export default function UmkmDetail({ data }: Props) {
 
       {/* Galeri */}
 
-      <section className="rounded-2xl bg-white dark:bg-dark-card p-6">
+      <section className="rounded-2xl bg-white dark:bg-dark-card p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-5">
           <ImageIcon size={18} />
 
@@ -79,7 +79,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
           {data.gambar?.length ? (
             data.gambar.map((img: string, i: number) => (
               <div
@@ -102,7 +102,7 @@ export default function UmkmDetail({ data }: Props) {
 
       {/* Informasi UMKM */}
 
-      <section className="rounded-2xl bg-white dark:bg-dark-card p-6">
+      <section className="rounded-2xl bg-white dark:bg-dark-card p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-6">
           <Building2 size={18} />
 
@@ -111,7 +111,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <Item label="Nama UMKM" value={data.nama} />
 
           <Item label="Kategori" value={data.kategori} />
@@ -124,7 +124,7 @@ export default function UmkmDetail({ data }: Props) {
 
       {/* Pemilik */}
 
-      <section className="rounded-2xl bg-white dark:bg-dark-card p-6">
+      <section className="rounded-2xl bg-white dark:bg-dark-card p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-6">
           <User size={18} />
 
@@ -133,7 +133,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <Item label="Pemilik" value={data.pemilik} />
 
           <Item label="NIK" value={data.nik} />
@@ -146,7 +146,7 @@ export default function UmkmDetail({ data }: Props) {
 
       {/* Legalitas */}
 
-      <section className="rounded-2xl bg-white dark:bg-dark-card p-6">
+      <section className="rounded-2xl bg-white dark:bg-dark-card p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-6">
           <BadgeCheck size={18} />
 
@@ -155,7 +155,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <Item label="NIB" value={data.nib} />
 
           <Item
@@ -175,7 +175,7 @@ export default function UmkmDetail({ data }: Props) {
 
       {/* Lokasi */}
 
-      <section className="rounded-2xl bg-white dark:bg-dark-card p-6">
+      <section className="rounded-2xl bg-white dark:bg-dark-card p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-6">
           <MapPin size={18} />
 
@@ -184,7 +184,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <Item label="Kecamatan" value={data.kecamatan} />
 
           <Item label="Alamat" value={data.alamat} />
@@ -197,7 +197,7 @@ export default function UmkmDetail({ data }: Props) {
 
       {/* Kontak */}
 
-      <section className="rounded-2xl bg-white dark:bg-dark-card p-6">
+      <section className="rounded-2xl bg-white dark:bg-dark-card p-4 sm:p-6">
         <div className="flex items-center gap-2 mb-6">
           <Globe size={18} />
 
@@ -206,7 +206,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
           <Item label="WhatsApp" value={data.whatsapp} />
 
           <Item label="Instagram" value={data.instagram} />

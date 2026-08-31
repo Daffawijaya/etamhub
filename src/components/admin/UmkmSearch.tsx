@@ -9,7 +9,7 @@ interface UmkmSearchProps {
 
 export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
   return (
-    <div className="relative w-100 max-w-md">
+    <div className="relative w-full max-w-md">
       <Search
         size={18}
         className="

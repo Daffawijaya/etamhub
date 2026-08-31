@@ -339,7 +339,7 @@ export default function MonitoringDetailPage() {
   return (
     <main className="space-y-6">
       {/* Header */}
-      <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
+      <div className="rounded-xl bg-white p-4 sm:p-6 dark:bg-dark-card">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex items-start gap-3 sm:gap-4">
             {/* Badge icon large */}
@@ -390,12 +390,12 @@ export default function MonitoringDetailPage() {
       </div>
 
       {/* Main content: 2 columns */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
         {/* Left: Badge Progress + Ringkasan */}
         <div className="space-y-6 lg:col-span-1">
           {/* Badge Progress */}
           {badge && badge.level !== "none" && criteriaConfig && (
-            <div className="rounded-xl bg-white p-5 dark:bg-dark-card">
+            <div className="rounded-xl bg-white p-4 sm:p-5 dark:bg-dark-card">
               <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-4">Kriteria Badge</h3>
 
               {/* Badge Level Stepper */}
@@ -554,9 +554,8 @@ export default function MonitoringDetailPage() {
         </div>
 
         {/* Right: Riwayat Monitoring */}
-        <div className="lg:col-span-2">
-          <div className="rounded-xl bg-white dark:bg-dark-card">
-            <div className="border-b border-gray-100 px-5 py-4 dark:border-white/[0.06]">
+        <div className="lg:col-span-2">            <div className="rounded-xl bg-white dark:bg-dark-card">
+            <div className="border-b border-gray-100 px-4 py-3 sm:px-5 sm:py-4 dark:border-white/[0.06]">
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Riwayat Monitoring</h2>
@@ -568,14 +567,14 @@ export default function MonitoringDetailPage() {
             </div>
 
             {monitorings.length === 0 ? (
-              <div className="p-8 text-center">
+              <div className="p-6 sm:p-8 text-center">
                 <FileText size={32} className="mx-auto text-slate-300 dark:text-slate-600 mb-2" />
                 <p className="text-sm text-slate-400">Belum ada riwayat monitoring</p>
               </div>
             ) : (
               <div className="divide-y divide-gray-50 dark:divide-white/[0.04]">
                 {/* Data Awal (sebelum monitoring) */}
-                <div className="px-5 py-4 bg-slate-50/50 dark:bg-white/[0.01]">
+                <div className="px-4 py-3 sm:px-5 sm:py-4 bg-slate-50/50 dark:bg-white/[0.01]">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="h-2.5 w-2.5 rounded-full bg-slate-300 dark:bg-slate-600" />
@@ -665,7 +664,7 @@ export default function MonitoringDetailPage() {
                   const entryData = getEntryData(entry);
 
                   return (
-                    <div key={entry.id} className="px-5 py-4">
+                    <div key={entry.id} className="px-4 py-3 sm:px-5 sm:py-4">
                       {/* Header row */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -812,7 +811,7 @@ export default function MonitoringDetailPage() {
       {/* Modal Form */}
       {showForm && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl dark:bg-zinc-900" onClick={(e) => e.stopPropagation()}>
+          <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white p-4 sm:p-6 shadow-2xl dark:bg-zinc-900" onClick={(e) => e.stopPropagation()}>
             <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">Tambah Monitoring</h2>
             <p className="text-sm text-slate-500 mt-1">Isi hanya data yang berubah/lengkap baru</p>
 

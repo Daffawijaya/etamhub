@@ -65,12 +65,12 @@ export default function MonitoringFilters({
   `;
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
+    <div className="flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
       {/* Badge */}
       <CustomSelect
         value={badge}
         onChange={onBadgeChange}
-        className="w-44"
+        className="w-full sm:w-44"
         placeholder="Semua Badge"
         options={[
           { value: "all", label: "Semua Badge" },
@@ -86,7 +86,7 @@ export default function MonitoringFilters({
       <CustomSelect
         value={monitored}
         onChange={onMonitoredChange}
-        className="w-40"
+        className="w-full sm:w-40"
         placeholder="Semua Status"
         options={[
           { value: "all", label: "Semua Status" },
@@ -99,7 +99,7 @@ export default function MonitoringFilters({
       <CustomSelect
         value={sort}
         onChange={onSortChange}
-        className="w-40"
+        className="w-full sm:w-40"
         placeholder="Data Terbaru"
         options={[
           { value: "terbaru", label: "Data Terbaru" },
@@ -117,7 +117,7 @@ export default function MonitoringFilters({
         value={omzetMin}
         onChange={(e) => onOmzetMinChange(e.target.value)}
         className={`
-          ${inputClass} w-36
+          ${inputClass} w-full sm:w-36
           placeholder:text-slate-400
           dark:placeholder:text-slate-500
         `}
@@ -130,7 +130,7 @@ export default function MonitoringFilters({
         value={omzetMax}
         onChange={(e) => onOmzetMaxChange(e.target.value)}
         className={`
-          ${inputClass} w-36
+          ${inputClass} w-full sm:w-36
           placeholder:text-slate-400
           dark:placeholder:text-slate-500
         `}
@@ -140,7 +140,7 @@ export default function MonitoringFilters({
       <CustomSelect
         value={kecamatan}
         onChange={onKecamatanChange}
-        className="w-56"
+        className="w-full sm:w-56"
         placeholder="Semua Kecamatan"
         options={[
           { value: "all", label: "Semua Kecamatan" },

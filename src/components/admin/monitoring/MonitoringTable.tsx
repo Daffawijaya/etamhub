@@ -58,7 +58,7 @@ const getCategoryStyle = (kategori: string) => {
 export default function MonitoringTable({ data }: Props) {
   if (data.length === 0) {
     return (
-      <div className="px-6 py-16 text-center">
+      <div className="px-4 sm:px-6 py-12 sm:py-16 text-center">
         <p className="text-sm text-slate-400 dark:text-slate-500">
           Tidak ada data monitoring ditemukan.
         </p>
@@ -71,25 +71,25 @@ export default function MonitoringTable({ data }: Props) {
       <table className="w-full text-left text-sm">
         <thead>
           <tr className="border-b border-slate-100 dark:border-white/10">
-            <th className="px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
+            <th className="px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
               UMKM
             </th>
-            <th className="px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
+            <th className="px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
               Kategori
             </th>
-            <th className="px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
+            <th className="hidden sm:table-cell px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
               Kecamatan
             </th>
-            <th className="px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
+            <th className="px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
               Badge
             </th>
-            <th className="px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
+            <th className="hidden sm:table-cell px-4 sm:px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
               Monitoring
             </th>
-            <th className="px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
+            <th className="hidden md:table-cell px-4 sm:px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
               Omzet Terakhir
             </th>
-            <th className="px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
+            <th className="px-4 sm:px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
               Aksi
             </th>
           </tr>
@@ -101,9 +101,9 @@ export default function MonitoringTable({ data }: Props) {
               className="transition-colors hover:bg-slate-50 dark:hover:bg-white/[0.02]"
             >
               {/* UMKM */}
-              <td className="px-6 py-4">
-                <div className="flex items-center gap-3">
-                  <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-xl">
+              <td className="px-4 sm:px-6 py-3 sm:py-4">
+                <div className="flex items-center gap-2 sm:gap-3">
+                  <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 overflow-hidden rounded-xl">
                     <Image
                       src={getUmkmImage(item.gambar)}
                       alt={item.nama}
@@ -112,7 +112,7 @@ export default function MonitoringTable({ data }: Props) {
                     />
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate font-medium text-slate-900 dark:text-white capitalize">
+                    <p className="truncate font-medium text-slate-900 dark:text-white capitalize text-sm">
                       {item.nama}
                     </p>
                     {item.pemilik && (
@@ -125,28 +125,28 @@ export default function MonitoringTable({ data }: Props) {
               </td>
 
               {/* Kategori */}
-              <td className="px-6 py-4">
-                <span className={`inline-flex items-center rounded-lg px-2.5 py-1 text-xs font-medium ${getCategoryStyle(item.kategori)}`}>
+              <td className="px-4 sm:px-6 py-3 sm:py-4">
+                <span className={`inline-flex items-center rounded-lg px-2 py-1 sm:px-2.5 text-xs font-medium ${getCategoryStyle(item.kategori)}`}>
                   {item.kategori}
                 </span>
               </td>
 
               {/* Kecamatan */}
-              <td className="px-6 py-4 text-slate-600 dark:text-slate-300">
+              <td className="hidden sm:table-cell px-4 sm:px-6 py-3 sm:py-4 text-slate-600 dark:text-slate-300">
                 {item.kecamatan}
               </td>
 
               {/* Badge */}
-              <td className="px-6 py-4">
+              <td className="px-4 sm:px-6 py-3 sm:py-4">
                 {item.badge && item.badge.level !== "none" ? (
                   <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 sm:px-2.5 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}
                   >
                     {item.badge.level === "platinum" && <DiamondIcon className="h-3 w-3" />}
                     {item.badge.level === "gold" && <GoldMedalIcon className="h-3 w-3" />}
                     {item.badge.level === "silver" && <SilverMedalIcon className="h-3 w-3" />}
                     {item.badge.level === "bronze" && <SeedlingIcon className="h-3 w-3" />}
-                    {item.badge.label}
+                    <span className="hidden sm:inline">{item.badge.label}</span>
                   </span>
                 ) : (
                   <span className="text-xs text-slate-400 dark:text-slate-500">
@@ -156,7 +156,7 @@ export default function MonitoringTable({ data }: Props) {
               </td>
 
               {/* Monitoring count */}
-              <td className="px-6 py-4 text-right">
+              <td className="hidden sm:table-cell px-4 sm:px-6 py-3 sm:py-4 text-right">
                 {item.monitoringCount > 0 ? (
                   <span className="font-medium text-slate-700 dark:text-slate-200">
                     {item.monitoringCount}x
@@ -169,7 +169,7 @@ export default function MonitoringTable({ data }: Props) {
               </td>
 
               {/* Omzet */}
-              <td className="px-6 py-4 text-right">
+              <td className="hidden md:table-cell px-4 sm:px-6 py-3 sm:py-4 text-right">
                 {item.latestMonitoring?.omzet ? (
                   <span className="font-medium text-slate-700 dark:text-slate-200">
                     {formatRupiah(item.latestMonitoring.omzet)}
@@ -182,13 +182,13 @@ export default function MonitoringTable({ data }: Props) {
               </td>
 
               {/* Action */}
-              <td className="px-6 py-4 text-right">
+              <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
                 <Link
                   href={`/admin/monitoring/${item.id}`}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20"
+                  className="inline-flex items-center gap-1 sm:gap-1.5 rounded-lg bg-slate-100 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20"
                 >
-                  <Eye size={15} />
-                  Detail
+                  <Eye size={14} />
+                  <span className="hidden sm:inline">Detail</span>
                 </Link>
               </td>
             </tr>

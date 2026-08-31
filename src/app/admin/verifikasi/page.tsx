@@ -114,18 +114,26 @@ export default function VerifikasiPage() {
 
   return (
     <main>
-      <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
-        <div className="border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+      <div className="h-fit overflow-hidden rounded-xl bg-white dark:bg-dark-card">
+        <div className="border-b border-gray-200 px-4 py-3 sm:px-5 sm:py-4 dark:border-neutral-800">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
             Verifikasi UMKM
           </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             {requests.length} menunggu verifikasi
           </p>
         </div>
 
         {requests.length === 0 ? (
-          <EmptyState />
+          <div className="py-16 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-500 dark:bg-white/5 dark:text-slate-400">
+              ✓
+            </div>
+            <h2 className="mt-4 font-semibold text-slate-900 dark:text-white">Tidak ada request</h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              Semua request UMKM sudah diproses.
+            </p>
+          </div>
         ) : (
           <div className="divide-y divide-gray-100 dark:divide-neutral-800">
             {requests.map((item) => {

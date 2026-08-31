@@ -42,7 +42,7 @@ export default function RequestRow({ item, onUpdate }: Props) {
 
   return (
     <div>
-      <div className="flex flex-col gap-4 px-5 py-5 transition hover:bg-gray-50/70 dark:hover:bg-neutral-900/40 md:flex-row md:items-center md:justify-between">
+      <div className="flex flex-col gap-3 px-4 py-4 transition hover:bg-gray-50/70 sm:gap-4 sm:px-5 sm:py-5 dark:hover:bg-neutral-900/40 md:flex-row md:items-center md:justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex items-start gap-3">
             <Image
@@ -50,7 +50,7 @@ export default function RequestRow({ item, onUpdate }: Props) {
               alt={item.umkm?.nama ?? "UMKM"}
               width={48}
               height={48}
-              className="h-12 w-12 rounded-lg border border-gray-200 object-cover dark:border-neutral-700"
+              className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg border border-gray-200 object-cover dark:border-neutral-700"
             />
 
             <div className="min-w-0">
@@ -58,7 +58,7 @@ export default function RequestRow({ item, onUpdate }: Props) {
                 {item.umkm?.nama ?? "-"}
               </h2>
 
-              <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-gray-500 dark:text-gray-400">
+              <div className="mt-1 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] sm:text-xs text-gray-500 dark:text-gray-400">
                 <span>{item.umkm?.kategori ?? "-"}</span>
 
                 <span>•</span>
@@ -113,7 +113,7 @@ export default function RequestRow({ item, onUpdate }: Props) {
       {item.action === "update" && <RequestDetail item={item} />}
 
       {item.action === "delete" && isPending && (
-        <div className="px-5 pb-4">
+        <div className="px-4 sm:px-5 pb-3 sm:pb-4">
           <p className="text-xs text-gray-400">
             Request penghapusan menunggu persetujuan admin.
           </p>

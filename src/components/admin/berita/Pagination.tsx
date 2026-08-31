@@ -46,7 +46,7 @@ export default function Pagination({ page, totalPages, search = "" }: Props) {
   }
 
   return (
-    <div className="flex items-center justify-end gap-1 p-6">
+    <div className="flex items-center justify-end gap-1 px-4 py-4 sm:px-6 sm:py-6">
       <Link
         scroll={false}
         href={createUrl(page - 1)}

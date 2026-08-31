@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
-import { Settings, LogOut } from "lucide-react";
+import { Settings, LogOut, ChevronDown } from "lucide-react";
 
 import SidebarItem from "./SidebarItem";
 import SidebarLogo from "./SidebarLogo";
@@ -132,7 +132,7 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
         {/* Hamburger trigger bar — fixed top bar on mobile */}
         <nav
           className={`
-            fixed top-0 left-0 z-50
+            fixed top-0 left-0 z-[999]
             w-screen h-12
             flex items-center justify-between px-5
             bg-light dark:bg-dark/40 backdrop-blur-xl
@@ -155,7 +155,7 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
         {/* Fullscreen overlay menu */}
         <div
           className={`
-            fixed inset-0 z-[60]
+            fixed inset-0 z-[1000]
             bg-light dark:bg-dark
             transition-transform duration-300 ease-out
             ${open ? "translate-y-0" : "-translate-y-full"}
@@ -183,7 +183,7 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
           </div>
 
           {/* Menu items */}
-          <div className="flex flex-col px-6 pt-10 gap-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
+          <div className="flex flex-col px-6 pt-10 gap-2 overflow-y-auto max-h-[calc(100vh-8rem)]">
             {filteredMenus.map((menu) => {
               const Icon = menu.icon;
               const isActive = menu.href
@@ -192,36 +192,77 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
                   : pathname.startsWith(menu.href)
                 : menu.children?.some((c) => pathname.startsWith(c.href));
 
-              if (menu.children) {
+              const hasChildren = menu.children && menu.children.length > 0;
+              const isMenuOpen = openMenu === menu.label;
+
+              if (hasChildren) {
+                const totalBadge = menu.children!.reduce(
+                  (sum, c) => sum + (badges?.[c.badgeKey ?? ""] ?? 0),
+                  0
+                );
+                const hasBadge = totalBadge > 0;
+
                 return (
                   <div key={menu.label}>
-                    <div className="flex items-center gap-3 text-sm font-medium text-slate-400 dark:text-slate-500">
+                    {/* Parent button — accordion toggle */}
+                    <button
+                      onClick={() => setOpenMenu(isMenuOpen ? null : menu.label)}
+                      className={`
+                        w-full flex items-center gap-3 py-3 px-1
+                        text-sm font-medium rounded-lg transition-colors
+                        ${isActive
+                          ? "text-black dark:text-white"
+                          : "text-slate-500 hover:text-black dark:text-slate-400 dark:hover:text-white"
+                        }
+                      `}
+                    >
                       <Icon size={18} />
-                      {menu.label}
-                    </div>
-                    <div className="flex flex-col pl-6 pt-2 gap-4">
-                      {menu.children.map((child) => {
-                        const ChildIcon = child.icon;
-                        const childActive = pathname.startsWith(child.href);
-                        return (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            onClick={() => onClose?.()}
-                            className={`flex items-center gap-3 text-base font-medium transition-colors ${
-                              childActive
-                                ? "text-black dark:text-white"
-                                : "text-slate-500 hover:text-black dark:text-slate-400 dark:hover:text-white"
-                            }`}
-                          >
-                            <ChildIcon size={18} />
-                            {child.label}
-                            {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && (
-                              <span className="ml-1 h-2 w-2 rounded-full bg-red-500" />
-                            )}
-                          </Link>
-                        );
-                      })}
+                      <span className="flex-1 text-left">{menu.label}</span>
+                      {hasBadge && (
+                        <span className="h-2 w-2 rounded-full bg-red-500" />
+                      )}
+                      <ChevronDown
+                        size={16}
+                        className={`text-slate-400 transition-transform duration-300 ${
+                          isMenuOpen ? "rotate-180" : "rotate-0"
+                        }`}
+                      />
+                    </button>
+
+                    {/* Children — slide-down accordion */}
+                    <div
+                      className={`
+                        overflow-hidden transition-all duration-300 ease-[cubic-bezier(.22,1,.36,1)]
+                        ${isMenuOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"}
+                      `}
+                    >
+                      <div className="pl-6 pt-1 pb-1 space-y-0.5">
+                        {menu.children!.map((child) => {
+                          const ChildIcon = child.icon;
+                          const childActive = pathname.startsWith(child.href);
+                          return (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              onClick={() => onClose?.()}
+                              className={`
+                                flex items-center gap-3 py-2.5 px-3 rounded-lg
+                                text-[13px] font-medium transition-colors
+                                ${childActive
+                                  ? "bg-slate-100 text-slate-900 dark:bg-neutral-800 dark:text-white"
+                                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                }
+                              `}
+                            >
+                              <ChildIcon size={16} />
+                              <span>{child.label}</span>
+                              {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && (
+                                <span className="ml-1 h-2 w-2 rounded-full bg-red-500" />
+                              )}
+                            </Link>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 );
@@ -232,13 +273,13 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
                   key={menu.href}
                   href={menu.href!}
                   onClick={() => onClose?.()}
-                  className={`flex items-center gap-3 text-xl font-medium transition-colors ${
+                  className={`flex items-center gap-3 py-3 px-1 text-base font-medium transition-colors ${
                     isActive
                       ? "text-black dark:text-white"
                       : "text-slate-500 hover:text-black dark:text-slate-400 dark:hover:text-white"
                   }`}
                 >
-                  <Icon size={22} />
+                  <Icon size={20} />
                   {menu.label}
                 </Link>
               );
