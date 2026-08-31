@@ -94,7 +94,8 @@ export default function SummaryCards({ data }: Props) {
   return (
     <div
       className="
-        relative overflow-hidden rounded-2xl px-5 py-4 text-white
+        relative overflow-clip rounded-2xl px-4 py-4 text-white
+        sm:px-5
         sm:p-6
         md:p-8
         bg-gradient-to-br
@@ -115,38 +116,38 @@ export default function SummaryCards({ data }: Props) {
 
       <div className="relative">
         {/* Hero stat */}
-        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="rounded-2xl bg-white/20 p-3 backdrop-blur-md dark:bg-white/10">
+        <div className="flex items-start gap-3 sm:gap-4">
+          <div className="shrink-0 rounded-2xl bg-white/20 p-3 backdrop-blur-md dark:bg-white/10">
             <Building2 size={24} />
           </div>
-          <div className="text-center sm:text-right">
-            <p className="text-white/70">UMKM Saya</p>
-            <h2 className="text-2xl font-bold leading-none sm:text-4xl">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs text-white/70 sm:text-sm">UMKM Saya</p>
+            <h2 className="truncate text-base font-bold leading-tight sm:text-4xl">
               {data.umkm?.nama ?? "-"}
             </h2>
-            <p className="mt-1 text-white/70">
+            <p className="mt-0.5 truncate text-[11px] text-white/70 sm:mt-1 sm:text-sm">
               {data.umkm ? "Usaha sudah terdaftar" : "Belum memiliki UMKM"}
             </p>
           </div>
         </div>
 
         {/* Badge + Monitoring row */}
-        <div className="mt-5 flex flex-wrap items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-2 sm:mt-5 sm:gap-3">
           {badgeInfo.level !== "none" ? (
-            <div className="inline-flex items-center gap-2 rounded-full border bg-white/15 px-3 py-1.5 backdrop-blur-sm border-white/20">
+            <div className="inline-flex items-center gap-1.5 rounded-full border bg-white/15 px-2.5 py-1 backdrop-blur-sm sm:gap-2 sm:px-3 sm:py-1.5 border-white/20">
               {BADGE_SVG[badgeInfo.level]}
-              <span className="text-sm font-semibold">{badgeInfo.label}</span>
+              <span className="text-xs font-semibold sm:text-sm">{badgeInfo.label}</span>
             </div>
           ) : (
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5">
-              <div className="h-2 w-2 rounded-full bg-white/40" />
-              <p className="text-sm text-white/50">Belum ada badge</p>
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-2.5 py-1 sm:gap-2 sm:px-3 sm:py-1.5">
+              <div className="h-1.5 w-1.5 rounded-full bg-white/40 sm:h-2 sm:w-2" />
+              <p className="text-xs text-white/50 sm:text-sm">Belum ada badge</p>
             </div>
           )}
           {monitoringInfo.count > 0 && (
-            <div className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 backdrop-blur-sm">
-              <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              <p className="text-sm font-semibold">
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 backdrop-blur-sm sm:gap-2 sm:px-3 sm:py-1.5">
+              <div className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse sm:h-2 sm:w-2" />
+              <p className="text-xs font-semibold sm:text-sm">
                 {monitoringInfo.count}x Monitoring
               </p>
               {monitoringInfo.lastDate && (
@@ -159,20 +160,22 @@ export default function SummaryCards({ data }: Props) {
         </div>
 
         {/* Sub stats */}
-        <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-4">
+        <div className="mt-4 grid grid-cols-1 gap-2 sm:mt-5 sm:grid-cols-3 sm:gap-4">
           {stats.slice(1).map((item) => {
             const Icon = item.icon;
             return (
               <div
                 key={item.title}
-                className="rounded-2xl bg-white/10 p-4 backdrop-blur-sm dark:bg-white/5 dark:border dark:border-white/10"
+                className="flex items-center gap-3 rounded-2xl bg-white/10 px-4 py-3 backdrop-blur-sm sm:flex-col sm:items-start sm:p-4 dark:bg-white/5 dark:border dark:border-white/10"
               >
-                <div className="mb-2 flex items-center gap-2">
+                <div className="flex items-center gap-2">
                   <Icon size={16} />
-                  <span className="text-sm text-white/80">{item.title}</span>
+                  <span className="text-xs text-white/80 sm:text-sm">{item.title}</span>
                 </div>
-                <p className="text-lg font-bold">{item.value}</p>
-                <p className="mt-1 text-xs text-white/60">{item.description}</p>
+                <div className="flex items-baseline gap-2 sm:mt-2 sm:flex-col sm:items-start sm:gap-0">
+                  <p className="text-sm font-bold sm:text-lg">{item.value}</p>
+                  <p className="text-[11px] text-white/60 sm:text-xs">{item.description}</p>
+                </div>
               </div>
             );
           })}

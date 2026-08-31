@@ -12,7 +12,7 @@ export default function StatsCards({ stats }: Props) {
   return (
     <div
       className="
-        relative overflow-hidden rounded-2xl p-8 text-white
+        relative overflow-clip rounded-2xl px-5 py-5 text-white sm:p-8
         bg-gradient-to-br
 
         from-[#ff7a59]
@@ -61,22 +61,21 @@ export default function StatsCards({ stats }: Props) {
             <Store size={24} />
           </div>
 
-          <div className="text-right">
-            <p className="text-white/70">Total UMKM</p>
+          <div className="min-w-0 text-right">
+            <p className="text-xs text-white/70 sm:text-sm">Total UMKM</p>
 
-            <h2 className="text-6xl font-bold leading-none">
+            <h2 className="text-4xl font-bold leading-none sm:text-6xl">
               {stats.totalUmkm.toLocaleString("id-ID")}
             </h2>
 
-            <p className="mt-1 text-white/70">Terdaftar di etamhub.</p>
+            <p className="mt-1 text-xs text-white/70 sm:text-sm">Terdaftar di etamhub.</p>
           </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-4">
+        <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-6 sm:gap-4">
           <div
             className="
-              rounded-2xl bg-white/10 p-4
-              backdrop-blur-sm
+              rounded-2xl bg-white/10 p-3 backdrop-blur-sm sm:p-4
 
               dark:bg-white/5
               dark:border dark:border-white/10
@@ -88,7 +87,7 @@ export default function StatsCards({ stats }: Props) {
               <span className="text-sm text-white/80">Kecamatan</span>
             </div>
 
-            <p className="text-2xl font-bold">{stats.totalKecamatan}</p>
+            <p className="text-xl font-bold sm:text-2xl">{stats.totalKecamatan}</p>
           </div>
 
           <div
@@ -106,7 +105,7 @@ export default function StatsCards({ stats }: Props) {
               <span className="text-sm text-white/80">Subkategori</span>
             </div>
 
-            <p className="text-2xl font-bold">{stats.totalSubkategori}</p>
+            <p className="text-xl font-bold sm:text-2xl">{stats.totalSubkategori}</p>
           </div>
         </div>
       </div>

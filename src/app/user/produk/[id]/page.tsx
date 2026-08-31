@@ -74,8 +74,8 @@ export default function ProductDetailPage({ params }: Props) {
 
   if (loading) {
     return (
-      <main className="min-h-screen">
-        <div className="px-6">
+      <main>
+        <div>
           <div className="flex min-h-96 items-center justify-center text-sm text-gray-500 dark:text-gray-400">
             Memuat detail produk...
           </div>
@@ -86,8 +86,8 @@ export default function ProductDetailPage({ params }: Props) {
 
   if (error || !product) {
     return (
-      <main className="px-6 w-full">
-        <div className="">
+      <main>
+        <div>
           <Link
             href="/user"
             className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
@@ -109,8 +109,8 @@ export default function ProductDetailPage({ params }: Props) {
   const image = product.gambar?.[0];
 
   return (
-    <main className="">
-      <div className="px-6">
+    <main>
+      <div>
         <div className="mb-6 flex items-center justify-between gap-4">
           <Link
             href="/user"
@@ -129,7 +129,7 @@ export default function ProductDetailPage({ params }: Props) {
           </Link>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <section className="overflow-hidden rounded-xl bg-dark-card">
             <div className="aspect-square overflow-hidden bg-gray-100 dark:bg-[#202020]">
               {image ? (
@@ -166,7 +166,7 @@ export default function ProductDetailPage({ params }: Props) {
           <section className="rounded-xl bg-dark-card p-6">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-xl font-bold sm:text-2xl text-gray-900 dark:text-white">
                   {product.nama}
                 </h1>
 

@@ -35,7 +35,7 @@ export default async function AdminBeritaPage({
   const news = result.data;
 
   return (
-    <div className="pb-6 px-6">
+    <div>
       <div className="rounded-xl bg-white transition-colors duration-300 dark:bg-dark-card">
         <div className="px-6 pt-5 pb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>

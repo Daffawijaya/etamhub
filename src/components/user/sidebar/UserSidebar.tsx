@@ -118,12 +118,15 @@ export default function UserSidebar({ mobile = false, open = false, onClose }: U
               etamhub.
             </Link>
 
-            <button
-              onClick={() => onClose?.()}
-              className="text-black dark:text-white text-3xl"
-            >
-              <FiX />
-            </button>
+            <div className="flex items-center gap-1">
+              <ThemeToggle />
+              <button
+                onClick={() => onClose?.()}
+                className="text-black dark:text-white text-3xl"
+              >
+                <FiX />
+              </button>
+            </div>
           </div>
 
           {/* Menu items */}
@@ -222,13 +225,6 @@ export default function UserSidebar({ mobile = false, open = false, onClose }: U
       />
 
       <SidebarLogo collapsed={collapsed} userName={userName} />
-
-      {/* Theme toggle — only when expanded */}
-      {!collapsed && (
-        <div className="px-4 pb-2">
-          <ThemeToggle />
-        </div>
-      )}
 
       <nav className="flex-1 overflow-y-auto px-2 py-1">
         <div className="space-y-1">

@@ -337,11 +337,11 @@ export default function MonitoringDetailPage() {
   ].filter(Boolean) as { label: string; value: string }[];
 
   return (
-    <main className="px-6 pb-6 space-y-6">
+    <main className="space-y-6">
       {/* Header */}
       <div className="rounded-xl bg-white p-6 dark:bg-dark-card">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="flex items-start gap-3 sm:gap-4">
             {/* Badge icon large */}
             {badge && badge.level !== "none" && (
               <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white ring-2 shadow-sm dark:bg-dark-card ${BADGE_RING_COLORS[badge.level] ?? ""}`}>
@@ -349,7 +349,7 @@ export default function MonitoringDetailPage() {
               </div>
             )}
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white capitalize">{umkm.nama}</h1>
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white capitalize sm:text-2xl">{umkm.nama}</h1>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 {umkm.kecamatan} · {umkm.kategori} · {umkm.pemilik}
               </p>
@@ -363,8 +363,7 @@ export default function MonitoringDetailPage() {
                 </div>
               )}
             </div>
-          </div>
-          <button
+          </div>            <button
             onClick={() => {
               setForm({
                 jumlah_tenaga_kerja: latestData.jumlah_tenaga_kerja != null ? String(latestData.jumlah_tenaga_kerja) : "",
@@ -382,7 +381,7 @@ export default function MonitoringDetailPage() {
               });
               setShowForm(true);
             }}
-            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700"
+            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-emerald-700 sm:px-4 sm:text-sm"
           >
             <Plus size={16} />
             Tambah Monitoring
@@ -818,7 +817,7 @@ export default function MonitoringDetailPage() {
             <p className="text-sm text-slate-500 mt-1">Isi hanya data yang berubah/lengkap baru</p>
 
             <div className="mt-4 space-y-4">
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Jumlah Tenaga Kerja</label>
                   <input
@@ -863,7 +862,7 @@ export default function MonitoringDetailPage() {
 
               <div>
                 <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Legalitas</label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
                     <label className="mb-1 block text-xs text-slate-400">No. Halal</label>
                     <input type="text" value={form.halal} onChange={(e) => setForm((p) => ({ ...p, halal: e.target.value }))} placeholder="Nomor Halal" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
@@ -881,7 +880,7 @@ export default function MonitoringDetailPage() {
 
               <div>
                 <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Sosial Media</label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                   <div>
                     <label className="mb-1 block text-xs text-slate-400">Instagram</label>
                     <input type="text" value={form.instagram} onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />

@@ -30,10 +30,10 @@ export default function DashboardGrid() {
   const monitoring = data.monitoring ?? {};
 
   return (
-    <div className="grid grid-cols-12 gap-6">
-      <div className="col-span-8 space-y-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="space-y-6 lg:col-span-8">
         {/* Top row: Stats + Quick Actions */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <StatsCards stats={data.stats} />
           <QuickActions />
         </div>
@@ -48,7 +48,7 @@ export default function DashboardGrid() {
         <UmkmMapWidget umkms={data.map ?? []} />
       </div>
 
-      <div className="col-span-4 space-y-6">
+      <div className="space-y-6 lg:col-span-4">
         {/* Badge Distribution Pie Chart */}
         <BadgePieChart
           data={monitoring.badgeChart ?? []}

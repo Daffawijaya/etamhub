@@ -17,7 +17,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
 
   if (!news) {
     return (
-      <div className="px-6 pb-6">
+      <div>
         <div className="rounded-xl border border-white bg-light p-6 dark:border-zinc-800 dark:bg-[#1b1b1b]">
           <h1 className="text-lg font-semibold text-slate-900 dark:text-white">
             Berita tidak ditemukan
@@ -42,7 +42,7 @@ export default async function AdminBeritaPreviewPage({ params }: Props) {
   const publishedDate = news.published_at ?? news.created_at;
 
   return (
-    <div className="px-6 pb-6">
+    <div>
       <div className="overflow-hidden rounded-xl border border-white bg-light dark:border-zinc-800 dark:bg-[#1b1b1b]">
         <div className="flex items-center justify-between border-b border-white px-6 py-4 dark:border-zinc-800">
           <Link

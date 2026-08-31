@@ -16,7 +16,7 @@ export default async function EditBeritaPage({ params }: Props) {
     const news = await getNewsById(id);
 
     return (
-      <div className="space-y-6 px-6 pb-6">
+      <div className="space-y-6">
         <NewsForm initialData={news} />
       </div>
     );

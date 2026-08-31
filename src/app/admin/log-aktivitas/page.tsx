@@ -217,21 +217,21 @@ export default function LogAktivitasPage() {
   const filteredLogs = logs;
 
   return (
-    <div className="pb-6 px-6">
+    <div>
       <div className="rounded-xl bg-white transition-colors duration-300 dark:bg-dark-card">
         {/* Header — matches berita/umkm page style */}
-        <div className="px-6 pt-5 pb-4 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="px-4 pt-4 pb-3 flex flex-col gap-3 sm:px-6 sm:pt-5 sm:pb-4 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300 sm:text-2xl">
               Log Aktivitas
             </h2>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 transition-colors duration-300 sm:text-sm">
               {total} aktivitas tercatat
             </p>
           </div>
 
           {/* Search + Filter */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <CustomSelect
               value={filterActor}
               onChange={(v) => {
@@ -243,7 +243,7 @@ export default function LogAktivitasPage() {
                 value: a.actor_id,
                 label: a.actor_name,
               }))}
-              className="w-56"
+              className="w-full sm:w-56"
             />
             <CustomSelect
               value={filterAction}
@@ -256,7 +256,7 @@ export default function LogAktivitasPage() {
                 value: key,
                 label: config.label,
               }))}
-              className="w-56"
+              className="w-full sm:w-56"
             />
           </div>
         </div>
@@ -286,7 +286,7 @@ export default function LogAktivitasPage() {
               return (
                 <div
                   key={log.id}
-                  className="flex items-start gap-4 px-6 py-4 transition-colors hover:bg-slate-50 dark:hover:bg-white/[0.02]"
+                  className="flex items-start gap-3 px-4 py-3 transition-colors hover:bg-slate-50 sm:gap-4 sm:px-6 sm:py-4 dark:hover:bg-white/[0.02]"
                 >
                   {/* Icon */}
                   <div

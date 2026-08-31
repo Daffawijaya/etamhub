@@ -104,7 +104,7 @@ export default async function UserEditUmkmPage({ params }: Props) {
     : umkm;
 
   return (
-    <main className="min-h-screen bg-light px-6 pb-6 dark:bg-dark">
+    <main>
       <UmkmForm
         mode="edit"
         role="user"

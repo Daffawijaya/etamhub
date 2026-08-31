@@ -92,8 +92,8 @@ export default function UserLayout({
           onClose={() => setSidebarOpen((prev) => !prev)}
         />
 
-        {/* Content — pt-12 for fixed navbar, no px (cards handle their own) */}
-        <div className="pt-12 pb-8 bg-light dark:bg-dark">
+        {/* Content — pt-16 for navbar h-12 clearance, px-5 matches navbar px-5 */}
+        <div className="pt-16 pb-8 px-5 bg-light dark:bg-dark">
           {children}
         </div>
       </div>

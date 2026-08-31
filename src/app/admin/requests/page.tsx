@@ -75,7 +75,7 @@ export default function RequestsPage() {
   ).length;
 
   return (
-    <main className="px-6 pb-6">
+    <main>
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
         <div className="border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">

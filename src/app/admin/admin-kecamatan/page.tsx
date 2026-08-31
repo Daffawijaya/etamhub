@@ -186,7 +186,7 @@ export default function AdminKecamatanPage() {
   if (loading) return <LoadingState />;
 
   return (
-    <main className="px-6 pb-6 space-y-6">
+    <main className="space-y-6">
       {/* ==================== ADMIN SECTION (super_admin only) ==================== */}
       {isSuperAdmin && (
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
@@ -206,10 +206,11 @@ export default function AdminKecamatanPage() {
           </div>
           <button
             onClick={() => openForm("admin")}
-            className="flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-violet-700"
+            className="flex items-center gap-2 rounded-lg bg-violet-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-violet-700 sm:px-4 sm:text-sm"
           >
             <Plus size={16} />
-            Tambah Admin
+            <span className="hidden sm:inline">Tambah Admin</span>
+            <span className="sm:hidden">Tambah</span>
           </button>
         </div>
 
@@ -222,56 +223,60 @@ export default function AdminKecamatanPage() {
             {adminList.map((admin) => (
               <div
                 key={admin.id}
-                className="flex items-center gap-4 px-5 py-4"
+                className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-50 dark:bg-violet-900/20">
-                  <Shield size={18} className="text-violet-600 dark:text-violet-400" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
-                    {admin.nama}
-                  </h3>
-                  <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                    @{admin.username}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-[11px] font-semibold text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
-                    ADMIN
-                  </span>
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${
-                      admin.is_active
-                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                        : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
-                    }`}
-                  >
-                    {admin.is_active ? "Aktif" : "Nonaktif"}
-                  </span>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-50 dark:bg-violet-900/20">
+                    <Shield size={18} className="text-violet-600 dark:text-violet-400" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
+                      {admin.nama}
+                    </h3>
+                    <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                      @{admin.username}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => openForm("admin", admin)}
-                    className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
-                    title="Edit"
-                  >
-                    <Edit2 size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleToggleActive(admin.id, admin.is_active)}
-                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
-                  >
-                    {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
-                  </button>
-                  <button
-                    onClick={() => handleDelete(admin.id)}
-                    className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
-                    title="Hapus"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                <div className="flex items-center justify-between gap-2 pl-[52px] sm:pl-0 sm:justify-start">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-[11px] font-semibold text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
+                      ADMIN
+                    </span>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${
+                        admin.is_active
+                          ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                          : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
+                      }`}
+                    >
+                      {admin.is_active ? "Aktif" : "Nonaktif"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => openForm("admin", admin)}
+                      className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
+                      title="Edit"
+                    >
+                      <Edit2 size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleToggleActive(admin.id, admin.is_active)}
+                      className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
+                    >
+                      {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(admin.id)}
+                      className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                      title="Hapus"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -298,10 +303,11 @@ export default function AdminKecamatanPage() {
           </div>
           <button
             onClick={() => openForm("admin_kecamatan")}
-            className="flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-teal-700"
+            className="flex items-center gap-2 rounded-lg bg-teal-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-teal-700 sm:px-4 sm:text-sm"
           >
             <Plus size={16} />
-            Tambah Akun
+            <span className="hidden sm:inline">Tambah Akun</span>
+            <span className="sm:hidden">Tambah</span>
           </button>
         </div>
 
@@ -314,59 +320,63 @@ export default function AdminKecamatanPage() {
             {kecamatanList.map((admin) => (
               <div
                 key={admin.id}
-                className="flex items-center gap-4 px-5 py-4"
+                className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
               >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-900/20">
-                  <Users size={18} className="text-teal-600 dark:text-teal-400" />
-                </div>
-                <div className="min-w-0 flex-1">
-                  <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
-                    {admin.nama}
-                  </h3>
-                  <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                    @{admin.username} ·{" "}
-                    {admin.kecamatan.length > 0
-                      ? admin.kecamatan.join(", ")
-                      : "Belum ada kecamatan"}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-teal-50 px-2.5 py-0.5 text-[11px] font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400">
-                    KECAMATAN
-                  </span>
-                  <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${
-                      admin.is_active
-                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                        : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
-                    }`}
-                  >
-                    {admin.is_active ? "Aktif" : "Nonaktif"}
-                  </span>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-900/20">
+                    <Users size={18} className="text-teal-600 dark:text-teal-400" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
+                      {admin.nama}
+                    </h3>
+                    <p className="truncate text-sm text-slate-500 dark:text-slate-400">
+                      @{admin.username} ·{" "}
+                      {admin.kecamatan.length > 0
+                        ? admin.kecamatan.join(", ")
+                        : "Belum ada kecamatan"}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => openForm("admin_kecamatan", admin)}
-                    className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
-                    title="Edit"
-                  >
-                    <Edit2 size={16} />
-                  </button>
-                  <button
-                    onClick={() => handleToggleActive(admin.id, admin.is_active)}
-                    className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
-                  >
-                    {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
-                  </button>
-                  <button
-                    onClick={() => handleDelete(admin.id)}
-                    className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
-                    title="Hapus"
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                <div className="flex items-center justify-between gap-2 pl-[52px] sm:pl-0 sm:justify-start">
+                  <div className="flex items-center gap-2">
+                    <span className="rounded-full bg-teal-50 px-2.5 py-0.5 text-[11px] font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400">
+                      KECAMATAN
+                    </span>
+                    <span
+                      className={`rounded-full px-3 py-1 text-xs font-medium ${
+                        admin.is_active
+                          ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                          : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
+                      }`}
+                    >
+                      {admin.is_active ? "Aktif" : "Nonaktif"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => openForm("admin_kecamatan", admin)}
+                      className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
+                      title="Edit"
+                    >
+                      <Edit2 size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleToggleActive(admin.id, admin.is_active)}
+                      className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
+                    >
+                      {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(admin.id)}
+                      className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                      title="Hapus"
+                    >
+                      <Trash2 size={16} />
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}

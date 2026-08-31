@@ -43,14 +43,14 @@ export default async function UserProfilePage() {
     .toUpperCase();
 
   return (
-    <main className="min-h-screen bg-light px-6 pb-8 dark:bg-dark">
-      <div className="grid grid-cols-12 gap-6">
+    <main>
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         {/* Left: Profile Hero + Info */}
-        <div className="col-span-8 space-y-6">
+        <div className="space-y-6 lg:col-span-8">
           {/* Gradient Hero Card */}
           <div
             className="
-              relative overflow-hidden rounded-2xl p-8 text-white
+              relative overflow-hidden rounded-2xl p-5 text-white sm:p-8
               bg-gradient-to-br
               from-[#ff7a59]
               via-[#ff6b7d]
@@ -74,14 +74,14 @@ export default async function UserProfilePage() {
                 Kembali
               </Link>
 
-              <div className="flex items-center gap-5">
+              <div className="flex items-center gap-4 sm:gap-5">
                 {/* Avatar */}
-                <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-white/20 text-2xl font-bold backdrop-blur-md dark:bg-white/10">
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-white/20 text-xl font-bold backdrop-blur-md sm:h-20 sm:w-20 sm:text-2xl dark:bg-white/10">
                   {initials}
                 </div>
 
-                <div>
-                  <h1 className="text-2xl font-bold sm:text-3xl">
+                <div className="min-w-0">
+                  <h1 className="truncate text-xl font-bold sm:text-3xl">
                     {nama}
                   </h1>
                   <p className="mt-1 text-white/70">Pemilik UMKM</p>
@@ -95,7 +95,7 @@ export default async function UserProfilePage() {
           </div>
 
           {/* Detail Cards */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {/* NIK */}
             <div className="rounded-2xl bg-white p-5 dark:bg-dark-card">
               <div className="mb-3 flex items-center gap-2">
@@ -106,7 +106,7 @@ export default async function UserProfilePage() {
                   NIK
                 </span>
               </div>
-              <p className="font-mono text-lg font-semibold tracking-wider text-slate-900 dark:text-white">
+              <p className="font-mono text-base font-semibold tracking-wider text-slate-900 sm:text-lg dark:text-white">
                 {user.nik ?? "-"}
               </p>
             </div>
@@ -121,13 +121,13 @@ export default async function UserProfilePage() {
                   Email
                 </span>
               </div>
-              <p className="truncate text-lg font-semibold text-slate-900 dark:text-white">
+              <p className="truncate text-base font-semibold text-slate-900 sm:text-lg dark:text-white">
                 {user.email ?? "-"}
               </p>
             </div>
 
             {/* WhatsApp - full width */}
-            <div className="col-span-2 rounded-2xl bg-white p-5 dark:bg-dark-card">
+            <div className="rounded-2xl bg-white p-5 sm:col-span-2 dark:bg-dark-card">
               <div className="mb-3 flex items-center gap-2">
                 <div className="rounded-lg bg-emerald-50 p-2 dark:bg-emerald-500/10">
                   <Phone size={16} className="text-emerald-600 dark:text-emerald-400" />
@@ -144,7 +144,7 @@ export default async function UserProfilePage() {
         </div>
 
         {/* Right: Quick Info */}
-        <div className="col-span-4 space-y-6">
+        <div className="space-y-6 lg:col-span-4">
           {/* Status Card */}
           <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white">

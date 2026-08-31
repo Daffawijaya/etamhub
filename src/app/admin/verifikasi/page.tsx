@@ -113,7 +113,7 @@ export default function VerifikasiPage() {
   if (loading) return <LoadingState />;
 
   return (
-    <main className="px-6 pb-6">
+    <main>
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
         <div className="border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -144,7 +144,7 @@ export default function VerifikasiPage() {
 
               return (
                 <div key={item.id} className="px-5 py-4">
-                  <div className="flex items-center gap-4">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                     {/* Gambar */}
                     <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl">
                       <Image
@@ -187,14 +187,14 @@ export default function VerifikasiPage() {
                       <button
                         disabled={processingId === item.id}
                         onClick={() => handleAction(item.id, "approve")}
-                        className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
+                        className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50 sm:px-4 sm:text-sm"
                       >
                         {processingId === item.id ? "..." : "Setujui"}
                       </button>
                       <button
                         disabled={processingId === item.id}
                         onClick={() => handleAction(item.id, "reject")}
-                        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700 disabled:opacity-50"
+                        className="rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-red-700 disabled:opacity-50 sm:px-4 sm:text-sm"
                       >
                         {processingId === item.id ? "..." : "Tolak"}
                       </button>
@@ -203,7 +203,7 @@ export default function VerifikasiPage() {
 
                   {/* Expanded diff for edit requests */}
                   {isEdit && isExpanded && changedFields.length > 0 && (
-                    <div className="mt-3 ml-[70px] rounded-lg bg-slate-50 p-4 dark:bg-white/[0.03]">
+                    <div className="mt-3 rounded-lg bg-slate-50 p-4 dark:bg-white/[0.03] sm:ml-[70px]">
                       <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">Perubahan:</p>
                       <div className="space-y-2">
                         {changedFields.map((field) => (

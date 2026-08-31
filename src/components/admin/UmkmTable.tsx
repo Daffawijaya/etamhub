@@ -152,7 +152,7 @@ export default function UmkmTable({
           )}
 
           {columns.pemilik && (
-            <div className="w-[150px] flex-shrink-0">
+            <div className="hidden w-[150px] flex-shrink-0 sm:block">
               <p className="truncate font-medium text-slate-700 dark:text-slate-200">
                 {item.pemilik || "-"}
               </p>
@@ -160,7 +160,7 @@ export default function UmkmTable({
           )}
 
           {columns.whatsapp && (
-            <div className="w-[130px] flex-shrink-0">
+            <div className="hidden w-[130px] flex-shrink-0 sm:block">
               <p className="truncate text-sm text-slate-500 dark:text-slate-400">
                 {item.whatsapp || "-"}
               </p>
@@ -168,7 +168,7 @@ export default function UmkmTable({
           )}
 
           {columns.kategori && (
-            <div className="w-[120px] flex-shrink-0">
+            <div className="w-[80px] flex-shrink-0 sm:w-[120px]">
               <span
                 className={`
                   inline-flex
@@ -186,7 +186,7 @@ export default function UmkmTable({
           )}
 
           {columns.kecamatan && (
-            <div className="w-[120px] flex-shrink-0">
+            <div className="hidden w-[120px] flex-shrink-0 md:block">
               <p className="truncate font-medium text-slate-700 dark:text-slate-200">
                 {item.kecamatan}
               </p>
@@ -204,7 +204,7 @@ export default function UmkmTable({
           )}
 
           {columns.createdAt && (
-            <div className="w-[100px] flex-shrink-0">
+            <div className="hidden w-[100px] flex-shrink-0 sm:block">
               <p className="text-sm text-slate-500 dark:text-slate-400">
                 {formatDate(item.created_at)}
               </p>

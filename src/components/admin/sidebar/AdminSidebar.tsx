@@ -1,17 +1,28 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { FiMenu, FiX } from "react-icons/fi";
+import { Settings, LogOut } from "lucide-react";
 
 import SidebarItem from "./SidebarItem";
 import SidebarLogo from "./SidebarLogo";
 import SidebarToggle from "./SidebarToggle";
 import ChangePasswordModal from "@/components/ui/ChangePasswordModal";
+import ThemeToggle from "@/components/ThemeToggle";
 import { menus } from "./sidebar-data";
-import { Settings } from "lucide-react";
 
 const STORAGE_KEY = "admin-sidebar-collapsed";
 
-export default function AdminSidebar() {
+interface AdminSidebarProps {
+  mobile?: boolean;
+  open?: boolean;
+  onClose?: () => void;
+}
+
+export default function AdminSidebar({ mobile = false, open = false, onClose }: AdminSidebarProps) {
+  const pathname = usePathname();
   const [collapsed, setCollapsed] = useState<boolean | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [role, setRole] = useState<string | null>(null);
@@ -20,6 +31,7 @@ export default function AdminSidebar() {
   const [notifCount, setNotifCount] = useState(0);
   const [userName, setUserName] = useState<string | null>(null);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const fetchBadges = useCallback(async () => {
     try {
@@ -73,6 +85,8 @@ export default function AdminSidebar() {
     } else {
       setCollapsed(false);
     }
+
+    setMounted(true);
   }, []);
 
   useEffect(() => {
@@ -80,7 +94,10 @@ export default function AdminSidebar() {
     localStorage.setItem(STORAGE_KEY, String(collapsed));
   }, [collapsed]);
 
+  // Desktop: auto-collapse on resize
   useEffect(() => {
+    if (mobile) return;
+
     const handleResize = () => {
       if (window.innerWidth < 1024) {
         setCollapsed(true);
@@ -89,16 +106,199 @@ export default function AdminSidebar() {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [mobile]);
 
   function handleToggle() {
     setHasInteracted(true);
     setCollapsed((prev) => !(prev ?? false));
   }
 
+  const handleLogout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" });
+    window.location.href = "/";
+  };
+
+  const filteredMenus = menus.filter((menu) => {
+    if (!menu.roles) return true;
+    return menu.roles.includes(role ?? "");
+  });
+
+  if (!mounted && !mobile) return null;
+
+  // --- Mobile sidebar: fullscreen slide-down overlay (like UserSidebar) ---
+  if (mobile) {
+    return (
+      <>
+        {/* Hamburger trigger bar — fixed top bar on mobile */}
+        <nav
+          className={`
+            fixed top-0 left-0 z-50
+            w-screen h-12
+            flex items-center justify-between px-5
+            bg-light dark:bg-dark/40 backdrop-blur-xl
+            border-b border-white dark:border-white/10
+            lg:hidden
+          `}
+        >
+          <Link href="/admin" className="text-xl font-bold tracking-wide text-black dark:text-white">
+            etamhub.
+          </Link>
+
+          <button
+            onClick={() => onClose?.()}
+            className="text-black dark:text-white text-xl"
+          >
+            <FiMenu />
+          </button>
+        </nav>
+
+        {/* Fullscreen overlay menu */}
+        <div
+          className={`
+            fixed inset-0 z-[60]
+            bg-light dark:bg-dark
+            transition-transform duration-300 ease-out
+            ${open ? "translate-y-0" : "-translate-y-full"}
+          `}
+        >
+          {/* Header */}
+          <div className="h-16 flex items-center justify-between px-5 border-b border-white dark:border-white/10">
+            <Link
+              href="/admin"
+              onClick={() => onClose?.()}
+              className="text-xl font-bold tracking-wide text-black dark:text-white"
+            >
+              etamhub.
+            </Link>
+
+            <div className="flex items-center gap-1">
+              <ThemeToggle />
+              <button
+                onClick={() => onClose?.()}
+                className="text-black dark:text-white text-3xl"
+              >
+                <FiX />
+              </button>
+            </div>
+          </div>
+
+          {/* Menu items */}
+          <div className="flex flex-col px-6 pt-10 gap-6 overflow-y-auto max-h-[calc(100vh-8rem)]">
+            {filteredMenus.map((menu) => {
+              const Icon = menu.icon;
+              const isActive = menu.href
+                ? menu.href === "/admin"
+                  ? pathname === "/admin"
+                  : pathname.startsWith(menu.href)
+                : menu.children?.some((c) => pathname.startsWith(c.href));
+
+              if (menu.children) {
+                return (
+                  <div key={menu.label}>
+                    <div className="flex items-center gap-3 text-sm font-medium text-slate-400 dark:text-slate-500">
+                      <Icon size={18} />
+                      {menu.label}
+                    </div>
+                    <div className="flex flex-col pl-6 pt-2 gap-4">
+                      {menu.children.map((child) => {
+                        const ChildIcon = child.icon;
+                        const childActive = pathname.startsWith(child.href);
+                        return (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => onClose?.()}
+                            className={`flex items-center gap-3 text-base font-medium transition-colors ${
+                              childActive
+                                ? "text-black dark:text-white"
+                                : "text-slate-500 hover:text-black dark:text-slate-400 dark:hover:text-white"
+                            }`}
+                          >
+                            <ChildIcon size={18} />
+                            {child.label}
+                            {child.badgeKey && badges && (badges[child.badgeKey] ?? 0) > 0 && (
+                              <span className="ml-1 h-2 w-2 rounded-full bg-red-500" />
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={menu.href}
+                  href={menu.href!}
+                  onClick={() => onClose?.()}
+                  className={`flex items-center gap-3 text-xl font-medium transition-colors ${
+                    isActive
+                      ? "text-black dark:text-white"
+                      : "text-slate-500 hover:text-black dark:text-slate-400 dark:hover:text-white"
+                  }`}
+                >
+                  <Icon size={22} />
+                  {menu.label}
+                </Link>
+              );
+            })}
+          </div>
+
+          {/* Bottom buttons */}
+          <div className="absolute bottom-6 left-0 w-full px-6 space-y-3">
+            <button
+              onClick={() => {
+                onClose?.();
+                setShowPasswordModal(true);
+              }}
+              className="
+                w-full h-11 rounded-lg
+                flex items-center justify-center gap-2
+                border border-slate-200 dark:border-white/10
+                bg-transparent
+                text-sm font-medium
+                text-black dark:text-white
+                hover:bg-slate-100 dark:hover:bg-white/5
+                transition-colors
+              "
+            >
+              <Settings size={16} />
+              Pengaturan Akun
+            </button>
+
+            <button
+              onClick={() => {
+                onClose?.();
+                handleLogout();
+              }}
+              className="
+                w-full h-11 rounded-lg
+                flex items-center justify-center gap-2
+                bg-red-500 dark:bg-danger
+                text-sm font-medium text-white
+                hover:bg-red-600 dark:hover:bg-danger-hover
+                transition-colors
+              "
+            >
+              <LogOut size={16} />
+              Keluar
+            </button>
+          </div>
+        </div>
+
+        <ChangePasswordModal
+          open={showPasswordModal}
+          onClose={() => setShowPasswordModal(false)}
+        />
+      </>
+    );
+  }
+
   // Don't render until we know the collapsed state
   if (collapsed === null) return null;
 
+  // --- Desktop sidebar: sticky, collapsible ---
   return (
     <aside
       className={`
@@ -120,21 +320,16 @@ export default function AdminSidebar() {
       {/* Menu */}
       <nav className="flex-1 overflow-y-auto px-2 py-1">
         <div className="space-y-1">
-          {menus
-            .filter((menu) => {
-              if (!menu.roles) return true;
-              return menu.roles.includes(role ?? "");
-            })
-            .map((menu) => (
-              <SidebarItem
-                key={menu.label}
-                menu={menu}
-                collapsed={collapsed}
-                badges={badges}
-                openMenu={openMenu}
-                setOpenMenu={setOpenMenu}
-              />
-            ))}
+          {filteredMenus.map((menu) => (
+            <SidebarItem
+              key={menu.label}
+              menu={menu}
+              collapsed={collapsed}
+              badges={badges}
+              openMenu={openMenu}
+              setOpenMenu={setOpenMenu}
+            />
+          ))}
         </div>
       </nav>
 

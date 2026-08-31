@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import AdminSidebar from "@/components/admin/sidebar/AdminSidebar";
 import DashboardNavbar from "@/components/DashboardNavbar";
@@ -11,6 +12,13 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
 
   const getTitle = () => {
     if (pathname === "/admin") {
@@ -81,13 +89,29 @@ export default function AdminLayout({
   };
 
   return (
-    <main className="flex min-h-screen">
-      <AdminSidebar />
+    <main className="min-h-screen bg-light-bg">
+      {/* Desktop layout */}
+      <div className="hidden lg:flex">
+        <AdminSidebar />
 
-      <div className="flex-1 bg-light dark:bg-dark">
-        <DashboardNavbar title={getTitle()} />
+        <div className="flex-1 min-w-0 bg-light dark:bg-dark">
+          <DashboardNavbar title={getTitle()} />
+          <div className="px-6 pb-8">{children}</div>
+        </div>
+      </div>
 
-        <div>{children}</div>
+      {/* Mobile layout */}
+      <div className="lg:hidden">
+        <AdminSidebar
+          mobile
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen((prev) => !prev)}
+        />
+
+        {/* Content — pt-16 for navbar h-12 clearance, px-5 matches navbar px-5 */}
+        <div className="pt-16 pb-8 px-5 bg-light dark:bg-dark">
+          {children}
+        </div>
       </div>
     </main>
   );
