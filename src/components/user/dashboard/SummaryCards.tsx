@@ -94,7 +94,9 @@ export default function SummaryCards({ data }: Props) {
   return (
     <div
       className="
-        relative overflow-hidden rounded-2xl p-8 text-white
+        relative overflow-hidden rounded-2xl px-5 py-4 text-white
+        sm:p-6
+        md:p-8
         bg-gradient-to-br
         from-[#ff7a59]
         via-[#ff6b7d]
@@ -113,13 +115,13 @@ export default function SummaryCards({ data }: Props) {
 
       <div className="relative">
         {/* Hero stat */}
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="rounded-2xl bg-white/20 p-3 backdrop-blur-md dark:bg-white/10">
             <Building2 size={24} />
           </div>
-          <div className="text-right">
+          <div className="text-center sm:text-right">
             <p className="text-white/70">UMKM Saya</p>
-            <h2 className="text-4xl font-bold leading-none">
+            <h2 className="text-2xl font-bold leading-none sm:text-4xl">
               {data.umkm?.nama ?? "-"}
             </h2>
             <p className="mt-1 text-white/70">
@@ -129,7 +131,7 @@ export default function SummaryCards({ data }: Props) {
         </div>
 
         {/* Badge + Monitoring row */}
-        <div className="mt-5 flex items-center gap-3">
+        <div className="mt-5 flex flex-wrap items-center gap-3">
           {badgeInfo.level !== "none" ? (
             <div className="inline-flex items-center gap-2 rounded-full border bg-white/15 px-3 py-1.5 backdrop-blur-sm border-white/20">
               {BADGE_SVG[badgeInfo.level]}
@@ -157,7 +159,7 @@ export default function SummaryCards({ data }: Props) {
         </div>
 
         {/* Sub stats */}
-        <div className="mt-5 grid grid-cols-3 gap-4">
+        <div className="mt-5 grid grid-cols-3 gap-2 sm:gap-4">
           {stats.slice(1).map((item) => {
             const Icon = item.icon;
             return (

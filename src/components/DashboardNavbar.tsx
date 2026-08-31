@@ -34,21 +34,21 @@ export default function DashboardNavbar({
     <button
       onClick={handleLogout}
       className="
-        flex h-12 items-center gap-2 rounded-2xl 
-        bg-red-500 dark:bg-danger px-4 text-sm font-medium text-white
+        flex h-10 sm:h-12 items-center gap-2 rounded-2xl 
+        bg-red-500 dark:bg-danger px-3 sm:px-4 text-sm font-medium text-white
         transition-all duration-300
         hover:bg-red-600 dark:hover:bg-danger-hover
       "
     >
       <LogOut size={18} />
-      Keluar
+      <span className="hidden sm:inline">Keluar</span>
     </button>
   );
 
   const ThemeButton = () => (
     <div
       className="
-        flex h-12 w-12 items-center justify-center rounded-2xl
+        flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl
         bg-white dark:bg-dark-card
         text-slate-900 dark:text-white
         transition-all duration-300
@@ -72,7 +72,7 @@ export default function DashboardNavbar({
   }
 
   return (
-    <header className="flex items-center justify-between gap-6 px-6 py-4 bg-light dark:bg-dark">
+    <header className="hidden lg:flex items-center justify-between gap-4 px-6 py-4 bg-light dark:bg-dark">
       <div>
         <h1
           className="

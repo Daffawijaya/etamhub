@@ -29,12 +29,12 @@ type Props = {
 export default function BusinessInfoCard({ umkm }: Props) {
   if (!umkm) {
     return (
-      <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+      <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
           Informasi Usaha
         </h2>
 
-        <div className="mt-6 rounded-xl border border-dashed border-slate-200 p-8 text-center dark:border-white/[0.06]">
+        <div className="mt-6 rounded-xl border border-dashed border-slate-200 p-6 text-center sm:p-8 dark:border-white/[0.06]">
           <Building2 size={36} className="mx-auto text-slate-300 dark:text-slate-600" />
 
           <p className="mt-3 font-medium text-slate-700 dark:text-slate-200">
@@ -78,12 +78,12 @@ export default function BusinessInfoCard({ umkm }: Props) {
   ];
 
   return (
-    <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+    <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
       <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
         Informasi Usaha
       </h2>
 
-      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:mt-5 sm:grid-cols-2">
         {items.map((item) => {
           const Icon = item.icon;
 

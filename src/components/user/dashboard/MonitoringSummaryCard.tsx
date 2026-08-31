@@ -77,7 +77,7 @@ export default function MonitoringSummaryCard({ monitoring, umkm }: Props) {
 
   if (count === 0) {
     return (
-      <div className="rounded-2xl bg-white dark:bg-dark-card p-6 transition-colors duration-300">
+      <div className="rounded-2xl bg-white dark:bg-dark-card px-5 py-4 sm:p-6 transition-colors duration-300">
         <div className="flex items-center gap-3 mb-4">
           <div className="rounded-xl bg-slate-100 p-2.5 dark:bg-white/5">
             <Calendar size={18} className="text-slate-500 dark:text-slate-400" />
@@ -152,8 +152,8 @@ export default function MonitoringSummaryCard({ monitoring, umkm }: Props) {
   }
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-dark-card p-6 transition-colors duration-300">
-      <div className="flex items-center justify-between mb-4">
+    <div className="rounded-2xl bg-white dark:bg-dark-card px-5 py-4 sm:p-6 transition-colors duration-300">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 p-2.5">
             <Calendar size={18} className="text-white" />

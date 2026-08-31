@@ -10,16 +10,16 @@ function Pulse({ className = "" }: { className?: string }) {
 
 export default function DashboardSkeleton() {
   return (
-    <div className="grid grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
       {/* Left column */}
-      <div className="col-span-8 space-y-6">
+      <div className="space-y-6 lg:col-span-8">
         {/* SummaryCards skeleton — gradient card */}
-        <div className="relative overflow-hidden rounded-2xl p-8 bg-gradient-to-br from-[#ff7a59]/80 via-[#ff6b7d]/80 to-[#ff4fa3]/80 dark:from-[#1b1027] dark:via-[#21152f] dark:to-[#130f1d]">
+        <div className="relative overflow-hidden rounded-2xl px-5 py-4 sm:p-6 md:p-8 bg-gradient-to-br from-[#ff7a59]/80 via-[#ff6b7d]/80 to-[#ff4fa3]/80 dark:from-[#1b1027] dark:via-[#21152f] dark:to-[#130f1d]">
           <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
           <div className="relative">
-            <div className="flex items-start justify-between">
+            <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start sm:justify-between">
               <Pulse className="h-12 w-12 rounded-2xl bg-white/20" />
-              <div className="text-right space-y-2">
+              <div className="text-center space-y-2 sm:text-right">
                 <Pulse className="h-3 w-24 ml-auto bg-white/20" />
                 <Pulse className="h-10 w-40 ml-auto bg-white/20" />
                 <Pulse className="h-3 w-32 ml-auto bg-white/20" />
@@ -42,7 +42,7 @@ export default function DashboardSkeleton() {
         </div>
 
         {/* LegalityCard + MonitoringSummaryCard skeleton */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {/* LegalityCard */}
           <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
             <div className="flex items-center justify-between mb-5">
@@ -66,7 +66,7 @@ export default function DashboardSkeleton() {
           </div>
 
           {/* MonitoringSummaryCard */}
-          <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+          <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
             <div className="flex items-center gap-3 mb-4">
               <Pulse className="h-10 w-10 rounded-xl" />
               <div className="space-y-1.5">
@@ -92,7 +92,7 @@ export default function DashboardSkeleton() {
         </div>
 
         {/* BusinessInfoCard skeleton */}
-        <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+        <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
           <Pulse className="h-5 w-36 mb-5" />
           <div className="grid gap-4 md:grid-cols-3">
             {[1, 2, 3].map((i) => (
@@ -106,10 +106,9 @@ export default function DashboardSkeleton() {
       </div>
 
       {/* Right column */}
-      <div className="col-span-4 space-y-6">
-        {/* BadgeProgressCard skeleton */}
-        <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
-          <div className="flex items-center gap-3 mb-5">
+      <div className="space-y-6 lg:col-span-4">
+        {/* BadgeProgressCard skeleton */}          <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
+            <div className="flex items-center gap-3 mb-5">
             <Pulse className="h-10 w-10 rounded-xl" />
             <div className="space-y-1.5">
               <Pulse className="h-4 w-28" />
@@ -135,7 +134,7 @@ export default function DashboardSkeleton() {
         </div>
 
         {/* TimelineCard skeleton */}
-        <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+        <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
           <Pulse className="h-5 w-32 mb-5" />
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (

@@ -152,7 +152,7 @@ export default function BadgeProgressCard({ badge, criteriaConfig }: Props) {
   const currentIdx = levelOrder[badge.level as keyof typeof levelOrder] ?? 0;
 
   return (
-    <div className="rounded-2xl bg-white dark:bg-dark-card p-6 transition-colors duration-300">
+    <div className="rounded-2xl bg-white dark:bg-dark-card px-5 py-4 sm:p-6 transition-colors duration-300">
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">
         {badge.level !== "none" && (

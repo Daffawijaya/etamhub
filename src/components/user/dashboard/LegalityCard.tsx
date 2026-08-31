@@ -44,7 +44,7 @@ export default function LegalityCard({ legalitas }: Props) {
   const count = items.filter((i) => i.status).length;
 
   return (
-    <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+    <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
           Legalitas Usaha
@@ -54,7 +54,7 @@ export default function LegalityCard({ legalitas }: Props) {
         </span>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
+      <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:grid-cols-3">
         {items.map((item) => (
           <div
             key={item.label}

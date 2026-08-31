@@ -149,12 +149,12 @@ export default function UserDashboard() {
   }
 
   return (
-    <div className="grid grid-cols-12 gap-6">
+    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
       {/* Left column */}
-      <div className="col-span-8 space-y-6">
+      <div className="space-y-6 lg:col-span-8">
         <SummaryCards data={data} />
 
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <LegalityCard legalitas={data.legalitas} />
 
           <MonitoringSummaryCard
@@ -167,7 +167,7 @@ export default function UserDashboard() {
       </div>
 
       {/* Right column */}
-      <div className="col-span-4 space-y-6">
+      <div className="space-y-6 lg:col-span-4">
         {data.badge.level !== "none" && (
           <BadgeProgressCard badge={data.badge} criteriaConfig={data.criteriaConfig} />
         )}

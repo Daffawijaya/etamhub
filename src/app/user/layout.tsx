@@ -17,9 +17,9 @@ export default function UserLayout({
   const pathname = usePathname();
   const router = useRouter();
   const [checking, setChecking] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
-    // Skip check for allowed pages
     if (ALLOWED_WITHOUT_UMKM.some((p) => pathname.startsWith(p))) {
       setChecking(false);
       return;
@@ -29,16 +29,11 @@ export default function UserLayout({
       try {
         const res = await fetch("/api/user/umkm", { cache: "no-store" });
         const data = await res.json();
-
-        // API returns null when no UMKM and no pending request
-        // API returns { isPendingRequest: true } when waiting for approval
-        // API returns { id: "..." } when UMKM exists
         const hasUmkm = data && (data.id != null || data.isPendingRequest || data.approval_status);
 
         if (hasUmkm) {
           setChecking(false);
         } else {
-          // No UMKM — force redirect to tambah
           router.replace("/user/tambah");
         }
       } catch {
@@ -49,31 +44,18 @@ export default function UserLayout({
     checkUmkm();
   }, [pathname, router]);
 
+  // Close mobile sidebar on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
   const getTitle = () => {
-    if (pathname === "/user") {
-      return "Dashboard";
-    }
-
-    if (pathname === "/user/umkm") {
-      return "UMKM Saya";
-    }
-
-    if (pathname === "/user/tambah") {
-      return "Tambah UMKM";
-    }
-
-    if (pathname.match(/^\/user\/umkm\/[^/]+\/edit$/)) {
-      return "Edit UMKM";
-    }
-
-    if (pathname.match(/^\/user\/umkm\/[^/]+$/)) {
-      return "Detail UMKM";
-    }
-
-    if (pathname === "/user/profil") {
-      return "Profil";
-    }
-
+    if (pathname === "/user") return "Dashboard";
+    if (pathname === "/user/umkm") return "UMKM Saya";
+    if (pathname === "/user/tambah") return "Tambah UMKM";
+    if (pathname.match(/^\/user\/umkm\/[^/]+\/edit$/)) return "Edit UMKM";
+    if (pathname.match(/^\/user\/umkm\/[^/]+$/)) return "Detail UMKM";
+    if (pathname === "/user/profil") return "Profil";
     return "User";
   };
 
@@ -92,13 +74,27 @@ export default function UserLayout({
 
   return (
     <main className="min-h-screen bg-light-bg">
-      <div className="flex">
+      {/* Desktop layout */}
+      <div className="hidden lg:flex">
         <UserSidebar />
 
-        <div className="flex-1 bg-light dark:bg-dark">
+        <div className="flex-1 min-w-0 bg-light dark:bg-dark">
           <DashboardNavbar title={getTitle()} />
+          <div className="px-6 pb-8">{children}</div>
+        </div>
+      </div>
 
-          <div>{children}</div>
+      {/* Mobile layout */}
+      <div className="lg:hidden">
+        <UserSidebar
+          mobile
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen((prev) => !prev)}
+        />
+
+        {/* Content — pt-12 for fixed navbar, no px (cards handle their own) */}
+        <div className="pt-12 pb-8 bg-light dark:bg-dark">
+          {children}
         </div>
       </div>
     </main>

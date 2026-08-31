@@ -41,7 +41,7 @@ export default function TimelineCard({ timeline }: Props) {
   }
 
   return (
-    <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
+    <div className="rounded-2xl bg-white px-5 py-4 sm:p-6 dark:bg-dark-card">
       <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
         Riwayat Pengajuan
       </h2>
