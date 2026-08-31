@@ -373,9 +373,9 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
 
         <ImageSection images={images} required setImages={setImages} />
 
-        <OwnerSection form={form} setForm={setForm} />
+        <OwnerSection form={form} setForm={setForm} role={role} />
 
-        <BusinessInfoSection form={form} setForm={setForm} />
+        <BusinessInfoSection form={form} setForm={setForm} role={role} />
 
         <BusinessSection form={form} setForm={setForm} />
 
