@@ -49,10 +49,10 @@ export default function UmkmFilters({
         value={sort}
         onChange={onSortChange}
         className="w-40"
-        placeholder="Nama A-Z"
+        placeholder="Terbaru"
         options={[
-          { value: "nama", label: "Nama A-Z" },
           { value: "terbaru", label: "Terbaru" },
+          { value: "nama", label: "Nama A-Z" },
         ]}
       />
 

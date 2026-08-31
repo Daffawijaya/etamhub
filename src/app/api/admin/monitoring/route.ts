@@ -143,6 +143,21 @@ export async function GET(req: NextRequest) {
       };
     }));
 
+    // Fetch ALL kecamatan options separately (not affected by kecamatan filter)
+    let filtersQuery = supabaseAdmin
+      .from("umkm")
+      .select("kecamatan")
+      .eq("published", true);
+
+    if (user.role === "admin_kecamatan" && user.kecamatanIds.length > 0) {
+      filtersQuery = filtersQuery.or(
+        `kecamatan_id.in.(${user.kecamatanIds.join(",")}),kecamatan.in.(${user.kecamatan.join(",")})`,
+      );
+    }
+
+    const { data: filtersData } = await filtersQuery;
+    const allKecamatanList = [...new Set(filtersData?.map((item) => item.kecamatan).filter(Boolean))].sort();
+
     // Apply filters after badge calculation
     let filtered = allResults;
 
@@ -167,9 +182,6 @@ export async function GET(req: NextRequest) {
       const max = Number(omzetMax);
       filtered = filtered.filter((item) => (item.latestMonitoring?.omzet ?? item.badge.criteria.omzet ?? 0) <= max);
     }
-
-    // Collect unique kecamatan for filter options
-    const kecamatanList = [...new Set(allResults.map((r) => r.kecamatan).filter(Boolean))].sort();
 
     const total = filtered.length;
 
@@ -200,7 +212,7 @@ export async function GET(req: NextRequest) {
       data,
       total,
       filters: {
-        kecamatan: kecamatanList,
+        kecamatan: allKecamatanList,
       },
     });
   } catch (error: any) {

@@ -13,7 +13,7 @@ interface Props {
 
 export default function UmkmDataTable({ limit = 10 }: Props) {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("nama");
+  const [sort, setSort] = useState("terbaru");
   const [kecamatan, setKecamatan] = useState("all");
   const [kategori, setKategori] = useState("all");
   const [page, setPage] = useState(1);
@@ -29,7 +29,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
       page: String(page),
       limit: String(limit),
       sort,
-      order: sort === "nama" ? "asc" : "desc",
+      order: sort === "terbaru" ? "desc" : sort === "nama" ? "asc" : "desc",
     });
 
     if (search) params.append("search", search);
@@ -56,7 +56,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
   return (
     <div
       className="
-        overflow-hidden
+        overflow-visible
         rounded-2xl
   
         bg-white

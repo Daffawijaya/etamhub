@@ -20,12 +20,13 @@ export async function GET(req: Request) {
     const kecamatan = searchParams.get("kecamatan");
     const kategori = searchParams.get("kategori");
 
-    const allowedSort = ["nama", "created_at"];
     const sortParam = searchParams.get("sort");
-
-    const sort = allowedSort.includes(sortParam ?? "")
-      ? sortParam!
-      : "created_at";
+    const sortMap: Record<string, string> = {
+      terbaru: "created_at",
+      nama: "nama",
+      created_at: "created_at",
+    };
+    const sort = sortMap[sortParam ?? ""] ?? "created_at";
 
     const order = searchParams.get("order") === "asc";
 

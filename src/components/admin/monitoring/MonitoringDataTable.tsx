@@ -95,7 +95,7 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
   return (
     <div
       className="
-        overflow-hidden
+        overflow-visible
         rounded-2xl
         bg-white
         dark:bg-dark-card
