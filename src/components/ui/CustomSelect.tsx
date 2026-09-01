@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { ChevronDown } from "lucide-react";
 
 export interface CustomSelectOption {
@@ -31,19 +32,42 @@ export default function CustomSelect({
 }: CustomSelectProps) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const dropRef = useRef<HTMLDivElement>(null);
+  const [dropPos, setDropPos] = useState<{ top: number; left: number; width: number }>({ top: 0, left: 0, width: 0 });
 
   const selected = options.find((o) => o.value === value);
 
-  // Close on outside click
+  // Close on outside click — check both wrapper AND portaled dropdown
   useEffect(() => {
-    function handleClick(e: MouseEvent) {
-      if (wrapperRef.current && !wrapperRef.current.contains(e.target as Node)) {
+    if (!open) return;
+    function handleMouseDown(e: MouseEvent) {
+      const target = e.target as Node;
+      const clickedWrapper = wrapperRef.current?.contains(target);
+      const clickedDropdown = dropRef.current?.contains(target);
+      if (!clickedWrapper && !clickedDropdown) {
         setOpen(false);
       }
     }
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
+    // Use mousedown with a small delay so option clicks register first
+    document.addEventListener("mousedown", handleMouseDown);
+    return () => document.removeEventListener("mousedown", handleMouseDown);
+  }, [open]);
+
+  // Calculate dropdown position when opening
+  const updatePosition = useCallback(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+    const rect = wrapper.getBoundingClientRect();
+    setDropPos({ top: rect.bottom + 8, left: rect.left, width: rect.width });
   }, []);
+
+  useEffect(() => {
+    if (open) {
+      updatePosition();
+      window.addEventListener("resize", updatePosition);
+      return () => window.removeEventListener("resize", updatePosition);
+    }
+  }, [open, updatePosition]);
 
   return (
     <div ref={wrapperRef} className={`relative ${className}`}>
@@ -91,59 +115,52 @@ export default function CustomSelect({
         />
       </button>
 
-      {/* Dropdown */}
-      {open && (
-        <div
-          className="
-            absolute
-            z-50
-            mt-2
-            w-full
-            max-h-64
-            overflow-y-auto
-            rounded-xl
-            border
-            border-slate-200
-            dark:border-white/[0.08]
-            bg-white
-            dark:bg-dark-card
-            shadow-lg
-            shadow-slate-200/50
-            dark:shadow-black/40
-          "
-        >
-          {options.map((option) => (
-            <button
-              key={option.value}
-              type="button"
-              onClick={() => {
-                onChange(option.value);
-                setOpen(false);
-              }}
-              className={`
-                w-full
-                px-3 py-2.5
-                text-left
-                text-sm
-                font-medium
-                transition-colors
-                duration-150
-                border-b
-                border-slate-100
-                dark:border-white/[0.04]
-                last:border-b-0
-                ${
-                  value === option.value
-                    ? "bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400"
-                    : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/[0.04]"
-                }
-              `}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Dropdown — portal to body so it escapes overflow clipping */}
+      {open &&
+        createPortal(
+          <div
+            ref={dropRef}
+            data-custom-select
+            className="fixed z-[9999] max-h-64 overflow-y-auto rounded-xl border border-slate-200 bg-white shadow-lg shadow-slate-200/50 dark:border-white/[0.08] dark:bg-dark-card dark:shadow-black/40"
+            style={{ top: dropPos.top, left: dropPos.left, width: dropPos.width }}
+          >
+            {options.map((option) => (
+              <button
+                key={option.value}
+                type="button"
+                onMouseDown={(e) => {
+                  // Prevent document mousedown from closing before we process
+                  e.stopPropagation();
+                }}
+                onClick={() => {
+                  onChange(option.value);
+                  setOpen(false);
+                }}
+                className={`
+                  w-full
+                  px-3 py-2.5
+                  text-left
+                  text-sm
+                  font-medium
+                  transition-colors
+                  duration-150
+                  border-b
+                  border-slate-100
+                  dark:border-white/[0.04]
+                  last:border-b-0
+                  ${
+                    value === option.value
+                      ? "bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400"
+                      : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/[0.04]"
+                  }
+                `}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

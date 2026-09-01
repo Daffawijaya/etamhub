@@ -14,7 +14,7 @@ export default function AdminDashboardSkeleton() {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
       {/* Left column */}
       <div className="space-y-6 lg:col-span-8">
-        {/* Top row: StatsCards + QuickActions */}
+        {/* Top row: StatsCards + CategoryPieChart */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {/* StatsCards — gradient */}
           <div className="relative overflow-hidden rounded-2xl px-5 py-5 sm:p-8 bg-gradient-to-br from-[#ff7a59]/80 via-[#ff6b7d]/80 to-[#ff4fa3]/80 dark:from-[#1b1027] dark:via-[#21152f] dark:to-[#130f1d]">
@@ -42,14 +42,17 @@ export default function AdminDashboardSkeleton() {
             </div>
           </div>
 
-          {/* QuickActions */}
+          {/* CategoryPieChart skeleton */}
           <div className="rounded-2xl bg-white px-5 py-5 sm:p-6 dark:bg-dark-card">
-            <Pulse className="h-5 w-28 mb-5" />
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="rounded-2xl p-3 sm:p-5 space-y-3">
-                  <Pulse className="h-5 w-5 sm:h-6 sm:w-6 mx-auto rounded-lg" />
-                  <Pulse className="h-3 w-14 sm:w-16 mx-auto" />
+            <Pulse className="h-5 w-28 sm:w-32 mb-5" />
+            <div className="space-y-5">
+              {[1, 2, 3].map((i) => (
+                <div key={i}>
+                  <div className="mb-2 flex items-center justify-between">
+                    <Pulse className="h-3 w-20" />
+                    <Pulse className="h-3 w-16" />
+                  </div>
+                  <Pulse className="h-3 w-full rounded-full" />
                 </div>
               ))}
             </div>
@@ -102,6 +105,11 @@ export default function AdminDashboardSkeleton() {
 
       {/* Right column */}
       <div className="space-y-6 lg:col-span-4">
+        {/* DashboardFilter skeleton */}
+        <div className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 dark:border-slate-700 dark:bg-dark">
+          <Pulse className="h-5 w-24" />
+        </div>
+
         {/* BadgePieChart skeleton */}
         <div className="rounded-2xl bg-white px-5 py-5 sm:p-6 dark:bg-dark-card">
           <Pulse className="h-5 w-28 sm:w-36 mb-1" />
@@ -136,34 +144,17 @@ export default function AdminDashboardSkeleton() {
           </div>
         </div>
 
-        {/* CategoryPieChart skeleton */}
+        {/* KecamatanChart skeleton */}
         <div className="rounded-2xl bg-white px-5 py-5 sm:p-6 dark:bg-dark-card">
-          <Pulse className="h-5 w-24 sm:w-28 mb-5" />
-          <div className="flex justify-center mb-5">
-            <Pulse className="h-28 w-28 sm:h-36 sm:w-36 rounded-full" />
-          </div>
-          <div className="space-y-2">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-center gap-2">
-                <Pulse className="h-3 w-3 rounded-full shrink-0" />
-                <Pulse className="h-3 w-16 sm:w-20" />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ActivityLogs skeleton */}
-        <div className="rounded-2xl bg-white px-5 py-5 sm:p-6 dark:bg-dark-card">
-          <Pulse className="h-5 w-28 mb-5" />
-          <div className="space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex items-start gap-3">
-                <Pulse className="h-8 w-8 sm:h-9 sm:w-9 rounded-xl shrink-0" />
-                <div className="flex-1 space-y-1.5">
-                  <Pulse className="h-3 w-28 sm:w-36" />
-                  <Pulse className="h-2.5 w-36 sm:w-48" />
+          <Pulse className="h-5 w-28 sm:w-36 mb-5" />
+          <div className="space-y-5">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i}>
+                <div className="mb-2 flex items-center justify-between text-sm">
+                  <Pulse className="h-3 w-24" />
+                  <Pulse className="h-3 w-16" />
                 </div>
-                <Pulse className="h-2.5 w-16" />
+                <Pulse className="h-3 w-full rounded-full" />
               </div>
             ))}
           </div>

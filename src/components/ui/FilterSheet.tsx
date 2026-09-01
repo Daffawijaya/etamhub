@@ -22,6 +22,7 @@ export default function FilterSheet({
 }: FilterSheetProps) {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
+  const [panelPos, setPanelPos] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
   const triggerRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -33,6 +34,26 @@ export default function FilterSheet({
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
+
+  // Calculate popover position from trigger button
+  const updatePosition = useCallback(() => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+    const rect = trigger.getBoundingClientRect();
+    setPanelPos({ top: rect.bottom + 8, right: window.innerWidth - rect.right });
+  }, []);
+
+  useEffect(() => {
+    if (open && !isMobile) {
+      updatePosition();
+      window.addEventListener("resize", updatePosition);
+      window.addEventListener("scroll", updatePosition, true);
+      return () => {
+        window.removeEventListener("resize", updatePosition);
+        window.removeEventListener("scroll", updatePosition, true);
+      };
+    }
+  }, [open, isMobile, updatePosition]);
 
   const close = useCallback(() => {
     setOpen(false);
@@ -49,11 +70,14 @@ export default function FilterSheet({
     if (!open || isMobile) return;
 
     function handleClick(e: MouseEvent) {
+      const target = e.target as Node;
+      // Don't close if click is inside a CustomSelect portal dropdown
+      if ((target as HTMLElement)?.closest?.("[data-custom-select]")) return;
       if (
         panelRef.current &&
-        !panelRef.current.contains(e.target as Node) &&
+        !panelRef.current.contains(target) &&
         triggerRef.current &&
-        !triggerRef.current.contains(e.target as Node)
+        !triggerRef.current.contains(target)
       ) {
         close();
       }
@@ -178,7 +202,7 @@ export default function FilterSheet({
         </div>
       )}
 
-      {/* ── Desktop: Popover ── */}
+      {/* ── Desktop: Popover (fixed positioned) ── */}
       {open && !isMobile && (
         <>
           {/* Transparent backdrop to catch outside clicks */}
@@ -186,8 +210,8 @@ export default function FilterSheet({
 
           <div
             ref={panelRef}
-            className="absolute right-0 z-[999] mt-2 w-80 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/50 dark:border-white/[0.08] dark:bg-dark-card dark:shadow-black/40"
-            style={{ animation: "popoverIn 0.15s ease-out" }}
+            className="z-[999] w-80 rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/50 dark:border-white/[0.08] dark:bg-dark-card dark:shadow-black/40"
+            style={{ animation: "popoverIn 0.15s ease-out", maxHeight: 'min(80vh, 480px)', display: 'flex', flexDirection: 'column', position: 'fixed', top: panelPos.top, right: panelPos.right }}
           >
             {/* Header */}
             <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-white/[0.06]">
@@ -208,12 +232,12 @@ export default function FilterSheet({
             </div>
 
             {/* Scrollable Content */}
-            <div className="max-h-[60vh] overflow-y-auto px-4 py-4">
+            <div className="flex-1 overflow-y-auto px-4 py-4">
               <div className="space-y-4">{children}</div>
             </div>
 
-            {/* Bottom Actions */}
-            <div className="flex gap-2 border-t border-slate-100 px-4 py-3 dark:border-white/[0.06]">
+            {/* Bottom Actions — always visible, never clipped */}
+            <div className="shrink-0 flex gap-2 border-t border-slate-100 px-4 py-3 dark:border-white/[0.06]">
               <button
                 onClick={handleReset}
                 className="flex-1 rounded-xl py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/[0.06]"
