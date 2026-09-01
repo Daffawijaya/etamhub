@@ -123,7 +123,6 @@ export default function PengaturanBadgePage() {
   const [initialCriteria, setInitialCriteria] = useState<BadgeCriteria>(DEFAULTS);
   const modal = useModal();
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
 
   const hasChanges = JSON.stringify(criteria) !== JSON.stringify(initialCriteria);
@@ -150,9 +149,7 @@ export default function PengaturanBadgePage() {
       cancelText: "Batal",
     });
 
-    if (!confirmed) return;
-
-    setSaving(true);
+    if (!confirmed) return;    modal.loading({ title: "Menyimpan..." });
     try {
       const res = await fetch("/api/admin/badge-criteria", {
         method: "PUT",
@@ -161,6 +158,7 @@ export default function PengaturanBadgePage() {
       });
 
       if (!res.ok) throw new Error("Gagal menyimpan");
+
 
       modal.success({
         title: "Tersimpan!",
@@ -175,8 +173,6 @@ export default function PengaturanBadgePage() {
         title: "Gagal Menyimpan",
         description: "Terjadi kesalahan saat menyimpan kriteria badge.",
       });
-    } finally {
-      setSaving(false);
     }
   }
 
@@ -207,8 +203,8 @@ export default function PengaturanBadgePage() {
             <BrandButton variant="outline" size="sm" onClick={handleReset} icon={<RotateCcw size={14} />}>
               Reset
             </BrandButton>
-            <BrandButton variant="accent" size="sm" onClick={handleSave} disabled={saving || !hasChanges} loading={saving} icon={!saving ? <Save size={14} /> : undefined}>
-              {saving ? "Menyimpan..." : saved ? "✓ Tersimpan" : "Simpan"}
+            <BrandButton variant="accent" size="sm" onClick={handleSave} disabled={!hasChanges} icon={<Save size={14} />}>
+              {saved ? "✓ Tersimpan" : "Simpan"}
             </BrandButton>
           </div>
         </div>

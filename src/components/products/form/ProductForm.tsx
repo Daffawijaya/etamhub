@@ -13,6 +13,7 @@ import ProductImageUpload, {
   type ProductImageItem,
 } from "./ProductImageUpload";
 import ProductLegalitas, { type SelectedLegalitas } from "./ProductLegalitas";
+import { useModal } from "@/components/ui/modal";
 
 type UmkmLegalitas = {
   halal?: string | null;
@@ -129,8 +130,7 @@ export default function ProductForm({
 
   const [images, setImages] = useState<ProductImageItem[]>(initialImages);
 
-  const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
+  const modal = useModal();
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -264,20 +264,14 @@ export default function ProductForm({
       return [];
     }
 
-    setUploading(true);
+    const uploadedUrls: string[] = [];
 
-    try {
-      const uploadedUrls: string[] = [];
-
-      for (const image of newImages) {
-        const url = await uploadImage(image.file, productId);
-        uploadedUrls.push(url);
-      }
-
-      return uploadedUrls;
-    } finally {
-      setUploading(false);
+    for (const image of newImages) {
+      const url = await uploadImage(image.file, productId);
+      uploadedUrls.push(url);
     }
+
+    return uploadedUrls;
   };
 
   const handleSubmit = async (event: FormEvent) => {
@@ -295,7 +289,7 @@ export default function ProductForm({
       return;
     }
 
-    setLoading(true);
+    modal.loading({ title: "Menyimpan produk..." });
 
     try {
       const basePayload = getBasicPayload();
@@ -329,19 +323,14 @@ export default function ProductForm({
         }
       }
 
+      modal.success({ title: "Berhasil!", description: "Produk berhasil disimpan." });
       onSuccess?.(result);
     } catch (err) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Terjadi kesalahan saat menyimpan produk.",
-      );
-    } finally {
-      setLoading(false);
+      modal.error({ title: "Gagal Menyimpan", description: err instanceof Error ? err.message : "Terjadi kesalahan saat menyimpan produk." });
     }
   };
 
-  const isSubmitting = loading || uploading;
+  const isSubmitting = false;
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -362,7 +351,6 @@ export default function ProductForm({
       <ProductImageUpload
         images={images}
         disabled={isSubmitting}
-        uploading={uploading}
         error={error}
         maxImages={MAX_IMAGES}
         maxFileSize={MAX_FILE_SIZE}
@@ -401,13 +389,7 @@ export default function ProductForm({
           disabled={isSubmitting}
           className="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:bg-emerald-700 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-white dark:bg-emerald-500 dark:hover:bg-emerald-400 dark:focus:ring-emerald-400 dark:focus:ring-offset-[#1b1b1b] disabled:cursor-not-allowed disabled:bg-emerald-300 dark:disabled:bg-emerald-900 disabled:text-white/80 dark:disabled:text-white/50"
         >
-          {uploading
-            ? "Mengupload gambar..."
-            : loading
-              ? "Menyimpan..."
-              : isEdit
-                ? "Simpan Perubahan"
-                : "Tambah Produk"}
+          {isEdit ? "Simpan Perubahan" : "Tambah Produk"}
         </button>
       </div>
     </form>

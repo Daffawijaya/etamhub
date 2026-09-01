@@ -33,8 +33,6 @@ export default function NewsRowActions({
 
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [publishLoading, setPublishLoading] = useState(false);
 
   const buttonRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -81,9 +79,8 @@ export default function NewsRowActions({
   };
 
   const handleTogglePublished = async () => {
+    modal.loading({ title: "Mengubah status..." });
     try {
-      setPublishLoading(true);
-
       const response = await fetch(`/api/admin/berita/${id}/publish`, {
         method: "PATCH",
         headers: {
@@ -101,12 +98,11 @@ export default function NewsRowActions({
       const nextPublished = !published;
 
       setOpen(false);
+      modal.success({ title: "Berhasil!", description: "Status berita berhasil diubah." });
       onStatusChanged?.(id, nextPublished);
     } catch (error) {
       console.error(error);
-      alert("Gagal mengubah status berita");
-    } finally {
-      setPublishLoading(false);
+      modal.error({ title: "Gagal", description: "Gagal mengubah status berita" });
     }
   };
 
@@ -121,9 +117,8 @@ export default function NewsRowActions({
 
     if (!confirmed) return;
 
+    modal.loading({ title: "Menghapus..." });
     try {
-      setDeleteLoading(true);
-
       const response = await fetch(`/api/admin/berita/${id}`, {
         method: "DELETE",
       });
@@ -133,12 +128,11 @@ export default function NewsRowActions({
       }
 
       setOpen(false);
+      modal.success({ title: "Berhasil!", description: "Berita berhasil dihapus." });
       onDeleted?.(id);
     } catch (error) {
       console.error(error);
-      alert("Gagal menghapus berita");
-    } finally {
-      setDeleteLoading(false);
+      modal.error({ title: "Gagal", description: "Gagal menghapus berita" });
     }
   };
 
@@ -247,7 +241,7 @@ export default function NewsRowActions({
 
             <button
               type="button"
-              disabled={publishLoading}
+              
               onClick={handleTogglePublished}
               className="
                 flex
@@ -269,11 +263,7 @@ export default function NewsRowActions({
             >
               {published ? <EyeOff size={16} /> : <Eye size={16} />}
 
-              {publishLoading
-                ? "Mengubah..."
-                : published
-                  ? "Jadikan Privat"
-                  : "Jadikan Publik"}
+              {published ? "Jadikan Privat" : "Jadikan Publik"}
             </button>
 
             {role === "super_admin" && (
@@ -282,7 +272,6 @@ export default function NewsRowActions({
 
                 <button
                   type="button"
-                  disabled={deleteLoading}
                   onClick={handleDelete}
                   className="
                     flex
@@ -296,14 +285,12 @@ export default function NewsRowActions({
                     text-red-600
                     transition-colors
                     hover:bg-red-50
-                    disabled:cursor-not-allowed
-                    disabled:opacity-50
                     dark:text-red-400
                     dark:hover:bg-red-950/40
                   "
                 >
                   <Trash2 size={16} />
-                  {deleteLoading ? "Menghapus..." : "Hapus Berita"}
+                  Hapus Berita
                 </button>
               </>
             )}

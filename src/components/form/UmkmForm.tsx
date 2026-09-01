@@ -87,7 +87,6 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
     })) ?? [],
   );
 
-  const [loading, setLoading] = useState(false);
   const initialSnapshot = useMemo(
     () =>
       JSON.stringify({
@@ -272,7 +271,7 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
       return;
     }
 
-    setLoading(true);
+    modal.loading({ title: "Menyimpan..." });
 
     try {
       const uploadedImages: string[] = [];
@@ -342,8 +341,6 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         title: "Gagal Menyimpan",
         description: error.message || "Terjadi kesalahan saat menyimpan data.",
       });
-    } finally {
-      setLoading(false);
     }
   }
 
@@ -391,7 +388,7 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         <div className="mt-8 flex justify-end border-t border-slate-200 pt-6 dark:border-slate-700">
           <button
             type="submit"
-            disabled={loading || !hasChanges}
+            disabled={!hasChanges}
             className="
     inline-flex
     items-center
@@ -423,11 +420,7 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
     dark:disabled:text-white/50
   "
           >
-            {loading
-              ? "Menyimpan..."
-              : mode === "create"
-                ? "Simpan UMKM"
-                : "Update UMKM"}
+            {mode === "create" ? "Simpan UMKM" : "Update UMKM"}
           </button>
         </div>
       </form>

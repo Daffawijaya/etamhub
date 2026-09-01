@@ -6,6 +6,7 @@ import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 import { getUmkmImage } from "@/lib/getUmkmImage";
 import BrandButton from "@/components/ui/BrandButton";
+import { useModal } from "@/components/ui/modal";
 
 interface PendingRequest {
   id: string;
@@ -68,7 +69,7 @@ function getChangedFields(before: Record<string, any>, after: Record<string, any
 export default function VerifikasiPage() {
   const [requests, setRequests] = useState<PendingRequest[]>([]);
   const [loading, setLoading] = useState(true);
-  const [processingId, setProcessingId] = useState<string | null>(null);
+  const modal = useModal();
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   async function loadPending() {
@@ -94,7 +95,7 @@ export default function VerifikasiPage() {
       reason = prompt("Alasan penolakan (opsional):");
       if (reason === null) return;
     }
-    setProcessingId(id);
+    modal.loading({ title: action === "approve" ? "Menyetujui..." : "Menolak..." });
     try {
       const res = await fetch(`/api/admin/umkm-verify/${id}`, {
         method: "PUT",
@@ -103,11 +104,10 @@ export default function VerifikasiPage() {
       });
       const result = await res.json();
       if (!res.ok) throw new Error(result.message);
+      modal.success({ title: "Berhasil!", description: action === "approve" ? "UMKM disetujui." : "UMKM ditolak." });
       setRequests((prev) => prev.filter((r) => r.id !== id));
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Gagal memproses");
-    } finally {
-      setProcessingId(null);
+      modal.error({ title: "Gagal", description: error instanceof Error ? error.message : "Terjadi kesalahan" });
     }
   }
 
@@ -196,20 +196,16 @@ export default function VerifikasiPage() {
                       <BrandButton
                         variant="accent"
                         size="sm"
-                        disabled={processingId === item.id}
                         onClick={() => handleAction(item.id, "approve")}
-                        loading={processingId === item.id}
                       >
-                        {processingId === item.id ? "..." : "Setujui"}
+                        Setujui
                       </BrandButton>
                       <BrandButton
                         variant="danger"
                         size="sm"
-                        disabled={processingId === item.id}
                         onClick={() => handleAction(item.id, "reject")}
-                        loading={processingId === item.id}
                       >
-                        {processingId === item.id ? "..." : "Tolak"}
+                        Tolak
                       </BrandButton>
                     </div>
                   </div>

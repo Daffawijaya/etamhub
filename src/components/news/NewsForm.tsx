@@ -7,6 +7,7 @@ import { NEWS_CATEGORIES } from "@/data/news";
 import type { News } from "@/types/news";
 import NewsEditor from "./NewsEditor";
 import CustomSelect from "@/components/ui/CustomSelect";
+import { useModal } from "@/components/ui/modal";
 
 type Props = {
   initialData?: News;
@@ -22,7 +23,7 @@ export default function NewsForm({ initialData }: Props) {
   const [published, setPublished] = useState(initialData?.published ?? false);
   const [gambar, setGambar] = useState<File | null>(null);
 
-  const [loading, setLoading] = useState(false);
+  const modal = useModal();
   const [error, setError] = useState("");
 
   const hasChanges = initialData
@@ -32,20 +33,18 @@ export default function NewsForm({ initialData }: Props) {
       content !== (initialData.content ?? "") ||
       published !== (initialData.published ?? false) ||
       gambar !== null
-    : true;
-
-  async function handleSubmit(e: FormEvent) {
+    : true;  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-
-    if (loading) return;
 
     if (initialData && !hasChanges) {
       return;
     }
 
+    modal.loading({ title: "Menyimpan berita..." });
+
     try {
-      setLoading(true);
       setError("");
+
 
       const formData = new FormData();
 
@@ -73,12 +72,11 @@ export default function NewsForm({ initialData }: Props) {
         throw new Error(result.message || "Terjadi kesalahan.");
       }
 
+      modal.success({ title: "Berhasil!", description: "Berita berhasil disimpan." });
       router.push("/admin/berita");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Gagal menyimpan berita.");
-    } finally {
-      setLoading(false);
+      modal.error({ title: "Gagal Menyimpan", description: err instanceof Error ? err.message : "Gagal menyimpan berita." });
     }
   }
 
@@ -303,7 +301,7 @@ export default function NewsForm({ initialData }: Props) {
         <div className="mt-8 flex justify-end border-t border-slate-200 pt-6 dark:border-slate-700">
           <button
             type="submit"
-            disabled={loading || (!!initialData && !hasChanges)}
+            disabled={!!initialData && !hasChanges}
             className="
               inline-flex
               items-center
@@ -335,11 +333,7 @@ export default function NewsForm({ initialData }: Props) {
               dark:disabled:text-slate-500
             "
           >
-            {loading
-              ? "Menyimpan..."
-              : initialData
-                ? "Update Berita"
-                : "Simpan Berita"}
+            {initialData ? "Update Berita" : "Simpan Berita"}
           </button>
         </div>
       </form>

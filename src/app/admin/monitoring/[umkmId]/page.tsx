@@ -7,6 +7,7 @@ import { Plus, TrendingUp, TrendingDown, Minus, ArrowRight, FileText, ChevronDow
 import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 import KBLISelect from "@/components/form/ui/KBLISelect";
 import BrandButton from "@/components/ui/BrandButton";
+import { useModal } from "@/components/ui/modal";
 
 interface UmkmData {
   id: string;
@@ -209,8 +210,8 @@ export default function MonitoringDetailPage() {
   const [badge, setBadge] = useState<Badge | null>(null);
   const [criteriaConfig, setCriteriaConfig] = useState<CriteriaConfig | null>(null);
   const [loading, setLoading] = useState(true);
+  const modal = useModal();
   const [showForm, setShowForm] = useState(false);
-  const [saving, setSaving] = useState(false);
   const [expandedEntry, setExpandedEntry] = useState<string | null>(null);
 
   const [form, setForm] = useState({
@@ -249,7 +250,7 @@ export default function MonitoringDetailPage() {
   }, [umkmId]);
 
   async function handleAddMonitoring() {
-    setSaving(true);
+    modal.loading({ title: "Menyimpan..." });
     try {
       const payload: Record<string, any> = {};
       if (form.jumlah_tenaga_kerja) payload.jumlah_tenaga_kerja = Number(form.jumlah_tenaga_kerja);
@@ -288,11 +289,10 @@ export default function MonitoringDetailPage() {
         kebutuhan_utama: "",
         catatan: "",
       });
+      modal.success({ title: "Tersimpan!", description: "Data monitoring berhasil ditambahkan." });
       loadData();
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Gagal menyimpan");
-    } finally {
-      setSaving(false);
+      modal.error({ title: "Gagal Menyimpan", description: error instanceof Error ? error.message : "Terjadi kesalahan" });
     }
   }
 
@@ -912,8 +912,8 @@ export default function MonitoringDetailPage() {
               <BrandButton variant="ghost" size="md" onClick={() => setShowForm(false)} className="flex-1">
                 Batal
               </BrandButton>
-              <BrandButton variant="accent" size="md" onClick={handleAddMonitoring} disabled={saving} loading={saving} className="flex-1">
-                {saving ? "Menyimpan..." : "Simpan"}
+              <BrandButton variant="accent" size="md" onClick={handleAddMonitoring} className="flex-1">
+                Simpan
               </BrandButton>
             </div>
           </div>

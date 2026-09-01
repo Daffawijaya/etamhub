@@ -32,8 +32,6 @@ export default function UmkmRowActions({
   const modal = useModal();
 
   const [open, setOpen] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
-  const [publishLoading, setPublishLoading] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [role, setRole] = useState<string | null>(null);
 
@@ -87,9 +85,8 @@ export default function UmkmRowActions({
     setOpen((prev) => !prev);
   }
   async function handleTogglePublished() {
+    modal.loading({ title: "Mengubah status..." });
     try {
-      setPublishLoading(true);
-
       const res = await fetch(`/api/admin/umkm/${id}/publish`, {
         method: "PATCH",
         headers: {
@@ -105,12 +102,11 @@ export default function UmkmRowActions({
       }
 
       setOpen(false);
+      modal.success({ title: "Berhasil!", description: "Status UMKM berhasil diubah." });
       onStatusChanged?.();
     } catch (error) {
       console.error(error);
-      alert("Gagal mengubah status");
-    } finally {
-      setPublishLoading(false);
+      modal.error({ title: "Gagal", description: "Gagal mengubah status" });
     }
   }
   async function handleDelete() {
@@ -122,11 +118,8 @@ export default function UmkmRowActions({
       confirmButtonVariant: "danger",
     });
 
-    if (!confirmed) return;
-
+    if (!confirmed) return;    modal.loading({ title: "Menghapus..." });
     try {
-      setDeleteLoading(true);
-
       const res = await fetch(`/api/admin/umkm/${id}`, {
         method: "DELETE",
       });
@@ -136,12 +129,11 @@ export default function UmkmRowActions({
       }
 
       setOpen(false);
+      modal.success({ title: "Berhasil!", description: "UMKM berhasil dihapus." });
       onStatusChanged?.();
     } catch (error) {
       console.error(error);
-      alert("Gagal menghapus UMKM");
-    } finally {
-      setDeleteLoading(false);
+      modal.error({ title: "Gagal", description: "Gagal menghapus UMKM" });
     }
   }
 
@@ -248,7 +240,7 @@ export default function UmkmRowActions({
             {showPublishAction && (
               <>
                 <button
-                  disabled={publishLoading}
+                  
                   onClick={handleTogglePublished}
                   className="
         flex w-full items-center gap-3
@@ -264,11 +256,7 @@ export default function UmkmRowActions({
       "
                 >
                   {published ? <EyeOff size={16} /> : <Eye size={16} />}
-                  {publishLoading
-                    ? "Mengubah..."
-                    : published
-                      ? "Jadikan Privat"
-                      : "Jadikan Publik"}
+                  {published ? "Jadikan Privat" : "Jadikan Publik"}
                 </button>
 
                 <div
@@ -282,7 +270,6 @@ export default function UmkmRowActions({
 
             {isSuperAdmin && (
               <button
-                disabled={deleteLoading}
                 onClick={handleDelete}
                 className="
                 flex w-full items-center gap-3
@@ -295,14 +282,11 @@ export default function UmkmRowActions({
 
                 dark:text-red-400
                 dark:hover:bg-red-950/40
-
-                disabled:cursor-not-allowed
-                disabled:opacity-50
               "
               >
                 <Trash2 size={16} />
 
-                {deleteLoading ? "Menghapus..." : "Hapus UMKM"}
+                Hapus UMKM
               </button>
             )}
           </div>,

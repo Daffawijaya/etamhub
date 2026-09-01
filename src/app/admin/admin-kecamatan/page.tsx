@@ -35,7 +35,6 @@ export default function AdminKecamatanPage() {
   const [formUsername, setFormUsername] = useState("");
   const [formPassword, setFormPassword] = useState("");
   const [formKecamatanIds, setFormKecamatanIds] = useState<string[]>([]);
-  const [saving, setSaving] = useState(false);
   const [currentRole, setCurrentRole] = useState<string | null>(null);
 
   const isSuperAdmin = currentRole === "super_admin";
@@ -111,7 +110,7 @@ export default function AdminKecamatanPage() {
       return;
     }
 
-    setSaving(true);
+    modal.loading({ title: "Menyimpan..." });
 
     try {
       const payload: Record<string, any> = {
@@ -139,11 +138,10 @@ export default function AdminKecamatanPage() {
 
       setShowForm(null);
       setEditing(null);
+      modal.success({ title: "Tersimpan!", description: "Akun berhasil disimpan." });
       loadData();
     } catch (error) {
-      alert(error instanceof Error ? error.message : "Gagal menyimpan");
-    } finally {
-      setSaving(false);
+      modal.error({ title: "Gagal Menyimpan", description: error instanceof Error ? error.message : "Terjadi kesalahan" });
     }
   }
 
@@ -478,10 +476,8 @@ export default function AdminKecamatanPage() {
                 size="md"
                 className="flex-1"
                 onClick={handleSave}
-                disabled={saving}
-                loading={saving}
               >
-                {saving ? "Menyimpan..." : editing ? "Update" : "Simpan"}
+                {editing ? "Update" : "Simpan"}
               </BrandButton>
             </div>
           </div>
