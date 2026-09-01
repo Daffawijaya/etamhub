@@ -48,12 +48,11 @@ export default function CustomSelect({
         setOpen(false);
       }
     }
-    // Use mousedown with a small delay so option clicks register first
     document.addEventListener("mousedown", handleMouseDown);
     return () => document.removeEventListener("mousedown", handleMouseDown);
   }, [open]);
 
-  // Calculate dropdown position when opening
+  // Calculate dropdown position from wrapper's current viewport position
   const updatePosition = useCallback(() => {
     const wrapper = wrapperRef.current;
     if (!wrapper) return;
@@ -69,14 +68,28 @@ export default function CustomSelect({
     }
   }, [open, updatePosition]);
 
-  // Close dropdown on scroll so it doesn't stay fixed on screen
-  // But NOT when scrolling inside the dropdown itself
+  // On scroll: reposition dropdown to follow parent, close if parent scrolls out of view
   useEffect(() => {
     if (!open) return;
     function handleScroll(e: Event) {
       const target = e.target as Node;
+      // Scrolling inside the dropdown itself — do nothing
       if (dropRef.current?.contains(target)) return;
-      setOpen(false);
+
+      const wrapper = wrapperRef.current;
+      if (!wrapper) { setOpen(false); return; }
+
+      const rect = wrapper.getBoundingClientRect();
+      const viewportH = window.innerHeight;
+
+      // Close if wrapper is fully off-screen
+      if (rect.bottom < 0 || rect.top > viewportH) {
+        setOpen(false);
+        return;
+      }
+
+      // Reposition dropdown to follow wrapper
+      setDropPos({ top: rect.bottom + 8, left: rect.left, width: rect.width });
     }
     window.addEventListener("scroll", handleScroll, true);
     return () => window.removeEventListener("scroll", handleScroll, true);
@@ -142,7 +155,6 @@ export default function CustomSelect({
                 key={option.value}
                 type="button"
                 onMouseDown={(e) => {
-                  // Prevent document mousedown from closing before we process
                   e.stopPropagation();
                 }}
                 onClick={() => {
