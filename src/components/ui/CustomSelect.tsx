@@ -73,22 +73,10 @@ export default function CustomSelect({
     if (!open) return;
     function handleScroll(e: Event) {
       const target = e.target as Node;
-      // Scrolling inside the dropdown itself — do nothing
       if (dropRef.current?.contains(target)) return;
-
       const wrapper = wrapperRef.current;
-      if (!wrapper) { setOpen(false); return; }
-
+      if (!wrapper) return;
       const rect = wrapper.getBoundingClientRect();
-      const viewportH = window.innerHeight;
-
-      // Close if wrapper is fully off-screen
-      if (rect.bottom < 0 || rect.top > viewportH) {
-        setOpen(false);
-        return;
-      }
-
-      // Reposition dropdown to follow wrapper
       setDropPos({ top: rect.bottom + 8, left: rect.left, width: rect.width });
     }
     window.addEventListener("scroll", handleScroll, true);
