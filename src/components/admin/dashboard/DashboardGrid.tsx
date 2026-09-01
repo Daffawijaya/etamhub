@@ -191,7 +191,6 @@ export default function DashboardGrid() {
                 options={[
                   { value: "all", label: "Semua Status" },
                   { value: "monitored", label: "Sudah Dimonitoring" },
-                  { value: "unmonitored", label: "Belum Dimonitoring" },
                 ]}
               />
             </div>
