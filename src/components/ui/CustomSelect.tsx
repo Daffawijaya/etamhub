@@ -69,6 +69,16 @@ export default function CustomSelect({
     }
   }, [open, updatePosition]);
 
+  // Close dropdown on any scroll so it doesn't stay fixed on screen
+  useEffect(() => {
+    if (!open) return;
+    function handleScroll() {
+      setOpen(false);
+    }
+    window.addEventListener("scroll", handleScroll, true);
+    return () => window.removeEventListener("scroll", handleScroll, true);
+  }, [open]);
+
   return (
     <div ref={wrapperRef} className={`relative ${className}`}>
       {/* Hidden input for form submission */}
