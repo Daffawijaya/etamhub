@@ -89,6 +89,28 @@ export default function DashboardGrid() {
     return Object.entries(map).map(([name, value]) => ({ name, value }));
   }, [filteredUmkm, data?.kategoriChart, appliedFilters]);
 
+  // ── Rebuild badge chart from filtered UMKM ──
+  const filteredBadgeChart = useMemo(() => {
+    if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
+      return monitoring.badgeChart ?? [];
+    }
+    const umkmBadges = monitoring.umkmBadges ?? [];
+    const filteredIds = new Set(filteredUmkm.map((u: any) => u.id));
+    const badgeCounts: Record<string, number> = { none: 0, bronze: 0, silver: 0, gold: 0, platinum: 0 };
+    for (const ub of umkmBadges) {
+      if (filteredIds.has(ub.id)) {
+        badgeCounts[ub.level] = (badgeCounts[ub.level] || 0) + 1;
+      }
+    }
+    return [
+      { name: "Belum Dimonitoring", value: badgeCounts.none, color: "#94A3B8" },
+      { name: "Pemula", value: badgeCounts.bronze, color: "#F59E0B" },
+      { name: "Tumbuh", value: badgeCounts.silver, color: "#10B981" },
+      { name: "Berkembang", value: badgeCounts.gold, color: "#F97316" },
+      { name: "Naik Kelas", value: badgeCounts.platinum, color: "#7C3AED" },
+    ];
+  }, [filteredUmkm, monitoring.badgeChart, monitoring.umkmBadges, appliedFilters]);
+
   const filteredStats = useMemo(() => {
     if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
       return data?.stats ?? { totalUmkm: 0, totalKecamatan: 0, totalSubkategori: 0, digitalCount: 0, legalitasCount: 0, digitalPercent: 0, legalitasPercent: 0 };
@@ -197,7 +219,7 @@ export default function DashboardGrid() {
           </FilterSheet>
         </div>
 
-        <BadgePieChart data={monitoring.badgeChart ?? []} monitoredCount={monitoring.monitoredCount ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
+        <BadgePieChart data={filteredBadgeChart} monitoredCount={monitoring.monitoredCount ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
         <UmkmProgressStats digitalCount={filteredStats.digitalCount ?? 0} digitalPercent={filteredStats.digitalPercent ?? 0} legalitasCount={filteredStats.legalitasCount ?? 0} legalitasPercent={filteredStats.legalitasPercent ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
         <KecamatanChart data={data.kecamatanChart ?? []} />
       </div>
