@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 import { getUmkmImage } from "@/lib/getUmkmImage";
 import type { Umkm } from "@/data/umkm";
+import type { Product } from "@/types/product";
 
 interface BadgeInfo {
   id: string;
@@ -40,67 +42,131 @@ function formatDate(date: string) {
   });
 }
 
+function formatRupiah(value: number | null) {
+  if (!value) return "-";
+  return new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  }).format(value);
+}
+
+type Tab = "umkm" | "produk";
+
 export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
+  const [tab, setTab] = useState<Tab>("umkm");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+
   const badgeMap = new Map(umkmBadges.map((b) => [b.id, b.level]));
 
-  const latest = [...umkms]
+  const latestUmkm = [...umkms]
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, 5);
 
+  useEffect(() => {
+    if (tab === "produk" && products.length === 0) {
+      setLoadingProducts(true);
+      fetch("/api/products")
+        .then((res) => res.json())
+        .then((result) => {
+          const data = result.data ?? [];
+          const sorted = [...data].sort(
+            (a: Product, b: Product) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+          );
+          setProducts(sorted.slice(0, 5));
+        })
+        .catch(() => {})
+        .finally(() => setLoadingProducts(false));
+    }
+  }, [tab, products.length]);
+
   return (
     <div className="overflow-hidden rounded-2xl bg-white dark:bg-dark-card transition-colors duration-300">
-      <div className="p-6">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white transition-colors duration-300">
-          UMKM Terbaru
-        </h2>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
-          5 UMKM yang terakhir ditambahkan
-        </p>
+      {/* Tabs */}
+      <div className="flex border-b border-slate-100 dark:border-white/5">
+        <button
+          onClick={() => setTab("umkm")}
+          className={`flex-1 px-6 py-3.5 text-sm font-medium transition-colors ${
+            tab === "umkm"
+              ? "text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400"
+              : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+          }`}
+        >
+          UMKM
+        </button>
+        <button
+          onClick={() => setTab("produk")}
+          className={`flex-1 px-6 py-3.5 text-sm font-medium transition-colors ${
+            tab === "produk"
+              ? "text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400"
+              : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+          }`}
+        >
+          Produk
+        </button>
       </div>
 
-      <div className="divide-y divide-slate-100 dark:divide-white/5">
-        {latest.map((item) => {
-          const level = badgeMap.get(item.id) ?? "none";
-          const badge = BADGE_STYLES[level] ?? BADGE_STYLES.none;
+      {/* Content */}
+      {tab === "umkm" ? (
+        <div className="divide-y divide-slate-100 dark:divide-white/5">
+          {latestUmkm.map((item) => {
+            const level = badgeMap.get(item.id) ?? "none";
+            const badge = BADGE_STYLES[level] ?? BADGE_STYLES.none;
 
-          return (
-            <Link
-              key={item.id}
-              href={`/admin/umkm/${item.id}`}
-              className="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
-            >
-              {/* Image */}
-              <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
-                <Image
-                  src={getUmkmImage(item.gambar)}
-                  alt={item.nama}
-                  fill
-                  sizes="40px"
-                  className="object-cover"
-                />
-              </div>
-
-              {/* Name + kecamatan */}
-              <div className="min-w-0 flex-1">
-                <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize">
-                  {item.nama}
-                </h4>
-                <p className="truncate text-xs text-slate-400 dark:text-slate-500">
-                  {item.kecamatan} · {formatDate(item.created_at)}
-                </p>
-              </div>
-
-              {/* Badge */}
-              <span
-                className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text}`}
+            return (
+              <Link
+                key={item.id}
+                href={`/admin/umkm/${item.id}`}
+                className="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
               >
-                {BADGE_ICONS[level]}
-                {badge.label}
-              </span>
-            </Link>
-          );
-        })}
-      </div>
+                <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
+                  <Image src={getUmkmImage(item.gambar)} alt={item.nama} fill sizes="40px" className="object-cover" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize">{item.nama}</h4>
+                  <p className="truncate text-xs text-slate-400 dark:text-slate-500">{item.kecamatan} · {formatDate(item.created_at)}</p>
+                </div>
+                <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text}`}>
+                  {BADGE_ICONS[level]}
+                  {badge.label}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="divide-y divide-slate-100 dark:divide-white/5">
+          {loadingProducts ? (
+            <div className="px-6 py-8 text-center text-sm text-slate-400">Memuat produk...</div>
+          ) : products.length === 0 ? (
+            <div className="px-6 py-8 text-center text-sm text-slate-400">Belum ada produk</div>
+          ) : (
+            products.map((item) => (
+              <Link
+                key={item.id}
+                href={`/admin/umkm/${item.umkm_id}`}
+                className="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
+              >
+                <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
+                  {item.gambar?.[0] ? (
+                    <Image src={item.gambar[0]} alt={item.nama} fill sizes="40px" className="object-cover" />
+                  ) : (
+                    <div className="flex h-full w-full items-center text-xs text-slate-400">-</div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white">{item.nama}</h4>
+                  <p className="truncate text-xs text-slate-400 dark:text-slate-500">{item.umkm?.nama ?? "-"} · {formatDate(item.created_at)}</p>
+                </div>
+                <span className="shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">
+                  {formatRupiah(item.harga)}
+                </span>
+              </Link>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }
