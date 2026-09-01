@@ -3,6 +3,7 @@
 import { X } from "lucide-react";
 import { ModalIcon } from "./icons";
 import type { ModalState } from "./types";
+import BrandButton from "@/components/ui/BrandButton";
 
 type ModalProps = {
   modal: ModalState;
@@ -145,61 +146,24 @@ export default function Modal({
               "
             >
               {modal.showCancel && (
-                <button
-                  type="button"
+                <BrandButton
+                  variant="ghost"
+                  size="md"
+                  className="flex-1"
                   onClick={onCancel}
-                  className="
-                    flex-1
-                    rounded-xl
-                    px-4
-                    py-2.5
-                    text-sm
-                    font-medium
-                    text-zinc-700
-                    transition
-                    hover:bg-zinc-100
-                    dark:text-zinc-200
-                    dark:hover:bg-zinc-800
-                  "
                 >
                   {modal.cancelText ?? "Batal"}
-                </button>
+                </BrandButton>
               )}
 
-              <button
-                type="button"
+              <BrandButton
+                variant={modal.confirmButtonVariant === "danger" ? "danger" : "accent"}
+                size="md"
+                className="flex-1"
                 onClick={onConfirm}
-                className={`
-                  flex-1
-                  rounded-xl
-                  px-4
-                  py-2.5
-                  text-sm
-                  font-medium
-                  text-white
-                  transition-all
-                  duration-200
-                  active:scale-[0.98]
-
-                  ${
-                    modal.confirmButtonVariant === "danger"
-                      ? `
-                        bg-red-600
-                        hover:bg-red-700
-                        dark:bg-red-500
-                        dark:hover:bg-red-600
-                      `
-                      : `
-                        bg-emerald-600
-                        hover:bg-emerald-700
-                        dark:bg-emerald-500
-                        dark:hover:bg-emerald-600
-                      `
-                  }
-                `}
               >
                 {modal.confirmText ?? "OK"}
-              </button>
+              </BrandButton>
             </div>
           )}
         </div>

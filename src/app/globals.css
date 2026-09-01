@@ -6,11 +6,21 @@
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
+
+  /* Brand Colors - Light */
+  --brand-primary: #8b5cf6;
+  --brand-secondary: #ca3785;
+  --brand-accent: #006239;
 }
 
 .dark {
   --background: #121313;
   --foreground: #ffffff;
+
+  /* Brand Colors - Dark */
+  --brand-primary: #4c1d95;
+  --brand-secondary: #831843;
+  --brand-accent: #064e3b;
 }
 
 @theme inline {
@@ -19,6 +29,11 @@
 }
 
 @theme {
+  /* Brand */
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-accent: var(--brand-accent);
+
   --color-dark: #121313;
   --color-dark-card: #1b1b1b;
 

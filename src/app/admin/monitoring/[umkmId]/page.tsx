@@ -6,6 +6,7 @@ import LoadingState from "@/components/LoadingState";
 import { Plus, TrendingUp, TrendingDown, Minus, ArrowRight, FileText, ChevronDown, ChevronUp } from "lucide-react";
 import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
 import KBLISelect from "@/components/form/ui/KBLISelect";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface UmkmData {
   id: string;
@@ -363,7 +364,9 @@ export default function MonitoringDetailPage() {
                 </div>
               )}
             </div>
-          </div>            <button
+          </div>            <BrandButton
+            variant="accent"
+            size="sm"
             onClick={() => {
               setForm({
                 jumlah_tenaga_kerja: latestData.jumlah_tenaga_kerja != null ? String(latestData.jumlah_tenaga_kerja) : "",
@@ -381,11 +384,10 @@ export default function MonitoringDetailPage() {
               });
               setShowForm(true);
             }}
-            className="flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-emerald-700 sm:px-4 sm:text-sm"
+            icon={<Plus size={16} />}
           >
-            <Plus size={16} />
             Tambah Monitoring
-          </button>
+          </BrandButton>
         </div>
       </div>
 
@@ -907,12 +909,12 @@ export default function MonitoringDetailPage() {
             </div>
 
             <div className="mt-6 flex gap-3">
-              <button onClick={() => setShowForm(false)} className="flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800">
+              <BrandButton variant="ghost" size="md" onClick={() => setShowForm(false)} className="flex-1">
                 Batal
-              </button>
-              <button onClick={handleAddMonitoring} disabled={saving} className="flex-1 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white transition-all hover:bg-emerald-700 disabled:opacity-50">
+              </BrandButton>
+              <BrandButton variant="accent" size="md" onClick={handleAddMonitoring} disabled={saving} loading={saving} className="flex-1">
                 {saving ? "Menyimpan..." : "Simpan"}
-              </button>
+              </BrandButton>
             </div>
           </div>
         </div>

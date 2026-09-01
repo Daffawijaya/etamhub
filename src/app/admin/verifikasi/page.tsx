@@ -5,6 +5,7 @@ import Image from "next/image";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 import { getUmkmImage } from "@/lib/getUmkmImage";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface PendingRequest {
   id: string;
@@ -192,20 +193,24 @@ export default function VerifikasiPage() {
 
                     {/* Actions */}
                     <div className="flex items-center gap-2">
-                      <button
+                      <BrandButton
+                        variant="accent"
+                        size="sm"
                         disabled={processingId === item.id}
                         onClick={() => handleAction(item.id, "approve")}
-                        className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50 sm:px-4 sm:text-sm"
+                        loading={processingId === item.id}
                       >
                         {processingId === item.id ? "..." : "Setujui"}
-                      </button>
-                      <button
+                      </BrandButton>
+                      <BrandButton
+                        variant="danger"
+                        size="sm"
                         disabled={processingId === item.id}
                         onClick={() => handleAction(item.id, "reject")}
-                        className="rounded-lg bg-red-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-red-700 disabled:opacity-50 sm:px-4 sm:text-sm"
+                        loading={processingId === item.id}
                       >
                         {processingId === item.id ? "..." : "Tolak"}
-                      </button>
+                      </BrandButton>
                     </div>
                   </div>
 

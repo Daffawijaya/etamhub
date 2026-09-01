@@ -5,6 +5,7 @@ import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
 import { Plus, Trash2, Edit2, Shield, Users } from "lucide-react";
 import { useModal } from "@/components/ui/modal";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface AdminAccount {
   id: string;
@@ -204,14 +205,15 @@ export default function AdminKecamatanPage() {
               </p>
             </div>
           </div>
-          <button
+          <BrandButton
+            variant="primary"
+            size="sm"
             onClick={() => openForm("admin")}
-            className="flex h-9 items-center gap-1.5 rounded-lg bg-violet-600 px-3 text-xs font-medium text-white transition hover:bg-violet-700 sm:h-10 sm:gap-2 sm:px-4 sm:text-sm"
+            icon={<Plus size={16} />}
           >
-            <Plus size={16} />
             <span className="hidden sm:inline">Tambah Admin</span>
             <span className="sm:hidden">Tambah</span>
-          </button>
+          </BrandButton>
         </div>
 
         {adminList.length === 0 ? (
@@ -298,14 +300,15 @@ export default function AdminKecamatanPage() {
               </p>
             </div>
           </div>
-          <button
+          <BrandButton
+            variant="secondary"
+            size="sm"
             onClick={() => openForm("admin_kecamatan")}
-            className="flex h-9 items-center gap-1.5 rounded-lg bg-teal-600 px-3 text-xs font-medium text-white transition hover:bg-teal-700 sm:h-10 sm:gap-2 sm:px-4 sm:text-sm"
+            icon={<Plus size={16} />}
           >
-            <Plus size={16} />
             <span className="hidden sm:inline">Tambah Akun</span>
             <span className="sm:hidden">Tambah</span>
-          </button>
+          </BrandButton>
         </div>
 
         {kecamatanList.length === 0 ? (
@@ -459,26 +462,27 @@ export default function AdminKecamatanPage() {
             </div>
 
             <div className="mt-6 flex gap-3">
-              <button
+              <BrandButton
+                variant="ghost"
+                size="md"
+                className="flex-1"
                 onClick={() => {
                   setShowForm(null);
                   setEditing(null);
                 }}
-                className="flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-zinc-700 transition hover:bg-zinc-100 dark:text-zinc-200 dark:hover:bg-zinc-800"
               >
                 Batal
-              </button>
-              <button
+              </BrandButton>
+              <BrandButton
+                variant={showForm === "admin" ? "primary" : "secondary"}
+                size="md"
+                className="flex-1"
                 onClick={handleSave}
                 disabled={saving}
-                className={`flex-1 rounded-xl px-4 py-2.5 text-sm font-medium text-white transition-all disabled:opacity-50 ${
-                  showForm === "admin"
-                    ? "bg-violet-600 hover:bg-violet-700"
-                    : "bg-teal-600 hover:bg-teal-700"
-                }`}
+                loading={saving}
               >
                 {saving ? "Menyimpan..." : editing ? "Update" : "Simpan"}
-              </button>
+              </BrandButton>
             </div>
           </div>
         </div>

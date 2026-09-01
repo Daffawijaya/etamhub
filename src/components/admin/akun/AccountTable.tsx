@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useModal } from "@/components/ui/modal";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface Account {
   id: string;
@@ -111,12 +112,12 @@ export default function AccountTable() {
 
               <td className="px-4 py-3 text-right">
                 <div className="flex items-center justify-end gap-2">
-                  <button onClick={() => resetPassword(user.id)} className="text-xs sm:text-sm text-violet-500 hover:text-violet-700">
+                  <BrandButton variant="ghost" size="xs" onClick={() => resetPassword(user.id)} className="text-brand-primary hover:text-brand-primary/80">
                     Reset
-                  </button>
-                  <button onClick={() => deleteUser(user.id)} className="text-xs sm:text-sm text-red-500 hover:text-red-700">
+                  </BrandButton>
+                  <BrandButton variant="ghost" size="xs" onClick={() => deleteUser(user.id)} className="text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-950/40">
                     Hapus
-                  </button>
+                  </BrandButton>
                 </div>
               </td>
             </tr>

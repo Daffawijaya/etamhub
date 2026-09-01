@@ -5,6 +5,7 @@ import LoadingState from "@/components/LoadingState";
 import { useModal } from "@/components/ui/modal";
 import { Save, RotateCcw } from "lucide-react";
 import { SeedlingIcon, SilverMedalIcon, GoldMedalIcon, DiamondIcon } from "@/components/icons/BadgeIcons";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface BadgeCriteria {
   silver_omzet_min: number;
@@ -203,21 +204,12 @@ export default function PengaturanBadgePage() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <button
-              onClick={handleReset}
-              className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs sm:px-4 sm:text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <RotateCcw size={14} />
+            <BrandButton variant="outline" size="sm" onClick={handleReset} icon={<RotateCcw size={14} />}>
               Reset
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={saving || !hasChanges}
-              className="flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs sm:px-4 sm:text-sm font-medium text-white transition hover:bg-emerald-700 disabled:opacity-50"
-            >
-              <Save size={14} />
+            </BrandButton>
+            <BrandButton variant="accent" size="sm" onClick={handleSave} disabled={saving || !hasChanges} loading={saving} icon={!saving ? <Save size={14} /> : undefined}>
               {saving ? "Menyimpan..." : saved ? "✓ Tersimpan" : "Simpan"}
-            </button>
+            </BrandButton>
           </div>
         </div>
 

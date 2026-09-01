@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface Props {
   data: {
@@ -39,23 +40,23 @@ export default function KecamatanChart({ data, allNames = [] }: Props) {
         </h2>
         {totalPages > 1 && (
           <div className="flex items-center gap-1">
-            <button
+            <BrandButton
+              variant="outline"
+              size="xs"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition hover:bg-slate-50 disabled:opacity-30 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
-            >
-              <ChevronLeft size={14} />
-            </button>
+              icon={<ChevronLeft size={14} />}
+            />
             <span className="px-1.5 text-xs text-slate-400">
               {page}/{totalPages}
             </span>
-            <button
+            <BrandButton
+              variant="outline"
+              size="xs"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="flex h-7 w-7 items-center justify-center rounded-lg border border-slate-200 text-slate-400 transition hover:bg-slate-50 disabled:opacity-30 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
-            >
-              <ChevronRight size={14} />
-            </button>
+              icon={<ChevronRight size={14} />}
+            />
           </div>
         )}
       </div>

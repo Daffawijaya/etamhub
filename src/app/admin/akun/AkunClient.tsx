@@ -4,6 +4,8 @@ import { useState } from "react";
 
 import AccountTable from "@/components/admin/akun/AccountTable";
 import CreateAccountForm from "@/components/admin/akun/CreateAccountForm";
+import BrandButton from "@/components/ui/BrandButton";
+import { Plus } from "lucide-react";
 
 export default function AkunClient() {
   const [showForm, setShowForm] = useState(false);
@@ -21,20 +23,14 @@ export default function AkunClient() {
           </p>
         </div>
 
-        <button
+        <BrandButton
+          variant="primary"
+          size="md"
           onClick={() => setShowForm(true)}
-          className="
-            rounded-xl
-            bg-violet-500
-            px-4 py-2.5 sm:px-5 sm:py-3
-            text-sm sm:text-base font-semibold
-            text-white
-            transition
-            hover:opacity-90
-          "
+          icon={<Plus size={16} />}
         >
-          + Tambah Akun
-        </button>
+          Tambah Akun
+        </BrandButton>
       </div>
 
       <AccountTable />

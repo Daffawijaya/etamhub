@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import BrandButton from "@/components/ui/BrandButton";
 
 export default function EditUmkmPage({
   params,
@@ -83,9 +84,9 @@ export default function EditUmkmPage({
         }
       />
 
-      <button className="bg-blue-600 text-white px-4 py-2 rounded">
+      <BrandButton variant="primary" size="md">
         Simpan Perubahan
-      </button>
+      </BrandButton>
     </form>
   );
 }

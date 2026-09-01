@@ -10,6 +10,7 @@ import {
   importUmkmExcel,
 } from "@/lib/excel";
 import { exportFields } from "@/lib/export-fields";
+import BrandButton from "@/components/ui/BrandButton";
 
 const actions = [
   {
@@ -118,41 +119,16 @@ export default function UmkmTableHeaderActions() {
           const Icon = action.icon;
 
           return (
-            <button
+            <BrandButton
               key={action.type}
+              variant="outline"
+              size="sm"
               onClick={() => handleClick(action.type)}
               title={action.label}
-              className="
-                inline-flex
-                items-center
-                gap-2
-                rounded-xl
-                border
-                border-slate-200
-                dark:border-slate-800
-                bg-white
-                dark:bg-dark-card
-                px-2.5 py-2 sm:px-3
-                text-sm
-                font-medium
-                text-slate-700
-                dark:text-white
-                transition-all
-                duration-300
-                hover:bg-slate-50
-                dark:hover:bg-dark
-              "
+              icon={<Icon size={16} />}
             >
-              <Icon
-                size={16}
-                className="
-                  text-slate-600
-                  dark:text-slate-300
-                "
-              />
-
               <span className="hidden sm:inline">{action.label}</span>
-            </button>
+            </BrandButton>
           );
         })}
       </div>
@@ -188,19 +164,22 @@ export default function UmkmTableHeaderActions() {
             </div>
 
             <div className="mt-6 flex justify-end gap-2">
-              <button
+              <BrandButton
+                variant="ghost"
+                size="md"
                 onClick={() => setShowExportModal(false)}
-                className="rounded-lg border border-slate-300 px-4 py-2 text-sm dark:border-slate-700"
               >
                 Batal
-              </button>
+              </BrandButton>
 
-              <button
+              <BrandButton
+                variant="primary"
+                size="md"
                 onClick={handleExport}
-                className="rounded-lg bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700"
+                icon={<Download size={16} />}
               >
                 Export
-              </button>
+              </BrandButton>
             </div>
           </div>
         </div>

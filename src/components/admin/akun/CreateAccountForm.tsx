@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface Props {
   onClose: () => void;
@@ -159,29 +160,13 @@ export default function CreateAccountForm({ onClose }: Props) {
             gap-3
           "
         >
-          <button
-            onClick={onClose}
-            className="
-              rounded-xl
-              px-4
-              py-2
-            "
-          >
+          <BrandButton variant="ghost" size="md" onClick={onClose}>
             Batal
-          </button>
+          </BrandButton>
 
-          <button
-            onClick={handleSubmit}
-            className="
- rounded-xl
- bg-violet-500
- px-5
- py-2
- text-white
- "
-          >
+          <BrandButton variant="primary" size="md" onClick={handleSubmit}>
             Simpan
-          </button>
+          </BrandButton>
         </div>
       </div>
     </div>

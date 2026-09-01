@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface Props {
   page: number;
@@ -67,59 +68,32 @@ export default function UmkmPagination({
 
       {/* ── Mobile: compact prev / next only ── */}
       <div className="flex items-center gap-1.5 sm:hidden">
-        <button
+        <BrandButton
+          variant="outline"
+          size="xs"
           disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
-          className="
-            flex h-8 w-8 items-center justify-center
-            rounded-lg
-            border border-slate-200 bg-white
-            text-slate-600
-            transition-all duration-200
-            hover:bg-slate-50
-            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
-            disabled:pointer-events-none disabled:opacity-40
-          "
-        >
-          <ChevronLeft size={14} />
-        </button>
+          icon={<ChevronLeft size={14} />}
+        />
 
-        <button
+        <BrandButton
+          variant="outline"
+          size="xs"
           disabled={page === totalPages}
           onClick={() => onPageChange(page + 1)}
-          className="
-            flex h-8 w-8 items-center justify-center
-            rounded-lg
-            border border-slate-200 bg-white
-            text-slate-600
-            transition-all duration-200
-            hover:bg-slate-50
-            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
-            disabled:pointer-events-none disabled:opacity-40
-          "
-        >
-          <ChevronRight size={14} />
-        </button>
+          icon={<ChevronRight size={14} />}
+        />
       </div>
 
       {/* ── Desktop: full page numbers ── */}
       <div className="hidden items-center gap-1.5 sm:flex">
-        <button
+        <BrandButton
+          variant="outline"
+          size="xs"
           disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
-          className="
-            flex h-9 w-9 items-center justify-center
-            rounded-xl
-            border border-slate-200 bg-white
-            text-slate-600
-            transition-all duration-300
-            hover:bg-slate-50
-            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
-            disabled:pointer-events-none disabled:opacity-40
-          "
-        >
-          <ChevronLeft size={16} />
-        </button>
+          icon={<ChevronLeft size={16} />}
+        />
 
         {getPages().map((item, index) =>
           item === "..." ? (
@@ -172,22 +146,13 @@ export default function UmkmPagination({
           ),
         )}
 
-        <button
+        <BrandButton
+          variant="outline"
+          size="xs"
           disabled={page === totalPages}
           onClick={() => onPageChange(page + 1)}
-          className="
-            flex h-9 w-9 items-center justify-center
-            rounded-xl
-            border border-slate-200 bg-white
-            text-slate-600
-            transition-all duration-300
-            hover:bg-slate-50
-            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
-            disabled:pointer-events-none disabled:opacity-40
-          "
-        >
-          <ChevronRight size={16} />
-        </button>
+          icon={<ChevronRight size={16} />}
+        />
       </div>
     </div>
   );

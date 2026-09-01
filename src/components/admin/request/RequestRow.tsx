@@ -12,6 +12,7 @@ import {
   type RequestStatus,
 } from "@/lib/request";
 import { getUmkmImage } from "@/lib/getUmkmImage";
+import BrandButton from "@/components/ui/BrandButton";
 
 export type RequestItem = {
   id: string;
@@ -92,19 +93,21 @@ export default function RequestRow({ item, onUpdate }: Props) {
 
           {isPending && (
             <>
-              <button
+              <BrandButton
+                variant="accent"
+                size="xs"
                 onClick={() => onUpdate(item.id, "approve")}
-                className="rounded-lg bg-gray-900 px-3 py-2 text-xs font-medium text-white transition hover:bg-gray-700 dark:bg-white dark:text-gray-900 dark:hover:bg-gray-200"
               >
                 Setujui
-              </button>
+              </BrandButton>
 
-              <button
+              <BrandButton
+                variant="outline"
+                size="xs"
                 onClick={() => onUpdate(item.id, "reject")}
-                className="rounded-lg border border-gray-200 px-3 py-2 text-xs font-medium text-gray-600 transition hover:bg-gray-50 dark:border-neutral-700 dark:text-gray-300 dark:hover:bg-neutral-800"
               >
                 Tolak
-              </button>
+              </BrandButton>
             </>
           )}
         </div>

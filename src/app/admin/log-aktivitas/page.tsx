@@ -16,6 +16,7 @@ import {
 import LoadingState from "@/components/LoadingState";
 import UmkmSearch from "@/components/admin/UmkmSearch";
 import LogFilters from "@/components/admin/log/LogFilters";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface ActivityLog {
   id: string;
@@ -364,23 +365,23 @@ export default function LogAktivitasPage() {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-4">
-            <button
+            <BrandButton
+              variant="outline"
+              size="xs"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 sm:h-9 sm:w-9 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
-            >
-              <ChevronLeft size={14} />
-            </button>
+              icon={<ChevronLeft size={14} />}
+            />
             <span className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
               {page} / {totalPages}
             </span>
-            <button
+            <BrandButton
+              variant="outline"
+              size="xs"
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 sm:h-9 sm:w-9 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
-            >
-              <ChevronRight size={14} />
-            </button>
+              icon={<ChevronRight size={14} />}
+            />
           </div>
         )}
       </div>

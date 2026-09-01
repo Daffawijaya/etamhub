@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
 import { SlidersHorizontal, X } from "lucide-react";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface FilterSheetProps {
   /** Number of active filters (for badge count) */
@@ -196,18 +197,12 @@ export default function FilterSheet({
 
             {/* Bottom Actions */}
             <div className="flex gap-3 border-t border-slate-100 px-5 py-4 dark:border-white/[0.06]">
-              <button
-                onClick={handleReset}
-                className="flex-1 rounded-xl py-3 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/[0.06]"
-              >
+              <BrandButton variant="ghost" size="md" className="flex-1" onClick={handleReset}>
                 Reset
-              </button>
-              <button
-                onClick={handleApply}
-                className="flex-1 rounded-xl bg-sky-600 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700"
-              >
+              </BrandButton>
+              <BrandButton variant="accent" size="md" className="flex-1" onClick={handleApply}>
                 Terapkan
-              </button>
+              </BrandButton>
             </div>
           </div>
         </div>
@@ -249,18 +244,12 @@ export default function FilterSheet({
 
             {/* Bottom Actions — always visible, never clipped */}
             <div className="shrink-0 flex gap-2 border-t border-slate-100 px-4 py-3 dark:border-white/[0.06]">
-              <button
-                onClick={handleReset}
-                className="flex-1 rounded-xl py-2.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/[0.06]"
-              >
+              <BrandButton variant="ghost" size="md" className="flex-1" onClick={handleReset}>
                 Reset
-              </button>
-              <button
-                onClick={handleApply}
-                className="flex-1 rounded-xl bg-sky-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-sky-700"
-              >
+              </BrandButton>
+              <BrandButton variant="accent" size="md" className="flex-1" onClick={handleApply}>
                 Terapkan
-              </button>
+              </BrandButton>
             </div>
           </div>
         </>
