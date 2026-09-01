@@ -38,9 +38,9 @@ export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
         className="
           h-10
           w-full
-          rounded-xl
+          rounded-lg
           sm:h-11
-          sm:rounded-2xl
+          sm:rounded-lg
 
           border
           border-slate-200
