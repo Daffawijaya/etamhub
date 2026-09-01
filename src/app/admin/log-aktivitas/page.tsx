@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Search } from "lucide-react";
 import {
   CheckCircle,
   XCircle,
@@ -13,7 +14,8 @@ import {
   ChevronRight,
 } from "lucide-react";
 import LoadingState from "@/components/LoadingState";
-import CustomSelect from "@/components/ui/CustomSelect";
+import UmkmSearch from "@/components/admin/UmkmSearch";
+import LogFilters from "@/components/admin/log/LogFilters";
 
 interface ActivityLog {
   id: string;
@@ -159,11 +161,15 @@ function timeAgo(iso: string) {
   return formatDate(iso);
 }
 
-
+const actionOptions = Object.entries(ACTION_CONFIG).map(([key, config]) => ({
+  value: key,
+  label: config.label,
+}));
 
 export default function LogAktivitasPage() {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
@@ -188,6 +194,7 @@ export default function LogAktivitasPage() {
         page: page.toString(),
         limit: "20",
       });
+      if (search) params.set("search", search);
       if (filterAction) params.set("action", filterAction);
       if (filterActor) params.set("actor_id", filterActor);
 
@@ -212,52 +219,49 @@ export default function LogAktivitasPage() {
 
   useEffect(() => {
     loadLogs();
-  }, [page, filterAction, filterActor]);
+  }, [page, search, filterAction, filterActor]);
 
   const filteredLogs = logs;
 
   return (
     <div>
       <div className="rounded-xl bg-white transition-colors duration-300 dark:bg-dark-card">
-        {/* Header — matches berita/umkm page style */}
-        <div className="px-4 pt-4 pb-3 flex flex-col gap-3 sm:px-6 sm:pt-5 sm:pb-4 sm:gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300 sm:text-2xl">
-              Log Aktivitas
-            </h2>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 transition-colors duration-300 sm:text-sm">
-              {total} aktivitas tercatat
-            </p>
-          </div>
+        {/* Header */}
+        <div className="px-4 py-4 sm:px-6 sm:py-5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+            <div>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white transition-colors duration-300 sm:text-2xl">
+                Log Aktivitas
+              </h2>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 transition-colors duration-300 sm:text-sm">
+                {total} aktivitas tercatat
+              </p>
+            </div>
 
-          {/* Search + Filter */}
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-            <CustomSelect
-              value={filterActor}
-              onChange={(v) => {
-                setFilterActor(v);
-                setPage(1);
-              }}
-              placeholder="Semua Admin"
-              options={actors.map((a) => ({
-                value: a.actor_id,
-                label: a.actor_name,
-              }))}
-              className="w-full sm:w-56"
-            />
-            <CustomSelect
-              value={filterAction}
-              onChange={(v) => {
-                setFilterAction(v);
-                setPage(1);
-              }}
-              placeholder="Semua Aksi"
-              options={Object.entries(ACTION_CONFIG).map(([key, config]) => ({
-                value: key,
-                label: config.label,
-              }))}
-              className="w-full sm:w-56"
-            />
+            {/* Search + Filter — right side */}
+            <div className="flex items-center gap-2">
+              <UmkmSearch
+                value={search}
+                onChange={(value) => {
+                  setSearch(value);
+                  setPage(1);
+                }}
+              />
+              <LogFilters
+                actors={actors}
+                filterActor={filterActor}
+                filterAction={filterAction}
+                actionOptions={actionOptions}
+                onActorChange={(v) => {
+                  setFilterActor(v);
+                  setPage(1);
+                }}
+                onActionChange={(v) => {
+                  setFilterAction(v);
+                  setPage(1);
+                }}
+              />
+            </div>
           </div>
         </div>
 
@@ -290,23 +294,23 @@ export default function LogAktivitasPage() {
                 >
                   {/* Icon */}
                   <div
-                    className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${config.bgColor}`}
+                    className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl sm:h-10 sm:w-10 ${config.bgColor}`}
                   >
-                    <Icon size={18} className={config.color} />
+                    <Icon size={16} className={config.color} />
                   </div>
 
                   {/* Content */}
                   <div className="min-w-0 flex-1">
-                    <p className="text-sm text-slate-900 dark:text-white">
+                    <p className="text-xs text-slate-900 sm:text-sm dark:text-white">
                       <span className="font-semibold">{log.actor_name}</span>
-                      <span className="mx-1.5 text-slate-400">·</span>
+                      <span className="mx-1 text-slate-400">·</span>
                       <span
-                        className={`inline-flex items-center rounded-full px-2 py-0.5 text-[11px] font-medium ${ROLE_COLORS[log.actor_role] ?? "bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300"}`}
+                        className={`inline-flex items-center rounded-lg px-1.5 py-0.5 text-[10px] font-medium sm:rounded-full sm:px-2 sm:text-[11px] ${ROLE_COLORS[log.actor_role] ?? "bg-slate-100 text-slate-600 dark:bg-white/10 dark:text-slate-300"}`}
                       >
                         {ROLE_LABELS[log.actor_role] ?? log.actor_role}
                       </span>
                     </p>
-                    <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
+                    <p className="mt-0.5 text-xs text-slate-600 sm:mt-1 sm:text-sm dark:text-slate-300">
                       {config.label}
                       {log.target_name && (
                         <>
@@ -318,12 +322,12 @@ export default function LogAktivitasPage() {
                       )}
                     </p>
                     {log.detail?.reason && (
-                      <p className="mt-1 text-xs text-slate-400">
+                      <p className="mt-0.5 text-[11px] text-slate-400 sm:mt-1 sm:text-xs">
                         Alasan: {log.detail.reason}
                       </p>
                     )}
                     {log.detail?.catatan && (
-                      <p className="mt-1 text-xs text-slate-400">
+                      <p className="mt-0.5 text-[11px] text-slate-400 sm:mt-1 sm:text-xs">
                         Catatan: {log.detail.catatan}
                       </p>
                     )}
@@ -331,13 +335,13 @@ export default function LogAktivitasPage() {
 
                   {/* Time */}
                   <div className="shrink-0 text-right">
-                    <p className="text-xs text-slate-400">
+                    <p className="text-[11px] text-slate-400 sm:text-xs">
                       {timeAgo(log.created_at)}
                     </p>
-                    <p className="text-[11px] text-slate-300 dark:text-slate-500 mt-0.5">
+                    <p className="mt-0.5 text-[10px] text-slate-300 dark:text-slate-500 sm:text-[11px]">
                       {formatDate(log.created_at)}
                     </p>
-                    <p className="text-[11px] text-slate-300 dark:text-slate-500">
+                    <p className="text-[10px] text-slate-300 dark:text-slate-500 sm:text-[11px]">
                       {formatTime(log.created_at)}
                     </p>
                   </div>
@@ -349,23 +353,23 @@ export default function LogAktivitasPage() {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 px-6 py-4">
+          <div className="flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-4">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 sm:h-9 sm:w-9 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
             >
-              <ChevronLeft size={16} />
+              <ChevronLeft size={14} />
             </button>
-            <span className="text-sm text-slate-500 dark:text-slate-400">
+            <span className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
               {page} / {totalPages}
             </span>
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
+              className="flex h-8 w-8 items-center justify-center rounded-lg border border-slate-200 text-slate-500 transition hover:bg-slate-50 disabled:opacity-30 sm:h-9 sm:w-9 dark:border-white/[0.06] dark:hover:bg-white/[0.05]"
             >
-              <ChevronRight size={16} />
+              <ChevronRight size={14} />
             </button>
           </div>
         )}
