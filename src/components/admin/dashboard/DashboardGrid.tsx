@@ -14,6 +14,7 @@ import OmzetTrendChart from "./OmzetTrendChart";
 import StatsCards from "./StatsCards";
 import UmkmMapWidget from "./UmkmMapWidget";
 import UmkmProgressStats from "./UmkmProgressStats";
+import { KECAMATAN_KUKAR } from "@/app/constants/kecamatanKukar";
 
 export interface DashboardFilters {
   kecamatan: string;
@@ -221,7 +222,7 @@ export default function DashboardGrid() {
 
         <BadgePieChart data={filteredBadgeChart} monitoredCount={monitoring.monitoredCount ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
         <UmkmProgressStats digitalCount={filteredStats.digitalCount ?? 0} digitalPercent={filteredStats.digitalPercent ?? 0} legalitasCount={filteredStats.legalitasCount ?? 0} legalitasPercent={filteredStats.legalitasPercent ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
-        <KecamatanChart data={data.kecamatanChart ?? []} />
+        <KecamatanChart data={data.kecamatanChart ?? []} allNames={[...KECAMATAN_KUKAR]} />
       </div>
     </div>
   );
