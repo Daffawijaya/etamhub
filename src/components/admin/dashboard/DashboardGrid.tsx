@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 
-import ActivityLogs from "./ActivityLogs";
 import AdminDashboardSkeleton from "./DashboardSkeleton";
 import BadgePieChart from "./BadgePieChart";
 import CategoryPieChart from "./CategoryPieChart";
@@ -68,8 +67,6 @@ export default function DashboardGrid() {
         <CategoryPieChart data={data.kategoriChart} />
 
         <KecamatanChart data={data.kecamatanChart} />
-
-        <ActivityLogs activities={data.activities} />
       </div>
     </div>
   );
