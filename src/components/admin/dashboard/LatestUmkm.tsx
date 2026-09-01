@@ -82,32 +82,33 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
   }, [tab, products.length]);
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white dark:bg-dark-card transition-colors duration-300">
-      {/* Tabs */}
-      <div className="flex border-b border-slate-100 dark:border-white/5">
+    <>
+      {/* Tabs — standalone above the card */}
+      <div className="flex gap-1">
         <button
           onClick={() => setTab("umkm")}
-          className={`flex-1 px-6 py-3.5 text-sm font-medium transition-colors ${
+          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
             tab === "umkm"
-              ? "text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400"
-              : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+              ? "bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400"
+              : "text-slate-400 hover:text-slate-600 hover:bg-slate-50 dark:hover:text-slate-300 dark:hover:bg-white/[0.03]"
           }`}
         >
           UMKM
         </button>
         <button
           onClick={() => setTab("produk")}
-          className={`flex-1 px-6 py-3.5 text-sm font-medium transition-colors ${
+          className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
             tab === "produk"
-              ? "text-sky-600 border-b-2 border-sky-600 dark:text-sky-400 dark:border-sky-400"
-              : "text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+              ? "bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400"
+              : "text-slate-400 hover:text-slate-600 hover:bg-slate-50 dark:hover:text-slate-300 dark:hover:bg-white/[0.03]"
           }`}
         >
           Produk
         </button>
       </div>
 
-      {/* Content */}
+      {/* Card content */}
+      <div className="overflow-hidden rounded-2xl bg-white dark:bg-dark-card transition-colors duration-300">
       {tab === "umkm" ? (
         <div className="divide-y divide-slate-100 dark:divide-white/5">
           {latestUmkm.map((item) => {
@@ -167,6 +168,7 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
           )}
         </div>
       )}
-    </div>
+      </div>
+    </>
   );
 }
