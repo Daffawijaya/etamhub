@@ -16,6 +16,7 @@ import { useModal } from "@/components/ui/modal";
 interface Props {
   id: string;
   published: boolean | null;
+  role?: string;
   onDeleted?: (id: string) => void;
   onStatusChanged?: (id: string, published: boolean) => void;
 }
@@ -23,6 +24,7 @@ interface Props {
 export default function NewsRowActions({
   id,
   published,
+  role,
   onDeleted,
   onStatusChanged,
 }: Props) {
@@ -274,33 +276,37 @@ export default function NewsRowActions({
                   : "Jadikan Publik"}
             </button>
 
-            <div className="h-px bg-slate-100 dark:bg-white/10" />
+            {role === "super_admin" && (
+              <>
+                <div className="h-px bg-slate-100 dark:bg-white/10" />
 
-            <button
-              type="button"
-              disabled={deleteLoading}
-              onClick={handleDelete}
-              className="
-                flex
-                w-full
-                items-center
-                gap-3
-                px-4
-                py-3
-                text-sm
-                font-medium
-                text-red-600
-                transition-colors
-                hover:bg-red-50
-                disabled:cursor-not-allowed
-                disabled:opacity-50
-                dark:text-red-400
-                dark:hover:bg-red-950/40
-              "
-            >
-              <Trash2 size={16} />
-              {deleteLoading ? "Menghapus..." : "Hapus Berita"}
-            </button>
+                <button
+                  type="button"
+                  disabled={deleteLoading}
+                  onClick={handleDelete}
+                  className="
+                    flex
+                    w-full
+                    items-center
+                    gap-3
+                    px-4
+                    py-3
+                    text-sm
+                    font-medium
+                    text-red-600
+                    transition-colors
+                    hover:bg-red-50
+                    disabled:cursor-not-allowed
+                    disabled:opacity-50
+                    dark:text-red-400
+                    dark:hover:bg-red-950/40
+                  "
+                >
+                  <Trash2 size={16} />
+                  {deleteLoading ? "Menghapus..." : "Hapus Berita"}
+                </button>
+              </>
+            )}
           </div>,
           document.body,
         )}

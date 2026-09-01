@@ -9,6 +9,7 @@ import Pagination from "./Pagination";
 
 interface NewsTableProps {
   data?: News[];
+  role?: string;
   pagination?: {
     page: number;
     totalPages: number;
@@ -31,7 +32,7 @@ const formatDate = (date: string | null) => {
   });
 };
 
-export default function NewsTable({ data = [], pagination }: NewsTableProps) {
+export default function NewsTable({ data = [], role, pagination }: NewsTableProps) {
   const [news, setNews] = useState(data);
 
   useEffect(() => {
@@ -142,6 +143,7 @@ export default function NewsTable({ data = [], pagination }: NewsTableProps) {
                     <NewsRowActions
                       id={item.id}
                       published={item.published}
+                      role={role}
                       onDeleted={handleChanged}
                       onStatusChanged={handleStatusChanged}
                     />
@@ -206,6 +208,7 @@ export default function NewsTable({ data = [], pagination }: NewsTableProps) {
                   <NewsRowActions
                     id={item.id}
                     published={item.published}
+                    role={role}
                     onDeleted={handleChanged}
                     onStatusChanged={handleStatusChanged}
                   />

@@ -86,7 +86,7 @@ export default async function AdminBeritaPage({
           </div>
         </div>
 
-        <NewsTable data={news} pagination={result.pagination} />
+        <NewsTable data={news} role={user?.role ?? undefined} pagination={result.pagination} />
       </div>
     </div>
   );
