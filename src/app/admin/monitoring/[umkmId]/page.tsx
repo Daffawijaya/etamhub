@@ -118,9 +118,9 @@ const BADGE_ICONS: Record<string, React.ReactNode> = {
 };
 
 const BADGE_RING_COLORS: Record<string, string> = {
-  bronze: "ring-amber-300 dark:ring-amber-600",
-  silver: "ring-emerald-300 dark:ring-emerald-600",
-  gold: "ring-orange-300 dark:ring-orange-600",
+  bronze: "ring-emerald-300 dark:ring-emerald-600",
+  silver: "ring-slate-300 dark:ring-slate-500",
+  gold: "ring-amber-300 dark:ring-amber-600",
   platinum: "ring-purple-300 dark:ring-purple-600",
 };
 
@@ -402,14 +402,6 @@ export default function MonitoringDetailPage() {
               {(() => {
                 const LEVEL_STYLES = {
                   bronze: {
-                    reached: "bg-amber-50 dark:bg-amber-900/20",
-                    current: "bg-amber-100 ring-2 ring-amber-500 dark:bg-amber-900/30 dark:ring-amber-400 scale-110",
-                    icon: "text-amber-500 dark:text-amber-400",
-                    iconCurrent: "text-amber-600 dark:text-amber-400",
-                    line: "bg-amber-400 dark:bg-amber-500",
-                    lineGrad: "bg-gradient-to-r from-amber-400 to-slate-200 dark:from-amber-500 dark:to-slate-700",
-                  },
-                  silver: {
                     reached: "bg-emerald-50 dark:bg-emerald-900/20",
                     current: "bg-emerald-100 ring-2 ring-emerald-500 dark:bg-emerald-900/30 dark:ring-emerald-400 scale-110",
                     icon: "text-emerald-500 dark:text-emerald-400",
@@ -417,13 +409,21 @@ export default function MonitoringDetailPage() {
                     line: "bg-emerald-400 dark:bg-emerald-500",
                     lineGrad: "bg-gradient-to-r from-emerald-400 to-slate-200 dark:from-emerald-500 dark:to-slate-700",
                   },
+                  silver: {
+                    reached: "bg-slate-100 dark:bg-slate-800",
+                    current: "bg-slate-200 ring-2 ring-slate-400 dark:bg-slate-700 dark:ring-slate-500 scale-110",
+                    icon: "text-slate-500 dark:text-slate-300",
+                    iconCurrent: "text-slate-600 dark:text-slate-200",
+                    line: "bg-slate-300 dark:bg-slate-600",
+                    lineGrad: "bg-gradient-to-r from-slate-300 to-slate-200 dark:from-slate-600 dark:to-slate-700",
+                  },
                   gold: {
-                    reached: "bg-orange-50 dark:bg-orange-900/20",
-                    current: "bg-orange-100 ring-2 ring-orange-500 dark:bg-orange-900/30 dark:ring-orange-400 scale-110",
-                    icon: "text-orange-500 dark:text-orange-400",
-                    iconCurrent: "text-orange-600 dark:text-orange-400",
-                    line: "bg-orange-400 dark:bg-orange-500",
-                    lineGrad: "bg-gradient-to-r from-orange-400 to-slate-200 dark:from-orange-500 dark:to-slate-700",
+                    reached: "bg-amber-50 dark:bg-amber-900/20",
+                    current: "bg-amber-100 ring-2 ring-amber-500 dark:bg-amber-900/30 dark:ring-amber-400 scale-110",
+                    icon: "text-amber-500 dark:text-amber-400",
+                    iconCurrent: "text-amber-600 dark:text-amber-400",
+                    line: "bg-amber-400 dark:bg-amber-500",
+                    lineGrad: "bg-gradient-to-r from-amber-400 to-slate-200 dark:from-amber-500 dark:to-slate-700",
                   },
                   platinum: {
                     reached: "bg-purple-50 dark:bg-purple-900/20",

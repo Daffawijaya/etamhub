@@ -72,22 +72,22 @@ const BADGE_STYLES = {
   none: {
     label: "",
     color: "text-slate-400",
-    bgColor: "bg-slate-100 dark:bg-white/5",
+    bgColor: "bg-[#E8E8EE] dark:bg-[#3A3A4A]",
   },
   bronze: {
     label: "Pemula",
-    color: "text-amber-700 dark:text-amber-400",
-    bgColor: "bg-amber-50 dark:bg-amber-900/20",
-  },
-  silver: {
-    label: "Tumbuh",
     color: "text-emerald-700 dark:text-emerald-400",
     bgColor: "bg-emerald-50 dark:bg-emerald-900/20",
   },
+  silver: {
+    label: "Tumbuh",
+    color: "text-slate-600 dark:text-slate-300",
+    bgColor: "bg-slate-100 dark:bg-slate-800",
+  },
   gold: {
     label: "Berkembang",
-    color: "text-orange-700 dark:text-orange-400",
-    bgColor: "bg-orange-50 dark:bg-orange-900/20",
+    color: "text-amber-700 dark:text-amber-400",
+    bgColor: "bg-amber-50 dark:bg-amber-900/20",
   },
   platinum: {
     label: "Naik Kelas",

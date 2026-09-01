@@ -29,9 +29,9 @@ const BADGE_ICONS: Record<string, React.ReactNode> = {
 };
 
 const BADGE_RING: Record<string, string> = {
-  bronze: "border-amber-300/80 dark:border-amber-500/60",
-  silver: "border-emerald-300/80 dark:border-emerald-500/60",
-  gold: "border-orange-300/80 dark:border-orange-500/60",
+  bronze: "border-emerald-300/80 dark:border-emerald-500/60",
+  silver: "border-slate-300/80 dark:border-slate-500/60",
+  gold: "border-amber-300/80 dark:border-amber-500/60",
   platinum: "border-purple-300/80 dark:border-purple-500/60",
 };
 
