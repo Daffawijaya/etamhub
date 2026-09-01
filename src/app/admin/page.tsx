@@ -2,8 +2,8 @@ import DashboardGrid from "@/components/admin/dashboard/DashboardGrid";
 
 export default function AdminPage() {
   return (
-    <main>
+    <div>
       <DashboardGrid />
-    </main>
+    </div>
   );
 }

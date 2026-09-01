@@ -89,9 +89,9 @@ export default function AdminLayout({
   };
 
   return (
-    <main className="min-h-screen bg-light-bg">
+    <main className="flex min-h-screen flex-col bg-light dark:bg-dark">
       {/* Desktop layout */}
-      <div className="hidden lg:flex">
+      <div className="hidden min-h-0 flex-1 lg:flex">
         <AdminSidebar />
 
         <div className="flex-1 min-w-0 bg-light dark:bg-dark">
@@ -101,7 +101,7 @@ export default function AdminLayout({
       </div>
 
       {/* Mobile layout */}
-      <div className="lg:hidden">
+      <div className="min-h-0 flex-1 lg:hidden">
         <AdminSidebar
           mobile
           open={sidebarOpen}

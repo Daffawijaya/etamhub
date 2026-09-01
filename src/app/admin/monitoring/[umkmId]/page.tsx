@@ -337,7 +337,7 @@ export default function MonitoringDetailPage() {
   ].filter(Boolean) as { label: string; value: string }[];
 
   return (
-    <main className="space-y-6">
+    <div className="space-y-6">
       {/* Header */}
       <div className="rounded-xl bg-white p-4 sm:p-6 dark:bg-dark-card">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -917,6 +917,6 @@ export default function MonitoringDetailPage() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }

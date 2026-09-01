@@ -13,6 +13,8 @@ export default function UmkmPagination({
   totalPages,
   onPageChange,
 }: Props) {
+  if (totalPages <= 1) return null;
+
   const getPages = () => {
     const pages: (number | string)[] = [];
 
@@ -42,63 +44,78 @@ export default function UmkmPagination({
   return (
     <div
       className="
-        flex flex-col gap-4 
+        flex items-center justify-between
         border-t border-slate-100 dark:border-white/10
-        px-4 sm:px-6 py-4 sm:py-5
+        px-4 py-3 sm:px-6 sm:py-4 md:py-5
         transition-colors duration-300
-        md:flex-row md:items-center md:justify-between
       "
     >
+      {/* Page info — always visible */}
       <p
         className="
-          text-xs sm:text-sm text-slate-500 
+          text-xs sm:text-sm text-slate-500
           dark:text-slate-400
           transition-colors duration-300
         "
       >
-        Halaman{" "}
-        <span
-          className="
-            font-semibold text-slate-900 
-            dark:text-white
-            transition-colors duration-300
-          "
-        >
+        Hal{" "}
+        <span className="font-semibold text-slate-900 dark:text-white">
           {page}
         </span>{" "}
-        dari{" "}
-        <span
-          className="
-            font-semibold text-slate-900 
-            dark:text-white
-            transition-colors duration-300
-          "
-        >
-          {totalPages}
-        </span>
+        / {totalPages}
       </p>
 
-      <div className="flex items-center gap-2">
+      {/* ── Mobile: compact prev / next only ── */}
+      <div className="flex items-center gap-1.5 sm:hidden">
         <button
           disabled={page === 1}
           onClick={() => onPageChange(page - 1)}
           className="
-            flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center
+            flex h-8 w-8 items-center justify-center
+            rounded-lg
+            border border-slate-200 bg-white
+            text-slate-600
+            transition-all duration-200
+            hover:bg-slate-50
+            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
+            disabled:pointer-events-none disabled:opacity-40
+          "
+        >
+          <ChevronLeft size={14} />
+        </button>
+
+        <button
+          disabled={page === totalPages}
+          onClick={() => onPageChange(page + 1)}
+          className="
+            flex h-8 w-8 items-center justify-center
+            rounded-lg
+            border border-slate-200 bg-white
+            text-slate-600
+            transition-all duration-200
+            hover:bg-slate-50
+            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
+            disabled:pointer-events-none disabled:opacity-40
+          "
+        >
+          <ChevronRight size={14} />
+        </button>
+      </div>
+
+      {/* ── Desktop: full page numbers ── */}
+      <div className="hidden items-center gap-1.5 sm:flex">
+        <button
+          disabled={page === 1}
+          onClick={() => onPageChange(page - 1)}
+          className="
+            flex h-9 w-9 items-center justify-center
             rounded-xl
-            border border-slate-200
-            bg-white
+            border border-slate-200 bg-white
             text-slate-600
             transition-all duration-300
-
             hover:bg-slate-50
-
-            dark:border-white/10
-            dark:bg-dark-card
-            dark:text-slate-300
-            dark:hover:bg-white/10
-
-            disabled:pointer-events-none
-            disabled:opacity-40
+            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
+            disabled:pointer-events-none disabled:opacity-40
           "
         >
           <ChevronLeft size={16} />
@@ -109,7 +126,7 @@ export default function UmkmPagination({
             <span
               key={index}
               className="
-                flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center
+                flex h-9 w-9 items-center justify-center
                 text-slate-400
                 dark:text-slate-500
                 transition-colors duration-300
@@ -122,7 +139,7 @@ export default function UmkmPagination({
               key={item}
               onClick={() => onPageChange(Number(item))}
               className={`
-                h-9 w-9 sm:h-10 sm:w-10
+                h-9 w-9
                 rounded-xl
                 text-sm font-medium
                 transition-all duration-300
@@ -159,22 +176,14 @@ export default function UmkmPagination({
           disabled={page === totalPages}
           onClick={() => onPageChange(page + 1)}
           className="
-            flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center
+            flex h-9 w-9 items-center justify-center
             rounded-xl
-            border border-slate-200
-            bg-white
+            border border-slate-200 bg-white
             text-slate-600
             transition-all duration-300
-
             hover:bg-slate-50
-
-            dark:border-white/10
-            dark:bg-dark-card
-            dark:text-slate-300
-            dark:hover:bg-white/10
-
-            disabled:pointer-events-none
-            disabled:opacity-40
+            dark:border-white/10 dark:bg-dark-card dark:text-slate-300 dark:hover:bg-white/10
+            disabled:pointer-events-none disabled:opacity-40
           "
         >
           <ChevronRight size={16} />

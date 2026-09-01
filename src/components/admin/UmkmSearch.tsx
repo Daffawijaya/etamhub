@@ -9,13 +9,13 @@ interface UmkmSearchProps {
 
 export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
   return (
-    <div className="relative w-full max-w-md">
+    <div className="relative min-w-0 flex-1">
       <Search
-        size={18}
+        size={16}
         className="
           pointer-events-none
           absolute
-          left-4
+          left-3
           top-1/2
           z-10
           -translate-y-1/2
@@ -25,6 +25,8 @@ export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
 
           transition-colors
           duration-300
+          sm:left-4
+          sm:size-[18px]
         "
       />
 
@@ -34,9 +36,11 @@ export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
         value={value}
         onChange={(e) => onChange(e.target.value)}
         className="
-          h-11
+          h-10
           w-full
-          rounded-2xl
+          rounded-xl
+          sm:h-11
+          sm:rounded-2xl
 
           border
           border-slate-200
@@ -45,8 +49,9 @@ export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
           bg-white
           dark:bg-dark
 
-          pl-11
+          pl-10
           pr-4
+          sm:pl-11
 
           text-sm
 

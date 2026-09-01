@@ -55,6 +55,13 @@ const getCategoryStyle = (kategori: string) => {
   }
 };
 
+const BADGE_ICONS: Record<string, React.ReactNode> = {
+  bronze: <SeedlingIcon className="h-3 w-3" />,
+  silver: <SilverMedalIcon className="h-3 w-3" />,
+  gold: <GoldMedalIcon className="h-3 w-3" />,
+  platinum: <DiamondIcon className="h-3 w-3" />,
+};
+
 export default function MonitoringTable({ data }: Props) {
   if (data.length === 0) {
     return (
@@ -67,134 +74,95 @@ export default function MonitoringTable({ data }: Props) {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-left text-sm">
-        <thead>
-          <tr className="border-b border-slate-100 dark:border-white/10">
-            <th className="px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
-              UMKM
-            </th>
-            <th className="px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
-              Kategori
-            </th>
-            <th className="hidden sm:table-cell px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
-              Kecamatan
-            </th>
-            <th className="px-4 sm:px-6 py-3 font-medium text-slate-500 dark:text-slate-400">
-              Badge
-            </th>
-            <th className="hidden sm:table-cell px-4 sm:px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
-              Monitoring
-            </th>
-            <th className="hidden md:table-cell px-4 sm:px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
-              Omzet Terakhir
-            </th>
-            <th className="px-4 sm:px-6 py-3 text-right font-medium text-slate-500 dark:text-slate-400">
-              Aksi
-            </th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-slate-100 dark:divide-white/5">
-          {data.map((item) => (
-            <tr
-              key={item.id}
-              className="transition-colors hover:bg-slate-50 dark:hover:bg-white/[0.02]"
-            >
-              {/* UMKM */}
-              <td className="px-4 sm:px-6 py-3 sm:py-4">
-                <div className="flex items-center gap-2 sm:gap-3">
-                  <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 overflow-hidden rounded-xl">
-                    <Image
-                      src={getUmkmImage(item.gambar)}
-                      alt={item.nama}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="truncate font-medium text-slate-900 dark:text-white capitalize text-sm">
-                      {item.nama}
-                    </p>
-                    {item.pemilik && (
-                      <p className="truncate text-xs text-slate-400 dark:text-slate-500">
-                        {item.pemilik}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </td>
+    <div>
+      {data.map((item, index) => (
+        <div
+          key={item.id}
+          className={`
+            flex items-center gap-3 sm:gap-4
+            px-4 sm:px-6
+            py-3 sm:py-3.5
+            transition-colors duration-300
+            ${index !== data.length - 1 ? "border-b border-slate-100 dark:border-white/10" : ""}
+          `}
+        >
+          {/* Image */}
+          <div className="relative h-10 w-10 sm:h-12 sm:w-12 flex-shrink-0 overflow-hidden rounded-xl">
+            <Image
+              src={getUmkmImage(item.gambar)}
+              alt={item.nama}
+              fill
+              className="object-cover"
+            />
+          </div>
 
-              {/* Kategori */}
-              <td className="px-4 sm:px-6 py-3 sm:py-4">
-                <span className={`inline-flex items-center rounded-lg px-2 py-1 sm:px-2.5 text-xs font-medium ${getCategoryStyle(item.kategori)}`}>
-                  {item.kategori}
-                </span>
-              </td>
+          {/* Name + info */}
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-semibold text-sm sm:text-[15px] text-slate-900 dark:text-white capitalize">
+              {item.nama}
+            </p>
+            {/* Desktop: show pemilik + kecamatan */}
+            <p className="hidden truncate text-xs text-slate-400 dark:text-slate-500 sm:block">
+              {item.pemilik} · {item.kecamatan}
+            </p>
+            {/* Mobile: show kategori inline */}
+            <span className={`mt-0.5 inline-flex sm:hidden rounded-md px-1.5 py-0.5 text-[10px] font-medium ${getCategoryStyle(item.kategori)}`}>
+              {item.kategori}
+            </span>
+          </div>
 
-              {/* Kecamatan */}
-              <td className="hidden sm:table-cell px-4 sm:px-6 py-3 sm:py-4 text-slate-600 dark:text-slate-300">
-                {item.kecamatan}
-              </td>
+          {/* Badge — always visible */}
+          <div className="flex-shrink-0">
+            {item.badge && item.badge.level !== "none" ? (
+              <span
+                className={`inline-flex items-center gap-1 rounded-full px-2 py-1 sm:px-2.5 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}
+              >
+                {BADGE_ICONS[item.badge.level]}
+                <span className="hidden sm:inline">{item.badge.label}</span>
+              </span>
+            ) : (
+              <span className="text-xs text-slate-400 dark:text-slate-500">-</span>
+            )}
+          </div>
 
-              {/* Badge */}
-              <td className="px-4 sm:px-6 py-3 sm:py-4">
-                {item.badge && item.badge.level !== "none" ? (
-                  <span
-                    className={`inline-flex items-center gap-1 rounded-full px-2 py-1 sm:px-2.5 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}
-                  >
-                    {item.badge.level === "platinum" && <DiamondIcon className="h-3 w-3" />}
-                    {item.badge.level === "gold" && <GoldMedalIcon className="h-3 w-3" />}
-                    {item.badge.level === "silver" && <SilverMedalIcon className="h-3 w-3" />}
-                    {item.badge.level === "bronze" && <SeedlingIcon className="h-3 w-3" />}
-                    <span className="hidden sm:inline">{item.badge.label}</span>
-                  </span>
-                ) : (
-                  <span className="text-xs text-slate-400 dark:text-slate-500">
-                    -
-                  </span>
-                )}
-              </td>
+          {/* Kategori — desktop only */}
+          <div className="hidden w-[100px] flex-shrink-0 sm:block">
+            <span className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-medium ${getCategoryStyle(item.kategori)}`}>
+              {item.kategori}
+            </span>
+          </div>
 
-              {/* Monitoring count */}
-              <td className="hidden sm:table-cell px-4 sm:px-6 py-3 sm:py-4 text-right">
-                {item.monitoringCount > 0 ? (
-                  <span className="font-medium text-slate-700 dark:text-slate-200">
-                    {item.monitoringCount}x
-                  </span>
-                ) : (
-                  <span className="text-xs text-slate-400 dark:text-slate-500">
-                    Belum
-                  </span>
-                )}
-              </td>
+          {/* Monitoring count — desktop only */}
+          <div className="hidden w-[80px] flex-shrink-0 text-right sm:block">
+            {item.monitoringCount > 0 ? (
+              <span className="font-medium text-slate-700 dark:text-slate-200">
+                {item.monitoringCount}x
+              </span>
+            ) : (
+              <span className="text-xs text-slate-400 dark:text-slate-500">Belum</span>
+            )}
+          </div>
 
-              {/* Omzet */}
-              <td className="hidden md:table-cell px-4 sm:px-6 py-3 sm:py-4 text-right">
-                {item.latestMonitoring?.omzet ? (
-                  <span className="font-medium text-slate-700 dark:text-slate-200">
-                    {formatRupiah(item.latestMonitoring.omzet)}
-                  </span>
-                ) : (
-                  <span className="text-xs text-slate-400 dark:text-slate-500">
-                    -
-                  </span>
-                )}
-              </td>
+          {/* Omzet — desktop only */}
+          <div className="hidden w-[130px] flex-shrink-0 text-right md:block">
+            {item.latestMonitoring?.omzet ? (
+              <span className="font-medium text-slate-700 dark:text-slate-200">
+                {formatRupiah(item.latestMonitoring.omzet)}
+              </span>
+            ) : (
+              <span className="text-xs text-slate-400 dark:text-slate-500">-</span>
+            )}
+          </div>
 
-              {/* Action */}
-              <td className="px-4 sm:px-6 py-3 sm:py-4 text-right">
-                <Link
-                  href={`/admin/monitoring/${item.id}`}
-                  className="inline-flex items-center gap-1 sm:gap-1.5 rounded-lg bg-slate-100 px-2.5 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm font-medium text-slate-700 transition hover:bg-slate-200 dark:bg-white/10 dark:text-slate-200 dark:hover:bg-white/20"
-                >
-                  <Eye size={14} />
-                  <span className="hidden sm:inline">Detail</span>
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          {/* Action */}
+          <Link
+            href={`/admin/monitoring/${item.id}`}
+            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 transition hover:bg-slate-200 dark:bg-white/10 dark:text-slate-300 dark:hover:bg-white/20 sm:h-9 sm:w-9"
+          >
+            <Eye size={14} />
+          </Link>
+        </div>
+      ))}
     </div>
   );
 }

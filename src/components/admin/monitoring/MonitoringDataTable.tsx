@@ -114,23 +114,14 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
               Pantau perkembangan UMKM di kecamatan Anda
             </p>
           </div>
+        </div>
 
-          {/* Search */}
-          <div className="relative w-full sm:w-80">
+        {/* Search + Filter button — same row */}
+        <div className="flex items-center gap-2 pt-3 sm:pt-4">
+          <div className="relative min-w-0 flex-1">
             <Search
-              size={18}
-              className="
-                pointer-events-none
-                absolute
-                left-4
-                top-1/2
-                z-10
-                -translate-y-1/2
-                text-slate-400
-                dark:text-slate-500
-                transition-colors
-                duration-300
-              "
+              size={16}
+              className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400 dark:text-slate-500 transition-colors duration-300 sm:left-4 sm:size-[18px]"
             />
             <input
               type="text"
@@ -141,36 +132,13 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
                 setPage(1);
               }}
               className="
-                h-11
-                w-full
-                rounded-2xl
-                border
-                border-slate-200
-                dark:border-white/[0.06]
-                bg-white
-                dark:bg-white/[0.03]
-                pl-11
-                pr-4
-                text-sm
-                text-slate-700
-                dark:text-white
-                placeholder:text-slate-400
-                dark:placeholder:text-slate-500
-                outline-none
-                transition-all
-                duration-300
-                hover:border-slate-300
-                dark:hover:border-white/[0.12]
-                focus:border-sky-500
-                focus:ring-4
-                focus:ring-sky-500/10
+                h-10 w-full rounded-xl border border-slate-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] pl-10 pr-4 sm:h-11 sm:rounded-2xl sm:pl-11
+                text-sm text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500
+                outline-none transition-all duration-300 hover:border-slate-300 dark:hover:border-white/[0.12] focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10
               "
             />
           </div>
-        </div>
 
-        {/* Filters — below search */}
-        <div className="pt-3 sm:flex sm:justify-end sm:pt-4">
           <MonitoringFilters
             badge={badge}
             monitored={monitored}

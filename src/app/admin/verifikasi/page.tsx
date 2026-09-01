@@ -113,7 +113,7 @@ export default function VerifikasiPage() {
   if (loading) return <LoadingState />;
 
   return (
-    <main className="min-h-screen bg-light dark:bg-dark">
+    <div>
       <div className="h-fit overflow-hidden rounded-xl bg-white dark:bg-dark-card">
         <div className="border-b border-gray-200 px-4 py-3 sm:px-5 sm:py-4 dark:border-neutral-800">
           <h1 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white">
@@ -239,6 +239,6 @@ export default function VerifikasiPage() {
           </div>
         )}
       </div>
-    </main>
+    </div>
   );
 }

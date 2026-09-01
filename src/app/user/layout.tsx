@@ -61,7 +61,7 @@ export default function UserLayout({
 
   if (checking && !ALLOWED_WITHOUT_UMKM.some((p) => pathname.startsWith(p))) {
     return (
-      <main className="min-h-screen bg-light-bg">
+      <main className="min-h-screen bg-light dark:bg-dark">
         <div className="flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent mx-auto" />
@@ -73,9 +73,9 @@ export default function UserLayout({
   }
 
   return (
-    <main className="min-h-screen bg-light-bg">
+    <main className="flex min-h-screen flex-col bg-light dark:bg-dark">
       {/* Desktop layout */}
-      <div className="hidden lg:flex">
+      <div className="hidden min-h-0 flex-1 lg:flex">
         <UserSidebar />
 
         <div className="flex-1 min-w-0 bg-light dark:bg-dark">
@@ -85,7 +85,7 @@ export default function UserLayout({
       </div>
 
       {/* Mobile layout */}
-      <div className="lg:hidden">
+      <div className="min-h-0 flex-1 lg:hidden">
         <UserSidebar
           mobile
           open={sidebarOpen}

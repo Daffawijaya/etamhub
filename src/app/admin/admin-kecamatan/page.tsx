@@ -186,7 +186,7 @@ export default function AdminKecamatanPage() {
   if (loading) return <LoadingState />;
 
   return (
-    <main className="space-y-6">
+    <div className="space-y-6">
       {/* ==================== ADMIN SECTION (super_admin only) ==================== */}
       {isSuperAdmin && (
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
@@ -489,6 +489,6 @@ export default function AdminKecamatanPage() {
           </div>
         </div>
       )}
-    </main>
+    </div>
   );
 }

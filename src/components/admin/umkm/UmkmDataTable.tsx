@@ -82,7 +82,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
           <UmkmTableHeaderActions />
         </div>
 
-        <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-2 pt-4">
           <UmkmSearch
             value={search}
             onChange={(value) => {
