@@ -10,10 +10,10 @@ import {
 } from "recharts";
 
 const DARK_OVERRIDES: Record<string, string> = {
-  "#94A3B8": "#64748B",
-  "#F59E0B": "#FBBF24",
+  "#E8E8EE": "#3A3A4A",
   "#10B981": "#34D399",
-  "#F97316": "#FB923C",
+  "#94A3B8": "#CBD5E1",
+  "#F59E0B": "#FBBF24",
   "#7C3AED": "#A78BFA",
 };
 

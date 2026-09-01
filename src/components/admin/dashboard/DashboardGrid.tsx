@@ -103,10 +103,10 @@ export default function DashboardGrid() {
       }
     }
     return [
-      { name: "Belum Dimonitoring", value: badgeCounts.none, color: "#94A3B8" },
-      { name: "Pemula", value: badgeCounts.bronze, color: "#F59E0B" },
-      { name: "Tumbuh", value: badgeCounts.silver, color: "#10B981" },
-      { name: "Berkembang", value: badgeCounts.gold, color: "#F97316" },
+      { name: "Belum Dimonitoring", value: badgeCounts.none, color: "#E8E8EE" },
+      { name: "Pemula", value: badgeCounts.bronze, color: "#10B981" },
+      { name: "Tumbuh", value: badgeCounts.silver, color: "#94A3B8" },
+      { name: "Berkembang", value: badgeCounts.gold, color: "#F59E0B" },
       { name: "Naik Kelas", value: badgeCounts.platinum, color: "#7C3AED" },
     ];
   }, [filteredUmkm, monitoring.badgeChart, monitoring.umkmBadges, appliedFilters]);
