@@ -172,11 +172,11 @@ export default function DashboardGrid() {
       </div>
 
       <div className="space-y-6 lg:col-span-4">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between overflow-visible">
           <span className="text-sm text-slate-500 dark:text-slate-400">
             {filteredStats.totalUmkm} dari {(data?.map ?? []).length} UMKM
           </span>
-          <div className="relative">
+          <div className="relative overflow-visible">
           <FilterSheet
             activeCount={activeCount}
             onReset={handleReset}
