@@ -14,7 +14,7 @@ export default function NewsSearch() {
   }, [searchParams]);
 
   return (
-    <form action="/admin/berita" method="GET" className="relative min-w-0 flex-1 sm:max-w-sm">
+    <form action="/admin/berita" method="GET" className="relative min-w-0 flex-1 h-10 sm:h-11 sm:max-w-sm">
       <Search
         size={16}
         className="
