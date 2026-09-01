@@ -85,7 +85,7 @@ export default function MobileFilterSheet({
       <button
         type="button"
         onClick={openSheet}
-        className="relative flex h-10 shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 sm:hidden dark:border-white/[0.06] dark:bg-dark-card dark:text-white dark:hover:bg-white/[0.04]"
+        className="relative z-20 flex h-10 shrink-0 items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50 sm:hidden dark:border-white/[0.06] dark:bg-dark-card dark:text-white dark:hover:bg-white/[0.04]"
       >
         <SlidersHorizontal size={15} />
         <span>Filter</span>

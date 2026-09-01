@@ -128,7 +128,7 @@ export default function FilterSheet({
         type="button"
         onClick={() => setOpen((o) => !o)}
         className={`
-          relative flex h-10 shrink-0 items-center gap-1.5
+          relative z-20 flex h-10 shrink-0 items-center gap-1.5
           rounded-xl border px-3
           text-sm font-medium
           transition-colors
