@@ -78,10 +78,12 @@ export default function DashboardGrid() {
   }, [data?.map, appliedFilters, monitoredIds]);
 
   const filteredKategoriChart = useMemo(() => {
+    const allCategories = (data?.kategoriChart ?? []).map((c: any) => c.name);
     if (appliedFilters.kecamatan === "all" && appliedFilters.monitoring === "all") {
       return data?.kategoriChart ?? [];
     }
     const map: Record<string, number> = {};
+    for (const k of allCategories) map[k] = 0;
     for (const u of filteredUmkm) {
       const k = u.kategori || "Lainnya";
       map[k] = (map[k] || 0) + 1;
