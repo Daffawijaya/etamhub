@@ -68,54 +68,56 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
     >
       {/* Header */}
       <div className="px-4 py-4 sm:px-6 sm:py-5">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white transition-colors duration-300">
               Data UMKM
             </h2>
-
             <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
               Kelola data UMKM terdaftar
             </p>
           </div>
 
+          {/* Search + Filter — right side */}
+          <div className="flex items-center gap-2">
+            <UmkmSearch
+              value={search}
+              onChange={(value) => {
+                setSearch(value);
+                setPage(1);
+              }}
+            />
+            <UmkmFilters
+              kecamatanOptions={kecamatanOptions}
+              kategoriOptions={kategoriOptions}
+              kecamatan={kecamatan}
+              kategori={kategori}
+              sort={sort}
+              status={status}
+              onStatusChange={(value) => {
+                setStatus(value);
+                setPage(1);
+              }}
+              onKecamatanChange={(value) => {
+                setKecamatan(value);
+                setPage(1);
+              }}
+              onKategoriChange={(value) => {
+                setKategori(value);
+                setPage(1);
+              }}
+              onSortChange={(value) => {
+                setSort(value);
+                setPage(1);
+              }}
+            />
+          </div>
+        </div>
+
+        {/* Action buttons — disabled for now, keep for future use */}
+        {/* <div className="flex flex-wrap items-center gap-2 pt-3 sm:pt-4 opacity-50 pointer-events-none">
           <UmkmTableHeaderActions />
-        </div>
-
-        <div className="flex items-center gap-2 pt-4">
-          <UmkmSearch
-            value={search}
-            onChange={(value) => {
-              setSearch(value);
-              setPage(1);
-            }}
-          />
-
-          <UmkmFilters
-            kecamatanOptions={kecamatanOptions}
-            kategoriOptions={kategoriOptions}
-            kecamatan={kecamatan}
-            kategori={kategori}
-            sort={sort}
-            status={status}
-            onStatusChange={(value) => {
-              setStatus(value);
-              setPage(1);
-            }}
-            onKecamatanChange={(value) => {
-              setKecamatan(value);
-              setPage(1);
-            }}
-            onKategoriChange={(value) => {
-              setKategori(value);
-              setPage(1);
-            }}
-            onSortChange={(value) => {
-              setSort(value);
-              setPage(1);
-            }}
-          />
-        </div>
+        </div> */}
       </div>
 
       {/* Table */}

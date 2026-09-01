@@ -211,6 +211,7 @@ export default function UserSidebar({ mobile = false, open = false, onClose }: U
         flex
         h-screen
         flex-col
+        overflow-visible
         bg-white
         dark:bg-dark-card
         transition-[width]
@@ -219,11 +220,6 @@ export default function UserSidebar({ mobile = false, open = false, onClose }: U
         ${collapsed ? "w-16" : "w-70"}
       `}
     >
-      <SidebarToggle
-        collapsed={collapsed}
-        onToggle={() => setCollapsed((prev) => !prev)}
-      />
-
       <SidebarLogo collapsed={collapsed} userName={userName} />
 
       <nav className="flex-1 overflow-y-auto px-2 py-1">
@@ -280,6 +276,14 @@ export default function UserSidebar({ mobile = false, open = false, onClose }: U
             Pengaturan Akun
           </span>
         </button>
+      </div>
+
+      {/* Toggle — same padding as menu items */}
+      <div className="px-2 pb-2">
+        <SidebarToggle
+          collapsed={collapsed}
+          onToggle={() => setCollapsed((prev) => !prev)}
+        />
       </div>
 
       <ChangePasswordModal

@@ -1,7 +1,7 @@
 "use client";
 
 import CustomSelect from "@/components/ui/CustomSelect";
-import MobileFilterSheet from "@/components/ui/MobileFilterSheet";
+import FilterSheet from "@/components/ui/FilterSheet";
 
 interface Props {
   kecamatanOptions: string[];
@@ -80,77 +80,8 @@ export default function MonitoringFilters({
   };
 
   return (
-    <>
-      {/* ── Desktop: inline filters ── */}
-      <div className="hidden flex-wrap items-center gap-3 sm:flex">
-        <CustomSelect
-          value={badge}
-          onChange={onBadgeChange}
-          className="w-44"
-          placeholder="Semua Badge"
-          options={[
-            { value: "all", label: "Semua Badge" },
-            { value: "platinum", label: "Naik Kelas" },
-            { value: "gold", label: "Berkembang" },
-            { value: "silver", label: "Tumbuh" },
-            { value: "bronze", label: "Pemula" },
-            { value: "none", label: "Belum Ada" },
-          ]}
-        />
-        <CustomSelect
-          value={monitored}
-          onChange={onMonitoredChange}
-          className="w-40"
-          placeholder="Semua Status"
-          options={[
-            { value: "all", label: "Semua Status" },
-            { value: "yes", label: "Sudah Dimonitoring" },
-            { value: "no", label: "Belum Dimonitoring" },
-          ]}
-        />
-        <CustomSelect
-          value={sort}
-          onChange={onSortChange}
-          className="w-40"
-          placeholder="Data Terbaru"
-          options={[
-            { value: "terbaru", label: "Data Terbaru" },
-            { value: "lama", label: "Data Terlama" },
-            { value: "nama", label: "Nama A-Z" },
-            { value: "monitoring", label: "Jumlah Monitoring" },
-            { value: "badge", label: "Level Badge" },
-          ]}
-        />
-        <input
-          type="number"
-          placeholder="Omzet min"
-          value={omzetMin}
-          onChange={(e) => onOmzetMinChange(e.target.value)}
-          className={`${inputClass} w-36 placeholder:text-slate-400 dark:placeholder:text-slate-500`}
-        />
-        <input
-          type="number"
-          placeholder="Omzet max"
-          value={omzetMax}
-          onChange={(e) => onOmzetMaxChange(e.target.value)}
-          className={`${inputClass} w-36 placeholder:text-slate-400 dark:placeholder:text-slate-500`}
-        />
-        <CustomSelect
-          value={kecamatan}
-          onChange={onKecamatanChange}
-          className="w-56"
-          placeholder="Semua Kecamatan"
-          options={[
-            { value: "all", label: "Semua Kecamatan" },
-            ...kecamatanOptions
-              .filter((item) => item !== "all")
-              .map((item) => ({ value: item, label: item })),
-          ]}
-        />
-      </div>
-
-      {/* ── Mobile: bottom-sheet filter ── */}
-      <MobileFilterSheet
+    <div className="relative">
+      <FilterSheet
         activeCount={activeCount}
         onReset={handleReset}
         onApply={handleApply}
@@ -231,12 +162,12 @@ export default function MonitoringFilters({
             ]}
           />
         </FilterField>
-      </MobileFilterSheet>
-    </>
+      </FilterSheet>
+    </div>
   );
 }
 
-/* ── Helper: labelled field wrapper for mobile sheet ── */
+/* ── Helper: labelled field wrapper ── */
 function FilterField({
   label,
   children,

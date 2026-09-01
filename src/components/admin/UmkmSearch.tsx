@@ -9,7 +9,7 @@ interface UmkmSearchProps {
 
 export default function UmkmSearch({ value, onChange }: UmkmSearchProps) {
   return (
-    <div className="relative min-w-0 flex-1">
+    <div className="relative min-w-0 flex-1 sm:max-w-sm">
       <Search
         size={16}
         className="

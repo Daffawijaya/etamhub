@@ -344,6 +344,7 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
     <aside
       className={`
         relative
+        overflow-visible
         sticky
         top-0
         flex
@@ -429,11 +430,13 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
         </button>
       </div>
 
-      {/* Floating Toggle — rendered after nav so it sits on top */}
-      <SidebarToggle
-        collapsed={collapsed}
-        onToggle={handleToggle}
-      />
+      {/* Toggle — same padding as menu items */}
+      <div className="px-2 pb-2">
+        <SidebarToggle
+          collapsed={collapsed}
+          onToggle={handleToggle}
+        />
+      </div>
 
       <ChangePasswordModal
         open={showPasswordModal}

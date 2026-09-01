@@ -17,8 +17,8 @@ interface NewsTableProps {
 
 const getStatusStyle = (published: boolean | null) => {
   return published
-    ? "bg-green-50 text-green-700 dark:bg-green-500/20 dark:text-green-300"
-    : "bg-slate-500/10 text-slate-500 dark:text-slate-400";
+    ? "bg-blue-50 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300"
+    : "bg-slate-100 text-slate-500 dark:bg-white/10 dark:text-slate-400";
 };
 
 const formatDate = (date: string | null) => {
@@ -120,10 +120,10 @@ export default function NewsTable({ data = [], pagination }: NewsTableProps) {
                         inline-flex
                         min-w-[76px]
                         justify-center
-                        rounded-full
-                        px-3
-                        py-1.5
-                        text-sm
+                        rounded-lg
+                        px-2.5
+                        py-1
+                        text-xs
                         font-medium
                         ${getStatusStyle(item.published)}
                       `}
@@ -193,10 +193,10 @@ export default function NewsTable({ data = [], pagination }: NewsTableProps) {
                   <span
                     className={`
                       inline-flex
-                      rounded-full
-                      px-2
-                      py-0.5
-                      text-[11px]
+                      rounded-lg
+                      px-2.5
+                      py-1
+                      text-xs
                       font-medium
                       ${getStatusStyle(item.published)}
                     `}

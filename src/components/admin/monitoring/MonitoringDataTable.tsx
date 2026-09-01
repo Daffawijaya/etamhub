@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Search } from "lucide-react";
+import UmkmSearch from "../UmkmSearch";
 import MonitoringFilters from "./MonitoringFilters";
 import MonitoringTable from "./MonitoringTable";
 import UmkmPagination from "../umkm/UmkmPagination";
@@ -114,46 +114,33 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
               Pantau perkembangan UMKM di kecamatan Anda
             </p>
           </div>
-        </div>
 
-        {/* Search + Filter button — same row */}
-        <div className="flex items-center gap-2 pt-3 sm:pt-4">
-          <div className="relative min-w-0 flex-1">
-            <Search
-              size={16}
-              className="pointer-events-none absolute left-3 top-1/2 z-10 -translate-y-1/2 text-slate-400 dark:text-slate-500 transition-colors duration-300 sm:left-4 sm:size-[18px]"
-            />
-            <input
-              type="text"
-              placeholder="Cari UMKM..."
+          {/* Search + Filter — right side */}
+          <div className="flex items-center gap-2">
+            <UmkmSearch
               value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
+              onChange={(value) => {
+                setSearch(value);
                 setPage(1);
               }}
-              className="
-                h-10 w-full rounded-xl border border-slate-200 dark:border-white/[0.06] bg-white dark:bg-white/[0.03] pl-10 pr-4 sm:h-11 sm:rounded-2xl sm:pl-11
-                text-sm text-slate-700 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500
-                outline-none transition-all duration-300 hover:border-slate-300 dark:hover:border-white/[0.12] focus:border-sky-500 focus:ring-4 focus:ring-sky-500/10
-              "
+            />
+
+            <MonitoringFilters
+              badge={badge}
+              monitored={monitored}
+              omzetMin={omzetMin}
+              omzetMax={omzetMax}
+              kecamatan={kecamatan}
+              sort={sort}
+              kecamatanOptions={kecamatanOptions}
+              onBadgeChange={(v) => { setBadge(v); setPage(1); }}
+              onMonitoredChange={(v) => { setMonitored(v); setPage(1); }}
+              onOmzetMinChange={(v) => { setOmzetMin(v); setPage(1); }}
+              onOmzetMaxChange={(v) => { setOmzetMax(v); setPage(1); }}
+              onKecamatanChange={(v) => { setKecamatan(v); setPage(1); }}
+              onSortChange={(v) => { setSort(v); setPage(1); }}
             />
           </div>
-
-          <MonitoringFilters
-            badge={badge}
-            monitored={monitored}
-            omzetMin={omzetMin}
-            omzetMax={omzetMax}
-            kecamatan={kecamatan}
-            sort={sort}
-            kecamatanOptions={kecamatanOptions}
-            onBadgeChange={(v) => { setBadge(v); setPage(1); }}
-            onMonitoredChange={(v) => { setMonitored(v); setPage(1); }}
-            onOmzetMinChange={(v) => { setOmzetMin(v); setPage(1); }}
-            onOmzetMaxChange={(v) => { setOmzetMax(v); setPage(1); }}
-            onKecamatanChange={(v) => { setKecamatan(v); setPage(1); }}
-            onSortChange={(v) => { setSort(v); setPage(1); }}
-          />
         </div>
       </div>
 

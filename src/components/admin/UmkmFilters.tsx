@@ -1,7 +1,7 @@
 "use client";
 
 import CustomSelect from "@/components/ui/CustomSelect";
-import MobileFilterSheet from "@/components/ui/MobileFilterSheet";
+import FilterSheet from "@/components/ui/FilterSheet";
 
 interface Props {
   kecamatanOptions: string[];
@@ -48,58 +48,8 @@ export default function UmkmFilters({
   };
 
   return (
-    <>
-      {/* ── Desktop: inline filters ── */}
-      <div className="hidden flex-wrap items-center gap-3 sm:flex">
-        <CustomSelect
-          value={status}
-          onChange={onStatusChange}
-          className="w-40"
-          placeholder="Semua Status"
-          options={[
-            { value: "all", label: "Semua Status" },
-            { value: "public", label: "Publik" },
-            { value: "private", label: "Privat" },
-          ]}
-        />
-        <CustomSelect
-          value={sort}
-          onChange={onSortChange}
-          className="w-40"
-          placeholder="Terbaru"
-          options={[
-            { value: "terbaru", label: "Terbaru" },
-            { value: "nama", label: "Nama A-Z" },
-          ]}
-        />
-        <CustomSelect
-          value={kategori}
-          onChange={onKategoriChange}
-          className="w-44"
-          placeholder="Semua Kategori"
-          options={[
-            { value: "all", label: "Semua Kategori" },
-            ...kategoriOptions
-              .filter((item) => item !== "all")
-              .map((item) => ({ value: item, label: item })),
-          ]}
-        />
-        <CustomSelect
-          value={kecamatan}
-          onChange={onKecamatanChange}
-          className="w-56"
-          placeholder="Semua Kecamatan"
-          options={[
-            { value: "all", label: "Semua Kecamatan" },
-            ...kecamatanOptions
-              .filter((item) => item !== "all")
-              .map((item) => ({ value: item, label: item })),
-          ]}
-        />
-      </div>
-
-      {/* ── Mobile: bottom-sheet filter ── */}
-      <MobileFilterSheet
+    <div className="relative">
+      <FilterSheet
         activeCount={activeCount}
         onReset={handleReset}
         onApply={handleApply}
@@ -156,12 +106,12 @@ export default function UmkmFilters({
             ]}
           />
         </FilterField>
-      </MobileFilterSheet>
-    </>
+      </FilterSheet>
+    </div>
   );
 }
 
-/* ── Helper: labelled field wrapper for mobile sheet ── */
+/* ── Helper: labelled field wrapper ── */
 function FilterField({
   label,
   children,
