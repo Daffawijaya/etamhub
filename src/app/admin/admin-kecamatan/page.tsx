@@ -190,23 +190,23 @@ export default function AdminKecamatanPage() {
       {/* ==================== ADMIN SECTION (super_admin only) ==================== */}
       {isSuperAdmin && (
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
-        <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
+        <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 dark:bg-violet-900/20">
-              <Shield size={20} className="text-violet-600 dark:text-violet-400" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 sm:h-10 sm:w-10 dark:bg-violet-900/20">
+              <Shield size={18} className="text-violet-600 sm:text-violet-600 dark:text-violet-400" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+              <h2 className="text-base font-bold text-slate-900 sm:text-lg dark:text-white">
                 Admin
               </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                 {adminList.length} akun
               </p>
             </div>
           </div>
           <button
             onClick={() => openForm("admin")}
-            className="flex items-center gap-2 rounded-lg bg-violet-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-violet-700 sm:px-4 sm:text-sm"
+            className="flex h-9 items-center gap-1.5 rounded-lg bg-violet-600 px-3 text-xs font-medium text-white transition hover:bg-violet-700 sm:h-10 sm:gap-2 sm:px-4 sm:text-sm"
           >
             <Plus size={16} />
             <span className="hidden sm:inline">Tambah Admin</span>
@@ -223,58 +223,55 @@ export default function AdminKecamatanPage() {
             {adminList.map((admin) => (
               <div
                 key={admin.id}
-                className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
+                className="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4"
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-violet-50 dark:bg-violet-900/20">
-                    <Shield size={18} className="text-violet-600 dark:text-violet-400" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
-                      {admin.nama}
-                    </h3>
-                    <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                      @{admin.username}
-                    </p>
-                  </div>
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-50 sm:h-10 sm:w-10 dark:bg-violet-900/20">
+                  <Shield size={16} className="text-violet-600 dark:text-violet-400" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-slate-900 sm:text-[15px] dark:text-white">
+                    {admin.nama}
+                  </h3>
+                  <p className="truncate text-xs text-slate-500 sm:text-sm dark:text-slate-400">
+                    @{admin.username}
+                  </p>
                 </div>
 
-                <div className="flex items-center justify-between gap-2 pl-[52px] sm:pl-0 sm:justify-start">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-violet-50 px-2.5 py-0.5 text-[11px] font-semibold text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
-                      ADMIN
-                    </span>
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium ${
-                        admin.is_active
-                          ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                          : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
-                      }`}
-                    >
-                      {admin.is_active ? "Aktif" : "Nonaktif"}
-                    </span>
-                  </div>
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className="rounded-lg bg-violet-50 px-2 py-0.5 text-[10px] font-semibold text-violet-700 sm:px-2.5 sm:text-[11px] dark:bg-violet-900/30 dark:text-violet-400">
+                    ADMIN
+                  </span>
+                  <span
+                    className={`rounded-lg px-2 py-0.5 text-[10px] font-medium sm:px-3 sm:py-1 sm:text-xs ${
+                      admin.is_active
+                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                        : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
+                    }`}
+                  >
+                    {admin.is_active ? "Aktif" : "Nonaktif"}
+                  </span>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5 sm:gap-1">
                     <button
                       onClick={() => openForm("admin", admin)}
-                      className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
+                      className="rounded-lg p-1.5 text-slate-500 transition hover:bg-slate-100 sm:p-2 dark:text-slate-400 dark:hover:bg-white/10"
                       title="Edit"
                     >
-                      <Edit2 size={16} />
+                      <Edit2 size={15} />
                     </button>
                     <button
                       onClick={() => handleToggleActive(admin.id, admin.is_active)}
-                      className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
+                      className="rounded-lg px-2 py-1 text-[10px] font-medium text-slate-600 transition hover:bg-slate-100 sm:px-3 sm:py-1.5 sm:text-xs dark:text-slate-300 dark:hover:bg-white/10"
                     >
-                      {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
+                      <span className="hidden sm:inline">{admin.is_active ? "Nonaktifkan" : "Aktifkan"}</span>
+                      <span className="sm:hidden">{admin.is_active ? "Non" : "Aktif"}</span>
                     </button>
                     <button
                       onClick={() => handleDelete(admin.id)}
-                      className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                      className="rounded-lg p-1.5 text-red-500 transition hover:bg-red-50 sm:p-2 dark:text-red-400 dark:hover:bg-red-950/40"
                       title="Hapus"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={15} />
                     </button>
                   </div>
                 </div>
@@ -287,23 +284,23 @@ export default function AdminKecamatanPage() {
 
       {/* ==================== ADMIN KECAMATAN SECTION ==================== */}
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
-        <div className="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-neutral-800">
+        <div className="flex items-center justify-between px-4 py-3 sm:px-5 sm:py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 dark:bg-teal-900/20">
-              <Users size={20} className="text-teal-600 dark:text-teal-400" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-50 sm:h-10 sm:w-10 dark:bg-teal-900/20">
+              <Users size={18} className="text-teal-600 dark:text-teal-400" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+              <h2 className="text-base font-bold text-slate-900 sm:text-lg dark:text-white">
                 Akun
               </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
                 {kecamatanList.length} akun
               </p>
             </div>
           </div>
           <button
             onClick={() => openForm("admin_kecamatan")}
-            className="flex items-center gap-2 rounded-lg bg-teal-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-teal-700 sm:px-4 sm:text-sm"
+            className="flex h-9 items-center gap-1.5 rounded-lg bg-teal-600 px-3 text-xs font-medium text-white transition hover:bg-teal-700 sm:h-10 sm:gap-2 sm:px-4 sm:text-sm"
           >
             <Plus size={16} />
             <span className="hidden sm:inline">Tambah Akun</span>
@@ -320,61 +317,58 @@ export default function AdminKecamatanPage() {
             {kecamatanList.map((admin) => (
               <div
                 key={admin.id}
-                className="flex flex-col gap-3 px-5 py-4 sm:flex-row sm:items-center sm:gap-4"
+                className="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4"
               >
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-900/20">
-                    <Users size={18} className="text-teal-600 dark:text-teal-400" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <h3 className="truncate text-[15px] font-semibold text-slate-900 dark:text-white">
-                      {admin.nama}
-                    </h3>
-                    <p className="truncate text-sm text-slate-500 dark:text-slate-400">
-                      @{admin.username} ·{" "}
-                      {admin.kecamatan.length > 0
-                        ? admin.kecamatan.join(", ")
-                        : "Belum ada kecamatan"}
-                    </p>
-                  </div>
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal-50 sm:h-10 sm:w-10 dark:bg-teal-900/20">
+                  <Users size={16} className="text-teal-600 dark:text-teal-400" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <h3 className="truncate text-sm font-semibold text-slate-900 sm:text-[15px] dark:text-white">
+                    {admin.nama}
+                  </h3>
+                  <p className="truncate text-xs text-slate-500 sm:text-sm dark:text-slate-400">
+                    @{admin.username} ·{" "}
+                    {admin.kecamatan.length > 0
+                      ? admin.kecamatan.join(", ")
+                      : "Belum ada kecamatan"}
+                  </p>
                 </div>
 
-                <div className="flex items-center justify-between gap-2 pl-[52px] sm:pl-0 sm:justify-start">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-teal-50 px-2.5 py-0.5 text-[11px] font-semibold text-teal-700 dark:bg-teal-900/30 dark:text-teal-400">
-                      KECAMATAN
-                    </span>
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-medium ${
-                        admin.is_active
-                          ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
-                          : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
-                      }`}
-                    >
-                      {admin.is_active ? "Aktif" : "Nonaktif"}
-                    </span>
-                  </div>
+                <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                  <span className="rounded-lg bg-teal-50 px-2 py-0.5 text-[10px] font-semibold text-teal-700 sm:px-2.5 sm:text-[11px] dark:bg-teal-900/30 dark:text-teal-400">
+                    KECAMATAN
+                  </span>
+                  <span
+                    className={`rounded-lg px-2 py-0.5 text-[10px] font-medium sm:px-3 sm:py-1 sm:text-xs ${
+                      admin.is_active
+                        ? "bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400"
+                        : "bg-slate-100 text-slate-500 dark:bg-neutral-800 dark:text-slate-400"
+                    }`}
+                  >
+                    {admin.is_active ? "Aktif" : "Nonaktif"}
+                  </span>
 
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-0.5 sm:gap-1">
                     <button
                       onClick={() => openForm("admin_kecamatan", admin)}
-                      className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-white/10"
+                      className="rounded-lg p-1.5 text-slate-500 transition hover:bg-slate-100 sm:p-2 dark:text-slate-400 dark:hover:bg-white/10"
                       title="Edit"
                     >
-                      <Edit2 size={16} />
+                      <Edit2 size={15} />
                     </button>
                     <button
                       onClick={() => handleToggleActive(admin.id, admin.is_active)}
-                      className="rounded-lg px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-white/10"
+                      className="rounded-lg px-2 py-1 text-[10px] font-medium text-slate-600 transition hover:bg-slate-100 sm:px-3 sm:py-1.5 sm:text-xs dark:text-slate-300 dark:hover:bg-white/10"
                     >
-                      {admin.is_active ? "Nonaktifkan" : "Aktifkan"}
+                      <span className="hidden sm:inline">{admin.is_active ? "Nonaktifkan" : "Aktifkan"}</span>
+                      <span className="sm:hidden">{admin.is_active ? "Non" : "Aktif"}</span>
                     </button>
                     <button
                       onClick={() => handleDelete(admin.id)}
-                      className="rounded-lg p-2 text-red-500 transition hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                      className="rounded-lg p-1.5 text-red-500 transition hover:bg-red-50 sm:p-2 dark:text-red-400 dark:hover:bg-red-950/40"
                       title="Hapus"
                     >
-                      <Trash2 size={16} />
+                      <Trash2 size={15} />
                     </button>
                   </div>
                 </div>
@@ -388,7 +382,7 @@ export default function AdminKecamatanPage() {
       {showForm && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
           <div
-            className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl dark:bg-zinc-900"
+            className="w-full max-w-md rounded-2xl bg-white p-4 shadow-2xl sm:p-6 dark:bg-zinc-900"
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-semibold text-zinc-900 dark:text-white">
