@@ -172,7 +172,11 @@ export default function DashboardGrid() {
       </div>
 
       <div className="space-y-6 lg:col-span-4">
-        <div className="relative">
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-slate-500 dark:text-slate-400">
+            {filteredStats.totalUmkm} dari {(data?.map ?? []).length} UMKM
+          </span>
+          <div className="relative">
           <FilterSheet
             activeCount={activeCount}
             onReset={handleReset}
@@ -218,6 +222,7 @@ export default function DashboardGrid() {
               />
             </div>
           </FilterSheet>
+          </div>
         </div>
 
         <BadgePieChart data={filteredBadgeChart} monitoredCount={monitoring.monitoredCount ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
