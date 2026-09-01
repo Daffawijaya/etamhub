@@ -42,6 +42,11 @@ export default function DashboardGrid() {
       .sort();
   }, [data?.kategoriChart]);
 
+  // ── Set of monitored UMKM IDs ──
+  const monitoredIds = useMemo(() => {
+    return new Set<string>(monitoring.monitoredIds ?? []);
+  }, [monitoring.monitoredIds]);
+
   // ── Client-side filter on raw UMKM list ──
   const filteredUmkm = useMemo(() => {
     let list = data?.map ?? [];
@@ -54,8 +59,16 @@ export default function DashboardGrid() {
       list = list.filter((u: any) => u.kategori === filterKategori);
     }
 
+    if (filterMonitoring !== "all") {
+      list = list.filter((u: any) =>
+        filterMonitoring === "monitored"
+          ? monitoredIds.has(u.id)
+          : !monitoredIds.has(u.id)
+      );
+    }
+
     return list;
-  }, [data?.map, filterKecamatan, filterKategori, filterMonitoring]);
+  }, [data?.map, filterKecamatan, filterKategori, filterMonitoring, monitoredIds]);
 
   // ── Rebuild kategori chart from filtered UMKM ──
   const filteredKategoriChart = useMemo(() => {
@@ -68,7 +81,7 @@ export default function DashboardGrid() {
       map[k] = (map[k] || 0) + 1;
     }
     return Object.entries(map).map(([name, value]) => ({ name, value }));
-  }, [filteredUmkm, data?.kategoriChart, filterKecamatan, filterMonitoring]);
+  }, [filteredUmkm, data?.kategoriChart, filterKecamatan, filterMonitoring, filterKategori]);
 
   // ── Stats from filtered data ──
   const filteredStats = useMemo(() => {

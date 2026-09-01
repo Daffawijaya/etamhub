@@ -250,6 +250,7 @@ export async function GET() {
         omzetTrend,
         monitoredCount,
         totalMonitorings,
+        monitoredIds: Object.keys(countMap),
         avgOmzet: omzetCount > 0 ? Math.round(totalOmzet / omzetCount) : 0,
         badgeCounts,
       },
