@@ -16,6 +16,8 @@ interface Props {
   onKecamatanChange: (value: string) => void;
   onKategoriChange: (value: string) => void;
   onSortChange: (value: string) => void;
+  onApply?: () => void;
+  onReset?: () => void;
 }
 
 export default function UmkmFilters({
@@ -29,6 +31,8 @@ export default function UmkmFilters({
   onKecamatanChange,
   onKategoriChange,
   onStatusChange,
+  onApply,
+  onReset,
 }: Props) {
   const activeCount =
     (status !== "all" ? 1 : 0) +
@@ -37,14 +41,11 @@ export default function UmkmFilters({
     (sort !== "terbaru" ? 1 : 0);
 
   const handleReset = () => {
-    onStatusChange("all");
-    onKategoriChange("all");
-    onKecamatanChange("all");
-    onSortChange("terbaru");
+    onReset?.();
   };
 
   const handleApply = () => {
-    // Filters are already applied live — no-op
+    onApply?.();
   };
 
   return (
@@ -53,6 +54,7 @@ export default function UmkmFilters({
         activeCount={activeCount}
         onReset={handleReset}
         onApply={handleApply}
+        discardOnClose
       >
         <FilterField label="Status">
           <CustomSelect

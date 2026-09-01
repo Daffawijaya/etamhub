@@ -177,6 +177,10 @@ export default function LogAktivitasPage() {
   const [filterActor, setFilterActor] = useState("");
   const [actors, setActors] = useState<{ actor_id: string; actor_name: string; actor_role: string }[]>([]);
 
+  // Draft filters for FilterSheet
+  const [draftAction, setDraftAction] = useState("");
+  const [draftActor, setDraftActor] = useState("");
+
   async function loadActors() {
     try {
       const res = await fetch("/api/admin/activity-logs/actors");
@@ -249,15 +253,21 @@ export default function LogAktivitasPage() {
               />
               <LogFilters
                 actors={actors}
-                filterActor={filterActor}
-                filterAction={filterAction}
+                filterActor={draftActor}
+                filterAction={draftAction}
                 actionOptions={actionOptions}
-                onActorChange={(v) => {
-                  setFilterActor(v);
+                onActorChange={setDraftActor}
+                onActionChange={setDraftAction}
+                onApply={() => {
+                  setFilterActor(draftActor);
+                  setFilterAction(draftAction);
                   setPage(1);
                 }}
-                onActionChange={(v) => {
-                  setFilterAction(v);
+                onReset={() => {
+                  setDraftActor("");
+                  setDraftAction("");
+                  setFilterActor("");
+                  setFilterAction("");
                   setPage(1);
                 }}
               />

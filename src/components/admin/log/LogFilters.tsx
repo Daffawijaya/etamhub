@@ -16,6 +16,8 @@ interface Props {
   actionOptions: { value: string; label: string }[];
   onActorChange: (value: string) => void;
   onActionChange: (value: string) => void;
+  onApply?: () => void;
+  onReset?: () => void;
 }
 
 export default function LogFilters({
@@ -25,18 +27,19 @@ export default function LogFilters({
   actionOptions,
   onActorChange,
   onActionChange,
+  onApply,
+  onReset,
 }: Props) {
   const activeCount =
     (filterActor ? 1 : 0) +
     (filterAction ? 1 : 0);
 
   const handleReset = () => {
-    onActorChange("");
-    onActionChange("");
+    onReset?.();
   };
 
   const handleApply = () => {
-    // Filters are already applied live — no-op
+    onApply?.();
   };
 
   return (
@@ -45,6 +48,7 @@ export default function LogFilters({
         activeCount={activeCount}
         onReset={handleReset}
         onApply={handleApply}
+        discardOnClose
       >
         <FilterField label="Admin">
           <CustomSelect

@@ -17,6 +17,8 @@ interface Props {
   onOmzetMaxChange: (value: string) => void;
   onKecamatanChange: (value: string) => void;
   onSortChange: (value: string) => void;
+  onApply?: () => void;
+  onReset?: () => void;
 }
 
 const inputClass = `
@@ -57,6 +59,8 @@ export default function MonitoringFilters({
   onOmzetMaxChange,
   onKecamatanChange,
   onSortChange,
+  onApply,
+  onReset,
 }: Props) {
   const activeCount =
     (badge !== "all" ? 1 : 0) +
@@ -67,16 +71,11 @@ export default function MonitoringFilters({
     (omzetMax ? 1 : 0);
 
   const handleReset = () => {
-    onBadgeChange("all");
-    onMonitoredChange("all");
-    onSortChange("terbaru");
-    onKecamatanChange("all");
-    onOmzetMinChange("");
-    onOmzetMaxChange("");
+    onReset?.();
   };
 
   const handleApply = () => {
-    // Filters are already applied live — no-op
+    onApply?.();
   };
 
   return (
@@ -85,6 +84,7 @@ export default function MonitoringFilters({
         activeCount={activeCount}
         onReset={handleReset}
         onApply={handleApply}
+        discardOnClose
       >
         <FilterField label="Badge">
           <CustomSelect

@@ -10,8 +10,10 @@ interface FilterSheetProps {
   children: ReactNode;
   /** Called when user taps "Reset" */
   onReset: () => void;
-  /** Called when user taps "Apply" or closes */
+  /** Called when user taps "Apply" */
   onApply: () => void;
+  /** If true, closing via outside click / X / Escape discards changes (does not call onApply) */
+  discardOnClose?: boolean;
 }
 
 export default function FilterSheet({
@@ -19,6 +21,7 @@ export default function FilterSheet({
   children,
   onReset,
   onApply,
+  discardOnClose = false,
 }: FilterSheetProps) {
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
@@ -56,6 +59,14 @@ export default function FilterSheet({
   }, [open, isMobile, updatePosition]);
 
   const close = useCallback(() => {
+    setOpen(false);
+    // If discardOnClose, don't call onApply — user closed without confirming
+    if (!discardOnClose) {
+      onApply();
+    }
+  }, [onApply, discardOnClose]);
+
+  const handleApply = useCallback(() => {
     setOpen(false);
     onApply();
   }, [onApply]);
@@ -192,7 +203,7 @@ export default function FilterSheet({
                 Reset
               </button>
               <button
-                onClick={close}
+                onClick={handleApply}
                 className="flex-1 rounded-xl bg-sky-600 py-3 text-sm font-medium text-white transition-colors hover:bg-sky-700"
               >
                 Terapkan
@@ -245,7 +256,7 @@ export default function FilterSheet({
                 Reset
               </button>
               <button
-                onClick={close}
+                onClick={handleApply}
                 className="flex-1 rounded-xl bg-sky-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-sky-700"
               >
                 Terapkan

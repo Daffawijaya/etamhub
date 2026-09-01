@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 
 import CustomSelect from "@/components/ui/CustomSelect";
 import FilterSheet from "@/components/ui/FilterSheet";
@@ -15,11 +15,26 @@ import StatsCards from "./StatsCards";
 import UmkmMapWidget from "./UmkmMapWidget";
 import UmkmProgressStats from "./UmkmProgressStats";
 
+export interface DashboardFilters {
+  kecamatan: string;
+  kategori: string;
+  monitoring: string;
+}
+
+const DEFAULT_FILTERS: DashboardFilters = {
+  kecamatan: "all",
+  kategori: "all",
+  monitoring: "all",
+};
+
 export default function DashboardGrid() {
   const [data, setData] = useState<any>(null);
-  const [filterKecamatan, setFilterKecamatan] = useState("all");
-  const [filterKategori, setFilterKategori] = useState("all");
-  const [filterMonitoring, setFilterMonitoring] = useState("all");
+
+  // Applied filters (used for actual data filtering)
+  const [appliedFilters, setAppliedFilters] = useState<DashboardFilters>(DEFAULT_FILTERS);
+
+  // Draft filters (shown in UI, not applied until "Terapkan")
+  const [draftFilters, setDraftFilters] = useState<DashboardFilters>(DEFAULT_FILTERS);
 
   useEffect(() => {
     fetch("/api/admin/dashboard")
@@ -29,50 +44,41 @@ export default function DashboardGrid() {
 
   const monitoring = data?.monitoring ?? {};
 
-  // ── Build unique option lists from raw data ──
   const kecamatanList = useMemo(() => {
-    return (data?.kecamatanChart ?? [])
-      .map((k: any) => k.name)
-      .sort();
+    return (data?.kecamatanChart ?? []).map((k: any) => k.name).sort();
   }, [data?.kecamatanChart]);
 
   const kategoriList = useMemo(() => {
-    return (data?.kategoriChart ?? [])
-      .map((k: any) => k.name)
-      .sort();
+    return (data?.kategoriChart ?? []).map((k: any) => k.name).sort();
   }, [data?.kategoriChart]);
 
-  // ── Set of monitored UMKM IDs ──
   const monitoredIds = useMemo(() => {
     return new Set<string>(monitoring.monitoredIds ?? []);
   }, [monitoring.monitoredIds]);
 
-  // ── Client-side filter on raw UMKM list ──
+  // ── Filter UMKM using APPLIED filters ──
   const filteredUmkm = useMemo(() => {
     let list = data?.map ?? [];
 
-    if (filterKecamatan !== "all") {
-      list = list.filter((u: any) => u.kecamatan === filterKecamatan);
+    if (appliedFilters.kecamatan !== "all") {
+      list = list.filter((u: any) => u.kecamatan === appliedFilters.kecamatan);
     }
-
-    if (filterKategori !== "all") {
-      list = list.filter((u: any) => u.kategori === filterKategori);
+    if (appliedFilters.kategori !== "all") {
+      list = list.filter((u: any) => u.kategori === appliedFilters.kategori);
     }
-
-    if (filterMonitoring !== "all") {
+    if (appliedFilters.monitoring !== "all") {
       list = list.filter((u: any) =>
-        filterMonitoring === "monitored"
+        appliedFilters.monitoring === "monitored"
           ? monitoredIds.has(u.id)
           : !monitoredIds.has(u.id)
       );
     }
 
     return list;
-  }, [data?.map, filterKecamatan, filterKategori, filterMonitoring, monitoredIds]);
+  }, [data?.map, appliedFilters, monitoredIds]);
 
-  // ── Rebuild kategori chart from filtered UMKM ──
   const filteredKategoriChart = useMemo(() => {
-    if (filterKecamatan === "all" && filterMonitoring === "all") {
+    if (appliedFilters.kecamatan === "all" && appliedFilters.monitoring === "all") {
       return data?.kategoriChart ?? [];
     }
     const map: Record<string, number> = {};
@@ -81,17 +87,14 @@ export default function DashboardGrid() {
       map[k] = (map[k] || 0) + 1;
     }
     return Object.entries(map).map(([name, value]) => ({ name, value }));
-  }, [filteredUmkm, data?.kategoriChart, filterKecamatan, filterMonitoring, filterKategori]);
+  }, [filteredUmkm, data?.kategoriChart, appliedFilters]);
 
-  // ── Stats from filtered data ──
   const filteredStats = useMemo(() => {
-    if (filterKecamatan === "all" && filterKategori === "all" && filterMonitoring === "all") {
+    if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
       return data?.stats ?? { totalUmkm: 0, totalKecamatan: 0, totalSubkategori: 0, digitalCount: 0, legalitasCount: 0, digitalPercent: 0, legalitasPercent: 0 };
     }
     const totalUmkm = filteredUmkm.length;
-    const subkategoriSet = new Set(
-      filteredUmkm.map((u: any) => u.subkategori).filter(Boolean),
-    );
+    const subkategoriSet = new Set(filteredUmkm.map((u: any) => u.subkategori).filter(Boolean));
     let digitalCount = 0;
     let legalitasCount = 0;
     for (const u of filteredUmkm) {
@@ -109,20 +112,24 @@ export default function DashboardGrid() {
       digitalPercent: totalUmkm > 0 ? Math.round((digitalCount / totalUmkm) * 100) : 0,
       legalitasPercent: totalUmkm > 0 ? Math.round((legalitasCount / totalUmkm) * 100) : 0,
     };
-  }, [data?.stats, filteredUmkm, filterKecamatan, filterKategori, filterMonitoring]);
+  }, [data?.stats, filteredUmkm, appliedFilters]);
 
+  // Count active APPLIED filters for badge
   const activeCount =
-    (filterKecamatan !== "all" ? 1 : 0) +
-    (filterKategori !== "all" ? 1 : 0) +
-    (filterMonitoring !== "all" ? 1 : 0);
+    (appliedFilters.kecamatan !== "all" ? 1 : 0) +
+    (appliedFilters.kategori !== "all" ? 1 : 0) +
+    (appliedFilters.monitoring !== "all" ? 1 : 0);
 
-  const hasFilters = activeCount > 0;
+  // Apply: copy draft → applied
+  const handleApply = useCallback(() => {
+    setAppliedFilters({ ...draftFilters });
+  }, [draftFilters]);
 
-  function handleResetFilters() {
-    setFilterKecamatan("all");
-    setFilterKategori("all");
-    setFilterMonitoring("all");
-  }
+  // Reset: clear both draft and applied
+  const handleReset = useCallback(() => {
+    setDraftFilters({ ...DEFAULT_FILTERS });
+    setAppliedFilters({ ...DEFAULT_FILTERS });
+  }, []);
 
   if (!data) {
     return <AdminDashboardSkeleton />;
@@ -131,37 +138,29 @@ export default function DashboardGrid() {
   return (
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
       <div className="space-y-6 lg:col-span-8">
-        {/* Top row: StatsCards + CategoryPieChart */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <StatsCards stats={filteredStats} />
           <CategoryPieChart data={filteredKategoriChart} />
         </div>
 
-        {/* Omzet Trend Chart */}
         <OmzetTrendChart data={monitoring.omzetTrend ?? []} />
-
-        {/* Latest UMKM */}
         <LatestUmkm umkms={filteredUmkm.slice(0, 5)} />
-
-        {/* Map */}
         <UmkmMapWidget umkms={filteredUmkm} />
       </div>
 
       <div className="space-y-6 lg:col-span-4">
-        {/* Dashboard Filter — same style as monitoring page */}
         <div className="relative">
           <FilterSheet
             activeCount={activeCount}
-            onReset={handleResetFilters}
-            onApply={() => {}}
+            onReset={handleReset}
+            onApply={handleApply}
+            discardOnClose
           >
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600 dark:text-slate-300">
-                Kecamatan
-              </label>
+              <label className="mb-1.5 block text-sm font-medium text-slate-600 dark:text-slate-300">Kecamatan</label>
               <CustomSelect
-                value={filterKecamatan}
-                onChange={setFilterKecamatan}
+                value={draftFilters.kecamatan}
+                onChange={(v) => setDraftFilters((f) => ({ ...f, kecamatan: v }))}
                 placeholder="Semua Kecamatan"
                 options={[
                   { value: "all", label: "Semua Kecamatan" },
@@ -171,12 +170,10 @@ export default function DashboardGrid() {
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600 dark:text-slate-300">
-                Kategori
-              </label>
+              <label className="mb-1.5 block text-sm font-medium text-slate-600 dark:text-slate-300">Kategori</label>
               <CustomSelect
-                value={filterKategori}
-                onChange={setFilterKategori}
+                value={draftFilters.kategori}
+                onChange={(v) => setDraftFilters((f) => ({ ...f, kategori: v }))}
                 placeholder="Semua Kategori"
                 options={[
                   { value: "all", label: "Semua Kategori" },
@@ -186,12 +183,10 @@ export default function DashboardGrid() {
             </div>
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-600 dark:text-slate-300">
-                Status Monitoring
-              </label>
+              <label className="mb-1.5 block text-sm font-medium text-slate-600 dark:text-slate-300">Status Monitoring</label>
               <CustomSelect
-                value={filterMonitoring}
-                onChange={setFilterMonitoring}
+                value={draftFilters.monitoring}
+                onChange={(v) => setDraftFilters((f) => ({ ...f, monitoring: v }))}
                 placeholder="Semua Status"
                 options={[
                   { value: "all", label: "Semua Status" },
@@ -203,23 +198,8 @@ export default function DashboardGrid() {
           </FilterSheet>
         </div>
 
-        {/* Badge Distribution Pie Chart */}
-        <BadgePieChart
-          data={monitoring.badgeChart ?? []}
-          monitoredCount={monitoring.monitoredCount ?? 0}
-          totalUmkm={filteredStats.totalUmkm ?? 0}
-        />
-
-        {/* Umkm Progress: Digitalisasi & Legalitas */}
-        <UmkmProgressStats
-          digitalCount={filteredStats.digitalCount ?? 0}
-          digitalPercent={filteredStats.digitalPercent ?? 0}
-          legalitasCount={filteredStats.legalitasCount ?? 0}
-          legalitasPercent={filteredStats.legalitasPercent ?? 0}
-          totalUmkm={filteredStats.totalUmkm ?? 0}
-        />
-
-        {/* Top Kecamatan — always shows ALL data, not affected by filters */}
+        <BadgePieChart data={monitoring.badgeChart ?? []} monitoredCount={monitoring.monitoredCount ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
+        <UmkmProgressStats digitalCount={filteredStats.digitalCount ?? 0} digitalPercent={filteredStats.digitalPercent ?? 0} legalitasCount={filteredStats.legalitasCount ?? 0} legalitasPercent={filteredStats.legalitasPercent ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
         <KecamatanChart data={data.kecamatanChart ?? []} />
       </div>
     </div>

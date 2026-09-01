@@ -11,61 +11,83 @@ interface Props {
   limit?: number;
 }
 
+interface AppliedFilters {
+  search: string;
+  sort: string;
+  kecamatan: string;
+  kategori: string;
+  status: string;
+}
+
+const DEFAULT_FILTERS: AppliedFilters = {
+  search: "",
+  sort: "terbaru",
+  kecamatan: "all",
+  kategori: "all",
+  status: "all",
+};
+
 export default function UmkmDataTable({ limit = 10 }: Props) {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("terbaru");
-  const [kecamatan, setKecamatan] = useState("all");
-  const [kategori, setKategori] = useState("all");
   const [page, setPage] = useState(1);
-  const [status, setStatus] = useState("all");
   const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
   const [kategoriOptions, setKategoriOptions] = useState<string[]>([]);
   const [umkms, setUmkms] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
+
+  const [applied, setApplied] = useState<AppliedFilters>(DEFAULT_FILTERS);
+  const [draft, setDraft] = useState<AppliedFilters>(DEFAULT_FILTERS);
 
   const fetchUmkms = useCallback(async () => {
     const params = new URLSearchParams({
       mode: "admin",
       page: String(page),
       limit: String(limit),
-      sort,
-      order: sort === "terbaru" ? "desc" : sort === "nama" ? "asc" : "desc",
+      sort: applied.sort,
+      order: applied.sort === "terbaru" ? "desc" : applied.sort === "nama" ? "asc" : "desc",
     });
 
-    if (search) params.append("search", search);
-    if (kecamatan !== "all") params.append("kecamatan", kecamatan);
-    if (kategori !== "all") params.append("kategori", kategori);
-    if (status !== "all") params.append("status", status);
+    if (applied.search) params.append("search", applied.search);
+    if (applied.kecamatan !== "all") params.append("kecamatan", applied.kecamatan);
+    if (applied.kategori !== "all") params.append("kategori", applied.kategori);
+    if (applied.status !== "all") params.append("status", applied.status);
 
     const res = await fetch(`/api/umkm?${params}`);
-
     const result = await res.json();
 
     setUmkms(result.data ?? []);
     setTotal(result.total ?? 0);
-
     setKecamatanOptions(["all", ...(result.filters?.kecamatan ?? [])]);
-
     setKategoriOptions(["all", ...(result.filters?.kategori ?? [])]);
-  }, [page, limit, search, sort, kecamatan, kategori, status]);
+  }, [page, limit, applied]);
+
   useEffect(() => {
     fetchUmkms();
   }, [fetchUmkms]);
+
   const totalPages = Math.ceil(total / limit);
 
-  return (
-    <div
-      className="
-        overflow-visible
-        rounded-2xl
-  
-        bg-white
+  // Search applies immediately
+  const handleSearch = useCallback((value: string) => {
+    setSearch(value);
+    setApplied((f) => ({ ...f, search: value }));
+    setPage(1);
+  }, []);
 
-        dark:bg-dark-card
-        transition-colors
-        duration-300
-      "
-    >
+  const handleApply = useCallback(() => {
+    setApplied({ ...draft, search });
+    setPage(1);
+  }, [draft, search]);
+
+  const handleReset = useCallback(() => {
+    const reset: AppliedFilters = { ...DEFAULT_FILTERS, search };
+    setDraft(reset);
+    setApplied(reset);
+    setPage(1);
+  }, [search]);
+
+  return (
+    <div className="overflow-visible rounded-2xl bg-white dark:bg-dark-card transition-colors duration-300">
       {/* Header */}
       <div className="px-4 py-4 sm:px-6 sm:py-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
@@ -80,44 +102,23 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
 
           {/* Search + Filter — right side */}
           <div className="flex items-center gap-2">
-            <UmkmSearch
-              value={search}
-              onChange={(value) => {
-                setSearch(value);
-                setPage(1);
-              }}
-            />
+            <UmkmSearch value={search} onChange={handleSearch} />
             <UmkmFilters
               kecamatanOptions={kecamatanOptions}
               kategoriOptions={kategoriOptions}
-              kecamatan={kecamatan}
-              kategori={kategori}
-              sort={sort}
-              status={status}
-              onStatusChange={(value) => {
-                setStatus(value);
-                setPage(1);
-              }}
-              onKecamatanChange={(value) => {
-                setKecamatan(value);
-                setPage(1);
-              }}
-              onKategoriChange={(value) => {
-                setKategori(value);
-                setPage(1);
-              }}
-              onSortChange={(value) => {
-                setSort(value);
-                setPage(1);
-              }}
+              kecamatan={draft.kecamatan}
+              kategori={draft.kategori}
+              sort={draft.sort}
+              status={draft.status}
+              onStatusChange={(v) => setDraft((f) => ({ ...f, status: v }))}
+              onKecamatanChange={(v) => setDraft((f) => ({ ...f, kecamatan: v }))}
+              onKategoriChange={(v) => setDraft((f) => ({ ...f, kategori: v }))}
+              onSortChange={(v) => setDraft((f) => ({ ...f, sort: v }))}
+              onApply={handleApply}
+              onReset={handleReset}
             />
           </div>
         </div>
-
-        {/* Action buttons — disabled for now, keep for future use */}
-        {/* <div className="flex flex-wrap items-center gap-2 pt-3 sm:pt-4 opacity-50 pointer-events-none">
-          <UmkmTableHeaderActions />
-        </div> */}
       </div>
 
       {/* Table */}
@@ -137,12 +138,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
           }}
           onStatusChanged={fetchUmkms}
         />
-
-        <UmkmPagination
-          page={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-        />
+        <UmkmPagination page={page} totalPages={totalPages} onPageChange={setPage} />
       </div>
     </div>
   );

@@ -34,20 +34,40 @@ interface Props {
   limit?: number;
 }
 
+interface AppliedFilters {
+  search: string;
+  sort: string;
+  kecamatan: string;
+  badge: string;
+  monitored: string;
+  omzetMin: string;
+  omzetMax: string;
+}
+
+const DEFAULT_FILTERS: AppliedFilters = {
+  search: "",
+  sort: "terbaru",
+  kecamatan: "all",
+  badge: "all",
+  monitored: "all",
+  omzetMin: "",
+  omzetMax: "",
+};
+
 export default function MonitoringDataTable({ limit = 10 }: Props) {
   const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("terbaru");
-  const [kecamatan, setKecamatan] = useState("all");
-  const [badge, setBadge] = useState("all");
-  const [monitored, setMonitored] = useState("all");
-  const [omzetMin, setOmzetMin] = useState("");
-  const [omzetMax, setOmzetMax] = useState("");
   const [page, setPage] = useState(1);
   const [data, setData] = useState<MonitoringItem[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
   const [kecamatanOptions, setKecamatanOptions] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
+
+  // Applied filters (used for API fetch)
+  const [applied, setApplied] = useState<AppliedFilters>(DEFAULT_FILTERS);
+
+  // Draft filters (shown in FilterSheet UI)
+  const [draft, setDraft] = useState<AppliedFilters>(DEFAULT_FILTERS);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -56,16 +76,16 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
     const params = new URLSearchParams({
       page: String(page),
       limit: String(limit),
-      sort,
-      order: sort === "terbaru" ? "desc" : sort === "nama" ? "asc" : "desc",
+      sort: applied.sort,
+      order: applied.sort === "terbaru" ? "desc" : applied.sort === "nama" ? "asc" : "desc",
     });
 
-    if (search) params.append("search", search);
-    if (kecamatan !== "all") params.append("kecamatan", kecamatan);
-    if (badge !== "all") params.append("badge", badge);
-    if (monitored !== "all") params.append("monitored", monitored);
-    if (omzetMin) params.append("omzet_min", omzetMin);
-    if (omzetMax) params.append("omzet_max", omzetMax);
+    if (applied.search) params.append("search", applied.search);
+    if (applied.kecamatan !== "all") params.append("kecamatan", applied.kecamatan);
+    if (applied.badge !== "all") params.append("badge", applied.badge);
+    if (applied.monitored !== "all") params.append("monitored", applied.monitored);
+    if (applied.omzetMin) params.append("omzet_min", applied.omzetMin);
+    if (applied.omzetMax) params.append("omzet_max", applied.omzetMax);
 
     try {
       const res = await fetch(`/api/admin/monitoring?${params}`);
@@ -84,7 +104,7 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, search, sort, kecamatan, badge, monitored, omzetMin, omzetMax]);
+  }, [page, limit, applied]);
 
   useEffect(() => {
     fetchData();
@@ -92,16 +112,30 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
 
   const totalPages = Math.ceil(total / limit);
 
+  // Search applies immediately (typing in search bar)
+  const handleSearch = useCallback((value: string) => {
+    setSearch(value);
+    setApplied((f) => ({ ...f, search: value }));
+    setPage(1);
+  }, []);
+
+  // Apply: copy draft → applied (triggers fetch)
+  const handleApply = useCallback(() => {
+    setApplied({ ...draft, search });
+    setPage(1);
+  }, [draft, search]);
+
+  // Reset: clear both
+  const handleReset = useCallback(() => {
+    const reset: AppliedFilters = { ...DEFAULT_FILTERS, search };
+    setDraft(reset);
+    setApplied(reset);
+    setPage(1);
+  }, [search]);
+
   return (
     <div
-      className="
-        overflow-visible
-        rounded-2xl
-        bg-white
-        dark:bg-dark-card
-        transition-colors
-        duration-300
-      "
+      className="overflow-visible rounded-2xl bg-white dark:bg-dark-card transition-colors duration-300"
     >
       {/* Header */}
       <div className="px-4 py-4 sm:px-6 sm:py-5">
@@ -119,26 +153,25 @@ export default function MonitoringDataTable({ limit = 10 }: Props) {
           <div className="flex items-center gap-2">
             <UmkmSearch
               value={search}
-              onChange={(value) => {
-                setSearch(value);
-                setPage(1);
-              }}
+              onChange={handleSearch}
             />
 
             <MonitoringFilters
-              badge={badge}
-              monitored={monitored}
-              omzetMin={omzetMin}
-              omzetMax={omzetMax}
-              kecamatan={kecamatan}
-              sort={sort}
+              badge={draft.badge}
+              monitored={draft.monitored}
+              omzetMin={draft.omzetMin}
+              omzetMax={draft.omzetMax}
+              kecamatan={draft.kecamatan}
+              sort={draft.sort}
               kecamatanOptions={kecamatanOptions}
-              onBadgeChange={(v) => { setBadge(v); setPage(1); }}
-              onMonitoredChange={(v) => { setMonitored(v); setPage(1); }}
-              onOmzetMinChange={(v) => { setOmzetMin(v); setPage(1); }}
-              onOmzetMaxChange={(v) => { setOmzetMax(v); setPage(1); }}
-              onKecamatanChange={(v) => { setKecamatan(v); setPage(1); }}
-              onSortChange={(v) => { setSort(v); setPage(1); }}
+              onBadgeChange={(v) => setDraft((f) => ({ ...f, badge: v }))}
+              onMonitoredChange={(v) => setDraft((f) => ({ ...f, monitored: v }))}
+              onOmzetMinChange={(v) => setDraft((f) => ({ ...f, omzetMin: v }))}
+              onOmzetMaxChange={(v) => setDraft((f) => ({ ...f, omzetMax: v }))}
+              onKecamatanChange={(v) => setDraft((f) => ({ ...f, kecamatan: v }))}
+              onSortChange={(v) => setDraft((f) => ({ ...f, sort: v }))}
+              onApply={handleApply}
+              onReset={handleReset}
             />
           </div>
         </div>
