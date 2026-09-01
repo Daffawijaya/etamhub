@@ -115,11 +115,10 @@ export default function NewsTable({ data = [], role, pagination }: NewsTableProp
                     </span>
                   </div>
 
-                  <div>
+                  <div className="w-fit">
                     <span
                       className={`
                         inline-flex
-                        min-w-[76px]
                         justify-center
                         rounded-lg
                         px-2.5

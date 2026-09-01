@@ -54,29 +54,7 @@ export default async function AdminBeritaPage({
 
               <Link
                 href="/admin/berita/tambah"
-                className="
-                  inline-flex
-                  h-10
-                  shrink-0
-                  items-center
-                  justify-center
-                  gap-1.5
-                  rounded-xl
-                  bg-emerald-600
-                  px-3
-                  text-sm
-                  font-medium
-                  text-white
-                  transition-all
-                  duration-200
-                  hover:bg-emerald-700
-                  active:scale-[0.98]
-                  sm:h-11
-                  sm:rounded-2xl
-                  sm:px-4
-                  dark:bg-emerald-500
-                  dark:hover:bg-emerald-400
-                "
+                className="flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-emerald-700 sm:px-4 sm:text-sm"
               >
                 <Plus size={16} />
                 <span className="hidden sm:inline">Tambah Berita</span>
