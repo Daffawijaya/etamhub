@@ -69,10 +69,13 @@ export default function CustomSelect({
     }
   }, [open, updatePosition]);
 
-  // Close dropdown on any scroll so it doesn't stay fixed on screen
+  // Close dropdown on scroll so it doesn't stay fixed on screen
+  // But NOT when scrolling inside the dropdown itself
   useEffect(() => {
     if (!open) return;
-    function handleScroll() {
+    function handleScroll(e: Event) {
+      const target = e.target as Node;
+      if (dropRef.current?.contains(target)) return;
       setOpen(false);
     }
     window.addEventListener("scroll", handleScroll, true);
