@@ -114,6 +114,12 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
           {latestUmkm.map((item) => {
             const level = badgeMap.get(item.id) ?? "none";
             const badge = BADGE_STYLES[level] ?? BADGE_STYLES.none;
+            const kategoriColors: Record<string, string> = {
+              Perdagangan: "bg-green-50 text-green-700 dark:bg-green-500/20 dark:text-green-300",
+              Jasa: "bg-purple-50 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300",
+              Industri: "bg-orange-50 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300",
+            };
+            const kategoriStyle = kategoriColors[item.kategori ?? ""] ?? "bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300";
 
             return (
               <Link
@@ -121,13 +127,20 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                 href={`/admin/umkm/${item.id}`}
                 className="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
               >
+                {/* Image */}
                 <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
                   <Image src={getUmkmImage(item.gambar)} alt={item.nama} fill sizes="40px" className="object-cover" />
                 </div>
+
+                {/* Nama + Kategori */}
                 <div className="min-w-0 flex-1">
                   <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize">{item.nama}</h4>
-                  <p className="truncate text-xs text-slate-400 dark:text-slate-500">{item.kecamatan} · {formatDate(item.created_at)}</p>
+                  <span className={`mt-0.5 inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-medium ${kategoriStyle}`}>
+                    {item.kategori || "Lainnya"}
+                  </span>
                 </div>
+
+                {/* Badge */}
                 <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text}`}>
                   {BADGE_ICONS[level]}
                   {badge.label}
@@ -149,18 +162,23 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                 href={`/admin/umkm/${item.umkm_id}`}
                 className="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
               >
+                {/* Image */}
                 <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
                   {item.gambar?.[0] ? (
                     <Image src={item.gambar[0]} alt={item.nama} fill sizes="40px" className="object-cover" />
                   ) : (
-                    <div className="flex h-full w-full items-center text-xs text-slate-400">-</div>
+                    <div className="flex h-full w-full items-center justify-center text-xs text-slate-400">-</div>
                   )}
                 </div>
+
+                {/* Nama + UMKM */}
                 <div className="min-w-0 flex-1">
                   <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white">{item.nama}</h4>
-                  <p className="truncate text-xs text-slate-400 dark:text-slate-500">{item.umkm?.nama ?? "-"} · {formatDate(item.created_at)}</p>
+                  <p className="truncate text-xs text-slate-400 dark:text-slate-500">{item.umkm?.nama ?? "-"}</p>
                 </div>
-                <span className="shrink-0 text-xs font-medium text-slate-500 dark:text-slate-400">
+
+                {/* Harga */}
+                <span className="shrink-0 rounded-lg bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
                   {formatRupiah(item.harga)}
                 </span>
               </Link>
