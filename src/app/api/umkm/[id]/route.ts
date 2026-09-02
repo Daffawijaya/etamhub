@@ -185,8 +185,8 @@ export async function PUT(
   const now = new Date().toISOString();
   const { email, nik, ...umkmData } = body;
 
-  // For user role: create edit request for admin verification
-  if (currentUser.role === "user") {
+  // For user role: create edit request for admin verification (fix BUG #6: user_umkm)
+  if (currentUser.role === "user_umkm" || currentUser.role === "user") {
     // Check for existing pending edit request
     const { data: existingRequest } = await supabaseAdmin
       .from("umkm_requests")
@@ -291,16 +291,18 @@ export async function PUT(
     });
   }
 
-  // For admin role: direct update (no verification needed)
+  // For admin role: direct update (fix BUG #7: pakai owner_id bukan currentUser.id)
   if (email || nik) {
-    const { error: userError } = await supabaseAdmin
-      .from("users")
-      .update({
-        email,
-        nik,
-        updated_at: now,
-      })
-      .eq("id", currentUser.id);
+    const targetUserId = oldData.owner_id ?? currentUser.id;
+    const upd: Record<string, any> = { updated_at: now };
+    if (email) upd.email = email;
+    if (nik) upd.nik = nik;
+    // cek unique sebelum update
+    if (nik) {
+      const { data: clash } = await supabaseAdmin.from("umkm").select("id").eq("nik", nik).neq("id", id).maybeSingle();
+      if (clash) return NextResponse.json({ message: "NIK sudah memiliki UMKM." }, { status: 409 });
+    }
+    const { error: userError } = await supabaseAdmin.from("users").update(upd).eq("id", targetUserId);
 
     if (userError) {
       return NextResponse.json(
@@ -314,12 +316,11 @@ export async function PUT(
     }
   }
 
+  const umkmUpdate: Record<string, any> = { ...umkmData, updated_at: now };
+  if (nik) umkmUpdate.nik = nik;
   const { data: updatedData, error: updateError } = await supabaseAdmin
     .from("umkm")
-    .update({
-      ...umkmData,
-      updated_at: now,
-    })
+    .update(umkmUpdate)
     .eq("id", id)
     .select()
     .single();

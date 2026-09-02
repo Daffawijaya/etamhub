@@ -137,33 +137,25 @@ export async function PUT(
     );
   }
 
+  // NIK wajib 16 digit jika diubah; cek duplikat di umkm (1 NIK=1 UMKM) bukan users
   if (body.nik) {
-    const { data: existingNik, error: nikError } = await supabaseAdmin
-      .from("users")
-      .select("id")
-      .eq("nik", body.nik)
-      .neq("id", oldData.owner_id)
-      .maybeSingle();
-
-    if (nikError) throw nikError;
-
-    if (existingNik) {
-      return NextResponse.json(
-        {
-          message: "NIK sudah terdaftar.",
-        },
-        {
-          status: 409,
-        },
-      );
+    if (!/^\d{16}$/.test(body.nik)) {
+      return NextResponse.json({ message: "NIK harus 16 digit angka." }, { status: 400 });
+    }
+    const { data: existingUmkmNik } = await supabaseAdmin.from("umkm").select("id").eq("nik", body.nik).neq("id", id).maybeSingle();
+    if (existingUmkmNik) {
+      return NextResponse.json({ message: "NIK sudah memiliki UMKM." }, { status: 409 });
+    }
+    // also jangan tabrak users lain yang punya nik sama tapi beda owner
+    if (oldData.owner_id) {
+      const { data: clashUser } = await supabaseAdmin.from("users").select("id").eq("nik", body.nik).neq("id", oldData.owner_id).maybeSingle();
+      if (clashUser) return NextResponse.json({ message: "NIK sudah terdaftar di akun lain." }, { status: 409 });
     }
   }
 
-  const { data: owner } = await supabaseAdmin
-    .from("users")
-    .select("id")
-    .eq("id", oldData.owner_id)
-    .maybeSingle();
+  const { data: owner } = oldData.owner_id
+    ? await supabaseAdmin.from("users").select("id").eq("id", oldData.owner_id).maybeSingle().then((r) => r as any)
+    : { data: null } as any;
 
   if (body.nib) {
     const { data: existingNib, error: nibError } = await supabaseAdmin
@@ -190,33 +182,16 @@ export async function PUT(
     );
   }
 
-  if (owner) {
-    const { data: existingEmail } = await supabaseAdmin
-      .from("users")
-      .select("id")
-      .eq("email", body.email)
-      .neq("id", owner.id)
-      .maybeSingle();
-
-    if (existingEmail) {
-      return NextResponse.json(
-        {
-          message: "Email sudah digunakan.",
-        },
-        {
-          status: 409,
-        },
-      );
+  if (owner && (body.email || body.nik)) {
+    if (body.email) {
+      const { data: existingEmail } = await supabaseAdmin.from("users").select("id").eq("email", body.email).neq("id", owner.id).maybeSingle();
+      if (existingEmail) return NextResponse.json({ message: "Email sudah digunakan." }, { status: 409 });
     }
 
-    const { error: userError } = await supabaseAdmin
-      .from("users")
-      .update({
-        email: body.email,
-        nik: body.nik,
-        updated_at: new Date().toISOString(),
-      })
-      .eq("id", owner.id);
+    const updatePayload: Record<string, any> = { updated_at: new Date().toISOString() };
+    if (body.email) updatePayload.email = body.email;
+    if (body.nik) updatePayload.nik = body.nik;
+    const { error: userError } = await supabaseAdmin.from("users").update(updatePayload).eq("id", owner.id);
 
     if (userError) {
       return NextResponse.json(
@@ -268,12 +243,13 @@ export async function PUT(
 
   const { email, nik, ...umkmData } = body;
 
-  const updated = {
+  const updated: Record<string, any> = {
     ...umkmData,
     id: oldData.id,
     created_at: oldData.created_at,
     updated_at: now,
   };
+  if (nik) updated.nik = nik; // persist nik ke umkm (BUG #2)
 
   const { data, error } = await supabaseAdmin
     .from("umkm")

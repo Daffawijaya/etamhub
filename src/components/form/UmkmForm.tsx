@@ -329,6 +329,8 @@ export default function UmkmForm({ mode, data, role = "admin" }: Props) {
         throw new Error(result.message || "Gagal menyimpan UMKM");
       }
 
+      modal.close();
+
       if (role === "user") {
         router.push("/user/umkm");
       } else {

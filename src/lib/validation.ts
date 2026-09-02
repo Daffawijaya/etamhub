@@ -108,11 +108,22 @@ export function normalizeUmkmBody(body: Record<string, any>) {
     body[field] = normalizeNullable(body[field]);
   });
 
+  // nik: keep digits only, 16 chars
+  if (body.nik != null) {
+    const v = String(body.nik).replace(/\D/g, "").slice(0, 16);
+    body.nik = v || null;
+  }
+
   body.whatsapp = normalizeWhatsapp(body.whatsapp);
   body.instagram = normalizeInstagramUsername(body.instagram);
   body.tiktok = normalizeTiktokUsername(body.tiktok);
 
   return body;
+}
+
+export function isValidNik(value?: string | null) {
+  if (!value) return true; // optional here; required check di route admin
+  return /^\d{16}$/.test(value);
 }
 
 export function validateUmkmBody(body: Record<string, any>): UmkmValidationError {
@@ -122,6 +133,14 @@ export function validateUmkmBody(body: Record<string, any>): UmkmValidationError
 
   if (!isValidEmail(body.email)) {
     return { message: "Email tidak valid." };
+  }
+
+  if (body.nik && !isValidNik(body.nik)) {
+    return { message: "NIK harus 16 digit angka." };
+  }
+
+  if (!isValidNib(body.nib)) {
+    return { message: "NIB harus 13 digit angka." };
   }
 
   if (!isValidFacebookUrl(body.facebook)) {

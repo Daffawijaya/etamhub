@@ -10,6 +10,7 @@ import {
   ClipboardList,
   UserCog,
   ListChecks,
+  PlusCircle,
 } from "lucide-react";
 
 export interface SidebarMenuItem {
@@ -40,6 +41,7 @@ export const menus: SidebarMenu[] = [
     roles: ["super_admin", "admin_kecamatan", "admin"],
     children: [
       { label: "Data UMKM", href: "/admin/umkm", icon: ClipboardList },
+      { label: "Tambah UMKM", href: "/admin/tambah", icon: PlusCircle },
       { label: "Monitoring UMKM", href: "/admin/monitoring", icon: BarChart3 },
       { label: "Verifikasi UMKM", href: "/admin/verifikasi", icon: ListChecks, badgeKey: "verifikasi" },
     ],

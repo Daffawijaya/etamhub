@@ -1,0 +1,318 @@
+generator client {
+  provider        = "prisma-client"
+  output          = "../src/generated/prisma"
+  previewFeatures = ["partialIndexes"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id                                          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nik                                         String         @unique
+  email                                       String         @unique
+  password                                    String
+  createdAt                                   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt                                   DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  role                                        String         @default("user_umkm")
+  notifications_notifications_actor_idTousers Notification[] @relation("notifications_actor_idTousers")
+  notifications                               Notification[]
+  umkms                                       Umkm?
+  umkmRequests                                UmkmRequest[]
+
+  @@map("users")
+}
+
+model Role {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String    @unique
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  admins     Admin[]
+
+  @@map("roles")
+}
+
+model Admin {
+  id            String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username      String                    @unique
+  nama          String
+  email         String?                   @unique
+  password      String
+  roleId        String                    @map("role_id") @db.Uuid
+  is_active     Boolean                   @default(true)
+  last_login_at DateTime?                 @db.Timestamptz(6)
+  created_at    DateTime?                 @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime?                 @default(now()) @db.Timestamptz(6)
+  kecamatan     AdminKecamatanKecamatan[]
+  role          Role                      @relation(fields: [roleId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  news          News[]
+  notifications Notification[]
+  monitoring    UmkmMonitoring[]
+  umkm_requests UmkmRequest[]
+
+  @@map("admins")
+}
+
+model Kecamatan {
+  id             String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nama           String                    @unique
+  created_at     DateTime?                 @default(now()) @db.Timestamptz(6)
+  adminKecamatan AdminKecamatanKecamatan[]
+  umkms          Umkm[]                    @relation("KecamatanUmkm")
+
+  @@map("kecamatan")
+}
+
+model AdminKecamatanKecamatan {
+  adminId     String    @map("admin_id") @db.Uuid
+  kecamatanId String    @map("kecamatan_id") @db.Uuid
+  admin       Admin     @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  kecamatan   Kecamatan @relation(fields: [kecamatanId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([adminId, kecamatanId])
+  @@map("admin_kecamatan_kecamatan")
+}
+
+model PendingUser {
+  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  nik           String    @unique @db.VarChar(16)
+  email         String    @unique
+  otpVerified   Boolean?  @default(false) @map("otp_verified")
+  password_hash String?
+  status        String?   @default("pending")
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([email])
+  @@index([nik])
+  @@map("pending_users")
+}
+
+model Umkm {
+  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nama              String
+  pemilik           String?
+  kategori          String?
+  subkategori       String?
+  deskripsi         String?
+  kecamatan         String?
+  alamat            String?
+  lat               Float?
+  lng               Float?
+  whatsapp          String?
+  instagram         String?
+  facebook          String?
+  tiktok            String?
+  gambar            String[]
+  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime?        @updatedAt @map("updated_at") @db.Timestamptz(6)
+  jenisKelamin      String?          @map("jenis_kelamin")
+  nik               String?          @unique(map: "uq_umkm_nik")
+  nib               String?          @unique(map: "umkm_nib_unique")
+  npwp              String?
+  halal             String?
+  pirt              String?
+  haki              String?
+  published         Boolean?         @default(false)
+  kbli              String[]
+  kecamatanId       String?          @map("kecamatan_id") @db.Uuid
+  approvalStatus    String?          @default("approved") @map("approval_status")
+  approvedBy        String?          @map("approved_by") @db.Uuid
+  approvedAt        DateTime?        @map("approved_at") @db.Timestamptz(6)
+  rejectedReason    String?          @map("rejected_reason")
+  ownerId           String?          @unique(map: "umkm_owner_id_unique") @map("owner_id") @db.Uuid
+  tahunMulaiUsaha   Int?             @map("tahun_mulai_usaha")
+  jumlahTenagaKerja Int?             @map("jumlah_tenaga_kerja")
+  omzet             BigInt?
+  rejection_reason  String?
+  products          Product[]
+  kecamatanRel      Kecamatan?       @relation("KecamatanUmkm", fields: [kecamatanId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  owner             User?            @relation(fields: [ownerId], references: [id])
+  monitoring        UmkmMonitoring[]
+  umkmRequests      UmkmRequest[]
+
+  @@map("umkm")
+}
+
+model UmkmRequest {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  umkmId     String?   @map("umkm_id") @db.Uuid
+  userId     String    @map("user_id") @db.Uuid
+  action     String
+  payload    Json
+  status     String    @default("pending")
+  reason     String?
+  reviewedBy String?   @map("reviewed_by") @db.Uuid
+  reviewedAt DateTime? @map("reviewed_at") @db.Timestamptz(6)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  admins     Admin?    @relation(fields: [reviewedBy], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  umkm       Umkm?     @relation(fields: [umkmId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([status], map: "idx_umkm_requests_status")
+  @@index([umkmId], map: "idx_umkm_requests_umkm_id")
+  @@index([userId], map: "idx_umkm_requests_user_id")
+  @@map("umkm_requests")
+}
+
+model UmkmMonitoring {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  umkmId            String?   @map("umkm_id") @db.Uuid
+  adminId           String?   @map("admin_id") @db.Uuid
+  createdAt         DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  jumlahTenagaKerja Int?      @map("jumlah_tenaga_kerja")
+  omzet             BigInt?
+  halal             String?
+  pirt              String?
+  haki              String?
+  kbli              String[]
+  whatsapp          String?
+  instagram         String?
+  facebook          String?
+  tiktok            String?
+  kebutuhanUtama    String?   @map("kebutuhan_utama")
+  catatan           String?
+  nib               String?
+  admin             Admin?    @relation(fields: [adminId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  umkm              Umkm?     @relation(fields: [umkmId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([createdAt(sort: Desc)], map: "idx_monitoring_created")
+  @@index([umkmId], map: "idx_monitoring_umkm")
+  @@map("umkm_monitoring")
+}
+
+model Notification {
+  id                                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type                                String
+  title                               String
+  createdAt                           DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  read                                Boolean?  @default(false)
+  userId                              String?   @map("user_id") @db.Uuid
+  actor_id                            String?   @db.Uuid
+  entity_type                         String?
+  entity_id                           String?   @db.Uuid
+  data                                Json?
+  adminId                             String?   @map("admin_id") @db.Uuid
+  link                                String?
+  users_notifications_actor_idTousers User?     @relation("notifications_actor_idTousers", fields: [actor_id], references: [id], onUpdate: NoAction)
+  admins                              Admin?    @relation(fields: [adminId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  user                                User?     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([adminId], map: "idx_notifications_admin", where: raw("(admin_id IS NOT NULL)"))
+  @@index([userId], map: "idx_notifications_user", where: raw("(user_id IS NOT NULL)"))
+  @@map("notifications")
+}
+
+model Product {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  umkmId            String              @map("umkm_id") @db.Uuid
+  nama              String
+  deskripsi         String?
+  harga             Decimal?            @db.Decimal(15, 2)
+  satuan            String?
+  gambar            String[]            @default([])
+  isAvailable       Boolean             @default(true) @map("is_available")
+  createdAt         DateTime            @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  product_legalitas product_legalitas[]
+  umkm              Umkm                @relation(fields: [umkmId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@map("products")
+}
+
+model News {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  content     String
+  category    String?
+  published   Boolean   @default(false)
+  publishedAt DateTime? @map("published_at") @db.Timestamptz(6)
+  viewCount   Int       @default(0) @map("view_count")
+  authorId    String?   @map("author_id") @db.Uuid
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz(6)
+  gambar      String?
+  admins      Admin?    @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@map("news")
+}
+
+model Kbli {
+  kode   String  @id
+  namaId String  @map("nama_id")
+  namaEn String? @map("nama_en")
+
+  @@index([namaId(ops: raw("gin_trgm_ops"))], map: "idx_kbli_nama", type: Gin)
+  @@map("kbli")
+}
+
+model ActivityLog {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  actorId    String   @map("actor_id") @db.Uuid
+  actorName  String   @map("actor_name")
+  actorRole  String   @map("actor_role")
+  action     String
+  targetType String   @map("target_type")
+  targetId   String?  @map("target_id")
+  targetName String?  @map("target_name")
+  detail     Json?
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@index([action], map: "idx_activity_logs_action")
+  @@index([actorId], map: "idx_activity_logs_actor_id")
+  @@index([createdAt(sort: Desc)], map: "idx_activity_logs_created_at")
+  @@index([targetType], map: "idx_activity_logs_target_type")
+  @@map("activity_logs")
+}
+
+model BadgeCriteria {
+  id                   String    @id @default("default")
+  updatedAt            DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+  goldLegalitasMin     Int?      @default(1) @map("gold_legalitas_min")
+  platinumSosmedMin    Int?      @default(2) @map("platinum_sosmed_min")
+  silverLabel          String?   @default("Perkembangan positif") @map("silver_label")
+  goldLabel            String?   @default("Pertumbuhan signifikan") @map("gold_label")
+  platinumLabel        String?   @default("UMKM Naik Kelas!") @map("platinum_label")
+  silverOmzetMin       BigInt?   @default(5000000) @map("silver_omzet_min")
+  silverTkMin          Int?      @default(1) @map("silver_tk_min")
+  silverLegalitasMin   Int?      @default(0) @map("silver_legalitas_min")
+  silverSosmedMin      Int?      @default(0) @map("silver_sosmed_min")
+  goldOmzetMin         BigInt?   @default(10000000) @map("gold_omzet_min")
+  goldTkMin            Int?      @default(3) @map("gold_tk_min")
+  goldSosmedMin        Int?      @default(1) @map("gold_sosmed_min")
+  platinumOmzetMin     BigInt?   @default(25000000) @map("platinum_omzet_min")
+  platinumTkMin        Int?      @default(5) @map("platinum_tk_min")
+  platinumLegalitasMin Int?      @default(2) @map("platinum_legalitas_min")
+
+  @@map("badge_criteria")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model product_legalitas {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  product_id String   @db.Uuid
+  jenis      String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  kode       String?
+  products   Product  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([product_id, jenis], map: "product_legalitas_unique")
+}
+
+enum request_action {
+  create
+  update
+  delete
+}
+
+enum request_status {
+  pending
+  approved
+  rejected
+}

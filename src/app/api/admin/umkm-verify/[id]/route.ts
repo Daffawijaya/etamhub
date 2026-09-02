@@ -90,13 +90,19 @@ export async function PUT(
 
     if (action === "approve") {
       if (request.action === "create") {
-        // CREATE: Insert into umkm table with published: true
+        // CREATE: Insert into umkm table (strip email, umkm has no email column)
         const umkmId = crypto.randomUUID();
+        const { email: _email, ...umkmPayload } = payload as Record<string, any>;
+        // guard 1 NIK=1 UMKM sebelum insert (DB unique juga jaga)
+        if (umkmPayload.nik) {
+          const { data: dup } = await supabaseAdmin.from("umkm").select("id").eq("nik", umkmPayload.nik).maybeSingle();
+          if (dup) throw new Error("NIK sudah memiliki UMKM.");
+        }
         const { error: insertError } = await supabaseAdmin
           .from("umkm")
           .insert({
             id: umkmId,
-            ...payload,
+            ...umkmPayload,
             published: true,
             approval_status: "approved",
             approved_by: user.id,
@@ -138,14 +144,20 @@ export async function PUT(
           detail: { kecamatan: payload.kecamatan, reason },
         });
       } else if (request.action === "edit") {
-        // EDIT: Update existing UMKM record
+        // EDIT: Update existing UMKM record (strip email, persist nik)
         const umkmId = request.umkm_id;
         const after = payload.after as Record<string, any>;
         const { email, nik, ...updateData } = after;
+        const editUpdate: Record<string, any> = { ...updateData, updated_at: now };
+        if (nik) {
+          const { data: dup } = await supabaseAdmin.from("umkm").select("id").eq("nik", nik).neq("id", umkmId).maybeSingle();
+          if (dup) throw new Error("NIK sudah memiliki UMKM.");
+          editUpdate.nik = nik;
+        }
 
         const { error: updateError } = await supabaseAdmin
           .from("umkm")
-          .update({ ...updateData, updated_at: now })
+          .update(editUpdate)
           .eq("id", umkmId);
         if (updateError) throw updateError;
 

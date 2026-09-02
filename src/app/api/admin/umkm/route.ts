@@ -97,6 +97,11 @@ export async function POST(req: Request) {
 
     normalizeUmkmBody(body);
 
+    // Admin wajib isi NIK 16 digit (1 NIK = 1 UMKM, untuk auto-konek saat pemilik daftar)
+    if (!body.nik || !/^\d{16}$/.test(body.nik)) {
+      return NextResponse.json({ message: "NIK wajib 16 digit angka." }, { status: 400 });
+    }
+
     const validationError = validateUmkmBody(body);
     if (validationError) {
       return NextResponse.json(
@@ -107,6 +112,27 @@ export async function POST(req: Request) {
           status: 400,
         },
       );
+    }
+
+    // 1 NIK = 1 UMKM: cek duplikat di umkm
+    const { data: existingUmkmNik } = await supabaseAdmin.from("umkm").select("id").eq("nik", body.nik).maybeSingle();
+    if (existingUmkmNik) {
+      return NextResponse.json({ message: "NIK sudah memiliki UMKM." }, { status: 409 });
+    }
+    // Jika owner_id dikirim, pastikan belum punya UMKM lain (double safety)
+    let resolvedOwnerId: string | null = null;
+    if (body.owner_id) {
+      const { data: ownerUmkm } = await supabaseAdmin.from("umkm").select("id").eq("owner_id", body.owner_id).maybeSingle();
+      if (ownerUmkm) return NextResponse.json({ message: "User tersebut sudah memiliki UMKM." }, { status: 409 });
+      resolvedOwnerId = body.owner_id;
+    } else {
+      // Auto-link jika user dengan NIK ini sudah ada dan belum punya UMKM
+      const { data: existingUser } = await supabaseAdmin.from("users").select("id").eq("nik", body.nik).maybeSingle();
+      if (existingUser) {
+        const { data: userUmkm } = await supabaseAdmin.from("umkm").select("id").eq("owner_id", existingUser.id).maybeSingle();
+        if (userUmkm) return NextResponse.json({ message: "NIK sudah memiliki UMKM." }, { status: 409 });
+        resolvedOwnerId = existingUser.id;
+      }
     }
 
     if (body.kecamatan) {
@@ -139,7 +165,8 @@ export async function POST(req: Request) {
       .insert({
         id: crypto.randomUUID(),
         ...umkmData,
-        owner_id: body.owner_id ?? user.id,
+        nik,
+        owner_id: resolvedOwnerId, // null = orphan, auto-konek saat pemilik daftar
         approval_status: "approved",
         approved_by: user.id,
         approved_at: now,
@@ -153,15 +180,12 @@ export async function POST(req: Request) {
       throw error;
     }
 
-    if (body.owner_id) {
-      await supabaseAdmin
-        .from("users")
-        .update({
-          email,
-          nik,
-          updated_at: now,
-        })
-        .eq("id", body.owner_id);
+    // Sync NIK/email ke user jika sudah ter-link (jangan overwrite jika null)
+    if (resolvedOwnerId) {
+      const updatePayload: Record<string, unknown> = { updated_at: now };
+      if (nik) updatePayload.nik = nik;
+      if (email) updatePayload.email = email;
+      await supabaseAdmin.from("users").update(updatePayload).eq("id", resolvedOwnerId);
     }
 
     await supabaseAdmin.from("notifications").insert({
@@ -174,11 +198,11 @@ export async function POST(req: Request) {
       read: false,
     });
 
-    // Notify owner if exists
-    if (body.owner_id) {
+    // Notify owner if exists (resolvedOwnerId includes auto-link via NIK)
+    if (resolvedOwnerId) {
       await supabaseAdmin.from("notifications").insert({
         id: crypto.randomUUID(),
-        user_id: body.owner_id,
+        user_id: resolvedOwnerId,
         type: "approval",
         title: `UMKM "${data.nama}" telah dibuat oleh admin`,
         link: "/user/umkm",

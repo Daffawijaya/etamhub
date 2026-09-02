@@ -10,6 +10,7 @@ import MapMarker from "./MapMarker";
 import MapEvents from "./MapEvents";
 import CurrentLocationButton from "./CurrentLocationButton";
 import KukarBoundary from "@/components/map/KukarBoundary";
+import BrandButton from "@/components/ui/BrandButton";
 
 interface Props {
   latitude: string;
@@ -60,14 +61,9 @@ export default function LocationPicker({ latitude, longitude, onSave }: Props) {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={openEditor}
-        className="inline-flex items-center gap-2 rounded-lg bg-dark-card hover:bg-black dark:bg-button-gray dark:hover:bg-button-gray-hover pl-3 pr-4 py-2 font-medium text-white transition"
-      >
-        <MapPin size={18} />
+      <BrandButton type="button" onClick={openEditor} variant="accent" icon={<MapPin size={18} />}>
         Pilih di Peta
-      </button>
+      </BrandButton>
 
       {editing && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 p-6 backdrop-blur-sm">
@@ -164,22 +160,13 @@ export default function LocationPicker({ latitude, longitude, onSave }: Props) {
               </div>
 
               <div className="flex flex-wrap justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={cancel}
-                  className="rounded-lg px-4 py-2 transition hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                >
+                <BrandButton type="button" onClick={cancel} variant="ghost">
                   Batal
-                </button>
+                </BrandButton>
 
-                <button
-                  type="button"
-                  onClick={save}
-                  className="inline-flex items-center gap-2 rounded-lg bg-gre dark:bg-success px-4 py-2 font-medium text-white transition hover:opacity-90"
-                >
-                  <Check size={18} />
+                <BrandButton type="button" onClick={save} variant="accent" icon={<Check size={18} />}>
                   Simpan Lokasi
-                </button>
+                </BrandButton>
               </div>
             </div>
           </div>

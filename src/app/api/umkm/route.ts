@@ -189,6 +189,16 @@ export async function POST(req: Request) {
 
     normalizeUmkmBody(body);
 
+    if (body.nik && !/^\d{16}$/.test(body.nik)) {
+      return NextResponse.json({ message: "NIK harus 16 digit angka." }, { status: 400 });
+    }
+
+    // 1 NIK=1 UMKM: cek di umkm juga (orphan admin)
+    if (body.nik) {
+      const { data: existingUmkmNik } = await supabaseAdmin.from("umkm").select("id").eq("nik", body.nik).maybeSingle();
+      if (existingUmkmNik) return NextResponse.json({ message: "NIK sudah memiliki UMKM." }, { status: 409 });
+    }
+
     const { data: existingNik } = await supabaseAdmin
       .from("users")
       .select("id")
@@ -301,8 +311,7 @@ export async function POST(req: Request) {
 
     const { email, nik, ...umkmData } = body;
 
-    // Simpan ke umkm_requests, bukan ke umkm langsung
-    // Admin kecamatan harus approve dulu sebelum masuk tabel umkm
+    // Simpan ke umkm_requests; nik wajib dibawa di payload untuk approval (BUG #4)
     const requestId = crypto.randomUUID();
 
     const { error } = await supabaseAdmin
@@ -314,6 +323,8 @@ export async function POST(req: Request) {
         status: "pending",
         payload: {
           ...umkmData,
+          nik,
+          email,
           owner_id: user.id,
         },
         created_at: now,

@@ -25,9 +25,9 @@ export default function OwnerSection({ form, setForm, role = "admin" }: Props) {
         {role !== "user" && (
           <FormField
             name="nik"
-            placeholder="NIK*"
+            placeholder="NIK* (wajib 16 digit, untuk auto-konek saat pemilik daftar)"
             value={form.nik}
-            readOnly
+            onChange={(e: any) => handleChange("nik", e.target.value.replace(/\D/g, "").slice(0, 16))}
             required
             pattern="[0-9]{16}"
             maxLength={16}
@@ -47,10 +47,10 @@ export default function OwnerSection({ form, setForm, role = "admin" }: Props) {
         {role !== "user" && (
           <FormField
             name="email"
-            placeholder="Email"
+            placeholder="Email (opsional)"
             type="email"
             value={form.email}
-            readOnly
+            onChange={(e: any) => handleChange("email", e.target.value)}
           />
         )}
       </div>

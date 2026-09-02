@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 
@@ -61,11 +62,15 @@ export async function POST(req: Request) {
 
     const passwordHash = await bcrypt.hash(password, 12);
 
-    const { error: userError } = await supabaseAdmin.from("users").insert({
-      nik: pendingUser.nik,
-      email: pendingUser.email,
-      password: passwordHash,
-    });
+    const { data: newUser, error: userError } = await supabaseAdmin
+      .from("users")
+      .insert({
+        nik: pendingUser.nik,
+        email: pendingUser.email,
+        password: passwordHash,
+      })
+      .select("id")
+      .single();
 
     if (userError) {
       return NextResponse.json(
@@ -78,11 +83,32 @@ export async function POST(req: Request) {
       );
     }
 
+    // Auto-konek UMKM orphan: 1 NIK = 1 UMKM (ponytail: claim langsung, no queue)
+    const now = new Date().toISOString();
+    const { data: claimed, error: claimError } = await supabaseAdmin
+      .from("umkm")
+      .update({ owner_id: newUser.id, updated_at: now })
+      .eq("nik", pendingUser.nik)
+      .is("owner_id", null)
+      .select("id,nama");
+
+    if (!claimError && claimed && claimed.length > 0) {
+      await supabaseAdmin.from("notifications").insert({
+        id: crypto.randomUUID(),
+        user_id: newUser.id,
+        type: "approval",
+        title: `UMKM "${claimed[0].nama}" otomatis terhubung ke akun kamu`,
+        link: "/user/umkm",
+        created_at: now,
+        read: false,
+      });
+    }
+
     await supabaseAdmin.from("pending_users").delete().eq("id", pendingUser.id);
 
     return NextResponse.json({
       success: true,
-      message: "Registrasi berhasil",
+      message: claimed && claimed.length > 0 ? "Registrasi berhasil. UMKM kamu sudah terhubung otomatis." : "Registrasi berhasil",
     });
   } catch (error) {
     return NextResponse.json(

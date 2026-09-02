@@ -124,6 +124,26 @@ export async function POST(req: Request) {
       throw insertError;
     }
 
+    // Auto-konek UMKM orphan via NIK (1 NIK = 1 UMKM)
+    const now = new Date().toISOString();
+    const { data: claimed } = await supabaseAdmin
+      .from("umkm")
+      .update({ owner_id: user.id, updated_at: now })
+      .eq("nik", nik)
+      .is("owner_id", null)
+      .select("id,nama");
+    if (claimed && claimed.length > 0) {
+      await supabaseAdmin.from("notifications").insert({
+        id: crypto.randomUUID(),
+        user_id: user.id,
+        type: "approval",
+        title: `UMKM "${claimed[0].nama}" otomatis terhubung ke akun kamu`,
+        link: "/user/umkm",
+        created_at: now,
+        read: false,
+      });
+    }
+
     // =========================
     // LOGIN OTOMATIS
     // =========================
