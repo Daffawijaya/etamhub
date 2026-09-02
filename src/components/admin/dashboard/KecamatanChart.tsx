@@ -83,14 +83,21 @@ export default function KecamatanChart({ data, allNames = [] }: Props) {
                 </div>
               </div>
 
-              <div className="h-3 overflow-hidden rounded-full bg-slate-100 dark:bg-dark">
-                <div
-                  className="h-full rounded-full transition-all duration-500"
-                  style={{
-                    width: `${maxValue > 0 ? (item.value / maxValue) * 100 : 0}%`,
-                    background: "linear-gradient(90deg, #1184CA 0%, #844EC0 50%, #CA3785 100%)",
-                  }}
-                />
+              <div className="relative h-3 overflow-hidden rounded-full bg-slate-100 dark:bg-dark">
+                {(() => {
+                  const pct = maxValue > 0 ? (item.value / maxValue) * 100 : 0;
+                  return (
+                    <div
+                      className="absolute inset-y-0 left-0 rounded-full transition-all duration-500"
+                      style={{
+                        width: `${pct}%`,
+                        background: "linear-gradient(90deg, #1184CA 0%, #844EC0 50%, #CA3785 100%)",
+                        // gradasi fixed selebar track, bukan stretch per bar — biar dikit cuma biru
+                        backgroundSize: pct > 0 ? `${100 / (pct / 100)}% 100%` : "0% 100%",
+                      }}
+                    />
+                  );
+                })()}
               </div>
             </div>
           );
