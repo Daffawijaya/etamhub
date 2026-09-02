@@ -13,11 +13,21 @@ export const dynamic = "force-dynamic";
 async function checkAdmin() {
   const user = await getCurrentUser();
 
-  if (!user || !["admin", "super_admin"].includes(user.role ?? "")) {
+  if (!user || !["admin", "super_admin", "admin_kecamatan"].includes(user.role ?? "")) {
     return false;
   }
 
   return true;
+}
+
+async function checkCanEdit() {
+  const user = await getCurrentUser();
+
+  if (!user || !["admin", "super_admin", "admin_kecamatan"].includes(user.role ?? "")) {
+    return null;
+  }
+
+  return user;
 }
 
 async function checkSuperAdmin() {
@@ -103,9 +113,9 @@ export async function PUT(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  const allowed = await checkSuperAdmin();
+  const user = await checkCanEdit();
 
-  if (!allowed) {
+  if (!user) {
     return NextResponse.json(
       {
         message: "Unauthorized",
@@ -135,6 +145,22 @@ export async function PUT(
         status: 404,
       },
     );
+  }
+
+  // admin_kecamatan hanya boleh edit UMKM di kecamatannya
+  if (user.role === "admin_kecamatan" && user.kecamatan.length > 0) {
+    const allowedKec = user.kecamatan;
+    const allowedIds = user.kecamatanIds;
+    const isAllowed =
+      (oldData.kecamatan && allowedKec.includes(oldData.kecamatan)) ||
+      (oldData.kecamatan_id && allowedIds.includes(oldData.kecamatan_id));
+    if (!isAllowed) {
+      return NextResponse.json({ message: "Tidak memiliki akses ke kecamatan ini" }, { status: 403 });
+    }
+    // jika body mengubah kecamatan, pastikan target kecamatan juga diizinkan
+    if (body.kecamatan && !allowedKec.includes(body.kecamatan)) {
+      return NextResponse.json({ message: "Kecamatan tidak dalam wilayah Anda" }, { status: 403 });
+    }
   }
 
   // NIK wajib 16 digit jika diubah; cek duplikat di umkm (1 NIK=1 UMKM) bukan users
@@ -180,6 +206,13 @@ export async function PUT(
       { message: validationError.message },
       { status: 400 },
     );
+  }
+
+  // resolve kecamatan name -> id jika kecamatan diubah
+  if (body.kecamatan) {
+    const { data: kecData } = await supabaseAdmin.from("kecamatan").select("id").eq("nama", body.kecamatan).maybeSingle();
+    if (!kecData) return NextResponse.json({ message: "Kecamatan tidak ditemukan" }, { status: 400 });
+    body.kecamatan_id = kecData.id;
   }
 
   if (owner && (body.email || body.nik)) {

@@ -71,6 +71,7 @@ export default function UmkmRowActions({
   }, []);
 
   const isSuperAdmin = role === "super_admin";
+  const canEdit = role === "super_admin" || role === "admin" || role === "admin_kecamatan";
 
   function toggleMenu() {
     if (!open && buttonRef.current) {
@@ -209,7 +210,7 @@ export default function UmkmRowActions({
               <ExternalLink size={16} />
               Detail UMKM
             </button>
-            {isSuperAdmin && (
+            {canEdit && (
               <button
                 onClick={() => {
                   if (onEdit) {
