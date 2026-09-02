@@ -140,20 +140,20 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                 <Link
                   key={item.id}
                   href={`/admin/umkm/${item.id}`}
-                  className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
+                  className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-3 sm:py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
                 >
                   {/* Kiri: gambar + nama + subkategori */}
-                  <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
+                  <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
                     <Image src={getUmkmImage(item.gambar)} alt={item.nama} fill sizes="40px" className="object-cover" />
                   </div>
 
-                  <div className="min-w-0 flex-none w-[180px] sm:w-[200px] text-left">
+                  <div className="min-w-0 flex-1 text-left">
                     <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize text-left">{item.nama}</h4>
                     <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.subkategori || "-"}</p>
                   </div>
 
                   {/* 3 kolom di kanan — per kolom rapi, mulai dari kategori di ujung kanan */}
-                  <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">
+                  <div className="ml-2 hidden shrink-0 items-center gap-3 sm:flex">
                     <div className="w-[110px] shrink-0 flex justify-start">
                       <span className={`inline-flex shrink-0 items-center justify-start truncate rounded-lg px-2.5 py-1 text-xs font-medium ${kategoriStyle}`}>
                         {item.kategori || "Lainnya"}
@@ -169,10 +169,11 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                       </span>
                     </div>
                   </div>
-                  {/* Mobile: badge only di ujung kanan */}
-                  <span className={`inline-flex shrink-0 items-center justify-start gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium sm:hidden ${badge.bg} ${badge.text}`}>
-                    {BADGE_ICONS[level]}
-                    {badge.label}
+                  {/* Mobile: badge only di ujung kanan — tidak kepotong */}
+                  <span className={`ml-2 inline-flex max-w-[92px] shrink-0 items-center justify-center gap-1 rounded-md sm:rounded-lg px-2 py-1 text-[10px] sm:text-xs font-medium sm:hidden ${badge.bg} ${badge.text} truncate`}>
+                    <span className="hidden sm:inline">{BADGE_ICONS[level]}</span>
+                    <span className="sm:hidden scale-90 origin-center">{BADGE_ICONS[level]}</span>
+                    <span className="truncate">{badge.label}</span>
                   </span>
                 </Link>
               );
@@ -192,10 +193,10 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
               <Link
                 key={item.id}
                 href={`/admin/umkm/${item.umkm_id}`}
-                className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
+                className="flex items-center gap-2 sm:gap-3 px-3 sm:px-6 py-3 sm:py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
               >
                 {/* Kiri: gambar + nama produk */}
-                <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
+                <div className="relative h-9 w-9 sm:h-10 sm:w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
                   {item.gambar?.[0] ? (
                     <Image src={item.gambar[0]} alt={item.nama} fill sizes="40px" className="object-cover" />
                   ) : (
@@ -203,12 +204,12 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                   )}
                 </div>
 
-                <div className="min-w-0 flex-none w-[180px] sm:w-[200px] text-left flex items-center">
+                <div className="min-w-0 flex-1 text-left flex items-center">
                   <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white text-left">{item.nama}</h4>
                 </div>
 
                 {/* Kanan: 3 kolom — nama UMKM, kecamatan, harga */}
-                <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">
+                <div className="ml-2 hidden shrink-0 items-center gap-3 sm:flex">
                   <span className="w-[140px] shrink-0 truncate text-left text-xs font-medium text-slate-700 dark:text-slate-200">
                     {(item as any).umkm?.nama ?? "-"}
                   </span>
@@ -221,9 +222,9 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                     </span>
                   </div>
                 </div>
-                {/* Mobile: harga only */}
-                <span className="ml-auto inline-flex shrink-0 items-center justify-start rounded-lg bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400 sm:hidden">
-                  {formatRupiah(item.harga)}
+                {/* Mobile: harga only — tidak kepotong */}
+                <span className="ml-2 inline-flex max-w-[92px] shrink-0 items-center justify-center truncate rounded-md sm:rounded-lg bg-slate-50 px-2 py-1 text-[10px] sm:text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400 sm:hidden">
+                  <span className="truncate">{formatRupiah(item.harga)}</span>
                 </span>
               </Link>
             ))
