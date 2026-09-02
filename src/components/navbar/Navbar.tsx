@@ -143,10 +143,9 @@ function NavLink({
     <Link
       href={href}
       onClick={handleClick}
-      className="text-xs font-medium text-black hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-white transition-colors duration-200 relative group"
+      className="text-xs font-medium text-black hover:text-zinc-700 dark:text-zinc-300 dark:hover:text-white transition-colors duration-200"
     >
-      <span>{children}</span>
-      <motion.span className="absolute -bottom-1 left-0 h-px w-full origin-left scale-x-0 group-hover:scale-x-100 bg-black dark:bg-white transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]" />
+      {children}
     </Link>
   );
 }
