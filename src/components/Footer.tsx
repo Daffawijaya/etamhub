@@ -25,24 +25,13 @@ export default function Footer({ title }: { title?: ReactNode }) {
               </h2>
             </div>
 
+            {/* pembatas antara Potensi lokal ↔ footer — dibalikin */}
             <motion.div
               initial={{ scaleX: 0, opacity: 0 }}
               whileInView={{ scaleX: 1, opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full h-px hidden dark:block origin-center"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(0,0,0,0.12) 50%, transparent 58%, transparent 100%)",
-              }}
-            />
-
-            <div
-              className="w-full h-px dark:hidden"
-              style={{
-                background:
-                  "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(255,255,255,0.20) 50%, transparent 58%, transparent 100%)",
-              }}
+              transition={{ duration: 0.85, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full h-[0.5px] origin-center bg-gradient-to-r from-transparent via-black/15 to-transparent dark:from-transparent dark:via-white/15 dark:to-transparent"
             />
           </motion.div>
         )}
@@ -56,9 +45,7 @@ export default function Footer({ title }: { title?: ReactNode }) {
             hidden: {},
             visible: { transition: { staggerChildren: 0.09, delayChildren: 0.12 } },
           }}
-          className={`grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-14 py-12 md:py-16 ${
-            !title ? "" : "border-t border-black/5 dark:border-white/5"
-          }`}
+          className="grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-14 py-12 md:py-16"
         >
           {/* Brand */}
           <motion.div
@@ -160,13 +147,13 @@ export default function Footer({ title }: { title?: ReactNode }) {
           </motion.div>
         </motion.div>
 
-        {/* Bottom */}
+        {/* Bottom — tanpa list atas/bawah */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="py-6 md:py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center border-t border-black/5 dark:border-white/5"
+          className="py-6 md:py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center"
         >
           <p className="text-sm text-black/40 dark:text-white/40">
             © {new Date().getFullYear()} etamhub.

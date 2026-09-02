@@ -18,15 +18,6 @@ export default function FooterBrand() {
       ref={ref}
       className="relative h-[120px] sm:h-[170px] md:h-[230px] lg:h-[300px] overflow-hidden bg-light dark:bg-dark transition-colors"
     >
-      {/* subtle top shimmer line */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-        className="absolute top-0 left-0 w-full h-px origin-left bg-gradient-to-r from-transparent via-violet-500/20 to-transparent"
-      />
-
       {/* Tulisan besar */}
       <motion.div
         style={{ y, opacity }}

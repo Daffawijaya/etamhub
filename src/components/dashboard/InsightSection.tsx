@@ -242,15 +242,6 @@ export default function InsightSection() {
                     </motion.span>
                   ))}
                 </motion.h2>
-
-                {/* tiny accent */}
-                <motion.div
-                  initial={{ scaleX: 0, opacity: 0 }}
-                  whileInView={{ scaleX: 1, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  className="mx-auto mt-6 h-px w-12 origin-center bg-[#1b1b1f]/15 dark:bg-white/20"
-                />
               </div>
             </div>
           </div>

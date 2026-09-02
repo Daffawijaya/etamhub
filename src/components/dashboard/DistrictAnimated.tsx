@@ -129,14 +129,6 @@ export default function DistrictAnimated({ districtMap, districts }: Props) {
             title="Pilih Kecamatan"
             description="Telusuri data UMKM Kutai Kartanegara berdasarkan kecamatan dan temukan berbagai usaha lokal yang telah terdaftar dalam sistem."
           />
-          {/* header underline */}
-          <motion.div
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            className="mx-auto mt-6 h-px w-16 origin-center bg-gradient-to-r from-transparent via-violet-400/40 to-transparent"
-          />
         </motion.div>
 
         {/* Grid */}
