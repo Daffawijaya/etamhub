@@ -111,7 +111,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Item label="Nama UMKM" value={data.nama} />
 
           <Item label="Kategori" value={data.kategori} />
@@ -133,7 +133,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Item label="Pemilik" value={data.pemilik} />
 
           <Item label="NIK" value={data.nik} />
@@ -155,7 +155,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Item label="NIB" value={data.nib} />
 
           <Item
@@ -184,7 +184,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Item label="Kecamatan" value={data.kecamatan} />
 
           <Item label="Alamat" value={data.alamat} />
@@ -206,7 +206,7 @@ export default function UmkmDetail({ data }: Props) {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Item label="WhatsApp" value={data.whatsapp} />
 
           <Item label="Instagram" value={data.instagram} />

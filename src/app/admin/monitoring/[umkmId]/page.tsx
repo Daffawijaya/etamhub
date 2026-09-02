@@ -392,7 +392,7 @@ export default function MonitoringDetailPage() {
       </div>
 
       {/* Main content: 2 columns */}
-      <div className="grid grid-cols-1 gap-4 sm:gap-6 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         {/* Left: Badge Progress + Ringkasan */}
         <div className="space-y-6 lg:col-span-1">
           {/* Badge Progress */}

@@ -141,7 +141,7 @@ export default function ProductList({ umkmId, onAdd, onEdit }: Props) {
           )}
         </div>
       ) : (
-        <div className="mt-4 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {products.map((product) => {
             const image = product.gambar?.[0];
 

@@ -11,11 +11,11 @@ function Pulse({ className = "", style }: { className?: string; style?: React.CS
 
 export default function AdminDashboardSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
       {/* Left column */}
-      <div className="space-y-6 lg:col-span-8">
+      <div className="space-y-4 lg:col-span-8">
         {/* Top row: StatsCards + CategoryPieChart */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {/* StatsCards — gradient */}
           <div className="relative overflow-hidden rounded-2xl px-5 py-5 sm:p-8 bg-gradient-to-br from-[#ff7a59]/80 via-[#ff6b7d]/80 to-[#ff4fa3]/80 dark:from-[#1b1027] dark:via-[#21152f] dark:to-[#130f1d]">
             <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-white/10 blur-2xl" />
@@ -104,7 +104,7 @@ export default function AdminDashboardSkeleton() {
       </div>
 
       {/* Right column */}
-      <div className="space-y-6 lg:col-span-4">
+      <div className="space-y-4 lg:col-span-4">
         {/* DashboardFilter skeleton */}
         <div className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 dark:border-slate-700 dark:bg-dark">
           <Pulse className="h-5 w-24" />

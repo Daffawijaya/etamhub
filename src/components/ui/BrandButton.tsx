@@ -16,8 +16,8 @@ const variantStyles: Record<Variant, string> = {
   primary: "bg-brand-primary text-white hover:opacity-90 shadow-sm",
   // Secondary (Magenta) — secondary emphasis: actions needing attention
   secondary: "bg-brand-secondary text-white hover:opacity-90 shadow-sm",
-  // Accent (Green) — approval/success: Setujui, Approve
-  accent: "bg-brand-accent text-white hover:opacity-90 shadow-sm",
+  // Accent (Green) — darker Supabase for white text
+  accent: "bg-brand-accent text-white hover:bg-brand-accent-hover shadow-sm",
   // Danger — destructive: Hapus, Tolak
   danger: "bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600",
   // Ghost — cancel/reset: Batal, Reset

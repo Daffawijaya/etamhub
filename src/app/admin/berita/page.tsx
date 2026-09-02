@@ -54,7 +54,7 @@ export default async function AdminBeritaPage({
 
               <Link
                 href="/admin/berita/tambah"
-                className="flex items-center gap-2 rounded-lg bg-emerald-600 px-3 py-2 text-xs font-medium text-white transition hover:bg-emerald-700 sm:px-4 sm:text-sm"
+                className="flex items-center gap-2 rounded-lg bg-brand-accent px-3 py-2 text-xs font-medium text-white transition hover:bg-brand-accent-hover sm:px-4 sm:text-sm"
               >
                 <Plus size={16} />
                 <span className="hidden sm:inline">Tambah Berita</span>

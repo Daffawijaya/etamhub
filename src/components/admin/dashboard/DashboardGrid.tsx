@@ -159,9 +159,9 @@ export default function DashboardGrid() {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-      <div className="space-y-6 lg:col-span-8">
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
+      <div className="space-y-4 lg:col-span-8">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <StatsCards stats={filteredStats} />
           <CategoryPieChart data={filteredKategoriChart} />
         </div>
@@ -171,7 +171,7 @@ export default function DashboardGrid() {
         <UmkmMapWidget umkms={filteredUmkm} />
       </div>
 
-      <div className="space-y-6 lg:col-span-4">
+      <div className="space-y-4 lg:col-span-4">
         <div className="flex items-center justify-between overflow-visible">
           <span className="text-sm text-slate-500 dark:text-slate-400">
             {filteredStats.totalUmkm} dari {(data?.map ?? []).length} UMKM

@@ -7,20 +7,22 @@
   --background: #ffffff;
   --foreground: #0f172a;
 
-  /* Brand Colors - Light */
+  /* Brand Colors - Light — Supabase darker for white text */
   --brand-primary: #8b5cf6;
   --brand-secondary: #ca3785;
-  --brand-accent: #006239;
+  --brand-accent: #0ea86a;
+  --brand-accent-hover: #0c9460;
 }
 
 .dark {
   --background: #121313;
   --foreground: #ffffff;
 
-  /* Brand Colors - Dark */
+  /* Brand Colors - Dark — slightly brighter for dark bg */
   --brand-primary: #4c1d95;
   --brand-secondary: #831843;
-  --brand-accent: #064e3b;
+  --brand-accent: #10b981;
+  --brand-accent-hover: #0ea86a;
 }
 
 @theme inline {
@@ -33,6 +35,7 @@
   --color-brand-primary: var(--brand-primary);
   --color-brand-secondary: var(--brand-secondary);
   --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-hover: var(--brand-accent-hover);
 
   --color-dark: #121313;
   --color-dark-card: #1b1b1b;
@@ -49,9 +52,9 @@
   --color-button-gray: #4a4a4a;
   --color-button-gray-hover: #5a5a5a;
 
-  /* green */
-  --color-success: #006239;
-  --color-success-hover: #00854d;
+  /* green - Supabase emerald */
+  --color-success: var(--brand-accent);
+  --color-success-hover: var(--brand-accent-hover);
 
   /* red */
   --color-danger: #a52a2a;

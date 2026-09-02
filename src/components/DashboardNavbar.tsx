@@ -62,7 +62,7 @@ export default function DashboardNavbar({
   if (isMapPage) {
     return (
       <header className="absolute top-4 right-6 z-[1000]">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <ThemeButton />
           <Notification />
           <LogoutButton />
@@ -85,7 +85,7 @@ export default function DashboardNavbar({
         </h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3">
         <ThemeButton />
         <Notification />
         <LogoutButton />

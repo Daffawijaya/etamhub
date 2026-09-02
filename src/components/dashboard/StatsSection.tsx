@@ -52,7 +52,6 @@ export default async function StatsSection() {
           grid-cols-1
           lg:grid-cols-3
           gap-4
-          sm:gap-6
         "
         >
           {stats.map((stat) => (

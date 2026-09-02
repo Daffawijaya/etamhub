@@ -49,7 +49,7 @@ export default function PublicProductList({ umkmId }: Props) {
       <section className="mx-auto max-w-7xl px-5 py-12 md:px-6">
         <div className="h-6 w-32 animate-pulse rounded bg-zinc-200 dark:bg-white/10" />
 
-        <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
           {Array.from({ length: 5 }).map((_, index) => (
             <div
               key={index}
@@ -84,7 +84,7 @@ export default function PublicProductList({ umkmId }: Props) {
         </p>
       </div>
 
-      <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+      <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {products.map((product) => {
           const image = product.gambar?.[0];
 

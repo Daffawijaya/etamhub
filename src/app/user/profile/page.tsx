@@ -44,9 +44,9 @@ export default async function UserProfilePage() {
 
   return (
     <main>
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
         {/* Left: Profile Hero + Info */}
-        <div className="space-y-6 lg:col-span-8">
+        <div className="space-y-4 lg:col-span-8">
           {/* Gradient Hero Card */}
           <div
             className="
@@ -144,7 +144,7 @@ export default async function UserProfilePage() {
         </div>
 
         {/* Right: Quick Info */}
-        <div className="space-y-6 lg:col-span-4">
+        <div className="space-y-4 lg:col-span-4">
           {/* Status Card */}
           <div className="rounded-2xl bg-white p-6 dark:bg-dark-card">
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
