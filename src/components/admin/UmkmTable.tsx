@@ -173,9 +173,9 @@ export default function UmkmTable({
                 className={`
                   inline-flex
                   rounded-lg
-                  px-2.5
-                  py-1
-                  text-xs
+                  px-2
+                  py-0.5
+                  text-[11px]
                   font-medium
                   ${getCategoryStyle(item.kategori)}
                 `}
@@ -196,7 +196,7 @@ export default function UmkmTable({
           {columns.status && (
             <div className="w-[70px] sm:w-[110px] flex-shrink-0">
               <span
-                className={`inline-flex rounded-lg px-2.5 py-1 text-xs font-medium ${getStatusStyle(item.published)}`}
+                className={`inline-flex rounded-lg px-2 py-0.5 text-[11px] font-medium ${getStatusStyle(item.published)}`}
               >
                 {item.published ? "Publik" : "Privat"}
               </span>

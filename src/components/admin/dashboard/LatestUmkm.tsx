@@ -108,7 +108,7 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
       </div>
 
       {/* Card content */}
-      <div className="overflow-hidden rounded-2xl bg-white dark:bg-dark-card transition-colors duration-300">
+      <div className="overflow-hidden rounded-2xl bg-white dark:bg-dark-card py-3 transition-colors duration-300">
       {tab === "umkm" ? (
         <div className="divide-y divide-slate-100 dark:divide-white/5">
           {latestUmkm.map((item) => {
@@ -125,23 +125,37 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
               <Link
                 key={item.id}
                 href={`/admin/umkm/${item.id}`}
-                className="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
+                className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
               >
-                {/* Image */}
+                {/* Kiri: gambar + nama + subkategori */}
                 <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
                   <Image src={getUmkmImage(item.gambar)} alt={item.nama} fill sizes="40px" className="object-cover" />
                 </div>
 
-                {/* Nama + Kategori */}
-                <div className="min-w-0 flex-1">
-                  <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize">{item.nama}</h4>
-                  <span className={`mt-0.5 inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-medium ${kategoriStyle}`}>
-                    {item.kategori || "Lainnya"}
-                  </span>
+                <div className="min-w-0 flex-none w-[180px] sm:w-[200px] text-left">
+                  <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize text-left">{item.nama}</h4>
+                  <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.subkategori || "-"}</p>
                 </div>
 
-                {/* Badge */}
-                <span className={`inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text}`}>
+                {/* 3 kolom di kanan — per kolom rapi, mulai dari kategori di ujung kanan */}
+                <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">
+                  <div className="w-[110px] shrink-0 flex justify-start">
+                    <span className={`inline-flex shrink-0 items-center justify-start truncate rounded-lg px-2.5 py-1 text-xs font-medium ${kategoriStyle}`}>
+                      {item.kategori || "Lainnya"}
+                    </span>
+                  </div>
+                  <span className="w-[120px] shrink-0 truncate text-left text-sm font-medium text-slate-700 dark:text-slate-200">
+                    {item.kecamatan || "-"}
+                  </span>
+                  <div className="w-[110px] shrink-0 flex justify-start">
+                    <span className={`inline-flex items-center justify-start gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text}`}>
+                      {BADGE_ICONS[level]}
+                      {badge.label}
+                    </span>
+                  </div>
+                </div>
+                {/* Mobile: badge only di ujung kanan */}
+                <span className={`inline-flex shrink-0 items-center justify-start gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium sm:hidden ${badge.bg} ${badge.text}`}>
                   {BADGE_ICONS[level]}
                   {badge.label}
                 </span>
@@ -160,7 +174,7 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
               <Link
                 key={item.id}
                 href={`/admin/umkm/${item.umkm_id}`}
-                className="flex items-center gap-3 px-6 py-3 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
+                className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
               >
                 {/* Image */}
                 <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
