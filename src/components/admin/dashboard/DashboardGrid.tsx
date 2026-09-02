@@ -192,7 +192,7 @@ export default function DashboardGrid() {
         </div>
 
         <OmzetTrendChart data={monitoring.omzetTrend ?? []} />
-        <LatestUmkm umkms={filteredUmkm.slice(0, 5)} umkmBadges={monitoring.umkmBadges ?? []} />
+        <LatestUmkm umkms={filteredUmkm} umkmBadges={monitoring.umkmBadges ?? []} />
         <UmkmMapWidget umkms={filteredUmkm} />
       </div>
 

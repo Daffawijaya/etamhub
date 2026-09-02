@@ -64,17 +64,29 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
     .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
     .slice(0, 5);
 
+  // produk ikut filter dashboard (kecamatan/kategori/monitoring via umkms)
+  const umkmIdsSet = new Set(umkms.map((u) => u.id));
+  const displayedProducts = (() => {
+    let list = products;
+    // filter by umkms yang sudah kefilter (kecamatan/kategori/monitoring)
+    if (umkms.length > 0) {
+      list = list.filter((p: any) => umkmIdsSet.has(p.umkm_id));
+    }
+    return [...list]
+      .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+      .slice(0, 5);
+  })();
+
   useEffect(() => {
     if (tab === "produk" && products.length === 0) {
       setLoadingProducts(true);
       fetch("/api/products")
         .then((res) => res.json())
         .then((result) => {
-          const data = result.data ?? [];
-          const sorted = [...data].sort(
-            (a: Product, b: Product) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-          );
-          setProducts(sorted.slice(0, 5));
+          const data = result.data ?? result ?? [];
+          // ambil array produk (API return {data: [...]})
+          const arr = Array.isArray(data) ? data : data.data ?? [];
+          setProducts(arr);
         })
         .catch(() => {})
         .finally(() => setLoadingProducts(false));
@@ -111,66 +123,72 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
       <div className="overflow-hidden rounded-2xl bg-white dark:bg-dark-card py-3 transition-colors duration-300">
       {tab === "umkm" ? (
         <div className="divide-y divide-slate-100 dark:divide-white/5">
-          {latestUmkm.map((item) => {
-            const level = badgeMap.get(item.id) ?? "none";
-            const badge = BADGE_STYLES[level] ?? BADGE_STYLES.none;
-            const kategoriColors: Record<string, string> = {
-              Perdagangan: "bg-green-50 text-green-700 dark:bg-green-500/20 dark:text-green-300",
-              Jasa: "bg-purple-50 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300",
-              Industri: "bg-orange-50 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300",
-            };
-            const kategoriStyle = kategoriColors[item.kategori ?? ""] ?? "bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300";
+          {latestUmkm.length === 0 ? (
+            <div className="px-6 py-8 text-center text-sm text-slate-400">Tidak ada UMKM sesuai filter</div>
+          ) : (
+            latestUmkm.map((item) => {
+              const level = badgeMap.get(item.id) ?? "none";
+              const badge = BADGE_STYLES[level] ?? BADGE_STYLES.none;
+              const kategoriColors: Record<string, string> = {
+                Perdagangan: "bg-green-50 text-green-700 dark:bg-green-500/20 dark:text-green-300",
+                Jasa: "bg-purple-50 text-purple-700 dark:bg-purple-500/20 dark:text-purple-300",
+                Industri: "bg-orange-50 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300",
+              };
+              const kategoriStyle = kategoriColors[item.kategori ?? ""] ?? "bg-slate-100 text-slate-700 dark:bg-white/10 dark:text-slate-300";
 
-            return (
-              <Link
-                key={item.id}
-                href={`/admin/umkm/${item.id}`}
-                className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
-              >
-                {/* Kiri: gambar + nama + subkategori */}
-                <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
-                  <Image src={getUmkmImage(item.gambar)} alt={item.nama} fill sizes="40px" className="object-cover" />
-                </div>
-
-                <div className="min-w-0 flex-none w-[180px] sm:w-[200px] text-left">
-                  <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize text-left">{item.nama}</h4>
-                  <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.subkategori || "-"}</p>
-                </div>
-
-                {/* 3 kolom di kanan — per kolom rapi, mulai dari kategori di ujung kanan */}
-                <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">
-                  <div className="w-[110px] shrink-0 flex justify-start">
-                    <span className={`inline-flex shrink-0 items-center justify-start truncate rounded-lg px-2.5 py-1 text-xs font-medium ${kategoriStyle}`}>
-                      {item.kategori || "Lainnya"}
-                    </span>
+              return (
+                <Link
+                  key={item.id}
+                  href={`/admin/umkm/${item.id}`}
+                  className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
+                >
+                  {/* Kiri: gambar + nama + subkategori */}
+                  <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
+                    <Image src={getUmkmImage(item.gambar)} alt={item.nama} fill sizes="40px" className="object-cover" />
                   </div>
-                  <span className="w-[120px] shrink-0 truncate text-left text-sm font-medium text-slate-700 dark:text-slate-200">
-                    {item.kecamatan || "-"}
+
+                  <div className="min-w-0 flex-none w-[180px] sm:w-[200px] text-left">
+                    <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white capitalize text-left">{item.nama}</h4>
+                    <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.subkategori || "-"}</p>
+                  </div>
+
+                  {/* 3 kolom di kanan — per kolom rapi, mulai dari kategori di ujung kanan */}
+                  <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">
+                    <div className="w-[110px] shrink-0 flex justify-start">
+                      <span className={`inline-flex shrink-0 items-center justify-start truncate rounded-lg px-2.5 py-1 text-xs font-medium ${kategoriStyle}`}>
+                        {item.kategori || "Lainnya"}
+                      </span>
+                    </div>
+                    <span className="w-[120px] shrink-0 truncate text-left text-sm font-medium text-slate-700 dark:text-slate-200">
+                      {item.kecamatan || "-"}
+                    </span>
+                    <div className="w-[110px] shrink-0 flex justify-start">
+                      <span className={`inline-flex items-center justify-start gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text}`}>
+                        {BADGE_ICONS[level]}
+                        {badge.label}
+                      </span>
+                    </div>
+                  </div>
+                  {/* Mobile: badge only di ujung kanan */}
+                  <span className={`inline-flex shrink-0 items-center justify-start gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium sm:hidden ${badge.bg} ${badge.text}`}>
+                    {BADGE_ICONS[level]}
+                    {badge.label}
                   </span>
-                  <div className="w-[110px] shrink-0 flex justify-start">
-                    <span className={`inline-flex items-center justify-start gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${badge.bg} ${badge.text}`}>
-                      {BADGE_ICONS[level]}
-                      {badge.label}
-                    </span>
-                  </div>
-                </div>
-                {/* Mobile: badge only di ujung kanan */}
-                <span className={`inline-flex shrink-0 items-center justify-start gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium sm:hidden ${badge.bg} ${badge.text}`}>
-                  {BADGE_ICONS[level]}
-                  {badge.label}
-                </span>
-              </Link>
-            );
-          })}
+                </Link>
+              );
+            })
+          )}
         </div>
       ) : (
         <div className="divide-y divide-slate-100 dark:divide-white/5">
           {loadingProducts ? (
             <div className="px-6 py-8 text-center text-sm text-slate-400">Memuat produk...</div>
-          ) : products.length === 0 ? (
-            <div className="px-6 py-8 text-center text-sm text-slate-400">Belum ada produk</div>
+          ) : displayedProducts.length === 0 ? (
+            <div className="px-6 py-8 text-center text-sm text-slate-400">
+              {products.length === 0 ? "Belum ada produk" : "Tidak ada produk sesuai filter"}
+            </div>
           ) : (
-            products.map((item) => (
+            displayedProducts.map((item) => (
               <Link
                 key={item.id}
                 href={`/admin/umkm/${item.umkm_id}`}
