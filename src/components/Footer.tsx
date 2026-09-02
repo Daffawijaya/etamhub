@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ReactNode } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { navigation } from "@/data/navigation";
+import { motion } from "framer-motion";
 
 export default function Footer({ title }: { title?: ReactNode }) {
   const router = useRouter();
@@ -12,15 +13,24 @@ export default function Footer({ title }: { title?: ReactNode }) {
     <footer className="border-t-[0.5px] border-light dark:border-white/10 relative overflow-hidden bg-light dark:bg-dark text-black dark:text-white transition-colors">
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 md:px-10 z-20">
         {title && (
-          <>
+          <motion.div
+            initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          >
             <div className="py-10 sm:py-12 md:py-16 text-center flex justify-center items-center">
               <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium leading-relaxed max-w-3xl">
                 {title}
               </h2>
             </div>
 
-            <div
-              className="w-full h-px hidden dark:block"
+            <motion.div
+              initial={{ scaleX: 0, opacity: 0 }}
+              whileInView={{ scaleX: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.9, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
+              className="w-full h-px hidden dark:block origin-center"
               style={{
                 background:
                   "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(0,0,0,0.12) 50%, transparent 58%, transparent 100%)",
@@ -34,17 +44,30 @@ export default function Footer({ title }: { title?: ReactNode }) {
                   "linear-gradient(90deg, transparent 0%, transparent 42%, rgba(255,255,255,0.20) 50%, transparent 58%, transparent 100%)",
               }}
             />
-          </>
+          </motion.div>
         )}
 
         {/* Main Footer */}
-        <div
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={{
+            hidden: {},
+            visible: { transition: { staggerChildren: 0.09, delayChildren: 0.12 } },
+          }}
           className={`grid grid-cols-1 md:grid-cols-4 gap-10 md:gap-14 py-12 md:py-16 ${
             !title ? "" : "border-t border-black/5 dark:border-white/5"
           }`}
         >
           {/* Brand */}
-          <div className="text-center md:text-left">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 16, filter: "blur(6px)" },
+              visible: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+            }}
+            className="text-center md:text-left"
+          >
             <h3 className="text-2xl sm:text-3xl font-bold tracking-tight">
               etamhub.
             </h3>
@@ -52,12 +75,18 @@ export default function Footer({ title }: { title?: ReactNode }) {
             <p className="mt-5 md:mt-8 text-black/60 dark:text-white/60">
               Kutai Kartanegara
             </p>
-          </div>
+          </motion.div>
 
           <div></div>
 
           {/* Contact */}
-          <div className="text-center md:text-left">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 16 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+            }}
+            className="text-center md:text-left"
+          >
             <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
               Profil
             </p>
@@ -92,10 +121,16 @@ export default function Footer({ title }: { title?: ReactNode }) {
             >
               Daffa Yan Wijaya
             </Link>
-          </div>
+          </motion.div>
 
           {/* UMKM */}
-          <div className="text-center md:text-left">
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 16 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.08 } },
+            }}
+            className="text-center md:text-left"
+          >
             <p className="text-black/40 dark:text-white/40 text-sm mb-4 md:mb-5">
               Navigasi
             </p>
@@ -122,39 +157,27 @@ export default function Footer({ title }: { title?: ReactNode }) {
                 </Link>
               ))}
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Bottom */}
-        <div
-          className="
-          py-6 md:py-8
-          flex flex-col sm:flex-row
-          items-center
-          justify-between
-          gap-4
-          text-center
-        "
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="py-6 md:py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-center border-t border-black/5 dark:border-white/5"
         >
           <p className="text-sm text-black/40 dark:text-white/40">
             © {new Date().getFullYear()} etamhub.
           </p>
 
-          <div
-            className="
-            flex
-            flex-wrap
-            justify-center
-            items-center
-            gap-x-5
-            gap-y-2
-          "
-          >
+          <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-2">
             <p className="text-black/40 dark:text-white/40 transition text-sm">
               by Tenaga Ahli Pendamping UMKM Kutai Kartanegara
             </p>
           </div>
-        </div>
+        </motion.div>
       </div>
     </footer>
   );
