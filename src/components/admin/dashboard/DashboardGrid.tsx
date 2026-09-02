@@ -112,6 +112,31 @@ export default function DashboardGrid() {
     ];
   }, [filteredUmkm, monitoring.badgeChart, monitoring.umkmBadges, appliedFilters]);
 
+  const filteredMonitoredCount = useMemo(() => {
+    if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
+      return monitoring.monitoredCount ?? 0;
+    }
+    const filteredIds = new Set(filteredUmkm.map((u: any) => u.id));
+    let cnt = 0;
+    for (const id of monitoredIds) {
+      if (filteredIds.has(id as string)) cnt++;
+    }
+    return cnt;
+  }, [filteredUmkm, monitoredIds, monitoring.monitoredCount, appliedFilters]);
+
+  const filteredKecamatanChart = useMemo(() => {
+    if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
+      return data?.kecamatanChart ?? [];
+    }
+    const map: Record<string, number> = {};
+    for (const u of filteredUmkm) {
+      const k = u.kecamatan || "Tidak diketahui";
+      map[k] = (map[k] || 0) + 1;
+    }
+    // untuk admin_kecamatan, tetap sertakan 0 untuk kecamatan yang difilter out agar chart tidak hilang
+    return Object.entries(map).map(([name, value]) => ({ name, value }));
+  }, [filteredUmkm, data?.kecamatanChart, appliedFilters]);
+
   const filteredStats = useMemo(() => {
     if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
       return data?.stats ?? { totalUmkm: 0, totalKecamatan: 0, totalSubkategori: 0, digitalCount: 0, legalitasCount: 0, digitalPercent: 0, legalitasPercent: 0 };
@@ -225,9 +250,9 @@ export default function DashboardGrid() {
           </div>
         </div>
 
-        <BadgePieChart data={filteredBadgeChart} monitoredCount={monitoring.monitoredCount ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
+        <BadgePieChart data={filteredBadgeChart} monitoredCount={filteredMonitoredCount} totalUmkm={filteredStats.totalUmkm ?? 0} />
         <UmkmProgressStats digitalCount={filteredStats.digitalCount ?? 0} digitalPercent={filteredStats.digitalPercent ?? 0} legalitasCount={filteredStats.legalitasCount ?? 0} legalitasPercent={filteredStats.legalitasPercent ?? 0} totalUmkm={filteredStats.totalUmkm ?? 0} />
-        <KecamatanChart data={data.kecamatanChart ?? []} allNames={[...KECAMATAN_KUKAR]} />
+        <KecamatanChart data={filteredKecamatanChart} allNames={[...KECAMATAN_KUKAR]} />
       </div>
     </div>
   );
