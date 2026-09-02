@@ -176,7 +176,7 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                 href={`/admin/umkm/${item.umkm_id}`}
                 className="flex items-center gap-3 px-6 py-4 transition-colors hover:bg-slate-50/70 dark:hover:bg-white/[0.03]"
               >
-                {/* Image */}
+                {/* Kiri: gambar + nama produk */}
                 <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-white/10">
                   {item.gambar?.[0] ? (
                     <Image src={item.gambar[0]} alt={item.nama} fill sizes="40px" className="object-cover" />
@@ -185,14 +185,26 @@ export default function LatestUmkm({ umkms, umkmBadges = [] }: Props) {
                   )}
                 </div>
 
-                {/* Nama + UMKM */}
-                <div className="min-w-0 flex-1">
-                  <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white">{item.nama}</h4>
-                  <p className="truncate text-xs text-slate-400 dark:text-slate-500">{item.umkm?.nama ?? "-"}</p>
+                <div className="min-w-0 flex-none w-[180px] sm:w-[200px] text-left flex items-center">
+                  <h4 className="truncate text-sm font-semibold text-slate-900 dark:text-white text-left">{item.nama}</h4>
                 </div>
 
-                {/* Harga */}
-                <span className="shrink-0 rounded-lg bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
+                {/* Kanan: 3 kolom — nama UMKM, kecamatan, harga */}
+                <div className="ml-auto hidden shrink-0 items-center gap-3 sm:flex">
+                  <span className="w-[140px] shrink-0 truncate text-left text-xs font-medium text-slate-700 dark:text-slate-200">
+                    {(item as any).umkm?.nama ?? "-"}
+                  </span>
+                  <span className="w-[120px] shrink-0 truncate text-left text-sm font-medium text-slate-700 dark:text-slate-200">
+                    {(item as any).umkm?.kecamatan ?? (item as any).kecamatan ?? "-"}
+                  </span>
+                  <div className="w-[110px] shrink-0 flex justify-start">
+                    <span className="inline-flex shrink-0 items-center justify-start rounded-lg bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400">
+                      {formatRupiah(item.harga)}
+                    </span>
+                  </div>
+                </div>
+                {/* Mobile: harga only */}
+                <span className="ml-auto inline-flex shrink-0 items-center justify-start rounded-lg bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-white/5 dark:text-slate-400 sm:hidden">
                   {formatRupiah(item.harga)}
                 </span>
               </Link>

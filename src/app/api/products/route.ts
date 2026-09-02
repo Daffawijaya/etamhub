@@ -31,6 +31,7 @@ export async function GET(request: NextRequest) {
           umkm:umkm_id (
             id,
             nama,
+            kecamatan,
             owner_id,
             halal,
             pirt,
@@ -352,6 +353,7 @@ export async function POST(request: NextRequest) {
           umkm:umkm_id (
             id,
             nama,
+            kecamatan,
             owner_id,
             halal,
             pirt,
