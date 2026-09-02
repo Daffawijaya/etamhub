@@ -167,6 +167,7 @@ export async function POST(req: Request) {
         ...umkmData,
         nik,
         owner_id: resolvedOwnerId, // null = orphan, auto-konek saat pemilik daftar
+        published: true,
         approval_status: "approved",
         approved_by: user.id,
         approved_at: now,
