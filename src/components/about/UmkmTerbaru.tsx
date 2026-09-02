@@ -1,8 +1,6 @@
 import { supabase } from "@/lib/supabase";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
-import SectionHeader from "../textBlock/SectionHeader";
-import ExploreButton from "../button/ExploreButton";
-import UmkmCard from "../district/UmkmCard";
+import UmkmTerbaruAnimated from "./UmkmTerbaruAnimated";
 import { calculateBadgeWithCriteria, getBadgeCriteria } from "@/lib/monitoring/badges";
 
 export default async function UmkmTerbaruSection() {
@@ -85,54 +83,5 @@ export default async function UmkmTerbaruSection() {
     }
   }
 
-  return (
-    <section
-      id="terbaru"
-      className="
-        bg-light-bg
-        dark:bg-dark
-        py-8
-        sm:py-10
-        md:py-16
-        transition-colors
-      "
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-5 lg:px-8">
-        <SectionHeader
-          title="UMKM Terbaru"
-          description="Pelaku usaha yang baru bergabung dan memperkenalkan produk serta layanannya melalui etamhub."
-        />
-
-        <div
-          className="
-            mt-10
-            sm:mt-12
-            md:mt-20
-            grid
-            grid-cols-2
-            xl:grid-cols-4
-            gap-3
-            sm:gap-5
-            md:gap-6
-          "
-        >
-          {umkms.map((umkm) => (
-            <UmkmCard
-              key={umkm.id}
-              id={umkm.id}
-              nama={umkm.nama}
-              subkategori={umkm.subkategori}
-              deskripsi={umkm.deskripsi}
-              gambar={umkm.gambar}
-              badge={badges[umkm.id] ?? null}
-            />
-          ))}
-        </div>
-
-        <div className="w-full pt-12 flex justify-center">
-          <ExploreButton />
-        </div>
-      </div>
-    </section>
-  );
+  return <UmkmTerbaruAnimated umkms={umkms as any} badges={badges as any} />;
 }
