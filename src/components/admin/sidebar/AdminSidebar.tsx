@@ -26,6 +26,7 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
   const [collapsed, setCollapsed] = useState<boolean | null>(null);
   const [hasInteracted, setHasInteracted] = useState(false);
   const [role, setRole] = useState<string | null>(null);
+  const [canCreate, setCanCreate] = useState(true);
   const [badges, setBadges] = useState<Record<string, number>>({});
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const [notifCount, setNotifCount] = useState(0);
@@ -58,6 +59,18 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
       .then((data) => {
         setRole(data.role);
         setUserName(data.nama ?? null);
+        // Fetch permissions untuk admin/admin_kecamatan
+        if (data.role === "admin" || data.role === "admin_kecamatan") {
+          fetch("/api/role-permissions")
+            .then((r) => r.json())
+            .then((perms) => {
+              if (Array.isArray(perms)) {
+                const myPerm = perms.find((p: any) => p.role === data.role);
+                if (myPerm) setCanCreate(myPerm.canCreate);
+              }
+            })
+            .catch(() => {});
+        }
       });
   }, []);
 
@@ -118,10 +131,24 @@ export default function AdminSidebar({ mobile = false, open = false, onClose }: 
     window.location.href = "/";
   };
 
-  const filteredMenus = menus.filter((menu) => {
-    if (!menu.roles) return true;
-    return menu.roles.includes(role ?? "");
-  });
+  const filteredMenus = menus
+    .filter((menu) => {
+      if (!menu.roles) return true;
+      return menu.roles.includes(role ?? "");
+    })
+    .map((menu) => {
+      // Sembunyikan "Tambah UMKM" kalau canCreate off
+      if (menu.children) {
+        return {
+          ...menu,
+          children: menu.children.filter((child) => {
+            if (child.href === "/admin/tambah" && !canCreate) return false;
+            return true;
+          }),
+        };
+      }
+      return menu;
+    });
 
   if (!mounted && !mobile) return null;
 

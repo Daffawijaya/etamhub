@@ -19,6 +19,8 @@ interface Props {
   role?: string;
   onDeleted?: (id: string) => void;
   onStatusChanged?: (id: string, published: boolean) => void;
+  canUpdate?: boolean;
+  canDelete?: boolean;
 }
 
 export default function NewsRowActions({
@@ -27,6 +29,8 @@ export default function NewsRowActions({
   role,
   onDeleted,
   onStatusChanged,
+  canUpdate = true,
+  canDelete = true,
 }: Props) {
   const router = useRouter();
   const modal = useModal();
@@ -213,31 +217,33 @@ export default function NewsRowActions({
               Preview Berita
             </button>
 
-            <button
-              type="button"
-              onClick={() => {
-                router.push(`/admin/berita/${id}/edit`);
-                setOpen(false);
-              }}
-              className="
-                flex
-                w-full
-                items-center
-                gap-3
-                px-4
-                py-3
-                text-sm
-                font-medium
-                text-slate-700
-                transition-colors
-                hover:bg-slate-50
-                dark:text-slate-200
-                dark:hover:bg-white/10
-              "
-            >
-              <Pencil size={16} />
-              Edit Berita
-            </button>
+            {(role === "super_admin" || canUpdate) && (
+              <button
+                type="button"
+                onClick={() => {
+                  router.push(`/admin/berita/${id}/edit`);
+                  setOpen(false);
+                }}
+                className="
+                  flex
+                  w-full
+                  items-center
+                  gap-3
+                  px-4
+                  py-3
+                  text-sm
+                  font-medium
+                  text-slate-700
+                  transition-colors
+                  hover:bg-slate-50
+                  dark:text-slate-200
+                  dark:hover:bg-white/10
+                "
+              >
+                <Pencil size={16} />
+                Edit Berita
+              </button>
+            )}
 
             <button
               type="button"
@@ -266,7 +272,7 @@ export default function NewsRowActions({
               {published ? "Jadikan Privat" : "Jadikan Publik"}
             </button>
 
-            {role === "super_admin" && (
+            {(role === "super_admin" || canDelete) && (
               <>
                 <div className="h-px bg-slate-100 dark:bg-white/10" />
 

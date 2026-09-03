@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search } from "lucide-react";
 import {
   CheckCircle,
   XCircle,
@@ -10,13 +9,10 @@ import {
   Trash2,
   BarChart3,
   FileText,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react";
 import LoadingState from "@/components/LoadingState";
-import UmkmSearch from "@/components/admin/UmkmSearch";
 import LogFilters from "@/components/admin/log/LogFilters";
-import BrandButton from "@/components/ui/BrandButton";
+import UmkmPagination from "@/components/admin/umkm/UmkmPagination";
 
 interface ActivityLog {
   id: string;
@@ -170,7 +166,6 @@ const actionOptions = Object.entries(ACTION_CONFIG).map(([key, config]) => ({
 export default function LogAktivitasPage() {
   const [logs, setLogs] = useState<ActivityLog[]>([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [total, setTotal] = useState(0);
@@ -197,9 +192,8 @@ export default function LogAktivitasPage() {
     try {
       const params = new URLSearchParams({
         page: page.toString(),
-        limit: "20",
+        limit: "10",
       });
-      if (search) params.set("search", search);
       if (filterAction) params.set("action", filterAction);
       if (filterActor) params.set("actor_id", filterActor);
 
@@ -224,7 +218,7 @@ export default function LogAktivitasPage() {
 
   useEffect(() => {
     loadLogs();
-  }, [page, search, filterAction, filterActor]);
+  }, [page, filterAction, filterActor]);
 
   const filteredLogs = logs;
 
@@ -245,13 +239,6 @@ export default function LogAktivitasPage() {
 
             {/* Search + Filter — right side */}
             <div className="flex items-center gap-2">
-              <UmkmSearch
-                value={search}
-                onChange={(value) => {
-                  setSearch(value);
-                  setPage(1);
-                }}
-              />
               <LogFilters
                 actors={actors}
                 filterActor={draftActor}
@@ -363,27 +350,7 @@ export default function LogAktivitasPage() {
         )}
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <div className="flex items-center justify-center gap-2 px-4 py-3 sm:px-6 sm:py-4">
-            <BrandButton
-              variant="outline"
-              size="xs"
-              onClick={() => setPage((p) => Math.max(1, p - 1))}
-              disabled={page === 1}
-              icon={<ChevronLeft size={14} />}
-            />
-            <span className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
-              {page} / {totalPages}
-            </span>
-            <BrandButton
-              variant="outline"
-              size="xs"
-              onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-              disabled={page === totalPages}
-              icon={<ChevronRight size={14} />}
-            />
-          </div>
-        )}
+        <UmkmPagination page={page} totalPages={totalPages} onPageChange={setPage} />
       </div>
     </div>
   );

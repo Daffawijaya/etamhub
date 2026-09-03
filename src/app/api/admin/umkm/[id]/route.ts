@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import crypto from "crypto";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
+import { checkPermission, forbiddenResponse } from "@/lib/permissions";
 import {
   normalizeUmkmBody,
   validateUmkmBody,
@@ -124,6 +125,12 @@ export async function PUT(
         status: 401,
       },
     );
+  }
+
+  // Check update permission
+  const canUpdate = await checkPermission(user, "canUpdate");
+  if (!canUpdate) {
+    return forbiddenResponse("Anda tidak memiliki izin untuk mengedit data");
   }
   const { id } = await context.params;
 
@@ -330,9 +337,9 @@ export async function DELETE(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
-  const allowed = await checkSuperAdmin();
+  const user = await getCurrentUser();
 
-  if (!allowed) {
+  if (!user || !["admin", "super_admin", "admin_kecamatan"].includes(user.role ?? "")) {
     return NextResponse.json(
       {
         message: "Unauthorized",
@@ -341,6 +348,12 @@ export async function DELETE(
         status: 401,
       },
     );
+  }
+
+  // Check delete permission
+  const canDelete = await checkPermission(user, "canDelete");
+  if (!canDelete) {
+    return forbiddenResponse("Anda tidak memiliki izin untuk menghapus data");
   }
   const { id } = await context.params;
 

@@ -2,6 +2,7 @@ import crypto from "crypto";
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/session";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { checkPermission, forbiddenResponse } from "@/lib/permissions";
 import {
   normalizeUmkmBody,
   validateUmkmBody,
@@ -91,6 +92,12 @@ export async function POST(req: Request) {
           status: 401,
         },
       );
+    }
+
+    // Check create permission
+    const canCreate = await checkPermission(user, "canCreate");
+    if (!canCreate) {
+      return forbiddenResponse("Anda tidak memiliki izin untuk menambah data");
     }
 
     const body = await req.json();

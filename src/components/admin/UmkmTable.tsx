@@ -10,6 +10,8 @@ interface UmkmTableProps {
   columns?: UmkmTableColumns;
   onStatusChanged?: () => void;
   showPublishAction?: boolean;
+  canUpdate?: boolean;
+  canDelete?: boolean;
 }
 
 interface UmkmTableColumns {
@@ -91,6 +93,8 @@ export default function UmkmTable({
   },
   onStatusChanged,
   showPublishAction = true,
+  canUpdate = true,
+  canDelete = true,
 }: UmkmTableProps) {
   return (
     <>
@@ -217,6 +221,8 @@ export default function UmkmTable({
               published={item.published}
               onStatusChanged={onStatusChanged}
               showPublishAction={showPublishAction}
+              canUpdate={canUpdate}
+              canDelete={canDelete}
             />
           )}
         </div>

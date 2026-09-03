@@ -19,6 +19,8 @@ interface Props {
   onEdit?: () => void;
   onStatusChanged?: () => void;
   showPublishAction?: boolean;
+  canUpdate?: boolean;
+  canDelete?: boolean;
 }
 
 export default function UmkmRowActions({
@@ -27,6 +29,8 @@ export default function UmkmRowActions({
   onEdit,
   onStatusChanged,
   showPublishAction = true,
+  canUpdate = true,
+  canDelete = true,
 }: Props) {
   const router = useRouter();
   const modal = useModal();
@@ -71,7 +75,6 @@ export default function UmkmRowActions({
   }, []);
 
   const isSuperAdmin = role === "super_admin";
-  const canEdit = role === "super_admin" || role === "admin" || role === "admin_kecamatan";
 
   function toggleMenu() {
     if (!open && buttonRef.current) {
@@ -210,7 +213,7 @@ export default function UmkmRowActions({
               <ExternalLink size={16} />
               Detail UMKM
             </button>
-            {canEdit && (
+            {(isSuperAdmin || canUpdate) && (
               <button
                 onClick={() => {
                   if (onEdit) {
@@ -269,7 +272,7 @@ export default function UmkmRowActions({
               </>
             )}
 
-            {isSuperAdmin && (
+            {(isSuperAdmin || canDelete) && (
               <button
                 onClick={handleDelete}
                 className="

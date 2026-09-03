@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import type { News } from "@/types/news";
 import NewsRowActions from "./NewsRowActions";
 import Pagination from "./Pagination";
+import { useRolePermissions } from "@/hooks/useRolePermissions";
 
 interface NewsTableProps {
   data?: News[];
@@ -34,6 +35,7 @@ const formatDate = (date: string | null) => {
 
 export default function NewsTable({ data = [], role, pagination }: NewsTableProps) {
   const [news, setNews] = useState(data);
+  const { canUpdate, canDelete } = useRolePermissions(role);
 
   useEffect(() => {
     setNews(data);
@@ -145,6 +147,8 @@ export default function NewsTable({ data = [], role, pagination }: NewsTableProp
                       role={role}
                       onDeleted={handleChanged}
                       onStatusChanged={handleStatusChanged}
+                      canUpdate={canUpdate}
+                      canDelete={canDelete}
                     />
                   </div>
                 </div>
@@ -210,6 +214,8 @@ export default function NewsTable({ data = [], role, pagination }: NewsTableProp
                     role={role}
                     onDeleted={handleChanged}
                     onStatusChanged={handleStatusChanged}
+                    canUpdate={canUpdate}
+                    canDelete={canDelete}
                   />
                 </div>
               </div>

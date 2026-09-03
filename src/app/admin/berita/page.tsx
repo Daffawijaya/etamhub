@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 
 import { getNews } from "@/lib/news/news.service";
 import { getCurrentUser } from "@/lib/session";
+import { checkPermission } from "@/lib/permissions";
 import NewsTable from "@/components/admin/berita/NewsTable";
 import NewsSearch from "@/components/admin/berita/NewsSearch";
 
@@ -20,6 +21,9 @@ export default async function AdminBeritaPage({
   const search = params.search ?? "";
 
   const user = await getCurrentUser();
+
+  // Check create permission
+  const canCreate = user ? await checkPermission(user, "canCreate") : false;
 
   // Admin kecamatan hanya lihat berita yang dia tulis
   const authorId =
@@ -52,14 +56,16 @@ export default async function AdminBeritaPage({
             <div className="flex items-center gap-2">
               <NewsSearch />
 
-              <Link
-                href="/admin/berita/tambah"
-                className="flex items-center gap-2 rounded-lg bg-brand-accent px-3 py-2 text-xs font-medium text-white transition hover:bg-brand-accent-hover sm:px-4 sm:text-sm"
-              >
-                <Plus size={16} />
-                <span className="hidden sm:inline">Tambah Berita</span>
-                <span className="sm:hidden">Tambah</span>
-              </Link>
+              {canCreate && (
+                <Link
+                  href="/admin/berita/tambah"
+                  className="flex items-center gap-2 rounded-lg bg-brand-accent px-3 py-2 text-xs font-medium text-white transition hover:bg-brand-accent-hover sm:px-4 sm:text-sm"
+                >
+                  <Plus size={16} />
+                  <span className="hidden sm:inline">Tambah Berita</span>
+                  <span className="sm:hidden">Tambah</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>

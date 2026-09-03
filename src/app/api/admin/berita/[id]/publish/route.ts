@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
+import { checkPermission, forbiddenResponse } from "@/lib/permissions";
 import { logActivity } from "@/lib/activity-log";
 
 export async function PATCH(
@@ -8,6 +9,18 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string }> },
 ) {
   try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check update permission
+    const canUpdate = await checkPermission(user, "canUpdate");
+    if (!canUpdate) {
+      return forbiddenResponse("Anda tidak memiliki izin untuk mengubah data");
+    }
+
     const { id } = await params;
     const { published } = await req.json();
 
@@ -24,24 +37,21 @@ export async function PATCH(
     }
 
     // Log activity
-    const user = await getCurrentUser();
-    if (user) {
-      const { data: newsData } = await supabaseAdmin
-        .from("news")
-        .select("title")
-        .eq("id", id)
-        .single();
+    const { data: newsData } = await supabaseAdmin
+      .from("news")
+      .select("title")
+      .eq("id", id)
+      .single();
 
-      await logActivity({
-        actorId: user.id,
-        actorName: user.nama ?? "Unknown",
-        actorRole: user.role ?? "unknown",
-        action: published ? "publish_berita" : "unpublish_berita",
-        targetType: "berita",
-        targetId: id,
-        targetName: newsData?.title,
-      });
-    }
+    await logActivity({
+      actorId: user.id,
+      actorName: user.nama ?? "Unknown",
+      actorRole: user.role ?? "unknown",
+      action: published ? "publish_berita" : "unpublish_berita",
+      targetType: "berita",
+      targetId: id,
+      targetName: newsData?.title,
+    });
 
     return NextResponse.json({
       success: true,

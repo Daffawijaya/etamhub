@@ -5,7 +5,7 @@ import UmkmSearch from "../UmkmSearch";
 import UmkmFilters from "../UmkmFilters";
 import UmkmTable from "../UmkmTable";
 import UmkmPagination from "./UmkmPagination";
-import UmkmTableHeaderActions from "./UmkmTableHeaderActions";
+import { useRolePermissions } from "@/hooks/useRolePermissions";
 
 interface Props {
   limit?: number;
@@ -34,9 +34,18 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
   const [kategoriOptions, setKategoriOptions] = useState<string[]>([]);
   const [umkms, setUmkms] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
+  const [userRole, setUserRole] = useState<string | null>(null);
 
   const [applied, setApplied] = useState<AppliedFilters>(DEFAULT_FILTERS);
   const [draft, setDraft] = useState<AppliedFilters>(DEFAULT_FILTERS);
+  const { canUpdate, canDelete } = useRolePermissions(userRole);
+
+  useEffect(() => {
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => setUserRole(data.role))
+      .catch(() => {});
+  }, []);
 
   const fetchUmkms = useCallback(async () => {
     const params = new URLSearchParams({
@@ -117,6 +126,7 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
               onApply={handleApply}
               onReset={handleReset}
             />
+
           </div>
         </div>
       </div>
@@ -125,6 +135,8 @@ export default function UmkmDataTable({ limit = 10 }: Props) {
       <div className="p-0">
         <UmkmTable
           data={umkms}
+          canUpdate={canUpdate}
+          canDelete={canDelete}
           columns={{
             gambar: true,
             nama: true,

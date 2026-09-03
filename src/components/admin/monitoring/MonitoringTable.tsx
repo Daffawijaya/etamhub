@@ -111,17 +111,19 @@ export default function MonitoringTable({ data }: Props) {
             </span>
           </div>
 
-          {/* Badge — always visible */}
+          {/* Badge — always visible, matches dashboard style */}
           <div className="flex-shrink-0">
             {item.badge && item.badge.level !== "none" ? (
               <span
-                className={`inline-flex items-center gap-1 rounded-full px-2 py-1 sm:px-2.5 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${item.badge.bgColor} ${item.badge.color}`}
               >
                 {BADGE_ICONS[item.badge.level]}
                 <span className="hidden sm:inline">{item.badge.label}</span>
               </span>
             ) : (
-              <span className="text-xs text-slate-400 dark:text-slate-500">-</span>
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-[#E8E8EE] px-2.5 py-1 text-xs font-medium text-slate-400 dark:bg-[#3A3A4A] dark:text-slate-500">
+                Belum Ada
+              </span>
             )}
           </div>
 

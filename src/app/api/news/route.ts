@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { createNews, getNews } from "@/lib/news/news.service";
+import { getCurrentUser } from "@/lib/session";
+import { checkPermission, forbiddenResponse } from "@/lib/permissions";
 
 export async function GET() {
   try {
@@ -10,8 +12,7 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       {
-        message:
-          error instanceof Error ? error.message : "Gagal mengambil berita",
+        message: error instanceof Error ? error.message : "Gagal mengambil berita",
       },
       { status: 500 },
     );
@@ -20,6 +21,18 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check create permission
+    const canCreate = await checkPermission(user, "canCreate");
+    if (!canCreate) {
+      return forbiddenResponse("Anda tidak memiliki izin untuk menambah data");
+    }
+
     const formData = await request.formData();
 
     const title = formData.get("title");

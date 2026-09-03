@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 import { deleteNews, getNewsById, updateNews } from "@/lib/news/news.service";
+import { getCurrentUser } from "@/lib/session";
+import { checkPermission, forbiddenResponse } from "@/lib/permissions";
 
 type Props = {
   params: Promise<{
@@ -28,6 +30,18 @@ export async function GET(_request: NextRequest, { params }: Props) {
 
 export async function PUT(request: NextRequest, { params }: Props) {
   try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check update permission
+    const canUpdate = await checkPermission(user, "canUpdate");
+    if (!canUpdate) {
+      return forbiddenResponse("Anda tidak memiliki izin untuk mengedit data");
+    }
+
     const { id } = await params;
 
     const formData = await request.formData();
@@ -70,6 +84,18 @@ export async function PUT(request: NextRequest, { params }: Props) {
 
 export async function DELETE(_request: NextRequest, { params }: Props) {
   try {
+    const user = await getCurrentUser();
+
+    if (!user) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+
+    // Check delete permission
+    const canDelete = await checkPermission(user, "canDelete");
+    if (!canDelete) {
+      return forbiddenResponse("Anda tidak memiliki izin untuk menghapus data");
+    }
+
     const { id } = await params;
 
     await deleteNews(id);
