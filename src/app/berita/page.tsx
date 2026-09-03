@@ -8,6 +8,10 @@ import NewsPopular from "@/components/news/NewsPopular";
 import { getNews, getTrendingNews } from "@/lib/news/news.service";
 import Navbar from "@/components/navbar/Navbar";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+export const fetchCache = "force-no-store";
+
 export const metadata: Metadata = {
   title: "Berita UMKM Kutai Kartanegara",
   description:
@@ -53,7 +57,7 @@ export default async function BeritaPage({ searchParams }: Props) {
           {!search && <NewsPopular data={trending} />}
 
           <div className="">
-            <NewsList data={result.data} search={search} total={result.pagination.total} />
+            <NewsList key={`${search}-${page}`} data={result.data} search={search} total={result.pagination.total} />
           </div>
 
           <div className="flex justify-center">
