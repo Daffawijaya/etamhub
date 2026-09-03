@@ -60,7 +60,7 @@ export default async function BeritaPage({ searchParams }: Props) {
             <NewsList key={`${search}-${page}`} data={result.data} search={search} total={result.pagination.total} />
           </div>
 
-          <div className="flex justify-center">
+          <div id="pagination" className="flex justify-center scroll-mt-24">
             <Pagination
               page={result.pagination.page}
               totalPages={result.pagination.totalPages}
