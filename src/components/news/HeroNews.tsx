@@ -35,15 +35,35 @@ export default function HeroBackground() {
 
   return (
     <section className="relative transition-colors h-[445px] flex flex-col">
-      {/* Background — responsive: mobile h 460 biar 50:100 pas tengah input (bg masih terlalu bawah di HP), desktop h 520 sudah pas */}
+      {/* Background — zoom disamakan persis dengan /about: w, h-auto, mask 50% */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[350%] sm:w-[280%] md:w-[200%] lg:w-[150%] xl:w-full h-[460px] sm:h-[520px] pointer-events-none overflow-hidden"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[350%] sm:w-[280%] md:w-[200%] lg:w-[150%] xl:w-full pointer-events-none"
         style={{
-          WebkitMaskImage: `linear-gradient(to bottom,#000 0%,rgba(0,0,0,.85) 12%,rgba(0,0,0,.55) 24%,rgba(0,0,0,.25) 36%,transparent 75%,transparent 100%)`,
-          maskImage: `linear-gradient(to bottom,#000 0%,rgba(0,0,0,.85) 12%,rgba(0,0,0,.55) 24%,rgba(0,0,0,.25) 36%,transparent 75%,transparent 100%)`,
+          WebkitMaskImage: `
+            linear-gradient(
+              to bottom,
+              #000 0%,
+              rgba(0,0,0,.85) 10%,
+              rgba(0,0,0,.55) 20%,
+              rgba(0,0,0,.25) 30%,
+              transparent 50%,
+              transparent 100%
+            )
+          `,
+          maskImage: `
+            linear-gradient(
+              to bottom,
+              #000 0%,
+              rgba(0,0,0,.85) 10%,
+              rgba(0,0,0,.55) 20%,
+              rgba(0,0,0,.25) 30%,
+              transparent 50%,
+              transparent 100%
+            )
+          `,
         }}
       >
-        <Image src="/bgt.png" alt="Background" width={1920} height={520} priority className="w-full h-full object-cover object-top" />
+        <Image src="/bgt.png" alt="Background" width={1920} height={300} priority className="w-full h-auto" />
       </div>
 
       {/* Overlay */}
