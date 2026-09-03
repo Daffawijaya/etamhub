@@ -3,10 +3,19 @@
 import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useEffect, useRef } from "react";
 
 type Props = { page: number; totalPages: number; search?: string };
 
 export default function Pagination({ page, totalPages, search = "" }: Props) {
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    document.getElementById("pagination")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [page, search]);
   if (totalPages <= 1) return null;
   const createUrl = (newPage: number) => {
     const params = new URLSearchParams();
