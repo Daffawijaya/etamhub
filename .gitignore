@@ -44,3 +44,12 @@ next-env.d.ts
 .data/
 
 /src/generated/prisma
+
+# opencode / agents / local tooling (jangan commit)
+.agents/
+.claude/
+.windsurf/
+.tmp/
+skills-lock.json
+n
+Codex*.png
