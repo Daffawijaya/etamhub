@@ -35,9 +35,9 @@ export default function HeroBackground() {
 
   return (
     <section className="relative transition-colors h-[445px] flex flex-col">
-      {/* Background — dinaikin: h 520 + mask 75% biar 50:100 nya pas di tengah input search, tetap di top-0 jadi layout search tidak geser & tidak kepotong overflow-hidden */}
+      {/* Background — responsive: mobile h 460 biar 50:100 pas tengah input (bg masih terlalu bawah di HP), desktop h 520 sudah pas */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[350%] sm:w-[280%] md:w-[200%] lg:w-[150%] xl:w-full h-[520px] pointer-events-none overflow-hidden"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[350%] sm:w-[280%] md:w-[200%] lg:w-[150%] xl:w-full h-[460px] sm:h-[520px] pointer-events-none overflow-hidden"
         style={{
           WebkitMaskImage: `linear-gradient(to bottom,#000 0%,rgba(0,0,0,.85) 12%,rgba(0,0,0,.55) 24%,rgba(0,0,0,.25) 36%,transparent 75%,transparent 100%)`,
           maskImage: `linear-gradient(to bottom,#000 0%,rgba(0,0,0,.85) 12%,rgba(0,0,0,.55) 24%,rgba(0,0,0,.25) 36%,transparent 75%,transparent 100%)`,

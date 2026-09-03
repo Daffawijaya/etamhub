@@ -20,7 +20,8 @@ export default function MobileNavbar() {
 
   const pathname = usePathname();
 
-  const transparentPage = pathname === "/" || pathname === "/about";
+  const isHome = pathname === "/";
+  const transparentPage = pathname === "/" || pathname === "/about" || pathname.startsWith("/berita");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,9 +69,7 @@ export default function MobileNavbar() {
         <Link
           href="/"
           className={`text-xl font-bold tracking-wide ${
-            pathname === "/" && !scrolled
-              ? "text-white"
-              : "text-black dark:text-white"
+            transparentPage && !scrolled ? (isHome ? "text-white" : "text-black dark:text-white") : "text-black dark:text-white"
           }`}
         >
           etamhub.
@@ -80,11 +79,7 @@ export default function MobileNavbar() {
           whileTap={{ scale: 0.9 }}
           whileHover={{ scale: 1.06 }}
           onClick={() => setOpen(true)}
-          className={`text-xl ${
-            pathname === "/" && !scrolled
-              ? "text-white"
-              : "text-black dark:text-white"
-          }`}
+          className={`text-xl ${transparentPage && !scrolled ? (isHome ? "text-white" : "text-black dark:text-white") : "text-black dark:text-white"}`}
         >
           <FiMenu />
         </motion.button>
