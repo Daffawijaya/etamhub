@@ -1,6 +1,7 @@
 "use client";
 
 import { Search } from "lucide-react";
+import { motion } from "framer-motion";
 
 type Props = {
   value: string;
@@ -10,7 +11,12 @@ type Props = {
 
 export default function NewsSearch({ value, onChange, onSearch }: Props) {
   return (
-    <div className="w-full max-w-[800px] mt-8 md:mt-12 xl:mt-16 relative">
+    <motion.div
+      initial={{ opacity: 0, filter: "blur(6px)" }}
+      animate={{ opacity: 1, filter: "blur(0px)" }}
+      transition={{ duration: 0.5, delay: 0.58, ease: [0.22, 1, 0.36, 1] }}
+      className="w-full max-w-[800px] mt-8 md:mt-12 xl:mt-16 relative"
+    >
       {/* Border Gradien dengan Noise */}
       <div
         className="
@@ -72,26 +78,17 @@ export default function NewsSearch({ value, onChange, onSearch }: Props) {
           "
         />
 
-        <button
+        <motion.button
           type="button"
           onClick={onSearch}
           aria-label="Search"
-          className="
-            flex-shrink-0
-            bg-[#111111]
-            rounded-lg
-            flex
-            items-center
-            justify-center
-            text-white
-            hover:bg-black
-            transition-colors
-            w-10 h-10 md:w-13 md:h-13
-          "
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.92 }}
+          className="flex-shrink-0 bg-[#111111] rounded-lg flex items-center justify-center text-white hover:bg-black transition-colors w-10 h-10 md:w-13 md:h-13"
         >
           <Search size={20} strokeWidth={2.5} aria-hidden="true" />
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 }
