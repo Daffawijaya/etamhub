@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import EmptyState from "@/components/EmptyState";
 import LoadingState from "@/components/LoadingState";
-import { Plus, Trash2, Edit2, Shield, Users } from "lucide-react";
+import { Plus, Trash2, Edit2, Shield, Users, Settings } from "lucide-react";
 import { useModal } from "@/components/ui/modal";
 import BrandButton from "@/components/ui/BrandButton";
 
@@ -36,10 +36,24 @@ export default function AdminKecamatanPage() {
   const [formPassword, setFormPassword] = useState("");
   const [formKecamatanIds, setFormKecamatanIds] = useState<string[]>([]);
   const [currentRole, setCurrentRole] = useState<string | null>(null);
+  const [perms, setPerms] = useState<Record<string, { canCreate: boolean; canRead: boolean; canUpdate: boolean; canDelete: boolean }>>({});
 
   const isSuperAdmin = currentRole === "super_admin";
   const adminList = admins.filter((a) => a.role === "admin");
   const kecamatanList = admins.filter((a) => a.role === "admin_kecamatan");
+
+  async function loadPerms(role: string | null) {
+    if (role !== "super_admin") return;
+    try {
+      const res = await fetch("/api/admin/role-permissions");
+      if (res.ok) {
+        const data = await res.json();
+        const map: Record<string, any> = {};
+        for (const p of data) map[p.role] = p;
+        setPerms(map);
+      }
+    } catch {}
+  }
 
   async function loadData() {
     try {
@@ -50,17 +64,36 @@ export default function AdminKecamatanPage() {
       ]);
 
       const roleData = await roleRes.json();
-      setCurrentRole(roleData.role ?? null);
+      const role = roleData.role ?? null;
+      setCurrentRole(role);
 
       const adminsData = await adminsRes.json();
       const kecData = await kecRes.json();
 
       if (adminsRes.ok && Array.isArray(adminsData)) setAdmins(adminsData);
       setKecamatanOptions(kecData ?? []);
+      await loadPerms(role);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function handlePermToggle(role: string, key: "canCreate" | "canRead" | "canUpdate" | "canDelete", value: boolean) {
+    const prev = perms[role];
+    if (!prev) return;
+    setPerms((s) => ({ ...s, [role]: { ...prev, [key]: value } }));
+    try {
+      const res = await fetch("/api/admin/role-permissions", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role, [key]: value }),
+      });
+      if (!res.ok) throw new Error("Gagal simpan");
+    } catch {
+      setPerms((s) => ({ ...s, [role]: prev }));
+      modal.error({ title: "Gagal", description: "Gagal menyimpan hak akses" });
     }
   }
 
@@ -186,6 +219,57 @@ export default function AdminKecamatanPage() {
 
   return (
     <div className="space-y-6">
+      {/* ==================== CRUD PERMISSIONS (super_admin only) ==================== */}
+      {isSuperAdmin && (
+        <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">
+          <div className="flex items-center gap-3 px-4 py-3 sm:px-5 sm:py-4">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 sm:h-10 sm:w-10 dark:bg-amber-900/20">
+              <Settings size={18} className="text-amber-600 dark:text-amber-400" />
+            </div>
+            <div>
+              <h2 className="text-base font-bold text-slate-900 sm:text-lg dark:text-white">Hak Akses CRUD</h2>
+              <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">Atur izin tambah, lihat, edit, hapus untuk tiap role</p>
+            </div>
+          </div>
+          <div className="grid gap-4 p-4 sm:p-5 md:grid-cols-2">
+            {(["admin", "admin_kecamatan"] as const).map((role) => {
+              const p = perms[role];
+              if (!p) return <div key={role} className="h-36 animate-pulse rounded-xl bg-slate-50 dark:bg-white/5" />;
+              return (
+                <div key={role} className="rounded-xl border border-slate-100 bg-slate-50/60 p-4 dark:border-white/5 dark:bg-white/[0.03]">
+                  <div className="flex items-center gap-2">
+                    {role === "admin" ? <Shield size={16} className="text-violet-600 dark:text-violet-400" /> : <Users size={16} className="text-teal-600 dark:text-teal-400" />}
+                    <h3 className="text-sm font-semibold capitalize text-slate-900 dark:text-white">{role === "admin" ? "Admin" : "Admin Kecamatan"}</h3>
+                  </div>
+                  <div className="mt-4 space-y-3">
+                    {[
+                      { key: "canCreate" as const, label: "Create", desc: "Tambah data" },
+                      { key: "canRead" as const, label: "Read", desc: "Lihat data" },
+                      { key: "canUpdate" as const, label: "Update", desc: "Edit data" },
+                      { key: "canDelete" as const, label: "Delete", desc: "Hapus data" },
+                    ].map((item) => (
+                      <label key={item.key} className="flex cursor-pointer items-center justify-between gap-3">
+                        <div>
+                          <p className="text-sm font-medium text-slate-700 dark:text-slate-200">{item.label}</p>
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{item.desc}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handlePermToggle(role, item.key, !p[item.key])}
+                          className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${p[item.key] ? "bg-violet-600" : "bg-slate-200 dark:bg-white/10"}`}
+                        >
+                          <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${p[item.key] ? "translate-x-4" : "translate-x-1"}`} />
+                        </button>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ==================== ADMIN SECTION (super_admin only) ==================== */}
       {isSuperAdmin && (
       <div className="overflow-hidden rounded-xl bg-white dark:bg-dark-card">

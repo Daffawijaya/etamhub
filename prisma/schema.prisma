@@ -292,6 +292,19 @@ model BadgeCriteria {
   @@map("badge_criteria")
 }
 
+model RolePermission {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  role      String   @unique
+  canCreate Boolean  @default(true) @map("can_create")
+  canRead   Boolean  @default(true) @map("can_read")
+  canUpdate Boolean  @default(true) @map("can_update")
+  canDelete Boolean  @default(true) @map("can_delete")
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("role_permissions")
+}
+
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model product_legalitas {
