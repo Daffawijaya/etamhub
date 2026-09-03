@@ -83,11 +83,11 @@ export default function UmkmGallery({
 
       {gambar.length > 1 && (
         <ThumbnailGallery
-          images={gambar}
-          activeImage={activeImage}
-          setActiveImage={setActiveImage}
-          nama={nama}
-        />
+            images={gambar}
+            activeImage={activeImage}
+            setActiveImage={setActiveImage}
+            nama={nama}
+          />
       )}
     </div>
   );

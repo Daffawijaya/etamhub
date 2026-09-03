@@ -20,7 +20,7 @@ export default function ThemeToggle() {
       onClick={() =>
         setTheme(resolvedTheme === "dark" ? "light" : "dark")
       }
-      className="text-lg cursor-pointer"
+      className="text-lg cursor-pointer flex items-center justify-center"
     >
       {resolvedTheme === "dark" ? (
         <IoIosSunny className="text-white hover:text-zinc-300 duration-200" />

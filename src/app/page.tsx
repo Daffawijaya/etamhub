@@ -19,12 +19,9 @@ import Footer from "@/components/Footer";
 import Hero from "@/components/dashboard/Hero";
 import InsightSection from "@/components/dashboard/InsightSection";
 import FooterBrand from "@/components/FooterBrand";
-import ScrollProgress from "@/components/motion/ScrollProgress";
-
 export default function Home() {
   return (
     <>
-      <ScrollProgress />
       <Navbar />
 
       <main className="relative overflow-hidden bg-dark transition-colors">

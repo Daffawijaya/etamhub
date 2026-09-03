@@ -89,7 +89,7 @@ export default function Navbar() {
                   ))}
                 </div>
 
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }}>
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.35 }} className="flex items-center h-full">
                   <ThemeToggle />
                 </motion.div>
 
