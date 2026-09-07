@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import Footer from "@/components/Footer";
 import UmkmCard from "@/components/district/UmkmCard";
 import KategoriFilter from "@/components/district/KategoriFilter";
@@ -8,6 +8,20 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Pagination from "@/components/district/Pagination";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
 import DistrictHero from "@/components/district/DistrictHero";
+
+function SkeletonCard() {
+  return (
+    <div className="rounded-xl overflow-hidden bg-white dark:bg-zinc-800 shadow-sm border border-zinc-200 dark:border-zinc-700">
+      <div className="aspect-[4/3] bg-zinc-200 dark:bg-zinc-700 animate-pulse" />
+      <div className="p-3 space-y-2">
+        <div className="h-3 bg-zinc-200 dark:bg-zinc-700 rounded w-2/3 animate-pulse" />
+        <div className="h-2.5 bg-zinc-200 dark:bg-zinc-700 rounded w-1/2 animate-pulse" />
+        <div className="h-2.5 bg-zinc-200 dark:bg-zinc-700 rounded w-full animate-pulse" />
+        <div className="h-2.5 bg-zinc-200 dark:bg-zinc-700 rounded w-4/5 animate-pulse" />
+      </div>
+    </div>
+  );
+}
 
 interface Badge {
   level: "none" | "bronze" | "silver" | "gold" | "platinum";
@@ -64,12 +78,19 @@ export default function KecamatanPageClient({
     lng: number;
   } | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const isFirstRender = useRef(true);
 
-  // Fetch data when page changes
+  // Fetch data when page changes (skip initial render since initialData is SSR'd)
   useEffect(() => {
-    if (currentPage === 1) return; // initial data already loaded
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
 
+    let cancelled = false;
     async function fetchUmkm() {
+      setIsLoading(true);
       try {
         const districtName = district
           .split("-")
@@ -88,14 +109,19 @@ export default function KecamatanPageClient({
         });
 
         const result = await res.json();
-        setUmkms(result.data ?? []);
-        setTotal(result.total ?? 0);
+        if (!cancelled) {
+          setUmkms(result.data ?? []);
+          setTotal(result.total ?? 0);
+        }
       } catch (error) {
         console.error(error);
+      } finally {
+        if (!cancelled) setIsLoading(false);
       }
     }
 
     fetchUmkm();
+    return () => { cancelled = true; };
   }, [district, currentPage]);
 
   useEffect(() => {
@@ -196,18 +222,20 @@ export default function KecamatanPageClient({
         </div>
 
         <div className="mt-6 grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {filteredData.map((item) => (
-            <UmkmCard
-              key={item.id}
-              id={item.id}
-              nama={item.nama}
-              subkategori={item.subkategori}
-              deskripsi={item.deskripsi}
-              gambar={item.gambar}
-              distance={urutTerdekat ? item.distance : null}
-              badge={item.badge}
-            />
-          ))}
+          {isLoading
+            ? Array.from({ length: 8 }).map((_, i) => <SkeletonCard key={i} />)
+            : filteredData.map((item) => (
+                <UmkmCard
+                  key={item.id}
+                  id={item.id}
+                  nama={item.nama}
+                  subkategori={item.subkategori}
+                  deskripsi={item.deskripsi}
+                  gambar={item.gambar}
+                  distance={urutTerdekat ? item.distance : null}
+                  badge={item.badge}
+                />
+              ))}
         </div>
 
         <Pagination
