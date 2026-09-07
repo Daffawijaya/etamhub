@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
@@ -9,14 +9,49 @@ import { getBaseUrl } from "@/lib/api";
 
 type Props = {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 };
 
-async function getProduct(id: string) {
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+async function getProduct(slug: string) {
+  const baseSelect =
+    "*, umkm:umkm_id (id, nama, slug, kecamatan), product_legalitas (*)";
+
+  const bySlug = await supabaseAdmin
+    .from("products")
+    .select(baseSelect)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (!bySlug.error && bySlug.data) {
+    return bySlug.data;
+  }
+
+  let id: string | null = null;
+
+  if (UUID_RE.test(slug)) {
+    id = slug;
+  } else {
+    const hist = await supabaseAdmin
+      .from("slug_history")
+      .select("entity_id")
+      .eq("entity_type", "product")
+      .eq("old_slug", slug)
+      .maybeSingle();
+
+    id = (hist.data as { entity_id: string } | null)?.entity_id ?? null;
+  }
+
+  if (!id) {
+    return null;
+  }
+
   const { data, error } = await supabaseAdmin
     .from("products")
-    .select("*, umkm:umkm_id (id, nama, kecamatan), product_legalitas (*)")
+    .select(baseSelect)
     .eq("id", id)
     .maybeSingle();
 
@@ -51,10 +86,10 @@ async function getOtherProducts(umkmId: string, excludeProductId: string) {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
 
   try {
-    const product = await getProduct(id);
+    const product = await getProduct(slug);
     if (!product) {
       return { title: "Produk Tidak Ditemukan" };
     }
@@ -69,7 +104,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${product.nama}${umkm?.nama ? ` — ${umkm.nama}` : ""}`,
       description: description.slice(0, 160),
       alternates: {
-        canonical: `/produk/${product.id}`,
+        canonical: `/produk/${product.slug}`,
       },
       openGraph: {
         type: "website",
@@ -101,12 +136,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProdukPage({ params }: Props) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  const product = await getProduct(id);
+  const product = await getProduct(slug);
 
   if (!product) {
     notFound();
+  }
+
+  if (slug !== product.slug) {
+    permanentRedirect(`/produk/${product.slug}`);
   }
 
   // Parallel fetch: umkm and other products
@@ -138,7 +177,7 @@ export default async function ProdukPage({ params }: Props) {
                     },
                     {
                       label: umkm.nama,
-                      href: `/umkm/${umkm.id}`,
+                      href: `/umkm/${umkm.slug}`,
                     },
                   ]
                 : []),

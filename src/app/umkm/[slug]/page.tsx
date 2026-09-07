@@ -1,4 +1,4 @@
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import type { Metadata } from "next";
 import UmkmDetail from "@/components/Umkm/UmkmDetail";
 import Footer from "@/components/Footer";
@@ -6,30 +6,23 @@ import Breadcrumb from "@/components/Breadcrumb";
 import DetailNavbar from "@/components/navbar/DetailNavbar";
 import PublicProductList from "@/components/Umkm/PublicProductList";
 import { getBaseUrl } from "@/lib/api";
+import { getUmkmDetail } from "@/lib/umkm/detail";
 
 type Props = {
   params: Promise<{
-    id: string;
+    slug: string;
   }>;
 };
 
-async function getUmkm(id: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/umkm/${id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    return null;
-  }
-
-  return res.json();
+async function getUmkm(slug: string) {
+  return getUmkmDetail(slug);
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { slug } = await params;
 
   try {
-    const umkm = await getUmkm(id);
+    const umkm = await getUmkm(slug);
     if (!umkm) {
       return { title: "UMKM Tidak Ditemukan" };
     }
@@ -43,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${umkm.nama} — ${umkm.kecamatan}`,
       description: description.slice(0, 160),
       alternates: {
-        canonical: `/umkm/${umkm.id}`,
+        canonical: `/umkm/${umkm.slug}`,
       },
       openGraph: {
         type: "website",
@@ -75,12 +68,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function UmkmPage({ params }: Props) {
-  const { id } = await params;
+  const { slug } = await params;
 
-  const umkm = await getUmkm(id);
+  const umkm = await getUmkm(slug);
 
   if (!umkm) {
     notFound();
+  }
+
+  if (slug !== umkm.slug) {
+    permanentRedirect(`/umkm/${umkm.slug}`);
   }
 
   const kecamatanSlug = umkm.kecamatan
@@ -105,7 +102,7 @@ export default async function UmkmPage({ params }: Props) {
         "@type": "ListItem",
         position: 2,
         name: umkm.nama,
-        item: `${baseUrl}/umkm/${umkm.id}`,
+        item: `${baseUrl}/umkm/${umkm.slug}`,
       },
     ],
   };
