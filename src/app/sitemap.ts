@@ -3,6 +3,8 @@ import { getBaseUrl } from "@/lib/api";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { KECAMATAN_KUKAR } from "@/app/constants/kecamatanKukar";
 
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getBaseUrl();
 
