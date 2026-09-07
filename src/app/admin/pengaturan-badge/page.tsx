@@ -86,7 +86,7 @@ const TIERS: {
       { key: "silver_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
       { key: "silver_tk_min", label: "Minimal Tenaga Kerja" },
       { key: "silver_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
-      { key: "silver_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (IG/FB/TT)" },
+      { key: "silver_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)" },
     ],
   },
   {
@@ -98,7 +98,7 @@ const TIERS: {
       { key: "gold_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
       { key: "gold_tk_min", label: "Minimal Tenaga Kerja" },
       { key: "gold_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
-      { key: "gold_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (IG/FB/TT)" },
+      { key: "gold_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)" },
     ],
   },
   {
@@ -113,7 +113,7 @@ const TIERS: {
       { key: "platinum_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
       { key: "platinum_tk_min", label: "Minimal Tenaga Kerja" },
       { key: "platinum_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
-      { key: "platinum_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (IG/FB/TT)" },
+      { key: "platinum_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)" },
     ],
   },
 ];
