@@ -187,7 +187,7 @@ export default function DashboardGrid() {
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
       <div className="space-y-4 lg:col-span-8">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <StatsCards stats={filteredStats} />
+          <StatsCards stats={filteredStats} filters={appliedFilters} />
           <CategoryPieChart data={filteredKategoriChart} />
         </div>
 

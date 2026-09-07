@@ -6,9 +6,38 @@ interface Props {
     totalKecamatan: number;
     totalSubkategori: number;
   };
+  filters: {
+    kecamatan: string;
+    kategori: string;
+    monitoring: string;
+  };
 }
 
-export default function StatsCards({ stats }: Props) {
+function buildSubtitle(filters: Props["filters"]) {
+  const parts: string[] = [];
+
+  if (filters.kecamatan !== "all") {
+    parts.push(`Kecamatan ${filters.kecamatan}`);
+  }
+  if (filters.kategori !== "all") {
+    parts.push(`kategori ${filters.kategori}`);
+  }
+  if (filters.monitoring !== "all") {
+    parts.push(
+      filters.monitoring === "monitored"
+        ? "sudah dimonitoring"
+        : "belum dimonitoring",
+    );
+  }
+
+  if (parts.length === 0) {
+    return "Terdaftar di etamhub.";
+  }
+
+  return `${parts.join(" · ")}.`;
+}
+
+export default function StatsCards({ stats, filters }: Props) {
   return (
     <div
       className="
@@ -68,7 +97,7 @@ export default function StatsCards({ stats }: Props) {
               {stats.totalUmkm.toLocaleString("id-ID")}
             </h2>
 
-            <p className="mt-1 text-xs text-white/70 sm:text-sm">Terdaftar di etamhub.</p>
+            <p className="mt-1 text-xs text-white/70 sm:text-sm">{buildSubtitle(filters)}</p>
           </div>
         </div>
 
