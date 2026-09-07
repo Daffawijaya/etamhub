@@ -27,6 +27,9 @@ export const metadata: Metadata = {
   icons: {
     icon: "/eiconl.png",
   },
+  verification: {
+    google: "maQ8VR_wwFHBIAw1Aza7U7luL9Xt9ySq8hN15zBHSL0",
+  },
   openGraph: {
     type: "website",
     locale: "id_ID",
