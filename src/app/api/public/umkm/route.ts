@@ -71,7 +71,7 @@ export async function GET(req: Request) {
       if (umkmsWithMonitoring.length > 0) {
         const { data: latestMonitorings } = await supabaseAdmin
           .from("umkm_monitoring")
-          .select("umkm_id, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok")
+          .select("umkm_id, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, whatsapp, instagram, facebook, tiktok")
           .in("umkm_id", umkmsWithMonitoring)
           .order("created_at", { ascending: false });
 
@@ -96,6 +96,7 @@ export async function GET(req: Request) {
               halal: umkm.halal ?? null,
               pirt: umkm.pirt ?? null,
               haki: umkm.haki ?? null,
+              whatsapp: (umkm as Record<string, string | null>).whatsapp ?? null,
               instagram: umkm.instagram ?? null,
               facebook: umkm.facebook ?? null,
               tiktok: umkm.tiktok ?? null,
@@ -108,6 +109,7 @@ export async function GET(req: Request) {
               halal: latestEntry.halal ?? initial.halal,
               pirt: latestEntry.pirt ?? initial.pirt,
               haki: latestEntry.haki ?? initial.haki,
+              whatsapp: (latestEntry as Record<string, string | null>).whatsapp ?? initial.whatsapp,
               instagram: latestEntry.instagram ?? initial.instagram,
               facebook: latestEntry.facebook ?? initial.facebook,
               tiktok: latestEntry.tiktok ?? initial.tiktok,

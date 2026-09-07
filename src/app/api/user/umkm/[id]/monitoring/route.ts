@@ -35,7 +35,7 @@ export async function GET(
     const { data: monitorings, error: monError } = await supabaseAdmin
       .from("umkm_monitoring")
       .select(
-        "id, created_at, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, instagram, facebook, tiktok, kebutuhan_utama, catatan",
+        "id, created_at, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, whatsapp, instagram, facebook, tiktok, kebutuhan_utama, catatan",
       )
       .eq("umkm_id", id)
       .order("created_at", { ascending: false });

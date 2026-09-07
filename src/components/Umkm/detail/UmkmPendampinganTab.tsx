@@ -67,7 +67,7 @@ export default function UmkmPendampinganTab({ umkmId }: Props) {
 
   // Check what data exists (monitoring data merged with UMKM initial data)
   const hasOmzet = latest.omzet != null;
-  const hasSosmed = latest.instagram != null || latest.facebook != null || latest.tiktok != null;
+  const hasSosmed = latest.whatsapp != null || latest.instagram != null || latest.facebook != null || latest.tiktok != null;
   const hasLegalitas =
     latest.nib != null ||
     latest.halal != null ||
@@ -104,6 +104,7 @@ export default function UmkmPendampinganTab({ umkmId }: Props) {
   // Digitalisasi - if monitoring has sosmed data
   if (hasSosmed) {
     const sosmedItems = [
+      latest.whatsapp && `WhatsApp: ${latest.whatsapp}`,
       latest.instagram && `Instagram: ${latest.instagram}`,
       latest.facebook && `Facebook: ${latest.facebook}`,
       latest.tiktok && `TikTok: ${latest.tiktok}`,

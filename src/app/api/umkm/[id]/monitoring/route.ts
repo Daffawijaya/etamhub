@@ -15,7 +15,7 @@ export async function GET(
     // Verify UMKM exists and is published
     const { data: umkm, error: umkmError } = await supabaseAdmin
       .from("umkm")
-      .select("id, nama, deskripsi, gambar, omzet, jumlah_tenaga_kerja, npwp, nib, halal, pirt, haki, instagram, facebook, tiktok")
+      .select("id, nama, deskripsi, gambar, omzet, jumlah_tenaga_kerja, npwp, nib, halal, pirt, haki, whatsapp, instagram, facebook, tiktok")
       .eq("id", id)
       .eq("published", true)
       .single();
@@ -30,7 +30,7 @@ export async function GET(
     // Get monitoring history
     const { data: monitorings, error: monError } = await supabaseAdmin
       .from("umkm_monitoring")
-      .select("id, created_at, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok, kebutuhan_utama, catatan")
+      .select("id, created_at, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, whatsapp, instagram, facebook, tiktok, kebutuhan_utama, catatan")
       .eq("umkm_id", id)
       .order("created_at", { ascending: false });
 
@@ -47,6 +47,7 @@ export async function GET(
       halal: umkm.halal ?? null,
       pirt: umkm.pirt ?? null,
       haki: umkm.haki ?? null,
+      whatsapp: (umkm as Record<string, string | null>).whatsapp ?? null,
       instagram: umkm.instagram ?? null,
       facebook: umkm.facebook ?? null,
       tiktok: umkm.tiktok ?? null,
@@ -65,6 +66,7 @@ export async function GET(
           halal: latestEntry.halal ?? initial.halal,
           pirt: latestEntry.pirt ?? initial.pirt,
           haki: latestEntry.haki ?? initial.haki,
+          whatsapp: latestEntry.whatsapp ?? initial.whatsapp,
           instagram: latestEntry.instagram ?? initial.instagram,
           facebook: latestEntry.facebook ?? initial.facebook,
           tiktok: latestEntry.tiktok ?? initial.tiktok,
@@ -81,6 +83,7 @@ export async function GET(
         pirt: initial.pirt,
         haki: initial.haki,
         nib: initial.nib,
+        whatsapp: initial.whatsapp,
         instagram: initial.instagram,
         facebook: initial.facebook,
         tiktok: initial.tiktok,
@@ -92,6 +95,7 @@ export async function GET(
         pirt: badgeLatestEntry?.pirt ?? initial.pirt,
         haki: badgeLatestEntry?.haki ?? initial.haki,
         nib: badgeLatestEntry?.nib ?? initial.nib,
+        whatsapp: badgeLatestEntry?.whatsapp ?? initial.whatsapp,
         instagram: badgeLatestEntry?.instagram ?? initial.instagram,
         facebook: badgeLatestEntry?.facebook ?? initial.facebook,
         tiktok: badgeLatestEntry?.tiktok ?? initial.tiktok,

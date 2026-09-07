@@ -20,6 +20,7 @@ interface MonitoringEntry {
   haki: string | null;
   nib: string | null;
   kbli: string[] | null;
+  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -35,6 +36,7 @@ interface UMKMData {
   pirt: string | null;
   haki: string | null;
   kbli: string[] | null;
+  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -134,6 +136,7 @@ export default function UserMonitoringHistory({ umkmId, umkm }: Props) {
         pirt: umkm.pirt,
         haki: umkm.haki,
         nib: umkm.nib,
+        whatsapp: umkm.whatsapp ?? null,
         instagram: umkm.instagram,
         facebook: umkm.facebook,
         tiktok: umkm.tiktok,
@@ -146,6 +149,7 @@ export default function UserMonitoringHistory({ umkmId, umkm }: Props) {
       pirt: entry.pirt ?? umkm.pirt,
       haki: entry.haki ?? umkm.haki,
       nib: entry.nib ?? umkm.nib,
+      whatsapp: entry.whatsapp ?? umkm.whatsapp ?? null,
       instagram: entry.instagram ?? umkm.instagram,
       facebook: entry.facebook ?? umkm.facebook,
       tiktok: entry.tiktok ?? umkm.tiktok,
@@ -205,6 +209,10 @@ export default function UserMonitoringHistory({ umkmId, umkm }: Props) {
             ].filter(Boolean) as { label: string; value: string }[];
 
             const sosmedItems = [
+              entryData.whatsapp && {
+                label: "WhatsApp",
+                value: entryData.whatsapp,
+              },
               entryData.instagram && {
                 label: "Instagram",
                 value: entryData.instagram,
@@ -306,7 +314,8 @@ export default function UserMonitoringHistory({ umkmId, umkm }: Props) {
                   <span className="text-slate-500">
                     Sosmed:{" "}
                     <span className="font-medium text-slate-700 dark:text-slate-300">
-                      {(entryData.instagram ? 1 : 0) +
+                      {(entryData.whatsapp ? 1 : 0) +
+                        (entryData.instagram ? 1 : 0) +
                         (entryData.facebook ? 1 : 0) +
                         (entryData.tiktok ? 1 : 0)}
                     </span>

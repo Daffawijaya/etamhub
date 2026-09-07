@@ -23,6 +23,7 @@ interface UmkmData {
   haki: string | null;
   nib: string | null;
   kbli: string[] | null;
+  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -38,6 +39,7 @@ interface MonitoringEntry {
   haki: string | null;
   nib: string | null;
   kbli: string[] | null;
+  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -222,6 +224,7 @@ export default function MonitoringDetailPage() {
     haki: "",
     nib: "",
     kbli: [] as string[],
+    whatsapp: "",
     instagram: "",
     facebook: "",
     tiktok: "",
@@ -263,6 +266,7 @@ export default function MonitoringDetailPage() {
       payload.instagram = form.instagram || null;
       payload.facebook = form.facebook || null;
       payload.tiktok = form.tiktok || null;
+      payload.whatsapp = form.whatsapp || null;
       if (form.kebutuhan_utama) payload.kebutuhan_utama = form.kebutuhan_utama;
       if (form.catatan) payload.catatan = form.catatan;
 
@@ -283,6 +287,7 @@ export default function MonitoringDetailPage() {
         haki: "",
         nib: "",
         kbli: [],
+        whatsapp: "",
         instagram: "",
         facebook: "",
         tiktok: "",
@@ -306,7 +311,7 @@ export default function MonitoringDetailPage() {
   const _umkm = umkm!;
   function getEntryData(entry: MonitoringEntry | null) {
     if (!entry) {
-      return { omzet: _umkm.omzet, jumlah_tenaga_kerja: _umkm.jumlah_tenaga_kerja, halal: _umkm.halal, pirt: _umkm.pirt, haki: _umkm.haki, nib: _umkm.nib, instagram: _umkm.instagram, facebook: _umkm.facebook, tiktok: _umkm.tiktok };
+      return { omzet: _umkm.omzet, jumlah_tenaga_kerja: _umkm.jumlah_tenaga_kerja, halal: _umkm.halal, pirt: _umkm.pirt, haki: _umkm.haki, nib: _umkm.nib, whatsapp: _umkm.whatsapp, instagram: _umkm.instagram, facebook: _umkm.facebook, tiktok: _umkm.tiktok };
     }
     return {
       omzet: entry.omzet ?? _umkm.omzet,
@@ -315,6 +320,7 @@ export default function MonitoringDetailPage() {
       pirt: entry.pirt ?? _umkm.pirt,
       haki: entry.haki ?? _umkm.haki,
       nib: entry.nib ?? _umkm.nib,
+      whatsapp: entry.whatsapp ?? _umkm.whatsapp,
       instagram: entry.instagram ?? _umkm.instagram,
       facebook: entry.facebook ?? _umkm.facebook,
       tiktok: entry.tiktok ?? _umkm.tiktok,
@@ -332,6 +338,7 @@ export default function MonitoringDetailPage() {
   ].filter(Boolean) as { label: string; value: string }[];
 
   const sosmedItems = [
+    latestData.whatsapp && { label: "WhatsApp", value: latestData.whatsapp },
     latestData.instagram && { label: "Instagram", value: latestData.instagram },
     latestData.facebook && { label: "Facebook", value: latestData.facebook },
     latestData.tiktok && { label: "TikTok", value: latestData.tiktok },
@@ -376,6 +383,7 @@ export default function MonitoringDetailPage() {
                 haki: latestData.haki ?? "",
                 nib: latestData.nib ?? "",
                 kbli: umkm.kbli ?? [],
+                whatsapp: latestData.whatsapp ?? "",
                 instagram: latestData.instagram ?? "",
                 facebook: latestData.facebook ?? "",
                 tiktok: latestData.tiktok ?? "",
@@ -608,7 +616,7 @@ export default function MonitoringDetailPage() {
                     <span className="text-slate-400">·</span>
                     <span className="text-slate-500">
                       Sosmed: <span className="font-medium text-slate-600 dark:text-slate-400">
-                        {(umkm.instagram ? 1 : 0) + (umkm.facebook ? 1 : 0) + (umkm.tiktok ? 1 : 0)}
+                        {(umkm.whatsapp ? 1 : 0) + (umkm.instagram ? 1 : 0) + (umkm.facebook ? 1 : 0) + (umkm.tiktok ? 1 : 0)}
                       </span>
                     </span>
                   </div>
@@ -642,6 +650,7 @@ export default function MonitoringDetailPage() {
                           <div className="flex flex-wrap gap-1.5">
                             {((): { label: string; value: string }[] => {
                               const items: { label: string; value: string }[] = [];
+                              if (umkm.whatsapp) items.push({ label: "WhatsApp", value: umkm.whatsapp });
                               if (umkm.instagram) items.push({ label: "Instagram", value: umkm.instagram });
                               if (umkm.facebook) items.push({ label: "Facebook", value: umkm.facebook });
                               if (umkm.tiktok) items.push({ label: "TikTok", value: umkm.tiktok });
@@ -651,7 +660,7 @@ export default function MonitoringDetailPage() {
                                 • {item.label} <span className="opacity-60">{item.value}</span>
                               </span>
                             ))}
-                            {!umkm.instagram && !umkm.facebook && !umkm.tiktok && <span className="text-xs text-slate-400">-</span>}
+                            {!umkm.whatsapp && !umkm.instagram && !umkm.facebook && !umkm.tiktok && <span className="text-xs text-slate-400">-</span>}
                           </div>
                         </div>
                       </div>
@@ -718,9 +727,9 @@ export default function MonitoringDetailPage() {
                         </span>
                         <span className="text-slate-400">·</span>
                         <span className="text-slate-500">
-                          Sosmed: <span className="font-medium text-slate-700 dark:text-slate-300">
-                            {(entryData.instagram ? 1 : 0) + (entryData.facebook ? 1 : 0) + (entryData.tiktok ? 1 : 0)}
-                          </span>
+                            Sosmed: <span className="font-medium text-slate-700 dark:text-slate-300">
+                              {(entryData.whatsapp ? 1 : 0) + (entryData.instagram ? 1 : 0) + (entryData.facebook ? 1 : 0) + (entryData.tiktok ? 1 : 0)}
+                            </span>
                         </span>
                       </div>
 
@@ -763,8 +772,9 @@ export default function MonitoringDetailPage() {
                             <p className="text-xs font-medium text-slate-400 mb-1.5">Sosmed</p>
                             <div className="flex flex-wrap gap-1.5">
                               {((): { label: string; value: string; isNew: boolean }[] => {
-                                const prevData = prevEntry ? getEntryData(prevEntry) : { instagram: umkm.instagram, facebook: umkm.facebook, tiktok: umkm.tiktok };
+                                const prevData = prevEntry ? getEntryData(prevEntry) : { whatsapp: umkm.whatsapp, instagram: umkm.instagram, facebook: umkm.facebook, tiktok: umkm.tiktok };
                                 const items: { label: string; value: string; isNew: boolean }[] = [];
+                                if (entryData.whatsapp) items.push({ label: "WhatsApp", value: entryData.whatsapp, isNew: !prevData.whatsapp });
                                 if (entryData.instagram) items.push({ label: "Instagram", value: entryData.instagram, isNew: !prevData.instagram });
                                 if (entryData.facebook) items.push({ label: "Facebook", value: entryData.facebook, isNew: !prevData.facebook });
                                 if (entryData.tiktok) items.push({ label: "TikTok", value: entryData.tiktok, isNew: !prevData.tiktok });
@@ -779,7 +789,7 @@ export default function MonitoringDetailPage() {
                                   <span className="opacity-60">{item.value}</span>
                                 </span>
                               ))}
-                              {!entryData.instagram && !entryData.facebook && !entryData.tiktok && <span className="text-xs text-slate-400">-</span>}
+                              {!entryData.whatsapp && !entryData.instagram && !entryData.facebook && !entryData.tiktok && <span className="text-xs text-slate-400">-</span>}
                             </div>
                           </div>
 
@@ -881,7 +891,11 @@ export default function MonitoringDetailPage() {
 
               <div>
                 <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Sosial Media</label>
-                <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                  <div>
+                    <label className="mb-1 block text-xs text-slate-400">WhatsApp</label>
+                    <input type="text" value={form.whatsapp} onChange={(e) => setForm((p) => ({ ...p, whatsapp: e.target.value }))} placeholder="08xxxxxxxxxx" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />
+                  </div>
                   <div>
                     <label className="mb-1 block text-xs text-slate-400">Instagram</label>
                     <input type="text" value={form.instagram} onChange={(e) => setForm((p) => ({ ...p, instagram: e.target.value }))} placeholder="@username" className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white" />

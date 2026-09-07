@@ -106,7 +106,7 @@ export async function GET() {
     // Fetch monitoring + badge
     const { data: monitorings } = await supabaseAdmin
       .from("umkm_monitoring")
-      .select("id, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, instagram, facebook, tiktok")
+      .select("id, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, whatsapp, instagram, facebook, tiktok")
       .eq("umkm_id", data.id)
       .order("created_at", { ascending: false });
 
@@ -122,6 +122,7 @@ export async function GET() {
       pirt: data.pirt ?? null,
       haki: data.haki ?? null,
       kbli: data.kbli ?? null,
+      whatsapp: (data as Record<string, string | null>).whatsapp ?? null,
       instagram: data.instagram ?? null,
       facebook: data.facebook ?? null,
       tiktok: data.tiktok ?? null,
@@ -139,6 +140,7 @@ export async function GET() {
           pirt: latest.pirt ?? initialData.pirt,
           haki: latest.haki ?? initialData.haki,
           kbli: latest.kbli ?? initialData.kbli,
+          whatsapp: (latest as Record<string, string | null>).whatsapp ?? initialData.whatsapp,
           instagram: latest.instagram ?? initialData.instagram,
           facebook: latest.facebook ?? initialData.facebook,
           tiktok: latest.tiktok ?? initialData.tiktok,

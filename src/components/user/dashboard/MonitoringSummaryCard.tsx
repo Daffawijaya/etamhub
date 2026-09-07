@@ -15,6 +15,7 @@ type MonitoringData = {
   halal: string | null;
   pirt: string | null;
   haki: string | null;
+  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -64,6 +65,7 @@ function countLegalitas(d: MonitoringData) {
 function countSosmed(d: MonitoringData) {
   if (!d) return 0;
   let c = 0;
+  if (d.whatsapp) c++;
   if (d.instagram) c++;
   if (d.facebook) c++;
   if (d.tiktok) c++;
@@ -137,6 +139,7 @@ export default function MonitoringSummaryCard({ monitoring, umkm }: Props) {
 
   if (sosmedCount > 0) {
     const items = [
+      latestData?.whatsapp && "WhatsApp",
       latestData?.instagram && "Instagram",
       latestData?.facebook && "Facebook",
       latestData?.tiktok && "TikTok",

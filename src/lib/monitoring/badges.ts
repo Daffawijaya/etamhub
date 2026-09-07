@@ -21,6 +21,7 @@ export interface MonitoringData {
   pirt: string | null;
   haki: string | null;
   nib: string | null;
+  whatsapp: string | null;
   instagram: string | null;
   facebook: string | null;
   tiktok: string | null;
@@ -98,6 +99,7 @@ const BADGE_STYLES = {
 
 function countSosmed(data: MonitoringData): number {
   let count = 0;
+  if (data.whatsapp) count++;
   if (data.instagram) count++;
   if (data.facebook) count++;
   if (data.tiktok) count++;

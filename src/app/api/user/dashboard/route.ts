@@ -276,7 +276,7 @@ export async function GET() {
     // Fetch monitoring data + calculate badge
     const { data: monitorings } = await supabaseAdmin
       .from("umkm_monitoring")
-      .select("id, created_at, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, instagram, facebook, tiktok")
+      .select("id, created_at, jumlah_tenaga_kerja, omzet, halal, pirt, haki, nib, kbli, whatsapp, instagram, facebook, tiktok")
       .eq("umkm_id", umkm.id)
       .order("created_at", { ascending: false });
 
@@ -292,6 +292,7 @@ export async function GET() {
       pirt: umkm.pirt ?? null,
       haki: umkm.haki ?? null,
       kbli: umkm.kbli ?? null,
+      whatsapp: (umkm as Record<string, string | null>).whatsapp ?? null,
       instagram: umkm.instagram ?? null,
       facebook: umkm.facebook ?? null,
       tiktok: umkm.tiktok ?? null,
@@ -309,6 +310,7 @@ export async function GET() {
           pirt: latestMonitoring.pirt ?? initialData.pirt,
           haki: latestMonitoring.haki ?? initialData.haki,
           kbli: latestMonitoring.kbli ?? initialData.kbli,
+          whatsapp: (latestMonitoring as Record<string, string | null>).whatsapp ?? initialData.whatsapp,
           instagram: latestMonitoring.instagram ?? initialData.instagram,
           facebook: latestMonitoring.facebook ?? initialData.facebook,
           tiktok: latestMonitoring.tiktok ?? initialData.tiktok,
@@ -333,6 +335,7 @@ export async function GET() {
             halal: latestMonitoring.halal,
             pirt: latestMonitoring.pirt,
             haki: latestMonitoring.haki,
+            whatsapp: (latestMonitoring as Record<string, string | null>).whatsapp ?? null,
             instagram: latestMonitoring.instagram,
             facebook: latestMonitoring.facebook,
             tiktok: latestMonitoring.tiktok,

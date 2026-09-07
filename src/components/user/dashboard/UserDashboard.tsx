@@ -95,6 +95,7 @@ type DashboardData = {
       halal: string | null;
       pirt: string | null;
       haki: string | null;
+      whatsapp: string | null;
       instagram: string | null;
       facebook: string | null;
       tiktok: string | null;

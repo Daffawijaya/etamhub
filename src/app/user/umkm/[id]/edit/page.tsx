@@ -126,6 +126,7 @@ export default async function UserEditUmkmPage({ params }: Props) {
             pirt: umkm.pirt ?? null,
             haki: umkm.haki ?? null,
             kbli: umkm.kbli ?? null,
+            whatsapp: (umkm as Record<string, string | null>).whatsapp ?? null,
             instagram: umkm.instagram ?? null,
             facebook: umkm.facebook ?? null,
             tiktok: umkm.tiktok ?? null,

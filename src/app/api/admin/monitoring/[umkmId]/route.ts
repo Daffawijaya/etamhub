@@ -55,6 +55,7 @@ export async function GET(
       pirt: umkm.pirt ?? null,
       haki: umkm.haki ?? null,
       nib: umkm.nib ?? null,
+      whatsapp: (umkm as Record<string, string | null>).whatsapp ?? null,
       instagram: umkm.instagram ?? null,
       facebook: umkm.facebook ?? null,
       tiktok: umkm.tiktok ?? null,
@@ -70,6 +71,7 @@ export async function GET(
           pirt: latestEntry.pirt ?? initial.pirt,
           haki: latestEntry.haki ?? initial.haki,
           nib: latestEntry.nib ?? initial.nib,
+          whatsapp: (latestEntry as Record<string, string | null>).whatsapp ?? initial.whatsapp,
           instagram: latestEntry.instagram ?? initial.instagram,
           facebook: latestEntry.facebook ?? initial.facebook,
           tiktok: latestEntry.tiktok ?? initial.tiktok,
@@ -158,6 +160,7 @@ export async function POST(
         instagram: body.instagram ?? null,
         facebook: body.facebook ?? null,
         tiktok: body.tiktok ?? null,
+        whatsapp: body.whatsapp ?? null,
 
         kebutuhan_utama: body.kebutuhan_utama ?? null,
         catatan: body.catatan ?? null,
@@ -170,7 +173,7 @@ export async function POST(
     for (const field of [
       "jumlah_tenaga_kerja", "omzet",
       "halal", "pirt", "haki", "nib", "kbli",
-      "instagram", "facebook", "tiktok",
+      "instagram", "facebook", "tiktok", "whatsapp",
     ]) {
       if (body[field] != null) syncFields[field] = body[field];
     }
