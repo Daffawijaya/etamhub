@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
 import { getCurrentUser } from "@/lib/session";
 import { checkPermission, forbiddenResponse } from "@/lib/permissions";
@@ -52,6 +53,8 @@ export async function PATCH(
       targetId: id,
       targetName: newsData?.title,
     });
+
+    revalidatePath("/sitemap.xml");
 
     return NextResponse.json({
       success: true,

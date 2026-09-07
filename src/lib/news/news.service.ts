@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import { revalidatePath } from "next/cache";
 
 import { supabaseAdmin } from "../supabaseAdmin";
 import type { News } from "@/types/news";
@@ -206,6 +207,8 @@ export async function createNews(payload: NewsInput) {
     throw new Error(error.message);
   }
 
+  revalidatePath("/sitemap.xml");
+
   return data as News;
 }
 
@@ -258,6 +261,8 @@ export async function updateNews(id: string, payload: NewsInput) {
     throw new Error(error.message);
   }
 
+  revalidatePath("/sitemap.xml");
+
   return data as News;
 }
 
@@ -278,6 +283,8 @@ export async function deleteNews(id: string) {
   if (error) {
     throw new Error(error.message);
   }
+
+  revalidatePath("/sitemap.xml");
 
   return true;
 }
