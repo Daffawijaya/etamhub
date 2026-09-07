@@ -32,6 +32,7 @@ interface Badge {
 
 export interface Umkm {
   id: string;
+  slug: string;
   nama: string;
   subkategori: string;
   deskripsi: string;
@@ -228,6 +229,7 @@ export default function KecamatanPageClient({
                 <UmkmCard
                   key={item.id}
                   id={item.id}
+                  slug={item.slug ?? item.id}
                   nama={item.nama}
                   subkategori={item.subkategori}
                   deskripsi={item.deskripsi}

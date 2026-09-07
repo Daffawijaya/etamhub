@@ -9,6 +9,7 @@ import type { Product, ProductLegalitas } from "@/types/product";
 
 type UmkmData = {
   id: string;
+  slug: string;
   nama: string;
   pemilik: string;
   kategori: string;
@@ -224,7 +225,7 @@ function UmkmCard({ umkm }: { umkm: UmkmData }) {
 
         <div className="min-w-0 flex-1">
           <Link
-            href={`/umkm/${umkm.id}`}
+            href={`/umkm/${umkm.slug}`}
             className="block truncate text-sm font-semibold text-zinc-900 transition-colors hover:text-violet-600 dark:text-white dark:hover:text-violet-400"
           >
             {umkm.nama}
@@ -249,8 +250,8 @@ function UmkmCard({ umkm }: { umkm: UmkmData }) {
           </button>
         )}
 
-        <Link
-          href={`/umkm/${umkm.id}`}
+          <Link
+            href={`/umkm/${umkm.slug}`}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-xl border border-zinc-200 bg-white px-3 py-2 text-xs font-medium text-zinc-700 transition-all hover:border-violet-300 hover:text-violet-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-zinc-300 dark:hover:text-violet-400"
         >
           <Store size={13} />
@@ -287,7 +288,7 @@ function OtherProducts({
           return (
             <Link
               key={p.id}
-              href={`/produk/${p.id}`}
+              href={`/produk/${p.slug}`}
               className="
                 group
                 min-w-0

@@ -131,6 +131,7 @@ model Umkm {
   owner             User?            @relation(fields: [ownerId], references: [id])
   monitoring        UmkmMonitoring[]
   umkmRequests      UmkmRequest[]
+  slug              String?          @unique(map: "uq_umkm_slug")
 
   @@map("umkm")
 }
@@ -218,8 +219,21 @@ model Product {
   updatedAt         DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
   product_legalitas product_legalitas[]
   umkm              Umkm                @relation(fields: [umkmId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  slug              String?             @unique(map: "uq_products_slug")
 
   @@map("products")
+}
+
+model SlugHistory {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  entityType String   @map("entity_type")
+  entityId   String   @map("entity_id") @db.Uuid
+  oldSlug    String   @map("old_slug")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@unique([entityType, oldSlug], map: "uq_slug_history")
+  @@index([entityType, entityId], map: "idx_slug_history_entity")
+  @@map("slug_history")
 }
 
 model News {

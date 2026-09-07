@@ -64,12 +64,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Published UMKM
   const { data: umkms } = await supabaseAdmin
     .from("umkm")
-    .select("id, updated_at, created_at")
+    .select("slug, updated_at, created_at")
     .eq("published", true)
+    .not("slug", "is", null)
     .order("created_at", { ascending: false });
 
   const umkmPages: MetadataRoute.Sitemap = (umkms ?? []).map((item) => ({
-    url: `${baseUrl}/umkm/${item.id}`,
+    url: `${baseUrl}/umkm/${item.slug}`,
     lastModified: new Date(item.updated_at ?? item.created_at),
     changeFrequency: "monthly" as const,
     priority: 0.7,
@@ -78,12 +79,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Published products
   const { data: products } = await supabaseAdmin
     .from("products")
-    .select("id, updated_at, created_at")
+    .select("slug, updated_at, created_at")
     .eq("is_available", true)
+    .not("slug", "is", null)
     .order("created_at", { ascending: false });
 
   const productPages: MetadataRoute.Sitemap = (products ?? []).map((item) => ({
-    url: `${baseUrl}/produk/${item.id}`,
+    url: `${baseUrl}/produk/${item.slug}`,
     lastModified: new Date(item.updated_at ?? item.created_at),
     changeFrequency: "monthly" as const,
     priority: 0.6,

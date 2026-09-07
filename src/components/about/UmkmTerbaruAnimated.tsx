@@ -14,6 +14,7 @@ type BadgeData = {
 
 type Umkm = {
   id: string;
+  slug: string;
   nama: string;
   subkategori: string;
   deskripsi: string;
@@ -61,6 +62,7 @@ export default function UmkmTerbaruAnimated({
             >
               <UmkmCard
                 id={umkm.id}
+                slug={umkm.slug ?? umkm.id}
                 nama={umkm.nama}
                 subkategori={umkm.subkategori}
                 deskripsi={umkm.deskripsi}

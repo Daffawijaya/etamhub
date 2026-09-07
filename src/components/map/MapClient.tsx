@@ -128,7 +128,7 @@ export default function MapClient({ umkms }: Props) {
               remove: () => setSelectedUmkm(null),
             }}
           >
-            <UmkmMapCard {...selectedUmkm} />
+            <UmkmMapCard {...selectedUmkm} slug={selectedUmkm.slug ?? selectedUmkm.id} />
           </Popup>
         )}
       </MapContainer>

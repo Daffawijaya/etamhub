@@ -91,7 +91,7 @@ export default function PublicProductList({ umkmId }: Props) {
           return (
             <Link
               key={product.id}
-              href={`/produk/${product.id}`}
+              href={`/produk/${product.slug}`}
               className="
                 group
                 min-w-0

@@ -9,6 +9,7 @@ type UmkmMapCardProps = {
   lat: number;
   lng: number;
   id: string;
+  slug: string;
   onClose?: () => void;
 };
 
@@ -20,6 +21,7 @@ export default function UmkmMapCard({
   lat,
   lng,
   id,
+  slug,
   onClose,
 }: UmkmMapCardProps) {
   return (
@@ -33,6 +35,7 @@ export default function UmkmMapCard({
         lat={lat}
         lng={lng}
         id={id}
+        slug={slug}
         onClose={onClose}
       />
 
@@ -45,6 +48,7 @@ export default function UmkmMapCard({
         lat={lat}
         lng={lng}
         id={id}
+        slug={slug}
       />
     </>
   );

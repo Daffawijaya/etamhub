@@ -45,19 +45,64 @@ function mergeMonitoringIntoUmkm(umkm: Record<string, any>, latest: Record<strin
   return merged;
 }
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Cari UMKM berdasarkan slug kanonis, UUID lama, atau slug lama (history).
+async function lookupUmkm(param: string) {
+  const bySlug = await supabaseAdmin
+    .from("umkm")
+    .select("*")
+    .eq("slug", param)
+    .maybeSingle();
+
+  if (bySlug.data) {
+    return bySlug.data;
+  }
+
+  if (UUID_RE.test(param)) {
+    const byId = await supabaseAdmin
+      .from("umkm")
+      .select("*")
+      .eq("id", param)
+      .maybeSingle();
+
+    if (byId.data) {
+      return byId.data;
+    }
+  }
+
+  const hist = await supabaseAdmin
+    .from("slug_history")
+    .select("entity_id")
+    .eq("entity_type", "umkm")
+    .eq("old_slug", param)
+    .maybeSingle();
+
+  if (hist.data) {
+    const cur = await supabaseAdmin
+      .from("umkm")
+      .select("*")
+      .eq("id", (hist.data as { entity_id: string }).entity_id)
+      .maybeSingle();
+
+    if (cur.data) {
+      return cur.data;
+    }
+  }
+
+  return null;
+}
+
 export async function GET(
   req: Request,
   context: { params: Promise<{ id: string }> },
 ) {
   const { id } = await context.params;
 
-  const { data, error } = await supabaseAdmin
-    .from("umkm")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const data = await lookupUmkm(id);
 
-  if (error || !data) {
+  if (!data) {
     return NextResponse.json(
       {
         message: "UMKM tidak ditemukan",
@@ -91,7 +136,7 @@ export async function GET(
   const { data: latestMonitoring } = await supabaseAdmin
     .from("umkm_monitoring")
     .select("jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, kbli, instagram, facebook, tiktok")
-    .eq("umkm_id", id)
+    .eq("umkm_id", (data as { id: string }).id)
     .order("created_at", { ascending: false })
     .limit(1)
     .maybeSingle();

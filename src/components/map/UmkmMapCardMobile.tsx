@@ -18,6 +18,7 @@ type UmkmMapCardMobileProps = {
   lat: number;
   lng: number;
   id: string;
+  slug: string;
   onClose?: () => void;
 };
 
@@ -29,6 +30,7 @@ export default function UmkmMapCardMobile({
   lat,
   lng,
   id,
+  slug,
   onClose,
 }: UmkmMapCardMobileProps) {
   const [mounted, setMounted] = useState(false);
@@ -185,7 +187,7 @@ export default function UmkmMapCardMobile({
         </a>
 
         <Link
-          href={`/umkm/${id}`}
+          href={`/umkm/${slug}`}
           className="
             flex items-center gap-2 rounded-full bg-zinc-100 px-5 py-2.5
             text-sm font-medium text-zinc-800

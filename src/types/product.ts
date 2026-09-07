@@ -10,6 +10,7 @@ export interface ProductLegalitas {
 
 export interface ProductUmkm {
   id: string;
+  slug: string | null;
   nama: string;
   owner_id: string | null;
   halal: string | null;
@@ -20,6 +21,7 @@ export interface ProductUmkm {
 
 export interface Product {
   id: string;
+  slug: string | null;
   umkm_id: string;
   nama: string;
   deskripsi: string | null;

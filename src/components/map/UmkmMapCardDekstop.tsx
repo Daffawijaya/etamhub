@@ -14,6 +14,7 @@ type UmkmMapCardDesktopProps = {
   lat: number;
   lng: number;
    id: string;
+  slug: string;
 };
 
 export default function UmkmMapCardDesktop({
@@ -24,6 +25,7 @@ export default function UmkmMapCardDesktop({
   lat,
   lng,
   id,
+  slug,
 }: UmkmMapCardDesktopProps) {
   const fotoUtama = Array.isArray(gambar) ? gambar[0] : gambar;
 
@@ -225,7 +227,7 @@ export default function UmkmMapCardDesktop({
             </a>
 
             <Link
-              href={`/umkm/${id}`}
+              href={`/umkm/${slug}`}
               title="Detail UMKM"
               className={detailButtonStyle}
             >

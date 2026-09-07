@@ -1,5 +1,6 @@
 export type Umkm = {
   id: string;
+  slug: string | null;
 
   nama: string;
   pemilik: string | null;

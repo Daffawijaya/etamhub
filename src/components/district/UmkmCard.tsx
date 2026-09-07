@@ -13,6 +13,7 @@ type BadgeData = {
 
 type Props = {
   id: string;
+  slug: string;
   nama: string;
   subkategori: string;
   deskripsi: string;
@@ -37,6 +38,7 @@ const BADGE_RING: Record<string, string> = {
 
 export default function UmkmCard({
   id,
+  slug,
   nama,
   subkategori,
   deskripsi,
@@ -54,7 +56,7 @@ export default function UmkmCard({
 
   return (
     <Link
-      href={`/umkm/${id}`}
+      href={`/umkm/${slug}`}
       className="
         group
         flex
