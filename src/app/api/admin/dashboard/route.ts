@@ -208,10 +208,10 @@ export async function GET() {
     ];
 
     // Titik mentah omzet untuk filter range 1D..5Y di client (tanpa query tambahan)
-    const omzetPoints: { t: string; omzet: number }[] = [];
+    const omzetPoints: { t: string; omzet: number; umkm_id: string }[] = [];
     for (const m of allMonitorings) {
       if (!m.omzet || m.omzet <= 0) continue;
-      omzetPoints.push({ t: m.created_at, omzet: m.omzet });
+      omzetPoints.push({ t: m.created_at, omzet: m.omzet, umkm_id: m.umkm_id });
     }
 
     // Total monitored UMKM

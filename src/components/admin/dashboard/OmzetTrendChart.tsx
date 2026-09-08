@@ -15,19 +15,20 @@ interface Props {
   points: {
     t: string;
     omzet: number;
+    umkm_id?: string;
   }[];
 }
 
 type RangeKey = "1D" | "1W" | "1M" | "3M" | "1Y" | "ALL";
 type Granularity = "hour" | "day" | "month" | "year";
 
-const RANGES: { key: RangeKey; label: string; slots?: number; granularity: Granularity; per: string }[] = [
-  { key: "1D", label: "1D", slots: 24, granularity: "hour", per: "per jam" },
-  { key: "1W", label: "1W", slots: 7, granularity: "day", per: "per hari" },
-  { key: "1M", label: "1M", slots: 30, granularity: "day", per: "per hari" },
-  { key: "3M", label: "3M", slots: 90, granularity: "day", per: "per hari" },
-  { key: "1Y", label: "1Y", slots: 12, granularity: "month", per: "per bulan" },
-  { key: "ALL", label: "Semua", granularity: "month", per: "per bulan" },
+const RANGES: { key: RangeKey; label: string; slots?: number; granularity: Granularity; per: string; desc: string }[] = [
+  { key: "1D", label: "1D", slots: 24, granularity: "hour", per: "per jam", desc: "1 hari terakhir" },
+  { key: "1W", label: "1W", slots: 7, granularity: "day", per: "per hari", desc: "1 minggu terakhir" },
+  { key: "1M", label: "1M", slots: 30, granularity: "day", per: "per hari", desc: "1 bulan terakhir" },
+  { key: "3M", label: "3M", slots: 90, granularity: "day", per: "per hari", desc: "3 bulan terakhir" },
+  { key: "1Y", label: "1Y", slots: 12, granularity: "month", per: "per bulan", desc: "1 tahun terakhir" },
+  { key: "ALL", label: "Semua", granularity: "month", per: "per bulan", desc: "seluruh data" },
 ];
 
 const MON_SHORT = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
@@ -89,7 +90,7 @@ function formatRupiah(value: number) {
 }
 
 export default function OmzetTrendChart({ points }: Props) {
-  const [range, setRange] = useState<RangeKey>("1Y");
+  const [range, setRange] = useState<RangeKey>("ALL");
   const cfg = RANGES.find((r) => r.key === range)!;
 
   const times = useMemo(() => {
@@ -173,7 +174,7 @@ export default function OmzetTrendChart({ points }: Props) {
             Tren Omzet Rata-rata
           </h2>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400 transition-colors duration-300">
-            Rata-rata omzet {range === "ALL" ? PER_LABEL[gran] : cfg.per} dari data monitoring
+            Rata-rata omzet {range === "ALL" ? PER_LABEL[gran] : cfg.per} · {cfg.desc}
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-1">

@@ -78,6 +78,16 @@ export default function DashboardGrid() {
     return list;
   }, [data?.map, appliedFilters, monitoredIds]);
 
+  // ── Filter titik omzet pakai filter yg sama (lewat umkm_id) ──
+  const filteredPoints = useMemo(() => {
+    const pts = monitoring.omzetPoints ?? [];
+    if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
+      return pts;
+    }
+    const filteredIds = new Set(filteredUmkm.map((u: any) => u.id));
+    return pts.filter((p: any) => filteredIds.has(p.umkm_id));
+  }, [monitoring.omzetPoints, filteredUmkm, appliedFilters]);
+
   const filteredKategoriChart = useMemo(() => {
     if (appliedFilters.kecamatan === "all" && appliedFilters.monitoring === "all") {
       return data?.kategoriChart ?? [];
@@ -183,7 +193,7 @@ export default function DashboardGrid() {
           <CategoryPieChart data={filteredKategoriChart} />
         </div>
 
-        <OmzetTrendChart points={monitoring.omzetPoints ?? []} />
+        <OmzetTrendChart points={filteredPoints} />
         <LatestUmkm umkms={filteredUmkm} umkmBadges={monitoring.umkmBadges ?? []} />
         <UmkmMapWidget umkms={filteredUmkm} />
       </div>
