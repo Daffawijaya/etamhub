@@ -52,7 +52,7 @@ function renderCustomLabel(props: any) {
   );
 }
 
-export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props) {
+export default function BadgePieChart({ data }: Props) {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const total = data.reduce((sum, item) => sum + item.value, 0);
@@ -133,20 +133,22 @@ export default function BadgePieChart({ data, monitoredCount, totalUmkm }: Props
             ))}
           </div>
 
-          {/* Summary stats */}
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <div className="rounded-xl bg-slate-50 dark:bg-white/5 p-3">
-              <p className="text-xs text-slate-500 dark:text-slate-400">Dimonitoring</p>
-              <p className="text-lg font-bold text-slate-900 dark:text-white">
-                {monitoredCount ?? 0}
-              </p>
-            </div>
-            <div className="rounded-xl bg-slate-50 dark:bg-white/5 p-3">
-              <p className="text-xs text-slate-500 dark:text-slate-400">Total UMKM</p>
-              <p className="text-lg font-bold text-slate-900 dark:text-white">
-                {totalUmkm ?? 0}
-              </p>
-            </div>
+          {/* Per-badge counts */}
+          <div className="mt-4 divide-y divide-slate-100 dark:divide-white/5 rounded-xl bg-slate-50 dark:bg-white/5 px-3">
+            {chartData.map((item) => (
+              <div key={item.name} className="flex items-center justify-between py-2">
+                <span className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-300">
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  {item.name}
+                </span>
+                <span className="text-sm font-bold text-slate-900 dark:text-white">
+                  {item.value}
+                </span>
+              </div>
+            ))}
           </div>
         </>
       )}

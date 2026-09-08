@@ -94,6 +94,24 @@ export async function GET() {
       }),
     );
 
+    // Card Kecamatan selalu tampil global — sengaja abaikan role & filter.
+    // Data scoped (map/stats) tetap ikut role di atas, hanya chart ini yang global.
+    let kecamatanChartGlobal = kecamatanChart;
+    if (isAdminKecamatan) {
+      const { data: allUmkmKec } = await supabaseAdmin
+        .from("umkm")
+        .select("kecamatan");
+      const globalMap: Record<string, number> = {};
+      for (const u of allUmkmKec ?? []) {
+        const k = (u as { kecamatan?: string | null }).kecamatan || "Tidak diketahui";
+        globalMap[k] = (globalMap[k] || 0) + 1;
+      }
+      kecamatanChartGlobal = Object.entries(globalMap).map(([name, value]) => ({
+        name,
+        value,
+      }));
+    }
+
     // =========================
     // MONITORING DATA
     // =========================
@@ -245,6 +263,7 @@ export async function GET() {
       latest: dataUmkm.slice(0, 5),
       kategoriChart,
       kecamatanChart,
+      kecamatanChartGlobal,
       activities: activities ?? [],
       map: dataUmkm,
       monitoring: {

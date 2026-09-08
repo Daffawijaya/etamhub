@@ -124,18 +124,10 @@ export default function DashboardGrid() {
     return cnt;
   }, [filteredUmkm, monitoredIds, monitoring.monitoredCount, appliedFilters]);
 
+  // Card Kecamatan selalu global — abaikan filter & role (ponytail: 1 query global di API, tanpa fetch terpisah)
   const filteredKecamatanChart = useMemo(() => {
-    if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
-      return data?.kecamatanChart ?? [];
-    }
-    const map: Record<string, number> = {};
-    for (const u of filteredUmkm) {
-      const k = u.kecamatan || "Tidak diketahui";
-      map[k] = (map[k] || 0) + 1;
-    }
-    // untuk admin_kecamatan, tetap sertakan 0 untuk kecamatan yang difilter out agar chart tidak hilang
-    return Object.entries(map).map(([name, value]) => ({ name, value }));
-  }, [filteredUmkm, data?.kecamatanChart, appliedFilters]);
+    return data?.kecamatanChartGlobal ?? data?.kecamatanChart ?? [];
+  }, [data?.kecamatanChartGlobal, data?.kecamatanChart]);
 
   const filteredStats = useMemo(() => {
     if (appliedFilters.kecamatan === "all" && appliedFilters.kategori === "all" && appliedFilters.monitoring === "all") {
