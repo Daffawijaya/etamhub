@@ -315,4 +315,78 @@ export async function calculateBadge(
   return calculateBadgeWithCriteria(initial, latest, monitoringCount, config);
 }
 
+// Hitung badge untuk sekumpulan UMKM sekaligus (dipakai SSR public & API public).
+// UMKM tanpa monitoring dapat badge level "none" — sama seperti admin.
+export async function attachBadges<T extends { id: string } & Record<string, any>>(
+  umkms: T[],
+): Promise<(T & { badge: BadgeResult })[]> {
+  if (umkms.length === 0) return [];
+  const config = await getBadgeCriteria();
+  const ids = umkms.map((u) => u.id);
+
+  const { data: counts } = await supabaseAdmin
+    .from("umkm_monitoring")
+    .select("umkm_id")
+    .in("umkm_id", ids);
+  const countMap: Record<string, number> = {};
+  for (const m of counts ?? []) {
+    countMap[m.umkm_id] = (countMap[m.umkm_id] || 0) + 1;
+  }
+
+  const latestMap: Record<string, any> = {};
+  const withMonitoring = Object.keys(countMap);
+  if (withMonitoring.length > 0) {
+    const { data: latest } = await supabaseAdmin
+      .from("umkm_monitoring")
+      .select("umkm_id, jumlah_tenaga_kerja, omzet, nib, halal, pirt, haki, whatsapp, instagram, facebook, tiktok")
+      .in("umkm_id", withMonitoring)
+      .order("created_at", { ascending: false });
+    for (const m of latest ?? []) {
+      if (!latestMap[m.umkm_id]) latestMap[m.umkm_id] = m;
+    }
+  }
+
+  return umkms.map((u) => {
+    const count = countMap[u.id] || 0;
+    const e = latestMap[u.id];
+    const initial: MonitoringData = {
+      omzet: u.omzet ?? null,
+      jumlah_tenaga_kerja: u.jumlah_tenaga_kerja ?? null,
+      nib: u.nib ?? null,
+      halal: u.halal ?? null,
+      pirt: u.pirt ?? null,
+      haki: u.haki ?? null,
+      whatsapp: u.whatsapp ?? null,
+      instagram: u.instagram ?? null,
+      facebook: u.facebook ?? null,
+      tiktok: u.tiktok ?? null,
+    };
+    const latest: MonitoringData | null = e
+      ? {
+          omzet: e.omzet ?? null,
+          jumlah_tenaga_kerja: e.jumlah_tenaga_kerja ?? null,
+          nib: e.nib ?? initial.nib,
+          halal: e.halal ?? initial.halal,
+          pirt: e.pirt ?? initial.pirt,
+          haki: e.haki ?? initial.haki,
+          whatsapp: e.whatsapp ?? initial.whatsapp,
+          instagram: e.instagram ?? initial.instagram,
+          facebook: e.facebook ?? initial.facebook,
+          tiktok: e.tiktok ?? initial.tiktok,
+        }
+      : null;
+    return { ...u, badge: calculateBadgeWithCriteria(initial, latest, count, config) };
+  });
+}
+
 export { BADGE_STYLES };
+
+// Urutan public: yg punya badge dulu (abjad), baru non-badge (abjad) — sama seperti admin.
+export function byBadgeThenName(
+  a: { nama: string; badge?: { level: string } | null },
+  b: { nama: string; badge?: { level: string } | null },
+) {
+  const rank = (x: { badge?: { level: string } | null }) =>
+    x.badge && x.badge.level !== "none" ? 0 : 1;
+  return rank(a) - rank(b) || a.nama.localeCompare(b.nama, "id");
+}

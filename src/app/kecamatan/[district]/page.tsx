@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import KecamatanPageClient from "@/components/district/KecamatanPageClient";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { attachBadges, byBadgeThenName } from "@/lib/monitoring/badges";
 
 type Props = {
   params: Promise<{
@@ -19,21 +20,24 @@ function formatDistrictName(slug: string): string {
 async function getUmkmByDistrict(districtSlug: string) {
   const districtName = formatDistrictName(districtSlug);
 
-  const { data, error, count } = await supabaseAdmin
+  const { data, error } = await supabaseAdmin
     .from("umkm")
-    .select("*", { count: "exact" })
+    .select("*")
     .eq("published", true)
     .eq("kecamatan", districtName)
-    .order("created_at", { ascending: false })
-    .range(0, 7);
+    .order("created_at", { ascending: false });
 
   if (error) {
     throw new Error(error.message);
   }
 
+  // Badge dihitung di SSR juga + urut global (badge dulu) — sama seperti admin & API public.
+  const withBadges = await attachBadges(data ?? []);
+  withBadges.sort(byBadgeThenName);
+
   return {
-    data: data ?? [],
-    total: count ?? 0,
+    data: withBadges.slice(0, 8),
+    total: withBadges.length,
   };
 }
 

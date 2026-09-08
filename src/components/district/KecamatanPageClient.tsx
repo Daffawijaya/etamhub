@@ -179,7 +179,12 @@ export default function KecamatanPageClient({
         (a, b) => (a.distance ?? Infinity) - (b.distance ?? Infinity),
       );
     } else {
-      dataDenganJarak.sort((a, b) => a.nama.localeCompare(b.nama, "id"));
+      // Default: yg punya badge dulu (abjad), baru non-badge (abjad)
+      const rank = (x: { badge?: Badge | null }) =>
+        x.badge && x.badge.level !== "none" ? 0 : 1;
+      dataDenganJarak.sort(
+        (a, b) => rank(a) - rank(b) || a.nama.localeCompare(b.nama, "id"),
+      );
     }
 
     return dataDenganJarak;
