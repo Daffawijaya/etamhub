@@ -75,6 +75,10 @@ interface CriteriaConfig {
   platinum_tk_min: number;
   platinum_legalitas_min: number;
   platinum_sosmed_min: number;
+  omzet_on?: boolean;
+  tk_on?: boolean;
+  legalitas_on?: boolean;
+  sosmed_on?: boolean;
 }
 
 function formatRupiah(value: number | null) {
@@ -492,27 +496,35 @@ export default function MonitoringDetailPage() {
 
               {/* Individual Progress Bars */}
               <div className="space-y-3">
-                <ProgressBar
-                  current={badge.criteria.omzet ?? 0}
-                  target={criteriaConfig.platinum_omzet_min}
-                  label="Omzet"
-                  format="rupiah"
-                />
-                <ProgressBar
-                  current={badge.criteria.tk ?? 0}
-                  target={criteriaConfig.platinum_tk_min}
-                  label="Tenaga Kerja"
-                />
-                <ProgressBar
-                  current={badge.criteria.legalitas}
-                  target={criteriaConfig.platinum_legalitas_min}
-                  label="Legalitas"
-                />
-                <ProgressBar
-                  current={badge.criteria.sosmed}
-                  target={criteriaConfig.platinum_sosmed_min}
-                  label="Sosmed Aktif"
-                />
+                {criteriaConfig.omzet_on !== false && (
+                  <ProgressBar
+                    current={badge.criteria.omzet ?? 0}
+                    target={criteriaConfig.platinum_omzet_min}
+                    label="Omzet"
+                    format="rupiah"
+                  />
+                )}
+                {criteriaConfig.tk_on !== false && (
+                  <ProgressBar
+                    current={badge.criteria.tk ?? 0}
+                    target={criteriaConfig.platinum_tk_min}
+                    label="Tenaga Kerja"
+                  />
+                )}
+                {criteriaConfig.legalitas_on !== false && (
+                  <ProgressBar
+                    current={badge.criteria.legalitas}
+                    target={criteriaConfig.platinum_legalitas_min}
+                    label="Legalitas"
+                  />
+                )}
+                {criteriaConfig.sosmed_on !== false && (
+                  <ProgressBar
+                    current={badge.criteria.sosmed}
+                    target={criteriaConfig.platinum_sosmed_min}
+                    label="Sosmed Aktif"
+                  />
+                )}
               </div>
             </div>
           )}

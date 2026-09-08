@@ -18,6 +18,10 @@ const DEFAULTS = {
   silver_label: "Tumbuh",
   gold_label: "Berkembang",
   platinum_label: "Naik Kelas",
+  omzet_on: true,
+  tk_on: true,
+  legalitas_on: true,
+  sosmed_on: true,
 };
 
 // GET
@@ -49,6 +53,10 @@ export async function GET() {
       silver_label: data.silver_label ?? DEFAULTS.silver_label,
       gold_label: data.gold_label ?? DEFAULTS.gold_label,
       platinum_label: data.platinum_label ?? DEFAULTS.platinum_label,
+      omzet_on: data.omzet_on ?? true,
+      tk_on: data.tk_on ?? true,
+      legalitas_on: data.legalitas_on ?? true,
+      sosmed_on: data.sosmed_on ?? true,
     });
   } catch (error: any) {
     console.error("GET badge-criteria error:", error);
@@ -100,6 +108,10 @@ export async function PUT(req: NextRequest) {
       silver_label: body.silver_label,
       gold_label: body.gold_label,
       platinum_label: body.platinum_label,
+      omzet_on: body.omzet_on ?? true,
+      tk_on: body.tk_on ?? true,
+      legalitas_on: body.legalitas_on ?? true,
+      sosmed_on: body.sosmed_on ?? true,
       updated_at: new Date().toISOString(),
     };
 

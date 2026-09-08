@@ -43,6 +43,10 @@ export interface BadgeCriteria {
   silver_label: string;
   gold_label: string;
   platinum_label: string;
+  omzet_on: boolean;
+  tk_on: boolean;
+  legalitas_on: boolean;
+  sosmed_on: boolean;
 }
 
 // Display names mapping internal levels to user-facing labels
@@ -131,6 +135,10 @@ const DEFAULT_CRITERIA: BadgeCriteria = {
   silver_label: "Tumbuh",
   gold_label: "Berkembang",
   platinum_label: "Naik Kelas",
+  omzet_on: true,
+  tk_on: true,
+  legalitas_on: true,
+  sosmed_on: true,
 };
 
 // Fetch badge criteria from database
@@ -162,19 +170,24 @@ export async function getBadgeCriteria(): Promise<BadgeCriteria> {
       silver_label: data.silver_label ?? DEFAULT_CRITERIA.silver_label,
       gold_label: data.gold_label ?? DEFAULT_CRITERIA.gold_label,
       platinum_label: data.platinum_label ?? DEFAULT_CRITERIA.platinum_label,
+      omzet_on: data.omzet_on ?? true,
+      tk_on: data.tk_on ?? true,
+      legalitas_on: data.legalitas_on ?? true,
+      sosmed_on: data.sosmed_on ?? true,
     };
   } catch {
     return DEFAULT_CRITERIA;
   }
 }
 
-// Check if data meets criteria
+// Check if data meets criteria (indikator yang OFF selalu dianggap lolos)
 function meetsCriteria(
   data: MonitoringData,
   omzetMin: number,
   tkMin: number,
   legalitasMin: number,
   sosmedMin: number,
+  enabled: { omzet: boolean; tk: boolean; legalitas: boolean; sosmed: boolean },
 ): boolean {
   const omzet = data.omzet ?? 0;
   const tk = data.jumlah_tenaga_kerja ?? 0;
@@ -182,10 +195,10 @@ function meetsCriteria(
   const sosmed = countSosmed(data);
 
   return (
-    omzet >= omzetMin &&
-    tk >= tkMin &&
-    legalitas >= legalitasMin &&
-    sosmed >= sosmedMin
+    (!enabled.omzet || omzet >= omzetMin) &&
+    (!enabled.tk || tk >= tkMin) &&
+    (!enabled.legalitas || legalitas >= legalitasMin) &&
+    (!enabled.sosmed || sosmed >= sosmedMin)
   );
 }
 
@@ -219,6 +232,13 @@ export function calculateBadgeWithCriteria(
     monitoringCount,
   };
 
+  const enabled = {
+    omzet: config.omzet_on,
+    tk: config.tk_on,
+    legalitas: config.legalitas_on,
+    sosmed: config.sosmed_on,
+  };
+
   // 💎 Naik Kelas: semua kriteria terpenuhi (top tier)
   if (
     meetsCriteria(
@@ -227,6 +247,7 @@ export function calculateBadgeWithCriteria(
       config.platinum_tk_min,
       config.platinum_legalitas_min,
       config.platinum_sosmed_min,
+      enabled,
     )
   ) {
     return {
@@ -245,6 +266,7 @@ export function calculateBadgeWithCriteria(
       config.gold_tk_min,
       config.gold_legalitas_min,
       config.gold_sosmed_min,
+      enabled,
     )
   ) {
     return {
@@ -263,6 +285,7 @@ export function calculateBadgeWithCriteria(
       config.silver_tk_min,
       config.silver_legalitas_min,
       config.silver_sosmed_min,
+      enabled,
     )
   ) {
     return {

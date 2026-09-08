@@ -23,6 +23,10 @@ interface BadgeCriteria {
   silver_label: string;
   gold_label: string;
   platinum_label: string;
+  omzet_on: boolean;
+  tk_on: boolean;
+  legalitas_on: boolean;
+  sosmed_on: boolean;
 }
 
 const DEFAULTS: BadgeCriteria = {
@@ -41,6 +45,10 @@ const DEFAULTS: BadgeCriteria = {
   silver_label: "Tumbuh",
   gold_label: "Berkembang",
   platinum_label: "Naik Kelas",
+  omzet_on: true,
+  tk_on: true,
+  legalitas_on: true,
+  sosmed_on: true,
 };
 
 function formatRupiah(value: number) {
@@ -58,6 +66,44 @@ function parseFormattedNumber(input: string): number {
 
 type TierKey = "pemula" | "silver" | "gold" | "platinum";
 
+type FlagKey = "omzet_on" | "tk_on" | "legalitas_on" | "sosmed_on";
+
+const INDICATORS: { flag: FlagKey; label: string; description: string }[] = [
+  { flag: "omzet_on", label: "Omzet", description: "Syarat nilai omzet minimum" },
+  { flag: "tk_on", label: "Tenaga Kerja", description: "Syarat jumlah tenaga kerja" },
+  { flag: "legalitas_on", label: "Legalitas", description: "Syarat jenis legalitas (Halal/PIRT/HAKI/NIB)" },
+  { flag: "sosmed_on", label: "Sosmed Aktif", description: "Syarat platform aktif (WA/IG/FB/TT)" },
+];
+
+function IndicatorSwitch({
+  on,
+  onToggle,
+  label,
+}: {
+  on: boolean;
+  onToggle: () => void;
+  label: string;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={on}
+      aria-label={label}
+      onClick={onToggle}
+      className={`relative h-6 w-11 shrink-0 rounded-full transition-colors duration-200 ${
+        on ? "bg-emerald-500" : "bg-slate-300 dark:bg-slate-600"
+      }`}
+    >
+      <span
+        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all duration-200 ${
+          on ? "left-[22px]" : "left-0.5"
+        }`}
+      />
+    </button>
+  );
+}
+
 const TIERS: {
   key: TierKey;
   icon: React.ReactNode;
@@ -66,7 +112,7 @@ const TIERS: {
   tagBg?: string;
   tagText?: string;
   tagLabel?: string;
-  fields?: { key: keyof BadgeCriteria; label: string; prefix?: string; suffix?: string }[];
+  fields?: { key: keyof BadgeCriteria; label: string; prefix?: string; suffix?: string; flag: FlagKey }[];
 }[] = [
   {
     key: "pemula",
@@ -83,10 +129,10 @@ const TIERS: {
     name: "Tumbuh",
     description: "Sudah mulai menunjukkan perkembangan",
     fields: [
-      { key: "silver_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
-      { key: "silver_tk_min", label: "Minimal Tenaga Kerja" },
-      { key: "silver_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
-      { key: "silver_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)" },
+      { key: "silver_omzet_min", label: "Minimal Omzet", prefix: "Rp", flag: "omzet_on" },
+      { key: "silver_tk_min", label: "Minimal Tenaga Kerja", flag: "tk_on" },
+      { key: "silver_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)", flag: "legalitas_on" },
+      { key: "silver_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)", flag: "sosmed_on" },
     ],
   },
   {
@@ -95,10 +141,10 @@ const TIERS: {
     name: "Berkembang",
     description: "UMKM yang sudah berkembang pesat",
     fields: [
-      { key: "gold_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
-      { key: "gold_tk_min", label: "Minimal Tenaga Kerja" },
-      { key: "gold_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
-      { key: "gold_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)" },
+      { key: "gold_omzet_min", label: "Minimal Omzet", prefix: "Rp", flag: "omzet_on" },
+      { key: "gold_tk_min", label: "Minimal Tenaga Kerja", flag: "tk_on" },
+      { key: "gold_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)", flag: "legalitas_on" },
+      { key: "gold_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)", flag: "sosmed_on" },
     ],
   },
   {
@@ -110,10 +156,10 @@ const TIERS: {
     tagText: "text-purple-600 dark:text-purple-400",
     tagLabel: "Tertinggi",
     fields: [
-      { key: "platinum_omzet_min", label: "Minimal Omzet", prefix: "Rp" },
-      { key: "platinum_tk_min", label: "Minimal Tenaga Kerja" },
-      { key: "platinum_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)" },
-      { key: "platinum_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)" },
+      { key: "platinum_omzet_min", label: "Minimal Omzet", prefix: "Rp", flag: "omzet_on" },
+      { key: "platinum_tk_min", label: "Minimal Tenaga Kerja", flag: "tk_on" },
+      { key: "platinum_legalitas_min", label: "Minimal Legalitas", suffix: "Jenis (Halal/PIRT/HAKI/NIB)", flag: "legalitas_on" },
+      { key: "platinum_sosmed_min", label: "Minimal Sosmed Aktif", suffix: "Platform (WA/IG/FB/TT)", flag: "sosmed_on" },
     ],
   },
 ];
@@ -184,6 +230,26 @@ export default function PengaturanBadgePage() {
     setCriteria((prev) => ({ ...prev, [field]: value }));
   }
 
+  function tierSummary(prefix: "silver" | "gold" | "platinum") {
+    const parts: string[] = [];
+    if (criteria.omzet_on) {
+      parts.push(`Omzet ≥ Rp${formatRupiah(criteria[`${prefix}_omzet_min`])}`);
+    }
+    if (criteria.tk_on) {
+      parts.push(`TK ≥ ${criteria[`${prefix}_tk_min`]}`);
+    }
+    if (criteria.legalitas_on && criteria[`${prefix}_legalitas_min`] > 0) {
+      parts.push(`Legalitas ≥ ${criteria[`${prefix}_legalitas_min`]}`);
+    }
+    if (criteria.sosmed_on && criteria[`${prefix}_sosmed_min`] > 0) {
+      parts.push(`Sosmed ≥ ${criteria[`${prefix}_sosmed_min`]}`);
+    }
+    if (parts.length === 0) {
+      return "Cukup 1 kunjungan monitoring — otomatis";
+    }
+    return parts.join(", ");
+  }
+
   if (loading) return <LoadingState />;
 
   return (
@@ -211,6 +277,37 @@ export default function PengaturanBadgePage() {
 
         {/* Badge tiers */}
         <div className="px-4 pb-4 sm:px-6 sm:pb-6 space-y-4">
+          {/* Indikator aktif — global untuk semua tier */}
+          <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 sm:p-5 transition-colors duration-300 dark:border-white/[0.06] dark:bg-white/[0.02]">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Indikator Aktif</h3>
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+              Indikator yang mati diabaikan total di semua tingkatan badge
+            </p>
+            {!criteria.omzet_on && !criteria.tk_on && !criteria.legalitas_on && !criteria.sosmed_on && (
+              <p className="mt-2 rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
+                Semua indikator mati — semua UMKM yang termonitoring akan langsung Naik Kelas.
+              </p>
+            )}
+            <div className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
+              {INDICATORS.map((ind) => (
+                <div
+                  key={ind.flag}
+                  className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 dark:border-white/[0.06] dark:bg-white/[0.03]"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{ind.label}</p>
+                    <p className="truncate text-xs text-slate-400">{ind.description}</p>
+                  </div>
+                  <IndicatorSwitch
+                    on={criteria[ind.flag]}
+                    onToggle={() => updateField(ind.flag, !criteria[ind.flag])}
+                    label={ind.label}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
           {TIERS.map((tier) => {
             const isTopBadge = tier.key === "platinum";
 
@@ -244,26 +341,30 @@ export default function PengaturanBadgePage() {
                 {/* Fields */}
                 {tier.fields && (
                   <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 md:grid-cols-4">
-                    {tier.fields.map((field) => (
-                      <div key={field.key}>
-                        <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                          {field.label}
-                        </label>
-                        <div className="flex items-center gap-1">
-                          {field.prefix && <span className="text-sm text-slate-400">{field.prefix}</span>}
-                          <input
-                            type="text"
-                            inputMode="numeric"
-                            value={formatDisplayNumber(criteria[field.key] as number)}
-                            onChange={(e) => updateField(field.key, parseFormattedNumber(e.target.value))}
-                            className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
-                          />
+                    {tier.fields.map((field) => {
+                      const active = criteria[field.flag];
+                      return (
+                        <div key={field.key} className={active ? undefined : "opacity-50"}>
+                          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                            {field.label}
+                          </label>
+                          <div className="flex items-center gap-1">
+                            {field.prefix && <span className="text-sm text-slate-400">{field.prefix}</span>}
+                            <input
+                              type="text"
+                              inputMode="numeric"
+                              disabled={!active}
+                              value={formatDisplayNumber(criteria[field.key] as number)}
+                              onChange={(e) => updateField(field.key, parseFormattedNumber(e.target.value))}
+                              className="h-10 w-full rounded-lg border border-slate-200 px-3 text-sm disabled:cursor-not-allowed dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-white"
+                            />
+                          </div>
+                          {field.suffix && (
+                            <p className="mt-1 text-xs text-slate-400">{field.suffix}</p>
+                          )}
                         </div>
-                        {field.suffix && (
-                          <p className="mt-1 text-xs text-slate-400">{field.suffix}</p>
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
 
@@ -294,9 +395,7 @@ export default function PengaturanBadgePage() {
                   <SilverMedalIcon className="h-3 w-3" /> Tumbuh
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
-                  Omzet ≥ Rp{formatRupiah(criteria.silver_omzet_min)}, TK ≥ {criteria.silver_tk_min}
-                  {criteria.silver_legalitas_min > 0 && `, Legalitas ≥ ${criteria.silver_legalitas_min}`}
-                  {criteria.silver_sosmed_min > 0 && `, Sosmed ≥ ${criteria.silver_sosmed_min}`}
+                  {tierSummary("silver")}
                 </p>
               </div>
               <div className="flex items-start gap-3">
@@ -304,9 +403,7 @@ export default function PengaturanBadgePage() {
                   <GoldMedalIcon className="h-3 w-3" /> Berkembang
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
-                  Omzet ≥ Rp{formatRupiah(criteria.gold_omzet_min)}, TK ≥ {criteria.gold_tk_min}
-                  {criteria.gold_legalitas_min > 0 && `, Legalitas ≥ ${criteria.gold_legalitas_min}`}
-                  {criteria.gold_sosmed_min > 0 && `, Sosmed ≥ ${criteria.gold_sosmed_min}`}
+                  {tierSummary("gold")}
                 </p>
               </div>
               <div className="flex items-start gap-3">
@@ -314,9 +411,7 @@ export default function PengaturanBadgePage() {
                   <DiamondIcon className="h-3 w-3" /> Naik Kelas
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
-                  Omzet ≥ Rp{formatRupiah(criteria.platinum_omzet_min)}, TK ≥ {criteria.platinum_tk_min}
-                  {criteria.platinum_legalitas_min > 0 && `, Legalitas ≥ ${criteria.platinum_legalitas_min}`}
-                  {criteria.platinum_sosmed_min > 0 && `, Sosmed ≥ ${criteria.platinum_sosmed_min}`}
+                  {tierSummary("platinum")}
                 </p>
               </div>
             </div>

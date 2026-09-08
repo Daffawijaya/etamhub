@@ -83,6 +83,10 @@ type DashboardData = {
     platinum_tk_min: number;
     platinum_legalitas_min: number;
     platinum_sosmed_min: number;
+    omzet_on?: boolean;
+    tk_on?: boolean;
+    legalitas_on?: boolean;
+    sosmed_on?: boolean;
   };
 
   monitoring: {

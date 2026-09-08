@@ -402,6 +402,10 @@ export async function GET() {
         platinum_tk_min: badgeConfig.platinum_tk_min,
         platinum_legalitas_min: badgeConfig.platinum_legalitas_min,
         platinum_sosmed_min: badgeConfig.platinum_sosmed_min,
+        omzet_on: badgeConfig.omzet_on,
+        tk_on: badgeConfig.tk_on,
+        legalitas_on: badgeConfig.legalitas_on,
+        sosmed_on: badgeConfig.sosmed_on,
       },
 
       monitoring: monitoringSummary,
