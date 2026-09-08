@@ -183,7 +183,7 @@ export default function DashboardGrid() {
           <CategoryPieChart data={filteredKategoriChart} />
         </div>
 
-        <OmzetTrendChart data={monitoring.omzetTrend ?? []} />
+        <OmzetTrendChart points={monitoring.omzetPoints ?? []} />
         <LatestUmkm umkms={filteredUmkm} umkmBadges={monitoring.umkmBadges ?? []} />
         <UmkmMapWidget umkms={filteredUmkm} />
       </div>

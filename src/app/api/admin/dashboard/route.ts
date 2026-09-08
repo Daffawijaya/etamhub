@@ -207,33 +207,12 @@ export async function GET() {
       { name: "Naik Kelas", value: badgeCounts.platinum, color: "#7C3AED" },
     ];
 
-    // Omzet trend — monthly average from monitoring data
-    const monthlyOmzet: Record<string, { total: number; count: number }> = {};
+    // Titik mentah omzet untuk filter range 1D..5Y di client (tanpa query tambahan)
+    const omzetPoints: { t: string; omzet: number }[] = [];
     for (const m of allMonitorings) {
       if (!m.omzet || m.omzet <= 0) continue;
-      const date = new Date(m.created_at);
-      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
-      if (!monthlyOmzet[key]) {
-        monthlyOmzet[key] = { total: 0, count: 0 };
-      }
-      monthlyOmzet[key].total += m.omzet;
-      monthlyOmzet[key].count++;
+      omzetPoints.push({ t: m.created_at, omzet: m.omzet });
     }
-
-    // Sort by month and take last 12
-    const omzetTrend = Object.entries(monthlyOmzet)
-      .sort(([a], [b]) => a.localeCompare(b))
-      .slice(-12)
-      .map(([month, data]) => {
-        const [year, m] = month.split("-");
-        const monthNames = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
-        return {
-          month: `${monthNames[parseInt(m) - 1]} ${year.slice(2)}`,
-          avgOmzet: Math.round(data.total / data.count),
-          totalOmzet: data.total,
-          jumlahEntry: data.count,
-        };
-      });
 
     // Total monitored UMKM
     const monitoredCount = Object.keys(countMap).length;
@@ -268,7 +247,7 @@ export async function GET() {
       map: dataUmkm,
       monitoring: {
         badgeChart,
-        omzetTrend,
+        omzetPoints,
         monitoredCount,
         totalMonitorings,
         monitoredIds: Object.keys(countMap),
