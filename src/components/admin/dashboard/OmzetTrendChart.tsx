@@ -251,6 +251,7 @@ export default function OmzetTrendChart({ points }: Props) {
                 connectNulls
                 stroke="none"
                 fill="url(#omzetGradient)"
+                tooltipType="none"
               />
               <Line
                 type="monotone"
