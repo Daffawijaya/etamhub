@@ -2,7 +2,8 @@
 
 import { useMemo, useState } from "react";
 import {
-  LineChart,
+  ComposedChart,
+  Area,
   Line,
   XAxis,
   YAxis,
@@ -204,7 +205,7 @@ export default function OmzetTrendChart({ points }: Props) {
       ) : (
         <div className="h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
+            <ComposedChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <defs>
                 <linearGradient id="omzetGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor={trendColor} stopOpacity={0.3} />
@@ -244,6 +245,13 @@ export default function OmzetTrendChart({ points }: Props) {
                 }}
                 labelStyle={{ color: "#94a3b8" }}
               />
+              <Area
+                type="monotone"
+                dataKey="avgOmzet"
+                connectNulls
+                stroke="none"
+                fill="url(#omzetGradient)"
+              />
               <Line
                 type="monotone"
                 dataKey="avgOmzet"
@@ -253,7 +261,7 @@ export default function OmzetTrendChart({ points }: Props) {
                 dot={vals.length < 2 ? { fill: trendColor, strokeWidth: 0, r: 4 } : false}
                 activeDot={{ r: 5, stroke: trendColor, strokeWidth: 2, fill: "#fff" }}
               />
-            </LineChart>
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       )}
