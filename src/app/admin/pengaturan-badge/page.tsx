@@ -119,8 +119,8 @@ const TIERS: {
     icon: <SeedlingIcon className="h-8 w-8" />,
     name: "Pemula",
     description: "Sudah mulai monitoring (minimal 1 kunjungan) — otomatis",
-    tagBg: "bg-amber-100 dark:bg-amber-900/30",
-    tagText: "text-amber-600 dark:text-amber-400",
+    tagBg: "bg-emerald-50 dark:bg-emerald-900/20",
+    tagText: "text-emerald-700 dark:text-emerald-400",
     tagLabel: "Otomatis",
   },
   {
@@ -383,7 +383,7 @@ export default function PengaturanBadgePage() {
             <h3 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">Ringkasan Kriteria</h3>
             <div className="space-y-2 text-sm">
               <div className="flex items-start gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
                   <SeedlingIcon className="h-3 w-3" /> Pemula
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
@@ -391,7 +391,7 @@ export default function PengaturanBadgePage() {
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 dark:bg-emerald-900/20 dark:text-emerald-400">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                   <SilverMedalIcon className="h-3 w-3" /> Tumbuh
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
@@ -399,7 +399,7 @@ export default function PengaturanBadgePage() {
                 </p>
               </div>
               <div className="flex items-start gap-3">
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-2.5 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/20 dark:text-orange-400">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-900/20 dark:text-amber-400">
                   <GoldMedalIcon className="h-3 w-3" /> Berkembang
                 </span>
                 <p className="text-slate-600 dark:text-slate-300">
