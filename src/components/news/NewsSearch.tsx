@@ -7,9 +7,17 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   onSearch?: () => void;
+  placeholder?: string;
+  ariaLabel?: string;
 };
 
-export default function NewsSearch({ value, onChange, onSearch }: Props) {
+export default function NewsSearch({
+  value,
+  onChange,
+  onSearch,
+  placeholder = "Cari berita",
+  ariaLabel = "Cari berita",
+}: Props) {
   return (
     <motion.div
       initial={{ opacity: 0, filter: "blur(6px)" }}
@@ -65,7 +73,8 @@ export default function NewsSearch({ value, onChange, onSearch }: Props) {
               onSearch?.();
             }
           }}
-          placeholder="Cari berita"
+          placeholder={placeholder}
+          aria-label={ariaLabel}
           className="
             flex-1
             w-full
@@ -81,7 +90,7 @@ export default function NewsSearch({ value, onChange, onSearch }: Props) {
         <motion.button
           type="button"
           onClick={onSearch}
-          aria-label="Search"
+          aria-label={ariaLabel}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.92 }}
           className="flex-shrink-0 bg-[#111111] rounded-lg flex items-center justify-center text-white hover:bg-black transition-colors w-10 h-10 md:w-13 md:h-13"

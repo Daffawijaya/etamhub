@@ -4,8 +4,8 @@ export const navigation = [
     href: "/",
   },
   {
-    label: "Kecamatan",
-    href: "/#kecamatan",
+    label: "Produk",
+    href: "/produk",
   },
   {
     label: "Peta UMKM",

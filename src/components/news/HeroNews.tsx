@@ -7,7 +7,24 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-export default function HeroBackground() {
+type Props = {
+  badge?: string;
+  title?: string;
+  description?: string;
+  placeholder?: string;
+  searchLabel?: string;
+  basePath?: string;
+};
+
+export default function HeroBackground({
+  badge = "Kabar Kukar",
+  title = "Berita Terkini",
+  description =
+    "Temukan berita terbaru dan terpopuler seputar UMKM Kutai Kartanegara",
+  placeholder = "Cari berita",
+  searchLabel = "Cari berita",
+  basePath = "/berita",
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -29,7 +46,7 @@ export default function HeroBackground() {
 
     const query = params.toString();
 
-    router.push(query ? `/berita?${query}` : "/berita", {
+    router.push(query ? `${basePath}?${query}` : basePath, {
       scroll: false,
     });
   };
@@ -120,8 +137,8 @@ export default function HeroBackground() {
           animate={{ opacity: 1, filter: "blur(0px)" }}
           transition={{ duration: 0.5, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
         >
-          <button className="mb-8 inline-flex items-center gap-1.5 px-3.5 py-2 sm:gap-2 sm:px-5 sm:py-2.5 rounded-full bg-[#f1f1f7] text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:shadow-md transition-all cursor-pointer">
-            Kabar Kukar
+          <button type="button" className="mb-8 inline-flex items-center gap-1.5 px-3.5 py-2 sm:gap-2 sm:px-5 sm:py-2.5 rounded-full bg-[#f1f1f7] text-xs sm:text-sm font-medium text-gray-700 hover:bg-gray-50 hover:shadow-md transition-all cursor-pointer">
+            {badge}
             <svg className="w-3 h-3 text-violet-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
             </svg>
@@ -135,7 +152,7 @@ export default function HeroBackground() {
           transition={{ duration: 0.6, delay: 0.28, ease: [0.22, 1, 0.36, 1] }}
           className="text-2xl sm:text-4xl md:text-5xl font-semibold text-[#111111] dark:text-white tracking-tight text-center"
         >
-          {"Berita Terkini".split(" ").map((w, i) => (
+          {title.split(" ").map((w, i) => (
             <motion.span
               key={w + i}
               initial={{ opacity: 0, filter: "blur(6px)" }}
@@ -155,7 +172,7 @@ export default function HeroBackground() {
           transition={{ duration: 0.55, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
           className="mt-5 text-center text-zinc-600 dark:text-zinc-400 max-w-2xl text-base sm:text-lg md:text-xl"
         >
-          Temukan berita terbaru dan terpopuler seputar UMKM Kutai Kartanegara
+          {description}
         </motion.p>
 
         {/* Search Bar Container */}
@@ -164,6 +181,8 @@ export default function HeroBackground() {
           value={search}
           onChange={setSearch}
           onSearch={handleSearch}
+          placeholder={placeholder}
+          ariaLabel={searchLabel}
         />
       </div>
     </section>

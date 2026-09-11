@@ -21,7 +21,11 @@ export default function MobileNavbar() {
   const pathname = usePathname();
 
   const isHome = pathname === "/";
-  const transparentPage = pathname === "/" || pathname === "/about" || pathname.startsWith("/berita");
+  const transparentPage =
+    pathname === "/" ||
+    pathname === "/about" ||
+    pathname.startsWith("/berita") ||
+    pathname === "/produk";
 
   useEffect(() => {
     const handleScroll = () => {
