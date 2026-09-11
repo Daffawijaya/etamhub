@@ -7,8 +7,6 @@ import { motion } from "framer-motion";
 import {
   ArrowUpRight,
   ChevronDown,
-  ChevronLeft,
-  ChevronRight,
   MapPin,
   RotateCcw,
   Store,
@@ -18,6 +16,7 @@ import {
   type CatalogUmkm,
 } from "@/lib/umkm/catalog";
 import { imageUrl } from "@/lib/imageUrl";
+import CatalogPagination from "@/components/ui/CatalogPagination";
 
 type Props = {
   umkms: CatalogUmkm[];
@@ -46,13 +45,13 @@ function FilterSelect({
   options,
 }: FilterSelectProps) {
   return (
-    <label className="relative min-w-0 flex-1 sm:min-w-44">
+    <label className="relative w-36 shrink-0 sm:w-auto sm:min-w-44 sm:flex-1">
       <span className="sr-only">{label}</span>
       <select
         aria-label={label}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 w-full appearance-none rounded-xl border border-white bg-light-card px-4 pr-10 text-sm font-medium text-zinc-700 outline-none transition hover:bg-white focus:border-violet-400 focus:ring-2 focus:ring-violet-400/15 dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-200 dark:hover:bg-white/[0.07]"
+        className="h-10 w-full appearance-none rounded-xl border border-white bg-light-card px-3 pr-9 text-xs font-medium text-zinc-700 outline-none transition hover:bg-white focus:border-violet-400 focus:ring-2 focus:ring-violet-400/15 sm:h-11 sm:px-4 sm:pr-10 sm:text-sm dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-200 dark:hover:bg-white/[0.07]"
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
@@ -118,93 +117,55 @@ function UmkmCard({ umkm }: { umkm: CatalogUmkm }) {
             </div>
           </div>
 
-          <div className="relative z-20 flex flex-1 flex-col p-4 sm:p-5">
-            <div className="mb-3 flex min-w-0 items-center gap-2 text-xs text-zinc-500 dark:text-zinc-400">
+          <div className="relative z-20 flex flex-1 flex-col p-2.5 sm:p-5">
+            <div className="mb-1.5 flex min-w-0 items-center gap-2 text-[10px] text-zinc-500 sm:mb-3 sm:text-xs dark:text-zinc-400">
               {umkm.kecamatan && (
-                <span className="inline-flex min-w-0 items-center gap-1 truncate">
+                <span className="hidden min-w-0 items-center gap-1 sm:inline-flex">
                   <MapPin size={12} className="shrink-0" />
                   <span className="truncate">{umkm.kecamatan}</span>
                 </span>
               )}
               {umkm.kecamatan && umkm.kategori && (
-                <span className="h-1 w-1 shrink-0 rounded-full bg-zinc-400" />
+                <span className="hidden h-1 w-1 shrink-0 rounded-full bg-zinc-400 sm:block" />
               )}
               {umkm.kategori && (
-                <span className="inline-flex min-w-0 items-center gap-1.5 truncate">
-                  <Store size={13} className="shrink-0" />
+                <span className="inline-flex min-w-0 items-center gap-1 truncate sm:gap-1.5">
+                  <Store size={12} className="shrink-0" />
                   <span className="truncate">{umkm.kategori}</span>
                 </span>
               )}
             </div>
 
-            <h3 className="line-clamp-2 text-lg font-semibold leading-snug text-zinc-900 transition group-hover:text-violet-700 dark:text-white dark:group-hover:text-violet-300 sm:text-xl">
+            <h3 className="line-clamp-1 text-[13px] font-semibold leading-snug text-zinc-900 transition group-hover:text-violet-700 sm:text-xl dark:text-white dark:group-hover:text-violet-300">
               {umkm.nama}
             </h3>
 
             {umkm.deskripsi && (
-              <p className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-500 dark:text-zinc-400">
+              <p className="mt-3 line-clamp-2 text-sm leading-6 text-zinc-500 max-sm:hidden dark:text-zinc-400">
                 {umkm.deskripsi}
               </p>
             )}
 
-            <div className="mt-auto flex items-end justify-between gap-3 pt-5">
+            <div className="mt-auto flex items-end justify-between gap-2 pt-3 sm:gap-3 sm:pt-5">
               <div className="min-w-0">
-                <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-400 dark:text-zinc-500">
+                <p className="hidden text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-400 sm:block dark:text-zinc-500">
                   Produk
                 </p>
-                <p className="mt-1 truncate text-sm font-semibold text-zinc-900 dark:text-white sm:text-base">
+                <p className="truncate text-[13px] font-semibold text-zinc-900 sm:mt-1 sm:text-base dark:text-white">
                   {umkm.productCount > 0
                     ? `${umkm.productCount} produk`
                     : "Belum ada produk"}
                 </p>
               </div>
 
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-black text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:bg-white dark:text-black">
-                <ArrowUpRight size={18} />
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-black text-white transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 sm:h-10 sm:w-10 dark:bg-white dark:text-black">
+                <ArrowUpRight size={16} />
               </span>
             </div>
           </div>
         </article>
       </Link>
     </motion.div>
-  );
-}
-
-function Pagination({
-  page,
-  totalPages,
-  onChange,
-}: {
-  page: number;
-  totalPages: number;
-  onChange: (page: number) => void;
-}) {
-  if (totalPages <= 1) return null;
-
-  return (
-    <div className="flex items-center justify-center gap-3 pt-10">
-      <button
-        type="button"
-        aria-label="Halaman sebelumnya"
-        disabled={page === 1}
-        onClick={() => onChange(page - 1)}
-        className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 transition hover:bg-white disabled:pointer-events-none disabled:opacity-35 dark:text-zinc-300 dark:hover:bg-white/10"
-      >
-        <ChevronLeft size={18} />
-      </button>
-      <span className="min-w-24 text-center text-sm text-zinc-500 dark:text-zinc-400">
-        {page} dari {totalPages}
-      </span>
-      <button
-        type="button"
-        aria-label="Halaman berikutnya"
-        disabled={page === totalPages}
-        onClick={() => onChange(page + 1)}
-        className="flex h-9 w-9 items-center justify-center rounded-lg text-zinc-600 transition hover:bg-white disabled:pointer-events-none disabled:opacity-35 dark:text-zinc-300 dark:hover:bg-white/10"
-      >
-        <ChevronRight size={18} />
-      </button>
-    </div>
   );
 }
 
@@ -292,7 +253,7 @@ export default function UmkmCatalog({ umkms, search = "" }: Props) {
           )}
         </div>
 
-        <div className="mt-5 flex flex-col gap-2 rounded-2xl border border-white bg-light p-3 sm:flex-row dark:border-zinc-800 dark:bg-[#1b1b1b]">
+        <div className="mt-5 flex gap-2 overflow-x-auto rounded-2xl border border-white bg-light p-3 sm:overflow-visible dark:border-zinc-800 dark:bg-[#1b1b1b]">
           <FilterSelect
             label="Kategori UMKM"
             value={category}
@@ -334,7 +295,7 @@ export default function UmkmCatalog({ umkms, search = "" }: Props) {
               transition: { staggerChildren: 0.06, delayChildren: 0.06 },
             },
           }}
-          className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4"
         >
           {visibleUmkms.map((umkm) => (
             <UmkmCard key={umkm.id} umkm={umkm} />
@@ -376,7 +337,7 @@ export default function UmkmCatalog({ umkms, search = "" }: Props) {
         </motion.div>
       )}
 
-      <Pagination page={safePage} totalPages={totalPages} onChange={changePage} />
+      <CatalogPagination page={safePage} totalPages={totalPages} onChange={changePage} />
     </section>
   );
 }

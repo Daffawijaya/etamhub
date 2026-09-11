@@ -13,7 +13,6 @@ export const metadata: Metadata = {
     locale: "id_ID",
   },
 };
-import StatsSection from "@/components/dashboard/StatsSection";
 import DistrictSection from "@/components/dashboard/DistrictSection";
 import Footer from "@/components/Footer";
 import Hero from "@/components/dashboard/Hero";
@@ -30,7 +29,6 @@ export default function Home() {
         <div className="relative">
           {/* Content */}
           <div className="relative z-10">
-            <StatsSection />
             <InsightSection />
             <DistrictSection />
           </div>

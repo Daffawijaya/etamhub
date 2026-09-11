@@ -173,8 +173,8 @@ export default async function ProdukPage({ searchParams }: Props) {
         />
 
         <div className="mx-auto max-w-7xl space-y-20 px-4 pb-24 pt-22 sm:px-6 lg:px-8">
-          <ProductCatalog key={`produk-${query}`} products={products} search={query} />
           <UmkmCatalog key={`umkm-${query}`} umkms={umkms} search={query} />
+          <ProductCatalog key={`produk-${query}`} products={products} search={query} />
         </div>
 
         <Footer
