@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback, ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { SlidersHorizontal, X } from "lucide-react";
 import BrandButton from "@/components/ui/BrandButton";
 
@@ -183,14 +184,16 @@ export default function FilterSheet({
         )}
       </button>
 
-      {/* ── Mobile: Bottom Sheet ── */}
-      {open && isMobile && (
-        <div
-          ref={backdropRef}
-          onClick={(e) => e.target === backdropRef.current && close()}
-          className="fixed inset-0 z-[999] bg-black/40 backdrop-blur-sm"
-          style={{ animation: "fadeIn 0.2s ease-out" }}
-        >
+      {/* ── Mobile: Bottom Sheet (portal biar lepas dari stacking context parent) ── */}
+      {open &&
+        isMobile &&
+        createPortal(
+          <div
+            ref={backdropRef}
+            onClick={(e) => e.target === backdropRef.current && close()}
+            className="fixed inset-0 z-[999] bg-black/40 backdrop-blur-sm"
+            style={{ animation: "fadeIn 0.2s ease-out" }}
+          >
           <div
             className={`absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-hidden rounded-t-3xl shadow-2xl ${t.panelMobile}`}
             style={{
@@ -238,14 +241,17 @@ export default function FilterSheet({
               </BrandButton>
             </div>
           </div>
-        </div>
-      )}
+          </div>,
+          document.body,
+        )}
 
-      {/* ── Desktop: Popover (fixed positioned) ── */}
-      {open && !isMobile && (
-        <>
-          {/* Transparent backdrop to catch outside clicks */}
-          <div className="fixed inset-0 z-[998]" />
+      {/* ── Desktop: Popover (portal biar lepas dari stacking context parent) ── */}
+      {open &&
+        !isMobile &&
+        createPortal(
+          <>
+            {/* Transparent backdrop to catch outside clicks */}
+            <div className="fixed inset-0 z-[998]" />
 
           <div
             ref={panelRef}
@@ -285,8 +291,9 @@ export default function FilterSheet({
               </BrandButton>
             </div>
           </div>
-        </>
-      )}
+          </>,
+          document.body,
+        )}
 
       <style jsx global>{`
         @keyframes fadeIn {

@@ -197,6 +197,12 @@ export default function ProductCatalog({ products, search = "" }: Props) {
   const [district, setDistrict] = useState("");
   const [price, setPrice] = useState("");
   const [sort, setSort] = useState("newest");
+  const [applied, setApplied] = useState({
+    category: "",
+    district: "",
+    price: "",
+    sort: "newest",
+  });
   const [page, setPage] = useState(1);
 
   const categories = useMemo(
@@ -231,12 +237,12 @@ export default function ProductCatalog({ products, search = "" }: Props) {
     () =>
       filterCatalogProducts(products, {
         search,
-        category,
-        district,
-        price,
-        sort,
+        category: applied.category,
+        district: applied.district,
+        price: applied.price,
+        sort: applied.sort,
       }),
-    [products, search, category, district, price, sort],
+    [products, search, applied],
   );
 
   const totalPages = Math.ceil(filteredProducts.length / PAGE_SIZE);
@@ -249,8 +255,8 @@ export default function ProductCatalog({ products, search = "" }: Props) {
     filteredProducts.map((product) => product.umkm.id),
   ).size;
   const activeFilterCount =
-    [category, district, price].filter(Boolean).length +
-    (sort === "newest" ? 0 : 1);
+    [applied.category, applied.district, applied.price].filter(Boolean).length +
+    (applied.sort === "newest" ? 0 : 1);
 
   const changePage = (nextPage: number) => {
     setPage(nextPage);
@@ -264,6 +270,13 @@ export default function ProductCatalog({ products, search = "" }: Props) {
     setDistrict("");
     setPrice("");
     setSort("newest");
+    setApplied({ category: "", district: "", price: "", sort: "newest" });
+    setPage(1);
+  };
+
+  const applyFilters = () => {
+    setApplied({ category, district, price, sort });
+    setPage(1);
   };
 
   return (
@@ -274,8 +287,8 @@ export default function ProductCatalog({ products, search = "" }: Props) {
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
+        <div className="flex items-end justify-between gap-3">
+          <div className="min-w-0">
             <h2 className="text-xl font-semibold text-zinc-900 dark:text-white sm:text-2xl">
               Jelajahi Produk UMKM
             </h2>
@@ -285,33 +298,29 @@ export default function ProductCatalog({ products, search = "" }: Props) {
             </p>
           </div>
 
-          {activeFilterCount > 0 && (
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-zinc-600 transition hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-white"
-            >
-              <RotateCcw size={14} />
-              Reset {activeFilterCount} filter
-            </button>
-          )}
-        </div>
-
-        <div className="mt-5 flex justify-end">
-          <FilterSheet
+          <div className="flex shrink-0 items-center gap-2">
+            {activeFilterCount > 0 && (
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="hidden items-center gap-1.5 text-sm font-medium text-zinc-600 transition hover:text-zinc-950 sm:inline-flex dark:text-zinc-400 dark:hover:text-white"
+              >
+                <RotateCcw size={14} />
+                Reset {activeFilterCount} filter
+              </button>
+            )}
+            <FilterSheet
             accent="violet"
             activeCount={activeFilterCount}
             onReset={resetFilters}
-            onApply={() => {}}
+            onApply={applyFilters}
+            discardOnClose
           >
             <FilterField label="Kategori UMKM">
               <CustomSelect
                 accent="violet"
                 value={category}
-                onChange={(value) => {
-                  setCategory(value);
-                  setPage(1);
-                }}
+                onChange={setCategory}
                 placeholder="Semua kategori"
                 options={[
                   { value: "", label: "Semua kategori" },
@@ -323,10 +332,7 @@ export default function ProductCatalog({ products, search = "" }: Props) {
               <CustomSelect
                 accent="violet"
                 value={district}
-                onChange={(value) => {
-                  setDistrict(value);
-                  setPage(1);
-                }}
+                onChange={setDistrict}
                 placeholder="Semua kecamatan"
                 options={[
                   { value: "", label: "Semua kecamatan" },
@@ -338,10 +344,7 @@ export default function ProductCatalog({ products, search = "" }: Props) {
               <CustomSelect
                 accent="violet"
                 value={price}
-                onChange={(value) => {
-                  setPrice(value);
-                  setPage(1);
-                }}
+                onChange={setPrice}
                 placeholder="Semua harga"
                 options={priceOptions}
               />
@@ -350,21 +353,19 @@ export default function ProductCatalog({ products, search = "" }: Props) {
               <CustomSelect
                 accent="violet"
                 value={sort}
-                onChange={(value) => {
-                  setSort(value);
-                  setPage(1);
-                }}
+                onChange={setSort}
                 placeholder="Produk terbaru"
                 options={sortOptions}
               />
             </FilterField>
           </FilterSheet>
+          </div>
         </div>
       </motion.div>
 
       {visibleProducts.length > 0 ? (
         <motion.div
-          key={`${search}-${category}-${district}-${price}-${sort}-${safePage}`}
+          key={`${search}-${applied.category}-${applied.district}-${applied.price}-${applied.sort}-${safePage}`}
           initial="hidden"
           animate="visible"
           variants={{
