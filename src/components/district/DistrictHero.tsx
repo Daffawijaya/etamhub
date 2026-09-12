@@ -2,17 +2,15 @@ type Props = {
   districtName: string;
   totalSubkategori: number;
   totalUmkm: number;
-  urutTerdekat: boolean;
 };
 
 export default function DistrictHero({
   districtName,
   totalSubkategori,
   totalUmkm,
-  urutTerdekat,
 }: Props) {
   return (
-    <section className="relative overflow:hidden">
+    <section className="relative overflow-hidden">
       <div
         className="
           group
@@ -88,39 +86,6 @@ export default function DistrictHero({
 
               <span className="text-xl font-semibold text-zinc-900 dark:text-white">
                 {totalSubkategori}
-              </span>
-            </div>
-
-            <div
-              className={`
-                flex
-                items-center
-                justify-between
-                rounded-lg
-                border
-                px-4
-                py-3
-                transition-all
-                duration-300
-                ${
-                  urutTerdekat
-                    ? "border-violet-500/20 bg-violet-500/10"
-                    : "border-white bg-light dark:border-white/10 dark:bg-white/[0.03]"
-                }
-              `}
-            >
-              <span
-                className={`text-sm ${
-                  urutTerdekat
-                    ? "text-violet-300"
-                    : "text-zinc-500 dark:text-zinc-400"
-                }`}
-              >
-                Mode
-              </span>
-
-              <span className="font-medium text-zinc-900 dark:text-white">
-                {urutTerdekat ? "📍 Terdekat" : "A - Z"}
               </span>
             </div>
           </div>

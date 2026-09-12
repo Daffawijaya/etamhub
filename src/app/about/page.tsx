@@ -3,7 +3,6 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/Footer";
 import Hero from "@/components/about/Hero";
 import AboutPlatformSection from "@/components/about/AboutPlatformSection";
-import UmkmTerbaruSection from "@/components/about/UmkmTerbaru";
 import VisiManfaat from "@/components/about/VisiManfaat";
 import AboutTeamTabs from "@/components/about/AboutTeamTabs";
 import FooterBrand from "@/components/FooterBrand";
@@ -32,8 +31,6 @@ export default function AboutPage() {
         <Hero />
 
         <AboutPlatformSection />
-
-        <UmkmTerbaruSection />
 
         <VisiManfaat />
 
