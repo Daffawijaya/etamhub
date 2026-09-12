@@ -80,7 +80,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const umkms = await getDistrictUmkms(district);
 
     return {
-      title: `UMKM Kecamatan ${districtName}`,
+      title: districtName,
       description: `Daftar UMKM di Kecamatan ${districtName}, Kutai Kartanegara. ${umkms.length} UMKM terdaftar dengan berbagai kategori usaha.`,
       alternates: {
         canonical: `/kecamatan/${district}`,
