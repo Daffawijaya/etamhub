@@ -17,6 +17,7 @@ import {
 } from "@/lib/umkm/catalog";
 import { imageUrl } from "@/lib/imageUrl";
 import CatalogPagination from "@/components/ui/CatalogPagination";
+import UmkmBadge from "@/components/ui/UmkmBadge";
 
 type Props = {
   umkms: CatalogUmkm[];
@@ -110,6 +111,10 @@ function UmkmCard({ umkm }: { umkm: CatalogUmkm }) {
             )}
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/5 to-transparent" />
+            <UmkmBadge
+              badge={umkm.badge}
+              className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3"
+            />
             <div className="absolute bottom-0 left-0 right-0 flex items-end justify-between gap-2 p-3 sm:p-4">
               <span className="inline-flex max-w-[70%] truncate rounded-full bg-white/20 px-2.5 py-1 text-[10px] font-medium text-white backdrop-blur-sm sm:text-xs">
                 {umkm.subkategori || umkm.kategori || "UMKM lokal"}

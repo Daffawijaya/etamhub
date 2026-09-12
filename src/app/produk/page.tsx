@@ -8,6 +8,7 @@ import UmkmCatalog from "@/components/products/UmkmCatalog";
 import type { CatalogProduct } from "@/lib/products/catalog";
 import type { CatalogUmkm } from "@/lib/umkm/catalog";
 import { supabaseAdmin } from "@/lib/supabaseAdmin";
+import { attachBadges } from "@/lib/monitoring/badges";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -93,6 +94,7 @@ async function getCatalogProducts(): Promise<CatalogProduct[]> {
           kecamatan: umkm.kecamatan,
           kategori: umkm.kategori,
           subkategori: umkm.subkategori,
+          badge: null,
         },
       },
     ];
@@ -109,6 +111,15 @@ type UmkmRow = {
   subkategori: string | null;
   gambar: string[] | null;
   created_at: string;
+  omzet: number | null;
+  jumlah_tenaga_kerja: number | null;
+  nib: string | null;
+  halal: string | null;
+  pirt: string | null;
+  haki: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  tiktok: string | null;
 };
 
 async function getCatalogUmkms(
@@ -117,7 +128,7 @@ async function getCatalogUmkms(
   const { data, error } = await supabaseAdmin
     .from("umkm")
     .select(
-      "id, slug, nama, deskripsi, kecamatan, kategori, subkategori, gambar, created_at",
+      "id, slug, nama, deskripsi, kecamatan, kategori, subkategori, gambar, created_at, omzet, jumlah_tenaga_kerja, nib, halal, pirt, haki, instagram, facebook, tiktok",
     )
     .eq("published", true)
     .not("slug", "is", null)
@@ -128,7 +139,9 @@ async function getCatalogUmkms(
     return [];
   }
 
-  return ((data ?? []) as unknown as UmkmRow[])
+  const withBadges = await attachBadges((data ?? []) as unknown as UmkmRow[]);
+
+  return withBadges
     .filter((row) => row.slug)
     .map((row) => ({
       id: row.id,
@@ -141,6 +154,7 @@ async function getCatalogUmkms(
       gambar: Array.isArray(row.gambar) ? row.gambar : [],
       created_at: row.created_at,
       productCount: productCounts.get(row.id) ?? 0,
+      badge: row.badge ?? null,
     }));
 }
 
@@ -158,6 +172,11 @@ export default async function ProdukPage({ searchParams }: Props) {
     );
   }
   const umkms = await getCatalogUmkms(productCounts);
+  const badgeMap = new Map(umkms.map((umkm) => [umkm.id, umkm.badge]));
+  const productsWithBadges = products.map((product) => ({
+    ...product,
+    umkm: { ...product.umkm, badge: badgeMap.get(product.umkm.id) ?? null },
+  }));
 
   return (
     <>
@@ -174,7 +193,7 @@ export default async function ProdukPage({ searchParams }: Props) {
 
         <div className="mx-auto max-w-7xl space-y-20 px-4 pb-24 pt-22 sm:px-6 lg:px-8">
           <UmkmCatalog key={`umkm-${query}`} umkms={umkms} search={query} />
-          <ProductCatalog key={`produk-${query}`} products={products} search={query} />
+          <ProductCatalog key={`produk-${query}`} products={productsWithBadges} search={query} />
         </div>
 
         <Footer

@@ -1,3 +1,5 @@
+import type { BadgeResult } from "@/lib/monitoring/badges";
+
 export type CatalogUmkm = {
   id: string;
   slug: string;
@@ -9,6 +11,7 @@ export type CatalogUmkm = {
   gambar: string[];
   created_at: string;
   productCount: number;
+  badge: BadgeResult | null;
 };
 
 export type CatalogUmkmFilters = {

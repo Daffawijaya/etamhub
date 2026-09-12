@@ -4,6 +4,8 @@ export type CatalogLegalitas = {
   kode: string | null;
 };
 
+import type { BadgeResult } from "@/lib/monitoring/badges";
+
 export type CatalogProduct = {
   id: string;
   slug: string;
@@ -21,6 +23,7 @@ export type CatalogProduct = {
     kecamatan: string | null;
     kategori: string | null;
     subkategori: string | null;
+    badge: BadgeResult | null;
   };
 };
 
