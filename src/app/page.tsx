@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import Navbar from "@/components/navbar/Navbar";
 
 export const metadata: Metadata = {
-  title: "etamhub — Katalog UMKM Kutai Kartanegara",
+  title: "etamhub | Katalog UMKM Kutai Kartanegara",
   description:
     "Temukan UMKM, produk, dan layanan dari seluruh kecamatan di Kutai Kartanegara. Jelajahi peta interaktif, berita terbaru, dan profil usaha lokal.",
   openGraph: {
-    title: "etamhub — Katalog UMKM Kutai Kartanegara",
+    title: "etamhub | Katalog UMKM Kutai Kartanegara",
     description:
       "Temukan UMKM, produk, dan layanan dari seluruh kecamatan di Kutai Kartanegara.",
     type: "website",
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   },
 };
 import DistrictSection from "@/components/dashboard/DistrictSection";
+import StatsSection from "@/components/dashboard/StatsSection";
 import Footer from "@/components/Footer";
 import Hero from "@/components/dashboard/Hero";
 import InsightSection from "@/components/dashboard/InsightSection";
@@ -29,6 +30,7 @@ export default function Home() {
         <div className="relative">
           {/* Content */}
           <div className="relative z-10">
+            <StatsSection />
             <InsightSection />
             <DistrictSection />
           </div>

@@ -30,17 +30,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const baseUrl = getBaseUrl();
     const description =
       umkm.deskripsi ||
-      `${umkm.nama} — UMKM di Kecamatan ${umkm.kecamatan}, Kutai Kartanegara. Kategori: ${umkm.kategori}${umkm.subkategori ? ` · ${umkm.subkategori}` : ""}.`;
+      `${umkm.nama}. UMKM di Kecamatan ${umkm.kecamatan}, Kutai Kartanegara. Kategori: ${umkm.kategori}${umkm.subkategori ? ` · ${umkm.subkategori}` : ""}.`;
 
     return {
-      title: `${umkm.nama} — ${umkm.kecamatan}`,
+      title: `${umkm.nama} | ${umkm.kecamatan}`,
       description: description.slice(0, 160),
       alternates: {
         canonical: `/umkm/${umkm.slug}`,
       },
       openGraph: {
         type: "website",
-        title: `${umkm.nama} — ${umkm.kecamatan}`,
+        title: `${umkm.nama} | ${umkm.kecamatan}`,
         description: description.slice(0, 160),
         ...(umkm.gambar?.[0] && {
           images: [
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       twitter: {
         card: "summary_large_image",
-        title: `${umkm.nama} — ${umkm.kecamatan}`,
+        title: `${umkm.nama} | ${umkm.kecamatan}`,
         description: description.slice(0, 160),
         ...(umkm.gambar?.[0] && {
           images: [umkm.gambar[0]],
