@@ -101,14 +101,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const imageUrl = product.gambar?.[0];
 
     return {
-      title: product.nama,
+      title: { absolute: `${product.nama}${umkm?.nama ? ` - ${umkm.nama}` : ""}` },
       description: description.slice(0, 160),
       alternates: {
         canonical: `/produk/${product.slug}`,
       },
       openGraph: {
         type: "website",
-        title: product.nama,
+        title: `${product.nama}${umkm?.nama ? ` - ${umkm.nama}` : ""}`,
         description: description.slice(0, 160),
         ...(imageUrl && {
           images: [
@@ -123,7 +123,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       },
       twitter: {
         card: "summary_large_image",
-        title: product.nama,
+        title: `${product.nama}${umkm?.nama ? ` - ${umkm.nama}` : ""}`,
         description: description.slice(0, 160),
         ...(imageUrl && {
           images: [imageUrl],
