@@ -18,7 +18,24 @@ interface CustomSelectProps {
   required?: boolean;
   disabled?: boolean;
   className?: string;
+  /** Color theme — "sky" (admin) default, "violet" (public) */
+  accent?: "sky" | "violet";
 }
+
+const SELECT_ACCENT = {
+  sky: {
+    trigger:
+      "border-slate-200 dark:border-slate-800 bg-white dark:bg-dark text-slate-900 dark:text-white hover:border-slate-300 dark:hover:border-slate-700 focus:border-sky-500 focus:ring-sky-500/20",
+    selected:
+      "bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400",
+  },
+  violet: {
+    trigger:
+      "border-white dark:border-white/10 bg-light-card dark:bg-white/[0.04] text-zinc-700 dark:text-zinc-200 hover:bg-white dark:hover:bg-white/[0.07] focus:border-violet-400 focus:ring-violet-400/15",
+    selected:
+      "bg-violet-50 text-violet-700 dark:bg-violet-500/10 dark:text-violet-300",
+  },
+};
 
 export default function CustomSelect({
   value,
@@ -29,6 +46,7 @@ export default function CustomSelect({
   required = false,
   disabled = false,
   className = "",
+  accent = "sky",
 }: CustomSelectProps) {
   const [open, setOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -36,6 +54,7 @@ export default function CustomSelect({
   const [dropPos, setDropPos] = useState<{ top: number; left: number; width: number }>({ top: 0, left: 0, width: 0 });
 
   const selected = options.find((o) => o.value === value);
+  const t = SELECT_ACCENT[accent];
 
   // Close on outside click — check both wrapper AND portaled dropdown
   useEffect(() => {
@@ -97,25 +116,16 @@ export default function CustomSelect({
           w-full
           rounded-xl
           border
-          border-slate-200
-          dark:border-slate-800
-          bg-white
-          dark:bg-dark
+          ${t.trigger}
           px-4 pr-10
           py-3
           text-left
           text-sm
           font-medium
-          text-slate-900
-          dark:text-white
           outline-none
           transition-colors
           duration-300
-          hover:border-slate-300
-          dark:hover:border-slate-700
-          focus:border-sky-500
           focus:ring-1
-          focus:ring-sky-500/20
           disabled:cursor-not-allowed
           disabled:opacity-50
         `}
@@ -163,7 +173,7 @@ export default function CustomSelect({
                   last:border-b-0
                   ${
                     value === option.value
-                      ? "bg-sky-50 text-sky-700 dark:bg-sky-900/20 dark:text-sky-400"
+                      ? t.selected
                       : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-white/[0.04]"
                   }
                 `}

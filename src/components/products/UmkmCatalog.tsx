@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowUpRight,
-  ChevronDown,
   MapPin,
   RotateCcw,
   Store,
@@ -18,18 +17,30 @@ import {
 import { imageUrl } from "@/lib/imageUrl";
 import CatalogPagination from "@/components/ui/CatalogPagination";
 import UmkmBadge from "@/components/ui/UmkmBadge";
+import FilterSheet from "@/components/ui/FilterSheet";
+import CustomSelect from "@/components/ui/CustomSelect";
 
 type Props = {
   umkms: CatalogUmkm[];
   search?: string;
 };
 
-type FilterSelectProps = {
+function FilterField({
+  label,
+  children,
+}: {
   label: string;
-  value: string;
-  onChange: (value: string) => void;
-  options: { value: string; label: string }[];
-};
+  children: ReactNode;
+}) {
+  return (
+    <div>
+      <label className="mb-1.5 block text-sm font-medium text-zinc-600 dark:text-zinc-300">
+        {label}
+      </label>
+      {children}
+    </div>
+  );
+}
 
 const PAGE_SIZE = 12;
 
@@ -38,36 +49,6 @@ const sortOptions = [
   { value: "name", label: "Nama A–Z" },
   { value: "products", label: "Produk terbanyak" },
 ];
-
-function FilterSelect({
-  label,
-  value,
-  onChange,
-  options,
-}: FilterSelectProps) {
-  return (
-    <label className="relative w-36 shrink-0 sm:w-auto sm:min-w-44 sm:flex-1">
-      <span className="sr-only">{label}</span>
-      <select
-        aria-label={label}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className="h-10 w-full appearance-none rounded-xl border border-white bg-light-card px-3 pr-9 text-xs font-medium text-zinc-700 outline-none transition hover:bg-white focus:border-violet-400 focus:ring-2 focus:ring-violet-400/15 sm:h-11 sm:px-4 sm:pr-10 sm:text-sm dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-200 dark:hover:bg-white/[0.07]"
-      >
-        {options.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <ChevronDown
-        aria-hidden="true"
-        size={15}
-        className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-500 dark:text-zinc-400"
-      />
-    </label>
-  );
-}
 
 function UmkmCard({ umkm }: { umkm: CatalogUmkm }) {
   const image = umkm.gambar[0];
@@ -258,34 +239,50 @@ export default function UmkmCatalog({ umkms, search = "" }: Props) {
           )}
         </div>
 
-        <div className="mt-5 flex gap-2 overflow-x-auto rounded-2xl border border-white bg-light p-3 sm:overflow-visible dark:border-zinc-800 dark:bg-[#1b1b1b]">
-          <FilterSelect
-            label="Kategori UMKM"
-            value={category}
-            onChange={(value) => {
-              setCategory(value);
-              setPage(1);
-            }}
-            options={[{ value: "", label: "Semua kategori" }, ...categories]}
-          />
-          <FilterSelect
-            label="Kecamatan"
-            value={district}
-            onChange={(value) => {
-              setDistrict(value);
-              setPage(1);
-            }}
-            options={[{ value: "", label: "Semua kecamatan" }, ...districts]}
-          />
-          <FilterSelect
-            label="Urutkan UMKM"
-            value={sort}
-            onChange={(value) => {
-              setSort(value);
-              setPage(1);
-            }}
-            options={sortOptions}
-          />
+        <div className="mt-5 flex justify-end">
+          <FilterSheet
+            accent="violet"
+            activeCount={activeFilterCount}
+            onReset={resetFilters}
+            onApply={() => {}}
+          >
+            <FilterField label="Kategori UMKM">
+              <CustomSelect
+                accent="violet"
+                value={category}
+                onChange={(value) => {
+                  setCategory(value);
+                  setPage(1);
+                }}
+                placeholder="Semua kategori"
+                options={[{ value: "", label: "Semua kategori" }, ...categories]}
+              />
+            </FilterField>
+            <FilterField label="Kecamatan">
+              <CustomSelect
+                accent="violet"
+                value={district}
+                onChange={(value) => {
+                  setDistrict(value);
+                  setPage(1);
+                }}
+                placeholder="Semua kecamatan"
+                options={[{ value: "", label: "Semua kecamatan" }, ...districts]}
+              />
+            </FilterField>
+            <FilterField label="Urutkan UMKM">
+              <CustomSelect
+                accent="violet"
+                value={sort}
+                onChange={(value) => {
+                  setSort(value);
+                  setPage(1);
+                }}
+                placeholder="UMKM terbaru"
+                options={sortOptions}
+              />
+            </FilterField>
+          </FilterSheet>
         </div>
       </motion.div>
 

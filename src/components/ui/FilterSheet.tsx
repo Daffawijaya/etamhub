@@ -15,7 +15,42 @@ interface FilterSheetProps {
   onApply: () => void;
   /** If true, closing via outside click / X / Escape discards changes (does not call onApply) */
   discardOnClose?: boolean;
+  /** Color theme — "sky" (admin) default, "violet" (public) */
+  accent?: "sky" | "violet";
 }
+
+const ACCENT_STYLES = {
+  sky: {
+    triggerOpen:
+      "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-400",
+    triggerClosed:
+      "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/[0.06] dark:bg-dark-card dark:text-white dark:hover:bg-white/[0.04]",
+    dot: "bg-sky-500",
+    panelMobile: "bg-white dark:bg-dark-card",
+    panelDesktop:
+      "border-slate-200 bg-white shadow-slate-200/50 dark:border-white/[0.08] dark:bg-dark-card dark:shadow-black/40",
+    divider: "border-slate-100 dark:border-white/[0.06]",
+    title: "text-slate-900 dark:text-white",
+    closeBtn:
+      "text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-white/10",
+    applyVariant: "accent" as const,
+  },
+  violet: {
+    triggerOpen:
+      "border-violet-200 bg-violet-50 text-violet-700 dark:border-violet-500/30 dark:bg-violet-500/10 dark:text-violet-300",
+    triggerClosed:
+      "border-white bg-light-card text-zinc-700 hover:bg-white dark:border-white/10 dark:bg-white/[0.04] dark:text-zinc-200 dark:hover:bg-white/[0.07]",
+    dot: "bg-violet-500",
+    panelMobile: "bg-light dark:bg-[#1b1b1b]",
+    panelDesktop:
+      "border-white bg-light shadow-zinc-200/50 dark:border-zinc-800 dark:bg-[#1b1b1b] dark:shadow-black/40",
+    divider: "border-zinc-200/70 dark:border-zinc-800",
+    title: "text-zinc-900 dark:text-white",
+    closeBtn:
+      "text-zinc-400 hover:bg-zinc-100 hover:text-zinc-600 dark:hover:bg-white/10",
+    applyVariant: "primary" as const,
+  },
+};
 
 export default function FilterSheet({
   activeCount,
@@ -23,7 +58,9 @@ export default function FilterSheet({
   onReset,
   onApply,
   discardOnClose = false,
+  accent = "sky",
 }: FilterSheetProps) {
+  const t = ACCENT_STYLES[accent];
   const [open, setOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(true);
   const [panelPos, setPanelPos] = useState<{ top: number; right: number }>({ top: 0, right: 0 });
@@ -134,17 +171,13 @@ export default function FilterSheet({
           text-sm font-medium
           transition-colors
           active:scale-95
-          ${
-            open
-              ? "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-400"
-              : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/[0.06] dark:bg-dark-card dark:text-white dark:hover:bg-white/[0.04]"
-          }
+          ${open ? t.triggerOpen : t.triggerClosed}
         `}
       >
         <SlidersHorizontal size={15} />
         <span>Filter</span>
         {activeCount > 0 && (
-          <span className="absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-sky-500 text-[10px] font-bold text-white">
+          <span className={`absolute -right-1.5 -top-1.5 flex h-5 w-5 items-center justify-center rounded-full ${t.dot} text-[10px] font-bold text-white`}>
             {activeCount}
           </span>
         )}
@@ -159,7 +192,7 @@ export default function FilterSheet({
           style={{ animation: "fadeIn 0.2s ease-out" }}
         >
           <div
-            className="absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-hidden rounded-t-3xl bg-white shadow-2xl dark:bg-dark-card"
+            className={`absolute bottom-0 left-0 right-0 max-h-[85vh] overflow-hidden rounded-t-3xl shadow-2xl ${t.panelMobile}`}
             style={{
               animation: "slideUp 0.3s cubic-bezier(0.32, 0.72, 0, 1)",
             }}
@@ -170,18 +203,18 @@ export default function FilterSheet({
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 px-5 py-3 dark:border-white/[0.06]">
-              <h3 className="text-base font-semibold text-slate-900 dark:text-white">
+            <div className={`flex items-center justify-between border-b px-5 py-3 ${t.divider}`}>
+              <h3 className={`text-base font-semibold ${t.title}`}>
                 Filter
                 {activeCount > 0 && (
-                  <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-sky-500 text-[10px] font-bold text-white">
+                  <span className={`ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full ${t.dot} text-[10px] font-bold text-white`}>
                     {activeCount}
                   </span>
                 )}
               </h3>
               <button
                 onClick={close}
-                className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-white/10"
+                className={`flex h-8 w-8 items-center justify-center rounded-full transition-colors ${t.closeBtn}`}
               >
                 <X size={18} />
               </button>
@@ -196,11 +229,11 @@ export default function FilterSheet({
             </div>
 
             {/* Bottom Actions */}
-            <div className="flex gap-3 border-t border-slate-100 px-5 py-4 dark:border-white/[0.06]">
+            <div className={`flex gap-3 border-t px-5 py-4 ${t.divider}`}>
               <BrandButton variant="ghost" size="md" className="flex-1" onClick={handleReset}>
                 Reset
               </BrandButton>
-              <BrandButton variant="accent" size="md" className="flex-1" onClick={handleApply}>
+              <BrandButton variant={t.applyVariant} size="md" className="flex-1" onClick={handleApply}>
                 Terapkan
               </BrandButton>
             </div>
@@ -216,22 +249,22 @@ export default function FilterSheet({
 
           <div
             ref={panelRef}
-            className="z-[999] w-80 rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-200/50 dark:border-white/[0.08] dark:bg-dark-card dark:shadow-black/40"
+            className={`z-[999] w-80 rounded-2xl border shadow-2xl ${t.panelDesktop}`}
             style={{ animation: "popoverIn 0.15s ease-out", maxHeight: 'min(80vh, 480px)', display: 'flex', flexDirection: 'column', position: 'fixed', top: panelPos.top, right: panelPos.right }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-white/[0.06]">
-              <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
+            <div className={`flex items-center justify-between border-b px-4 py-3 ${t.divider}`}>
+              <h3 className={`text-sm font-semibold ${t.title}`}>
                 Filter
                 {activeCount > 0 && (
-                  <span className="ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-sky-500 text-[10px] font-bold text-white">
+                  <span className={`ml-2 inline-flex h-5 w-5 items-center justify-center rounded-full ${t.dot} text-[10px] font-bold text-white`}>
                     {activeCount}
                   </span>
                 )}
               </h3>
               <button
                 onClick={close}
-                className="flex h-7 w-7 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-white/10"
+                className={`flex h-7 w-7 items-center justify-center rounded-full transition-colors ${t.closeBtn}`}
               >
                 <X size={16} />
               </button>
@@ -243,11 +276,11 @@ export default function FilterSheet({
             </div>
 
             {/* Bottom Actions — always visible, never clipped */}
-            <div className="shrink-0 flex gap-2 border-t border-slate-100 px-4 py-3 dark:border-white/[0.06]">
+            <div className={`shrink-0 flex gap-2 border-t px-4 py-3 ${t.divider}`}>
               <BrandButton variant="ghost" size="md" className="flex-1" onClick={handleReset}>
                 Reset
               </BrandButton>
-              <BrandButton variant="accent" size="md" className="flex-1" onClick={handleApply}>
+              <BrandButton variant={t.applyVariant} size="md" className="flex-1" onClick={handleApply}>
                 Terapkan
               </BrandButton>
             </div>
